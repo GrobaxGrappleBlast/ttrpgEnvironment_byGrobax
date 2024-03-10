@@ -1,7 +1,7 @@
 import { Collection } from "../Designer/Collection";
 import { Group } from "../Designer/Group";
 import type { IOutputHandler } from "../Designer/IOutputHandler";
-import { Nodte, derivedNode, fixedNode } from "../Designer/Nodte";
+import { Nodte, derivedNode, fixedNode, type NodeType } from "../Designer/Nodte";
 import { ABaseAccess_System, type typeSystemKeys } from "./A01BaseAccess_System";
 /**
 * handles Hiarchy Maintainance. 
@@ -28,6 +28,15 @@ export abstract class AHiarchy_system extends ABaseAccess_System {
 
 		return newNode;
 	}
-	protected _updateNode(oldGroupKey: typeSystemKeys, oldCollectionKey: string, oldNodeKey: string, nodeobj: Nodte<any>, out: IOutputHandler ) { return super._updateNode			(oldGroupKey , oldCollectionKey , oldNodeKey, nodeobj, out )	}
+	protected _updateNode(oldGroupKey: typeSystemKeys, oldCollectionKey: string, oldNodeKey: string, nodeobj: NodeType , out: IOutputHandler ) { 
+		
+		// update Derived Collection to link to the new object
+		let collection = this._getCollection(oldGroupKey, oldCollectionKey);
+		collection.deleteNode( oldNodeKey )
+		collection.addNode( nodeobj ) 
+
+		nodeobj.parent = collection;
+		return nodeobj;
+	}
 	protected _deleteNode(groupKey: typeSystemKeys, collectionKey: string, nodeKey: string, out: IOutputHandler ) 								{ return super._deleteNode			(groupKey , collectionKey , nodeKey ,out )	} 
 }

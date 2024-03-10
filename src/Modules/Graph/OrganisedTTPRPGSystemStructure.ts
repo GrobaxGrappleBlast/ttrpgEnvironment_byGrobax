@@ -7,4 +7,12 @@ import { AValidCheck_system } from "./A04ValidCheck_system";
  */
 export class OrganisedTTPRPGSystemStructure  extends AValidCheck_system  {
 
+	public static getInstance(){
+		if(OrganisedTTPRPGSystemStructure._instance == null){
+			OrganisedTTPRPGSystemStructure._instance = new OrganisedTTPRPGSystemStructure();
+		}
+		return OrganisedTTPRPGSystemStructure._instance;
+	}
+	private static _instance : OrganisedTTPRPGSystemStructure;
+	
 }

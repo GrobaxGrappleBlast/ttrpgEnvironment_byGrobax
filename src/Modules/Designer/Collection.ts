@@ -21,4 +21,9 @@ export class Collection<T extends Nodte<T>>{
 		return true;
 	}
 
+	public deleteNode ( nodeKey: string ){
+		if( this.nodes[nodeKey] == null )
+			return true;
+		delete this.nodes[nodeKey];
+	}
 }

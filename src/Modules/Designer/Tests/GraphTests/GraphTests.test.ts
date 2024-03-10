@@ -2,10 +2,30 @@
 
 import { OrganisedTTPRPGSystemStructure } from "../../../../../src/Modules/Graph/OrganisedTTPRPGSystemStructure";
 import type { IOutputHandler } from "../../IOutputHandler";
+import { derivedNode, fixedNode } from "../../Nodte";
+ 
 
-//const { OrganisedTTPRPGSystemStructure } = require("../../Graph2");
-declare function fail(error?: any): never;
-
+interface TestIOutputHandler extends IOutputHandler{
+	errorMessages 	:string[],
+	logMessages 	:string[],
+	clean : () => void
+}
+var out : TestIOutputHandler ={
+	errorMessages: [],
+	logMessages: [],
+	outError: function (msg: any) {
+		this.errorMessages.push(msg);
+		console.log('ERROR :' + msg);
+	},
+	outLog: function (msg: any) {
+		this.logMessages.push(msg);
+		console.log('LOG :' + msg);
+	},
+	clean: function (): void {
+		this.errorMessages	= [];
+		this.logMessages	= [];
+	}
+}
 test(' tests some base functionality ', () => {
 	let sys = new OrganisedTTPRPGSystemStructure();
 	let r 
@@ -33,31 +53,11 @@ test(' tests some base functionality ', () => {
 
 })
 
-
-interface TestIOutputHandler extends IOutputHandler{
-	errorMessages 	:string[],
-	logMessages 	:string[],
-	clean : () => void
-}
 test(' Graph Create and Get', () => {
 	
-	let out : TestIOutputHandler ={
-		errorMessages: [],
-		logMessages: [],
-		outError: function (msg: any) {
-			this.errorMessages.push(msg);
-			console.log('ERROR :' + msg);
-		},
-		outLog: function (msg: any) {
-			this.logMessages.push(msg);
-			console.log('LOG :' + msg);
-		},
-		clean: function (): void {
-			this.errorMessages	= [];
-			this.logMessages	= [];
-		}
-	}
+	
 	let sys = new OrganisedTTPRPGSystemStructure();
+	out.clean();
 
 	sys.createNode('derived','my1Col','My1Node', out);
 	sys.createNode('derived','my1Col','My2Node', out);
@@ -200,4 +200,3 @@ test(' Graph Create and Get', () => {
 
 
 })
-

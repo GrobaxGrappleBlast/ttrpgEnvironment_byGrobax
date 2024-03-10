@@ -1,7 +1,7 @@
 import { Collection } from "../Designer/Collection";
 import { Group } from "../Designer/Group";
 import type { IOutputHandler } from "../Designer/IOutputHandler";
-import { Nodte, derivedNode, fixedNode } from "../Designer/Nodte";
+import { Nodte, derivedNode, fixedNode, type NodeType } from "../Designer/Nodte";
 import { type typeSystemKeys } from "./A01BaseAccess_System";
 import { AGraph_System } from "./A03Graph_System";
 
@@ -20,7 +20,8 @@ export abstract class AValidCheck_system extends AGraph_System {
 		}
 
 		// if everything is fine, no need to look for a good error message. 
-		if (this._hasNode(groupKey as typeSystemKeys, colKey, nodeKey)) {
+		// @ts-ignore
+		if (this._hasNode(groupKey, colKey, nodeKey)) {
 			return true;
 		}
 
@@ -92,7 +93,7 @@ export abstract class AValidCheck_system extends AGraph_System {
 		return super._createNode(_groupkey,colKey,nodeKey,out);
 	}
 
-	public updateNode(oldGroupKey: string, oldCollectionKey: string, oldNodeKey: string, nodeobj: Nodte<any>, out: IOutputHandler | null = null) {
+	public updateNode(oldGroupKey: string, oldCollectionKey: string, oldNodeKey: string, nodeobj: NodeType, out: IOutputHandler | null = null) {
 
 		// we ensure the out interface is used. 
 		if (out == null) {
