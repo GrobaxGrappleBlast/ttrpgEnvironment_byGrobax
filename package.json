@@ -3,6 +3,22 @@
     "version": "a.0.1",
     "description": "A plugin development template for devs who want to use svelte in Obsidian.",
     "main": "main.js",
+    "type": "module",
+    "jest": {
+        "testEnvironment": "node",
+        "moduleFileExtensions": [
+            "js",
+            "ts"
+        ],
+        "transform": {
+            "^.+\\.(ts)$": "ts-jest"
+        },
+        "testMatch": [
+            "**/*.test.ts",
+            "**/*.test.js"
+        ],
+        "type": "module"
+    },
     "scripts": {
         "style": "sass ./modules/styles.scss styles.css",
         "lint": "eslint . --ext .ts",
@@ -17,7 +33,7 @@
         "@sveltejs/vite-plugin-svelte": "^1.0.1",
         "@tsconfig/svelte": "^3.0.0",
         "@types/jest": "^29.5.12",
-        "@types/node": "^16.11.6",
+        "@types/node": "^16.18.87",
         "@typescript-eslint/eslint-plugin": "5.32.0",
         "@typescript-eslint/parser": "5.32.0",
         "builtin-modules": "3.3.0",
@@ -29,6 +45,7 @@
         "svelte": "^3.49.0",
         "svelte-check": "^2.8.0",
         "svelte-preprocess": "^4.10.7",
+        "ts-jest": "^29.1.2",
         "tslib": "^2.6.2",
         "typescript": "^4.9.5",
         "vite": "^3.0.0"
