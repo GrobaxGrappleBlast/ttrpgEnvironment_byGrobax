@@ -1,19 +1,18 @@
 import { Collection } from "../Designer/Collection";
 import { Group } from "../Designer/Group";
-import type { IOutputHandler } from "../Designer/IOutputHandler";
+import type { IOutputHandler } from "../Designer/Abstractions/IOutputHandler";
 import { Nodte, derivedNode, fixedNode } from "../Designer/Nodte";
 
 
  
-export type typeSystemKeys = keyof typeof ABaseAccess_System; 
+export type typeSystemKeys = keyof ABaseAccess_System; 
 
 /**
  * handles Base Operations and Data
  * and that errors cannot happen
 */
 export abstract class ABaseAccess_System {
-
-	private typeSystemKeys: keyof typeof ABaseAccess_System;
+ 
 	fixed	: Group<fixedNode>		= new Group('fixed'		, fixedNode );
 	derived	: Group<derivedNode>	= new Group('derived'	, derivedNode );
 
@@ -40,18 +39,12 @@ export abstract class ABaseAccess_System {
 	protected _getNode(groupKey: typeSystemKeys, colKey: string, nodeKey: string) : fixedNode | derivedNode {
 		return this._getCollection(groupKey, colKey).getNode(nodeKey) ;
 	}
-
-	protected _deleteCollection(groupKey:typeSystemKeys , colKey:string, out: IOutputHandler )														{}
-	protected _updateCollection(groupKey:typeSystemKeys , colKey:string, col:Collection<any>, out: IOutputHandler )									{}
+ 
 	protected _createCollection(groupKey:typeSystemKeys , colKey:string, out: IOutputHandler )														{
 		let newCol = new Collection<fixedNode | derivedNode>(colKey);
 		return newCol;
 	}
 
-	/** 
-	 * This creates a node of the correct type according to collection. 
-	 * @return Node, of correct type.
-	*/
 	protected _createNode(groupKey: typeSystemKeys, colKey: string, nodeKey: string, out: IOutputHandler) 											{
 		
 		// Create the new node.
@@ -59,8 +52,5 @@ export abstract class ABaseAccess_System {
 		return newNode;
 
 	}
-	protected _updateNode(oldGroupKey: typeSystemKeys, oldCollectionKey: string, oldNodeKey: string, nodeobj: Nodte<any>, out: IOutputHandler ) 	{}
-	protected _deleteNode(groupKey: typeSystemKeys, collectionKey: string, nodeKey: string, out: IOutputHandler ) 									{}
-
-
+	 
 }

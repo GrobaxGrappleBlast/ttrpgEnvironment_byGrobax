@@ -1,6 +1,6 @@
 import { Collection } from "../Designer/Collection";
 import { Group } from "../Designer/Group";
-import type { IOutputHandler } from "../Designer/IOutputHandler";
+import type { IOutputHandler } from "../Designer/Abstractions/IOutputHandler";
 import { Nodte, derivedNode, fixedNode, type NodeType } from "../Designer/Nodte";
 import { type typeSystemKeys } from "./A01BaseAccess_System";
 import { AHiarchy_system } from "./A02Hiarchy_system";
@@ -20,8 +20,14 @@ export abstract class AGraph_System extends AHiarchy_system {
 
 
 
-	protected _deleteCollection(groupKey:typeSystemKeys , colKey:string, out: IOutputHandler )													{ return super._deleteCollection	(groupKey , colKey , out )	}
-	protected _updateCollection(groupKey:typeSystemKeys , colKey:string, col:Collection<any>, out: IOutputHandler )								{ return super._updateCollection	(groupKey , colKey , col , out )	}
+	protected _deleteCollection(groupKey:typeSystemKeys , colKey:string, out: IOutputHandler )													{ 
+		return super._deleteCollection	(groupKey , colKey , out )	
+	}
+	protected _updateCollection(groupKey:typeSystemKeys , colKey:string, col:Collection<any>, out: IOutputHandler )								{ 
+		const update =  super._updateCollection	(groupKey , colKey , col , out );
+
+		return	update;
+	}
 	protected _createCollection(groupKey:typeSystemKeys , colKey:string, out: IOutputHandler )													{ 
 		const collection =  super._createCollection	(groupKey , colKey , out );
 		return collection	

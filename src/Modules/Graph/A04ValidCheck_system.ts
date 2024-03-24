@@ -1,6 +1,7 @@
+import { group } from "console";
 import { Collection } from "../Designer/Collection";
 import { Group } from "../Designer/Group";
-import type { IOutputHandler } from "../Designer/IOutputHandler";
+import type { IOutputHandler } from "../Designer/Abstractions/IOutputHandler";
 import { Nodte, derivedNode, fixedNode, type NodeType } from "../Designer/Nodte";
 import { type typeSystemKeys } from "./A01BaseAccess_System";
 import { AGraph_System } from "./A03Graph_System";
@@ -137,7 +138,7 @@ export abstract class AValidCheck_system extends AGraph_System {
 		super._deleteNode(_groupkey,collectionKey,nodeKey,out);
 	}
 
-	public getNode(groupKey: string, collectionKey: string, nodeKey: string, out: IOutputHandler | null = null) : fixedNode | derivedNode | undefined{
+	public getNode(groupKey: string, collectionKey: string, nodeKey: string, out: IOutputHandler | null = null) : NodeType | undefined{
 
 		// we ensure the out interface is used. 
 		if (out == null) {
@@ -158,4 +159,29 @@ export abstract class AValidCheck_system extends AGraph_System {
 
 		return super._getNode(_groupkey, collectionKey, nodeKey );
 	}
+
+	public updateCollection(groupKey: string, collectionKey: string, col: Collection<NodeType>, out: IOutputHandler | null = null){
+		
+		// we ensure the out interface is used. 
+		if (out == null) {
+			out = this.out as IOutputHandler;
+		}
+
+		// Ensure group key is a group key
+		if (!this.isOfTypeASystemKeys(groupKey)) {
+			out.outError(`UPDATE: groupKey Does ${groupKey} not exist on system`);
+			return undefined;
+		}
+		let _groupkey = groupKey as typeSystemKeys;
+	
+			// check that the Collection exist
+		if (!this._hasCollection(_groupkey, collectionKey)) {
+			out.outError(`UPDATE: Collection  ${collectionKey} does not exist on group  ${groupKey}`);
+			return undefined;
+		}
+		
+		this._updateCollection(_groupkey,collectionKey,col,out);
+	}
+
+
 }
