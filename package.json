@@ -16,8 +16,7 @@
         "testMatch": [
             "**/*.test.ts",
             "**/*.test.js"
-        ],
-        "type": "module"
+        ]
     },
     "scripts": {
         "style": "sass ./modules/styles.scss styles.css",
