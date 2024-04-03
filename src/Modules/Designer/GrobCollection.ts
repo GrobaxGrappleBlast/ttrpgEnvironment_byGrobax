@@ -1,7 +1,7 @@
 import { GrobGroup } from "./GrobGroup";
-import { AGraphItem } from "../Abstractions/AGraphItem"; 
-import type { GrobNodeType } from "../GraphV2/TTRPGSystemsGraphDependencies"; 
-import { TTRPGSystemGraphAbstractModel } from "../GraphV2/TTRPGSystemGraphAbstractModel";
+import { AGraphItem } from "./Abstractions/AGraphItem"; 
+import type { GrobNodeType } from "./GraphV2/TTRPGSystemsGraphDependencies"; 
+import { TTRPGSystemGraphAbstractModel } from "./GraphV2/TTRPGSystemGraphAbstractModel";
 
 export type GrobCollectionType = GrobCollection<GrobNodeType>;
 export class GrobCollection<T extends GrobNodeType> extends AGraphItem {

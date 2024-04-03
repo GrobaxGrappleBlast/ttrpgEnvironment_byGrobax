@@ -1,6 +1,6 @@
-import type { GrobNodeType } from "src/Modules/GraphV2/TTRPGSystemsGraphDependencies";
-import type { IOutputHandler } from "../../../Abstractions/IOutputHandler";
-import { TTRPGSystemGraphModel } from "../../../GraphV2/TTRPGSystemGraphModel";
+import type { GrobNodeType } from "src/Modules/Designer/GraphV2/TTRPGSystemsGraphDependencies";
+import type { IOutputHandler } from "../../Abstractions/IOutputHandler";
+import { TTRPGSystemGraphModel } from "../../GraphV2/TTRPGSystemGraphModel";
 import { GrobCollection } from "../../GrobCollection";
 import { GrobDerivedNode, GrobFixedNode } from "../../GrobNodte";
 import exp from "constants";

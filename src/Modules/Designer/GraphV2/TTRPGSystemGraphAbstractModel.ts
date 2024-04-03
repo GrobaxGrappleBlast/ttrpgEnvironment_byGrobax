@@ -1,8 +1,8 @@
-import { GrobCollection, type GrobCollectionType } from "../Designer/GrobCollection";
-import { GrobGroup, type GrobGroupType } from "../Designer/GrobGroup";
+import { GrobCollection, type GrobCollectionType } from "../GrobCollection";
+import { GrobGroup, type GrobGroupType } from "../GrobGroup";
 import { newOutputHandler, type IOutputHandler } from "../Abstractions/IOutputHandler"; 
 import type { GrobNodeType } from "./TTRPGSystemsGraphDependencies";
-import { GrobDerivedNode } from "../Designer/GrobNodte";
+import { GrobDerivedNode } from "../GrobNodte";
 
 
 /**
@@ -14,7 +14,7 @@ export abstract class TTRPGSystemGraphAbstractModel {
 	protected data : Record< string , GrobGroup<GrobNodeType> > = {} 
 	
 	protected out : IOutputHandler;
-	public setOut( out : IOutputHandler ){
+	public setOut( out : IOutputHandler | null  ){
 		this.out = out ? out : newOutputHandler();
 	}  
 	

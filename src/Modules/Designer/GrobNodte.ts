@@ -1,8 +1,7 @@
 import { GrobCollection } from "./GrobCollection"; 
-import { AGraphItem } from "../Abstractions/AGraphItem"; 
-import type { GrobNodeType } from "../GraphV2/TTRPGSystemsGraphDependencies"; 
-import { TTRPGSystemGraphAbstractModel } from "../GraphV2/TTRPGSystemGraphAbstractModel";
-import type { IGrobDerivedNode, IGrobFixedNode, IGrobNode } from "./IGrobNode";
+import { AGraphItem } from "./Abstractions/AGraphItem"; 
+import type { GrobNodeType } from "./GraphV2/TTRPGSystemsGraphDependencies"; 
+import { TTRPGSystemGraphAbstractModel } from "./GraphV2/TTRPGSystemGraphAbstractModel";
 
  
 export abstract class GrobNode<T extends GrobNode<T>> extends AGraphItem{
@@ -35,12 +34,19 @@ export abstract class GrobNode<T extends GrobNode<T>> extends AGraphItem{
 		delete this.dependents[node.getKey()];
 		return this.dependents[node.getKey()] == null;
 	}
+	public getDependents(): GrobNodeType[] {
+		//@ts-ignore
+		return Object.values( this.dependents ) as GrobNodeType[] ?? [];
+	}
 
 	abstract addDependency( node:GrobNodeType) : boolean 
 	abstract removeDependency( node:GrobNodeType)  : boolean
-	abstract getValue() : number 
-	
+	public getDependencies(): GrobNodeType[] {
+		//@ts-ignore
+		return Object.values( this.dependencies ) as GrobNodeType[] ?? [];
+	}
 
+	abstract getValue() : number 
 	public setName( name ){
 		const oldname= this.getName();
 		super.setName(name);
@@ -49,6 +55,17 @@ export abstract class GrobNode<T extends GrobNode<T>> extends AGraphItem{
 
 	public getGraphLocationKey(){
 		return this.parent?.parent?.getName()??  +'.'+ this.parent.getName() +'.'+ this.getName()
+	}
+	public getLocationKey(){
+		let segs = this.getLocationKeySegments();
+		return segs.join('.');
+	}
+	public getLocationKeySegments() : string [] {
+		let seg : string[] = ['','',''];
+		seg[0] = this.parent?.parent?.getName() ?? 'unknown';
+		seg[1] = this.parent?.getName() ?? 'unknown';
+		seg[2] = this.getName() ?? 'unknown';
+		return seg;
 	}
 
 }

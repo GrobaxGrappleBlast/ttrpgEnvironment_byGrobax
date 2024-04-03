@@ -1,10 +1,10 @@
-import { AGraphItem } from "../Abstractions/AGraphItem"; 
+import { AGraphItem } from "./Abstractions/AGraphItem"; 
 import { GrobCollection } from "./GrobCollection";
-import { KeyManager } from "../Abstractions/KeyManager";
+import { KeyManager } from "./Abstractions/KeyManager";
 import { GrobNode } from "./GrobNodte";
-import type { GrobNodeType } from "../GraphV2/TTRPGSystemsGraphDependencies";
-import { TTRPGSystemGraphModel } from "../GraphV2/TTRPGSystemGraphModel";
-import { TTRPGSystemGraphAbstractModel } from "../GraphV2/TTRPGSystemGraphAbstractModel";
+import type { GrobNodeType } from "./GraphV2/TTRPGSystemsGraphDependencies";
+import { TTRPGSystemGraphModel } from "./GraphV2/TTRPGSystemGraphModel";
+import { TTRPGSystemGraphAbstractModel } from "./GraphV2/TTRPGSystemGraphAbstractModel";
 
 export type GrobGroupType = GrobGroup<GrobNodeType>;
 export class GrobGroup<T extends GrobNodeType> extends AGraphItem {
