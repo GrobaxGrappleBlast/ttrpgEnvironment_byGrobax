@@ -3,6 +3,7 @@ import { GrobGroup, type GrobGroupType } from "../GrobGroup";
 import { newOutputHandler, type IOutputHandler } from "../Abstractions/IOutputHandler"; 
 import type { GrobNodeType } from "./TTRPGSystemsGraphDependencies";
 import { GrobDerivedNode } from "../GrobNodte";
+import { JsonTypedProperty } from "src/Modules/JSONModules/Decorators";
 
 
 /**
@@ -11,7 +12,8 @@ import { GrobDerivedNode } from "../GrobNodte";
 */
 export abstract class TTRPGSystemGraphAbstractModel {
 	 
-	protected data : Record< string , GrobGroup<GrobNodeType> > = {} 
+	@JsonTypedProperty( typeof Record<string ,GrobGroup<GrobNodeType>> )
+	public data : Record< string , GrobGroup<GrobNodeType> > = {} 
 	
 	protected out : IOutputHandler;
 	public setOut( out : IOutputHandler | null  ){

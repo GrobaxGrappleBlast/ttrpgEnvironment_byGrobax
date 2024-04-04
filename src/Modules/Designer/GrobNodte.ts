@@ -2,6 +2,7 @@ import { GrobCollection } from "./GrobCollection";
 import { AGraphItem } from "./Abstractions/AGraphItem"; 
 import type { GrobNodeType } from "./GraphV2/TTRPGSystemsGraphDependencies"; 
 import { TTRPGSystemGraphAbstractModel } from "./GraphV2/TTRPGSystemGraphAbstractModel";
+import type { NodeType } from "yaml/dist/nodes/Node";
 
  
 export abstract class GrobNode<T extends GrobNode<T>> extends AGraphItem{
@@ -103,6 +104,16 @@ export class GrobDerivedNode extends GrobNode<GrobDerivedNode> {
 	}
 	public calc:string = '@a';
 	public origins : GrobDerivedOrigin[] = [];
+
+	public setOrigin( symbol, node : GrobNodeType, standardValue : number | null = null ){
+		let origin = this.origins.find( p => p.symbol == symbol );
+		if(!origin){
+			return false;
+		}
+
+		origin.origin = node;
+		origin.standardValue = (standardValue ?? origin.standardValue) ?? 1;
+	}
 
 	public setCalc ( calc ){
 		
@@ -307,7 +318,6 @@ export class GrobDerivedNode extends GrobNode<GrobDerivedNode> {
 		}  
 		return result;
 	}
-
 	public update( ){
 		// first recalculate
 		this.recalculate();

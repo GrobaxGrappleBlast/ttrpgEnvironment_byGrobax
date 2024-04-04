@@ -1,5 +1,6 @@
 
 import "reflect-metadata";  
+import { TTRPGSystemGraphModel } from "../Designer/GraphV2/TTRPGSystemGraphModel";
 
 
 enum JSON_TAGS{
@@ -74,31 +75,25 @@ export function JsonTypedArrayProperty( type: any ) {
 	};
 }
 
-
-/**
- * Jsons typed array property
- * use like so 
- * @JsonTypedArrayProperty(String) 
- * @JsonTypedArrayProperty(Boolean) 
- * @JsonTypedArrayProperty(Number)
- * @JsonTypedArrayProperty(CustomClass)
- Notiec large first letters in the type.
- 
- */
- export function JsonTypedMultiArrayProperty( type: any , dimensions:number ) {
+export function JsonTypedRecordProperty( typeKey: any, typeValue:any ) {
 	return function (target: any, propertyKey: string) {
 		 
 		// if this is an array we add a typed Array;
 		Reflect.defineMetadata( JSON_TAGS.JSON_PROPERTY				, true		, target, propertyKey);
 		Reflect.defineMetadata( JSON_TAGS.JSON_PROPERTY_TYPED		, type		, target, propertyKey);
 		Reflect.defineMetadata( JSON_TAGS.JSON_PROPERTY_IS_ARRAY	, true		, target, propertyKey);
-		Reflect.defineMetadata( JSON_TAGS.JSON_PROPERTY_IS_MULTI_ARRAY	, dimensions , target, propertyKey);
+		
 	};
 }
+
+
+
+
 
 type Constructor<T extends object> = new (...args: any[]) => T;
 
 export class JSONHandler{
+ 
 	 
 
 	public static Serialize(obj: any): string {
