@@ -3,9 +3,7 @@ import { GrobGroup, type GrobGroupType } from "../GrobGroup";
 import { newOutputHandler, type IOutputHandler } from "../Abstractions/IOutputHandler"; 
 import type { GrobNodeType } from "./TTRPGSystemsGraphDependencies";
 import { GrobDerivedNode, GrobFixedNode } from "../GrobNodte";
-import { TTRPGSystemGraphAbstractModel } from "./TTRPGSystemGraphAbstractModel";
-
-
+import { TTRPGSystemGraphAbstractModel } from "./TTRPGSystemGraphAbstractModel"; 
 
 const derived 	= 'derived';
 const fixed 	= 'fixed';
@@ -16,13 +14,11 @@ export type groupKeyType = 'fixed' | 'derived';
  * Ensures that data is maintained, as well as graphlinks
 */
 export class TTRPGSystemGraphModel extends TTRPGSystemGraphAbstractModel {
-	 
+	  
 	private fixed : GrobGroup<GrobFixedNode>;
 	private derived:GrobGroup<GrobDerivedNode>;
-
 	private fixedKey:any;
 	private derivedKey:any;
-
 
 	public constructor(){
 		super();

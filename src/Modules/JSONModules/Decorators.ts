@@ -1,310 +1,364 @@
-
-import "reflect-metadata";  
-import { TTRPGSystemGraphModel } from "../Designer/GraphV2/TTRPGSystemGraphModel";
-
+import "reflect-metadata"; 
 
 enum JSON_TAGS{
-	JSON_PROPERTY_IS_MULTI_ARRAY 	= 'JsonIsMultiArray'	,
-	JSON_PROPERTY_IS_ARRAY 	= 'JsonIsArray'	,
-	JSON_PROPERTY_TYPED		= 'JsonTypedProperty' ,
-	JSON_PROPERTY 			= 'JsonProperty' 
+	JSON_PROPERTY				= "JsonProperty"				, 
+	JSON_PROPERTY_TYPED 		= "JsonPropertyTyped"			, 
+	JSON_PROPERTY_NAME_MAP_IN	= "JsonPropertyNameMapping_in"	,
+	JSON_PROPERTY_NAME_MAP_OUT	= "JsonPropertyNameMapping_out"	,
+	JSON_PROPERTY_FUNC_MAP_IN	= "JsonPropertyFuncMapping_in"	,
+	JSON_PROPERTY_FUNC_MAP_OUT	= "JsonPropertyFuncMapping_out" ,
+	JSON_PROPERTY_FORCE_BASE_TYPE	= "JsonPropertyForceBaseType" , 
+	JSON_PROPERTY_FORCE_ARRAY 		= "JsonPropertyForceArray"	 , 
+}
+enum JSON_BASETYPES{
+	string 	= 'string',
+	bool 	= 'bool',
+	number	= 'number'
 }
 
-/**
- * Jsons typed array property
- * use like so 
- * @JsonProperty 
- * public color	:string;
- * Notice large first letters in the type.
- */
-export function JsonProperty( target: any , propertyKey: string ) { 
-	Reflect.defineMetadata(	JSON_TAGS.JSON_PROPERTY 	, true, target, propertyKey);
-} 
+type Constructor<T extends object> = new () => T;
 
-/**
- * Jsons typed property
- * @JsonTypedArrayProperty(String) 
- * @JsonTypedArrayProperty(Boolean) 
- * @JsonTypedArrayProperty(Number)
- * @JsonTypedArrayProperty(CustomClass)
- * 
- * can also be used for arrays like so
- * @JsonTypedProperty( [Brick] ) - but ought to use the array method
- */
-export function JsonTypedProperty( type: any ) {
+
+export interface JSONPropertyOptions {
+	name?: string ,
+	isArray?:boolean
+}
+interface JSONInnerPropertyOptions<IN extends object,OUT extends object> extends JSONPropertyOptions{
+	mappingFunctions? :{ out:( t:IN , serialize?:any ) => OUT , in:( b:OUT, deserialize?:any ) => IN } , 
+	type?: any,
+	forceBaseType?: false | keyof typeof JSON_BASETYPES
+}
+
+export function JsonProperty( option?:JSONInnerPropertyOptions<any,any> ) { 
 	return function (target: any, propertyKey: string) {
-		 
-		// if this is an array we add a typed Array;
-		const isArray = Array.isArray(type);
-		const element = isArray ? (type as Function[])[0] : type;
-		
-		//console.log('Json Typed Property - ');
-		//console.log(element);
-		//console.log(target.constructor);
 
-		if(isArray){
-			Reflect.defineMetadata( JSON_TAGS.JSON_PROPERTY				, true		, target, propertyKey);
-			Reflect.defineMetadata( JSON_TAGS.JSON_PROPERTY_TYPED		, element	, target, propertyKey);
-			Reflect.defineMetadata( JSON_TAGS.JSON_PROPERTY_IS_ARRAY	, true		, target, propertyKey);
-		}else{
-			Reflect.defineMetadata( JSON_TAGS.JSON_PROPERTY				, true		, target, propertyKey);
-			Reflect.defineMetadata( JSON_TAGS.JSON_PROPERTY_TYPED		, element	, target, propertyKey);
+		Reflect.defineMetadata( JSON_TAGS.JSON_PROPERTY						, true		, target, propertyKey);
+		if(!option)
+			return;
+
+			
+		if(option.forceBaseType){
+			switch(option.forceBaseType){
+				case JSON_BASETYPES.string: 
+				case JSON_BASETYPES.number:
+				case JSON_BASETYPES.bool:	
+				Reflect.defineMetadata( 
+					JSON_TAGS.JSON_PROPERTY_NAME_MAP_IN	,
+					option.forceBaseType,
+					target,
+					propertyKey
+				);
+			}
 		}
-	};
-}
 
+		if(option.name){
+			Reflect.defineMetadata( JSON_TAGS.JSON_PROPERTY_NAME_MAP_IN		, propertyKey	, target, option.name);
+			Reflect.defineMetadata( JSON_TAGS.JSON_PROPERTY_NAME_MAP_OUT	, option.name	, target, propertyKey);
+		}	
 
-/**
- * Jsons typed array property
- * use like so 
- * @JsonTypedArrayProperty(String) 
- * @JsonTypedArrayProperty(Boolean) 
- * @JsonTypedArrayProperty(Number)
- * @JsonTypedArrayProperty(CustomClass)
- Notiec large first letters in the type.
+		if(option.mappingFunctions){
+			Reflect.defineMetadata( JSON_TAGS.JSON_PROPERTY_FUNC_MAP_IN	, option.mappingFunctions.in	, target, propertyKey );
+			Reflect.defineMetadata( JSON_TAGS.JSON_PROPERTY_FUNC_MAP_OUT, option.mappingFunctions.out	, target, propertyKey);
+		}	
  
- */
-export function JsonTypedArrayProperty( type: any ) {
-	return function (target: any, propertyKey: string) {
-		 
-		// if this is an array we add a typed Array;
-		Reflect.defineMetadata( JSON_TAGS.JSON_PROPERTY				, true		, target, propertyKey);
-		Reflect.defineMetadata( JSON_TAGS.JSON_PROPERTY_TYPED		, type		, target, propertyKey);
-		Reflect.defineMetadata( JSON_TAGS.JSON_PROPERTY_IS_ARRAY	, true		, target, propertyKey);
+		if(option.type){
+			Reflect.defineMetadata( JSON_TAGS.JSON_PROPERTY_TYPED				, option.type	, target, propertyKey);
+		}
 		
 	};
+} 
+function cleanNonAccesibleSettings( option?:JSONPropertyOptions ){
+	(option as any).mappingFunctions	= null;
+	(option as any).type 				= null;
+	(option as any).isArray				= null;
+	(option as any).forceBaseType		= null;
+	return option;
 }
 
-export function JsonTypedRecordProperty( typeKey: any, typeValue:any ) {
-	return function (target: any, propertyKey: string) {
-		 
-		// if this is an array we add a typed Array;
-		Reflect.defineMetadata( JSON_TAGS.JSON_PROPERTY				, true		, target, propertyKey);
-		Reflect.defineMetadata( JSON_TAGS.JSON_PROPERTY_TYPED		, type		, target, propertyKey);
-		Reflect.defineMetadata( JSON_TAGS.JSON_PROPERTY_IS_ARRAY	, true		, target, propertyKey);
-		
-	};
+export function JsonNumber	( option?:JSONPropertyOptions ){
+	option = cleanNonAccesibleSettings(option);
+	( option as JSONInnerPropertyOptions<any,any>).forceBaseType = JSON_BASETYPES.number
+	return JsonProperty(option);
+}
+export function JsonString	( option?:JSONPropertyOptions ){
+	option = cleanNonAccesibleSettings(option);
+	( option as JSONInnerPropertyOptions<any,any>).forceBaseType = JSON_BASETYPES.string
+	return JsonProperty(option);
+}
+export function JsonBoolean	( option?:JSONPropertyOptions ){
+	option = cleanNonAccesibleSettings(option);
+	( option as JSONInnerPropertyOptions<any,any>).forceBaseType = JSON_BASETYPES.bool
+	return JsonProperty(option);
+}
+export function JsonClassTyped<T extends object>( type : Constructor<T> , option?:JSONPropertyOptions ){
+	option = cleanNonAccesibleSettings(option);
+	( option as JSONInnerPropertyOptions<any,any>).type 	= type;
+	return JsonProperty(option);
+}
+
+export function JsonArrayNumber	( option?:JSONPropertyOptions ){
+	option = cleanNonAccesibleSettings(option);
+	( option as JSONInnerPropertyOptions<any,any>).forceBaseType = JSON_BASETYPES.number;
+	( option as JSONInnerPropertyOptions<any,any>).isArray 		 = true;
+	return JsonProperty(option);
+}
+export function JsonArrayString	( option?:JSONPropertyOptions ){
+	option = cleanNonAccesibleSettings(option);
+	( option as JSONInnerPropertyOptions<any,any>).forceBaseType = JSON_BASETYPES.string;
+	( option as JSONInnerPropertyOptions<any,any>).isArray 		 = true;
+	return JsonProperty(option);
+}
+export function JsonArrayBoolean	( option?:JSONPropertyOptions ){
+	option = cleanNonAccesibleSettings(option);
+	( option as JSONInnerPropertyOptions<any,any>).forceBaseType = JSON_BASETYPES.bool;
+	( option as JSONInnerPropertyOptions<any,any>).isArray 		 = true;
+	return JsonProperty(option);
+}
+export function JsonArrayClassTyped<T extends object>( type : Constructor<T> , option?:JSONPropertyOptions ){
+	option = cleanNonAccesibleSettings(option);
+	( option as JSONInnerPropertyOptions<any,any>).isArray 		= true;
+	( option as JSONInnerPropertyOptions<any,any>).type			= type;
+	return JsonProperty(option);
+}
+ 
+// Mappings
+interface JsonMappingParameters<IN extends object,OUT extends object>{
+	inFunction:( b:OUT, deserialize?:any ) => IN,
+	outFunction:( t:IN , serialize?:any ) => OUT ,
+	type? : Constructor<IN>,
+	option? : JSONInnerPropertyOptions<IN,OUT>
+}
+export function JsonMapping<IN extends object,OUT extends object>( params : JsonMappingParameters<IN,OUT> ){
+	// clean the input.
+	let option : JSONInnerPropertyOptions<IN,OUT> = cleanNonAccesibleSettings(params.option ?? ({} as JSONInnerPropertyOptions<IN,OUT>)) as JSONInnerPropertyOptions<IN,OUT>;
+	
+	// set the type
+	if(params.type)
+		option.type = params.type;
+	
+	// Set mapping functions 
+	(option as JSONInnerPropertyOptions<IN,OUT>).mappingFunctions = {
+		out:params.outFunction,
+		in:params.inFunction
+	}
+	return JsonProperty(option);
+}
+
+interface specialRecordArrayMappingProperties<IN extends object,OUT extends object> extends JSONInnerPropertyOptions<IN,OUT>{
+	KeyPropertyName:string
+}
+
+export function JsonMappingRecordInArrayOut<IN extends object,OUT extends object>( option : specialRecordArrayMappingProperties<IN,OUT> ){
+	// clean the input.
+	let type = option.type;
+	option = cleanNonAccesibleSettings(option ?? ({} as JSONInnerPropertyOptions<IN,OUT>)) as specialRecordArrayMappingProperties<IN,OUT>;
+	let outfunc = ( col : IN , s ) => { return Object.values(col).map( p => s(p) ) as OUT };
+	let infunc = ( col: OUT , d ) => { 
+		let r = {};
+		// @ts-ignore
+		col.map( p =>{ 
+			let o = d(p); 
+			let v = o[option.KeyPropertyName]; 
+			if(typeof v == 'function'){
+				v = v();
+			}
+			r[v] = o;
+		});
+		return r as IN;
+	} 
+
+	if(type){
+		option.type = type;
+	}
+
+	// Set mapping functions 
+	option.mappingFunctions = {
+		out:outfunc,
+		in:infunc
+	}
+
+	return JsonProperty(option);
 }
 
 
 
 
 
-type Constructor<T extends object> = new (...args: any[]) => T;
 
 export class JSONHandler{
  
-	 
+	public static serialize(obj: any): string {
+		return JSON.stringify(JSONHandler.serializeRaw(obj));
+	} 
+	private static serializeRaw( obj:any ): object{
 
-	public static Serialize(obj: any): string {
-
-		if(typeof obj === 'string' )
+		if(!obj){
 			return obj;
-
-		function serializeType( item : any ){
- 
-			const type =  typeof item;
-			if( type === 'string')
-				return `"${item}"`;
-
-			
-			if( type == 'boolean' || type == 'number')
-				return `${item}`;
-
-			let propertyNames = Object.getOwnPropertyNames( item );
-		
-			let jpiece = "{";
-			let c = 0;
-			for (let i = 0; i < propertyNames.length; i++) {
- 
-				// Getting Variables 
-				const key  = propertyNames[i]; 
-				let meta = Reflect.getMetadataKeys( item , key );	
-
-				//HACK : getMetaDataKeys i tests giver et object ikke et array som dokumenteret
-				if(typeof meta == 'object'){
-					meta = Object.values(meta);
-				}
- 
-				// if it doesnot have such a property. 
-				if( !meta.includes( JSON_TAGS.JSON_PROPERTY) )
-					continue;
-				 
-				if(c !== 0)
-					jpiece += ',';
-				let curr = `"${key}":`; 
-				c++;
-
-				
-				// if this is not an array, deserialize and be done.  
-				if( meta.includes( JSON_TAGS.JSON_PROPERTY_IS_ARRAY ) ){
-					curr += "[";
-
-					for (let j = 0; j < item[key].length; j++) {
-						
-						if(j != 0)
-							curr += ',';
-
-						curr += serializeType( item[key][j] );
-					}
-					curr += "]";
-				}	 
-				else { 
-					curr += serializeType( item[key] );
-				}
-				jpiece += curr;	
-			}
-			jpiece += "}";
-			return jpiece;
-		};
-
-		const res =serializeType(obj);
-		return res;
-	}
-
-	public static SerializeAsRawCode(obj: any): string {
-
-		if(typeof obj === 'string' )
-			return obj;
-
-		function serializeType( item : any , isBaseLevel  , levelIndent : string ){
-			
-			if( item == null )
-				return `null`;
-
-			if( typeof item === 'string')
-				return `"${item}"`;
-
-			if( typeof item == 'boolean' || typeof item == 'number')
-				return `${item}`;
-
-
-
-			let propertyNames = Object.getOwnPropertyNames( item );
-		
-			let jpiece = "{";
-			let c = 0;
-			const nextIndent = levelIndent + '\t';
-			for (let i = 0; i < propertyNames.length; i++) {
- 
-				// Getting Variables 
-				const key  = propertyNames[i];  
-
-				
-				let curr = `\n${nextIndent}${key} ${isBaseLevel ? '=' : ':' } `;  
-
-				// if this is not an array, deserialize and be done.  
-				if( Array.isArray(item[key]) ){
-					curr += "[";
-
-					 
-					for (let j = 0; j < item[key].length; j++) {
-						
-						if(j != 0)
-							curr += ',\n';
-						else{
-							curr += '\n';
-						}
-						// it adds a 0 on this line <- chat gpt see here 
-						curr += `${nextIndent}\t`+ serializeType( item[key][j] , false,nextIndent );
-					}
-					curr += `${  item[key].length != 0 ? `\n${nextIndent}`:''}]`;
-
-				}	 
-				else { 
-					curr += serializeType( item[key] ,false , nextIndent );
-				}
-
-			
-				jpiece += curr + `${isBaseLevel ? '' : ',' }`;	
-			}
-
-			jpiece += `${ propertyNames.length != 0 ? `\n${levelIndent}` : ''}}`;
-			return jpiece;
-		};
-
-		const res =serializeType(obj , true ,'');
-		return res;
-	}
-
-	public static Deserialize<T extends object>( target: Constructor<T> , json:any){
-			
-		if(typeof json == 'string')
-			json = JSON.parse(json);
- 
-		let currentPrototype = target.prototype.constructor
-		 
-		function jsonUndefined( constructor , key ){
-
 		}
-		function deserializeType<T extends object>( constructor:Constructor<T> , json:any ) : T{
 
-			let item = new constructor();
-			let propertyNames = Object.getOwnPropertyNames( item );
+		// if this is a base type just return
+		const type =  typeof obj;
+		switch(type){
+			case 'string':
+			case 'boolean':
+			case 'number':
+				return obj;
+		}
 		
+		// serializedObject is a new object, without non Jsonproperties
+		let result = {};
 
-			for (let i = 0; i < propertyNames.length; i++) {
+		// get propertynames and loop through 
+		let propertyNames;
+		try{
+			propertyNames = Object.getOwnPropertyNames( obj );
+		}catch( e ){
+			debugger;
+			return obj;
+		} 
+		for (let i = 0; i < propertyNames.length; i++) {
 			
-				// Getting Variables 
-				const key  = propertyNames[i]; 
-				const meta = Reflect.getMetadataKeys( item , key );	
-
-				// if it doesnot have such a property. 
-				if( ! meta.includes( JSON_TAGS.JSON_PROPERTY) )
-					continue;
-
-				// well if it isent typed... just deserialize it as if nothing matters
-				if( !meta.includes( JSON_TAGS.JSON_PROPERTY_TYPED) ){
-
-					// if this is required, and not supplied then we cannot deserialize it.
-					if(json[key] == undefined){
-						jsonUndefined(item,key) ;
-						continue;
-					}
-
-					item[key] = json[key];
-					continue;
-				}
-
-				const propType = Reflect.getMetadata( JSON_TAGS.JSON_PROPERTY_TYPED , item , key ); 
-
-				// if this is not an array, deserialize and be done. 
-				if( !meta.includes( JSON_TAGS.JSON_PROPERTY_IS_ARRAY ) ){
-
-					// if this is required, and not supplied then we cannot deserialize it.
-					if(json[key] == undefined){
-						jsonUndefined(item,key) ;
-						continue;
-					}
-					 
-					let child = deserializeType( propType , json[key])
-					item[key] = child;
-				}	
-
-
-				else { 
-
-					// if this is required, and not supplied then we cannot deserialize it.
-					if(json[key] == undefined){
-						jsonUndefined(item,key);
-						continue;
-					}
-						
-					// create the and for each json child deserialize it.
-					let arr : any[] = [];
-					for (let j = 0; j < json[key].length; j++) {
-						const jpiece = json[key][j];
-						const child = deserializeType( propType, jpiece);
-						arr.push(child);
-					}
-					item[key] = arr;
-				}	
+			// get basic properties
+			const key = propertyNames[i];
+			let meta = Reflect.getMetadataKeys( obj , key );	
+			
+			// create the name of the property, but if there is a mapped out name, get that instead
+			let PropertyName = key;
+			if ( meta.includes(JSON_TAGS.JSON_PROPERTY_NAME_MAP_OUT )){
+				PropertyName = Reflect.getMetadata( JSON_TAGS.JSON_PROPERTY_NAME_MAP_OUT , obj , key ); 
 			}
 
-			return item as T;
+			// if there is a mapping function
+			let out : any = null;
+			if ( meta.includes(JSON_TAGS.JSON_PROPERTY_FUNC_MAP_OUT )){
+				let outFunction = Reflect.getMetadata( JSON_TAGS.JSON_PROPERTY_FUNC_MAP_OUT , obj , key ); 
+				out = outFunction(obj[key], JSONHandler.serializeRaw );
+			} 
+			else if( meta.includes(JSON_TAGS.JSON_PROPERTY_FORCE_ARRAY ) ){
+				out = [];
+				for (let j = 0; j < obj[key].length; j++) {
+					const e = obj[key][j];
+					out.push(e)
+				}
+			}
+			else {
+				out = JSONHandler.serializeRaw(obj[key]);
+			}
 
-		};
-		return deserializeType( currentPrototype,json ) as T;
+			result[PropertyName] = out;
+		}
+		return result;
 	}
-	
+
+	public static deserialize<T extends object>( target: Constructor<T> , json:any){
+		
+		const type = typeof json;
+		if(type == 'string'){
+			json = JSON.parse(json);
+		}
+
+		switch(type){
+			case 'boolean':
+			case 'number':
+				console.error( 'Cannot derserialize type of ' + type );
+				return;
+		}
+
+		return this.deserializeRaw(target,json);
+	} 
+	private static deserializeRaw<T extends object>(target : Constructor<T>, obj : any){
+		
+		if(!obj){
+			return obj;
+		}
+
+		// serializedObject is a new object, without non Jsonproperties
+		let result = new target();
+		let prototype = target.prototype;
+
+		// get propertynames and loop through 
+		let propertyNames = Object.getOwnPropertyNames( obj );
+		for (let i = 0; i < propertyNames.length; i++) {
+			
+			// get basic properties
+			let key = propertyNames[i];
+			let inKey = key;
+			let meta = Reflect.getMetadataKeys( prototype , key );	
+			let PropertyName = key;
+
+			// if this is an Out key, convert it to an IN Key, so we can get the right meta data. 
+			if ( meta.includes(JSON_TAGS.JSON_PROPERTY_NAME_MAP_IN ) ){
+				// get out key from the in Key
+				key = Reflect.getMetadata( JSON_TAGS.JSON_PROPERTY_NAME_MAP_IN , prototype , key ); 
+				meta = Reflect.getMetadataKeys( prototype , key );
+				PropertyName = key;
+			} 
+ 
+			// Get the constructor if there is any, Generics take priority
+			let out : any = null; 
+			let	constr	= Reflect.getMetadata( JSON_TAGS.JSON_PROPERTY_TYPED			, prototype , key )
+			
+			if ( meta.includes(JSON_TAGS.JSON_PROPERTY_FUNC_MAP_IN )) {
+				let inFunction = Reflect.getMetadata( JSON_TAGS.JSON_PROPERTY_FUNC_MAP_IN , prototype , key ); 
+				if (constr) {
+					out = inFunction(obj[inKey], (obj) => JSONHandler.deserializeRaw(constr, obj) );
+				} 
+				else {
+					out = inFunction(obj[inKey], (obj) => obj );
+				}
+			} else {
+				if (constr) {
+					out = JSONHandler.deserializeRaw(constr, obj[inKey]);
+				} 
+				else{
+					out = obj[inKey];
+				}
+			}
+
+
+			// handle if there is a force array
+			if ( meta.includes(JSON_TAGS.JSON_PROPERTY_FORCE_ARRAY) ) {
+				if( obj == null ){
+					out = [];
+				}
+				else if( !meta.includes(JSON_TAGS.JSON_PROPERTY_FUNC_MAP_IN) && !(Array.isArray(obj)) ){
+					out = [out];
+				}
+			}  
+
+			result[PropertyName] = out;
+			let a = 1;
+		}
+		return result;
+	}
 }
+
+
+/*
+HANDLE 
+
+isCorrect = true;
+func =  ( e : any ) => { 
+
+	if(typeof e == 'string')
+		return e;
+
+	return e.toString(); 
+};
+*/
+
+/*
+isCorrect = true;
+( e : any ) => { 
+	let t = Number(e) ?? 0;
+	return t;
+};
+*/
+
+/*
+isCorrect = true;
+( e : any ) => { 
+	let t = e ? true : false;
+	return t;
+} 
+*/

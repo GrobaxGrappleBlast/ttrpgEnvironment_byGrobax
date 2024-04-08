@@ -5,6 +5,8 @@
     "main": "main.js",
     "type": "module",
     "jest": {
+        "collectCoverage": true,
+        "coverageReporters": ["json", "lcov", "text", "html"],
         "testEnvironment": "node",
         "moduleFileExtensions": [
             "js",
@@ -17,6 +19,7 @@
             "**/*.test.ts",
             "**/*.test.js"
         ]
+        
     },
     "scripts": {
         "style": "sass ./modules/styles.scss styles.css",
@@ -24,7 +27,7 @@
         "dev": "vite build --watch",
         "build": "npx svelte-check && vite build",
         "bumpversion": "node version-bump.mjs && git add manifest.json versions.json",
-        "test": "jest"
+        "test": "jest -- coverage"
     },
     "keywords": [],
     "author": "Grobax",

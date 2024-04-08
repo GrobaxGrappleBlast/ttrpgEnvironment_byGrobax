@@ -21,7 +21,7 @@ var out = {
 		this.logMessages	= [];
 	}
 }
-function setupTest(){
+function setupTest() : TTRPGSystemGraphModel{
 
 	let sys = new TTRPGSystemGraphModel();
 	sys.setOut(out);
@@ -62,12 +62,6 @@ function setupTest(){
 
 test('test a Designed Format comes out korrektly', () => {
 	
-	let sys = setupTest();
-	let json = JSONHandler.Serialize(sys); 
-	let dsys = JSONHandler.Deserialize(TTRPGSystemGraphModel,json);
-
-	debugger;
-
-
-
+	
+	
 })

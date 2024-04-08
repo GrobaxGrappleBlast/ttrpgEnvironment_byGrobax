@@ -4,7 +4,7 @@ import { KeyManager } from "./Abstractions/KeyManager";
 import { GrobNode } from "./GrobNodte";
 import type { GrobNodeType } from "./GraphV2/TTRPGSystemsGraphDependencies";
 import { TTRPGSystemGraphModel } from "./GraphV2/TTRPGSystemGraphModel";
-import { TTRPGSystemGraphAbstractModel } from "./GraphV2/TTRPGSystemGraphAbstractModel";
+import { TTRPGSystemGraphAbstractModel } from "./GraphV2/TTRPGSystemGraphAbstractModel"; 
 
 export type GrobGroupType = GrobGroup<GrobNodeType>;
 export class GrobGroup<T extends GrobNodeType> extends AGraphItem {
@@ -13,7 +13,9 @@ export class GrobGroup<T extends GrobNodeType> extends AGraphItem {
 		super(name,'G',controller) 
 	}
    
+	
 	collections_keys: Record<string, GrobCollection<T>> = {};
+	 
 	collections_names: Record<string, GrobCollection<T>> = {};
 	 
 	public hasCollection(name) {

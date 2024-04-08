@@ -3,8 +3,6 @@ import { GrobGroup, type GrobGroupType } from "../GrobGroup";
 import { newOutputHandler, type IOutputHandler } from "../Abstractions/IOutputHandler"; 
 import type { GrobNodeType } from "./TTRPGSystemsGraphDependencies";
 import { GrobDerivedNode } from "../GrobNodte";
-import { JsonTypedProperty } from "src/Modules/JSONModules/Decorators";
-
 
 /**
 * a general and flexible implementation of TTRPG system. it focusses on not diskrimination or sorting data. 
@@ -12,7 +10,6 @@ import { JsonTypedProperty } from "src/Modules/JSONModules/Decorators";
 */
 export abstract class TTRPGSystemGraphAbstractModel {
 	 
-	@JsonTypedProperty( typeof Record<string ,GrobGroup<GrobNodeType>> )
 	public data : Record< string , GrobGroup<GrobNodeType> > = {} 
 	
 	protected out : IOutputHandler;
