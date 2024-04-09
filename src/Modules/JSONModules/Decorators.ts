@@ -1,14 +1,14 @@
 import "reflect-metadata"; 
 
 enum JSON_TAGS{
-	JSON_PROPERTY				= "JsonProperty"				, 
-	JSON_PROPERTY_TYPED 		= "JsonPropertyTyped"			, 
-	JSON_PROPERTY_NAME_MAP_IN	= "JsonPropertyNameMapping_in"	,
-	JSON_PROPERTY_NAME_MAP_OUT	= "JsonPropertyNameMapping_out"	,
-	JSON_PROPERTY_FUNC_MAP_IN	= "JsonPropertyFuncMapping_in"	,
-	JSON_PROPERTY_FUNC_MAP_OUT	= "JsonPropertyFuncMapping_out" ,
-	JSON_PROPERTY_FORCE_BASE_TYPE	= "JsonPropertyForceBaseType" , 
-	JSON_PROPERTY_FORCE_ARRAY 		= "JsonPropertyForceArray"	 , 
+	JSON_PROPERTY				= "JSON_PROPERTY"				, 
+	JSON_PROPERTY_TYPED 		= "JSON_PROPERTY_TYPED"			, 
+	JSON_PROPERTY_NAME_MAP_IN	= "JSON_PROPERTY_NAME_MAP_IN"	,
+	JSON_PROPERTY_NAME_MAP_OUT	= "JSON_PROPERTY_NAME_MAP_OUT"	,
+	JSON_PROPERTY_FUNC_MAP_IN	= "JSON_PROPERTY_FUNC_MAP_IN"	,
+	JSON_PROPERTY_FUNC_MAP_OUT	= "JSON_PROPERTY_FUNC_MAP_OUT" ,
+	JSON_PROPERTY_FORCE_BASE_TYPE	= "JSON_PROPERTY_FORCE_BASE_TYPE" , 
+	JSON_PROPERTY_FORCE_ARRAY 		= "JSON_PROPERTY_FORCE_ARRAY"	 , 
 }
 enum JSON_BASETYPES{
 	string 	= 'string',
@@ -36,20 +36,23 @@ export function JsonProperty( option?:JSONInnerPropertyOptions<any,any> ) {
 		if(!option)
 			return;
 
-			
 		if(option.forceBaseType){
 			switch(option.forceBaseType){
 				case JSON_BASETYPES.string: 
 				case JSON_BASETYPES.number:
 				case JSON_BASETYPES.bool:	
 				Reflect.defineMetadata( 
-					JSON_TAGS.JSON_PROPERTY_NAME_MAP_IN	,
+					JSON_TAGS.JSON_PROPERTY_FORCE_BASE_TYPE	,
 					option.forceBaseType,
 					target,
 					propertyKey
 				);
 			}
 		}
+
+		if(option.isArray){
+			Reflect.defineMetadata( JSON_TAGS.JSON_PROPERTY_FORCE_ARRAY		, true	, target, propertyKey);
+		}	
 
 		if(option.name){
 			Reflect.defineMetadata( JSON_TAGS.JSON_PROPERTY_NAME_MAP_IN		, propertyKey	, target, option.name);
@@ -68,6 +71,9 @@ export function JsonProperty( option?:JSONInnerPropertyOptions<any,any> ) {
 	};
 } 
 function cleanNonAccesibleSettings( option?:JSONPropertyOptions ){
+	if(!option)
+		return {};
+
 	(option as any).mappingFunctions	= null;
 	(option as any).type 				= null;
 	(option as any).isArray				= null;
@@ -147,7 +153,6 @@ export function JsonMapping<IN extends object,OUT extends object>( params : Json
 interface specialRecordArrayMappingProperties<IN extends object,OUT extends object> extends JSONInnerPropertyOptions<IN,OUT>{
 	KeyPropertyName:string
 }
-
 export function JsonMappingRecordInArrayOut<IN extends object,OUT extends object>( option : specialRecordArrayMappingProperties<IN,OUT> ){
 	// clean the input.
 	let type = option.type;
@@ -236,16 +241,55 @@ export class JSONHandler{
 			} 
 			else if( meta.includes(JSON_TAGS.JSON_PROPERTY_FORCE_ARRAY ) ){
 				out = [];
-				for (let j = 0; j < obj[key].length; j++) {
-					const e = obj[key][j];
-					out.push(e)
+				if(obj[key]){
+					if(Array.isArray(obj[key])){
+						for (let j = 0; j < obj[key].length; j++) {
+							const e = obj[key][j];
+							out.push(e)
+						}
+					}else{
+						out.push(obj[key])
+					}
 				}
 			}
 			else {
 				out = JSONHandler.serializeRaw(obj[key]);
 			}
 
+			// HANDLE Force Typing
+			if( meta.includes(JSON_TAGS.JSON_PROPERTY_FORCE_BASE_TYPE)){
+				let typekey = Reflect.getMetadata( JSON_TAGS.JSON_PROPERTY_FORCE_BASE_TYPE , obj , key )
+				let convFunc: (e:any) => any = (e) => e; 
+				switch(typekey){
+					case JSON_BASETYPES.bool:
+						convFunc= (input) => Boolean(input);
+					break;
+					case JSON_BASETYPES.string:
+						convFunc = (input) => String(input);
+					break;
+					case JSON_BASETYPES.number:
+						convFunc = ( e ) => {
+							const numberValue = Number(e);
+							return isNaN(numberValue) ? 0 : numberValue;
+						}
+					break; 
+				}
+				if ( meta.includes(JSON_TAGS.JSON_PROPERTY_FORCE_ARRAY  )) {
+					let temp = out;
+					let newout : any[] = [];
+					for (let i = 0; i < temp.length; i++) {
+						newout.push( convFunc(temp[i]) );
+					}
+					out = newout;
+				}else{
+					out = convFunc(out);
+				}
+			}
+
+
+			let b = 1;
 			result[PropertyName] = out;
+			let a = 12;
 		}
 		return result;
 	}
@@ -266,6 +310,32 @@ export class JSONHandler{
 
 		return this.deserializeRaw(target,json);
 	} 
+
+	private static deserializeAndForceSimple( typekey , obj ){
+		let out : any = obj ;
+		// HANDLE Force Typing
+		//if( meta.includes(JSON_TAGS.JSON_PROPERTY_FORCE_BASE_TYPE)){
+		//let typekey = Reflect.getMetadata( JSON_TAGS.JSON_PROPERTY_FORCE_BASE_TYPE , obj , key )
+		
+		let convFunc: (e:any) => any = (e) => e; 
+		switch(typekey){
+			case JSON_BASETYPES.bool:
+				convFunc= (input) => Boolean(input);
+			break;
+			case JSON_BASETYPES.string:
+				convFunc = (input) => String(input);
+			break;
+			case JSON_BASETYPES.number:
+				convFunc = ( e ) => {
+					const numberValue = Number(e);
+					return isNaN(numberValue) ? 0 : numberValue;
+				}
+			break; 
+		}
+
+		out = convFunc(out);
+		return out;				
+	}
 	private static deserializeRaw<T extends object>(target : Constructor<T>, obj : any){
 		
 		if(!obj){
@@ -306,7 +376,36 @@ export class JSONHandler{
 				else {
 					out = inFunction(obj[inKey], (obj) => obj );
 				}
-			} else {
+			}
+			else if( meta.includes(JSON_TAGS.JSON_PROPERTY_FORCE_ARRAY ) ){
+
+				// if it needs deserializing
+				let convert = ( e ) => e;
+				if(constr){
+					convert = ( e ) => JSONHandler.deserializeRaw(constr, e);
+				}else{
+					// as stated above
+				}
+
+				// if it needs to be converted to a simple type. EVEN after deserializing
+				let convert2 = (e,typekey) => convert(e);
+				if(meta.includes( JSON_TAGS.JSON_PROPERTY_FORCE_BASE_TYPE )){
+					convert2 = (e, typekey) => {
+						return JSONHandler.deserializeAndForceSimple( typekey, e );
+					}
+				}else{
+					// as stated above
+				}
+				
+				out = [];
+				const typekey = Reflect.getMetadata( JSON_TAGS.JSON_PROPERTY_FORCE_BASE_TYPE , prototype , key )
+				for (let j = 0; j < obj[inKey].length; j++) {
+					let e = obj[inKey][j];
+					let r = convert2(e,typekey);
+					out.push( r )
+				}
+			}
+			else {
 				if (constr) {
 					out = JSONHandler.deserializeRaw(constr, obj[inKey]);
 				} 
@@ -321,7 +420,7 @@ export class JSONHandler{
 				if( obj == null ){
 					out = [];
 				}
-				else if( !meta.includes(JSON_TAGS.JSON_PROPERTY_FUNC_MAP_IN) && !(Array.isArray(obj)) ){
+				else if( !meta.includes(JSON_TAGS.JSON_PROPERTY_FUNC_MAP_IN) && !(Array.isArray(out)) ){
 					out = [out];
 				}
 			}  
