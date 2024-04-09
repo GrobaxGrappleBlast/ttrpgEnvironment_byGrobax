@@ -208,6 +208,7 @@ export class JSONHandler{
 			case 'boolean':
 			case 'number':
 				return obj;
+				
 		}
 		
 		// serializedObject is a new object, without non Jsonproperties
@@ -244,36 +245,27 @@ export class JSONHandler{
 				if(obj[key]){
 					if(Array.isArray(obj[key])){
 						for (let j = 0; j < obj[key].length; j++) {
-							const e = obj[key][j];
+							const e = JSONHandler.serializeRaw(obj[key][j]);
 							out.push(e)
 						}
 					}else{
-						out.push(obj[key])
+						out.push(
+							JSONHandler.serializeRaw(obj[key])
+						)
 					}
 				}
 			}
 			else {
+				 
 				out = JSONHandler.serializeRaw(obj[key]);
+				 
 			}
 
 			// HANDLE Force Typing
 			if( meta.includes(JSON_TAGS.JSON_PROPERTY_FORCE_BASE_TYPE)){
 				let typekey = Reflect.getMetadata( JSON_TAGS.JSON_PROPERTY_FORCE_BASE_TYPE , obj , key )
-				let convFunc: (e:any) => any = (e) => e; 
-				switch(typekey){
-					case JSON_BASETYPES.bool:
-						convFunc= (input) => Boolean(input);
-					break;
-					case JSON_BASETYPES.string:
-						convFunc = (input) => String(input);
-					break;
-					case JSON_BASETYPES.number:
-						convFunc = ( e ) => {
-							const numberValue = Number(e);
-							return isNaN(numberValue) ? 0 : numberValue;
-						}
-					break; 
-				}
+				
+				let convFunc = (e) => JSONHandler.deserializeAndForceSimple(typekey, e);
 				if ( meta.includes(JSON_TAGS.JSON_PROPERTY_FORCE_ARRAY  )) {
 					let temp = out;
 					let newout : any[] = [];
@@ -286,10 +278,7 @@ export class JSONHandler{
 				}
 			}
 
-
-			let b = 1;
 			result[PropertyName] = out;
-			let a = 12;
 		}
 		return result;
 	}
@@ -323,9 +312,24 @@ export class JSONHandler{
 				convFunc= (input) => Boolean(input);
 			break;
 			case JSON_BASETYPES.string:
+				if(obj == null)
+					return "";
+				
+				if(typeof obj == 'object'){
+					return JSON.stringify(obj);
+				}
+
 				convFunc = (input) => String(input);
 			break;
 			case JSON_BASETYPES.number:
+				
+				if(obj == null){
+					return 0;
+				}
+				if(typeof obj == 'object'){
+					return 1;
+				}
+
 				convFunc = ( e ) => {
 					const numberValue = Number(e);
 					return isNaN(numberValue) ? 0 : numberValue;
