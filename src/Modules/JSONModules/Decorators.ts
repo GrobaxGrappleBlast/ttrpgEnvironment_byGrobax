@@ -32,9 +32,10 @@ interface JSONInnerPropertyOptions<IN extends object,OUT extends object> extends
 export function JsonProperty( option?:JSONInnerPropertyOptions<any,any> ) { 
 	return function (target: any, propertyKey: string) {
 
-		Reflect.defineMetadata( JSON_TAGS.JSON_PROPERTY						, true		, target, propertyKey);
-		if(!option)
+		Reflect.defineMetadata( JSON_TAGS.JSON_PROPERTY , true		, target, propertyKey);
+		if(!option){
 			return;
+		} 
 
 		if(option.forceBaseType){
 			switch(option.forceBaseType){
@@ -70,6 +71,12 @@ export function JsonProperty( option?:JSONInnerPropertyOptions<any,any> ) {
 		
 	};
 } 
+export function JsonArrayProperty	( option?:JSONPropertyOptions ){
+	option = cleanNonAccesibleSettings(option); 
+	( option as JSONInnerPropertyOptions<any,any>).isArray 		 = true;
+	return JsonProperty(option);
+}
+
 function cleanNonAccesibleSettings( option?:JSONPropertyOptions ){
 	if(!option)
 		return {};
@@ -165,7 +172,14 @@ export function JsonMappingRecordInArrayOut<IN extends object,OUT extends object
 			let o = d(p); 
 			let v = o[option.KeyPropertyName]; 
 			if(typeof v == 'function'){
-				v = v();
+				try{
+					v = o[option.KeyPropertyName]();
+				}catch(e){
+					let messageAddon = v.length > 0 ? ', Note that message must have 0 Arguments, that arent either optional or have default values': ''; 
+					let message = `Something went wrong with callign method '${option.KeyPropertyName}'${messageAddon}`
+					console.log(e);
+					throw new Error(message);
+				}
 			}
 			r[v] = o;
 		});
@@ -216,12 +230,7 @@ export class JSONHandler{
 
 		// get propertynames and loop through 
 		let propertyNames;
-		try{
-			propertyNames = Object.getOwnPropertyNames( obj );
-		}catch( e ){
-			debugger;
-			return obj;
-		} 
+		propertyNames = Object.getOwnPropertyNames( obj );
 		for (let i = 0; i < propertyNames.length; i++) {
 			
 			// get basic properties
@@ -418,50 +427,9 @@ export class JSONHandler{
 				}
 			}
 
-
-			// handle if there is a force array
-			if ( meta.includes(JSON_TAGS.JSON_PROPERTY_FORCE_ARRAY) ) {
-				if( obj == null ){
-					out = [];
-				}
-				else if( !meta.includes(JSON_TAGS.JSON_PROPERTY_FUNC_MAP_IN) && !(Array.isArray(out)) ){
-					out = [out];
-				}
-			}  
-
 			result[PropertyName] = out;
 			let a = 1;
 		}
 		return result;
 	}
 }
-
-
-/*
-HANDLE 
-
-isCorrect = true;
-func =  ( e : any ) => { 
-
-	if(typeof e == 'string')
-		return e;
-
-	return e.toString(); 
-};
-*/
-
-/*
-isCorrect = true;
-( e : any ) => { 
-	let t = Number(e) ?? 0;
-	return t;
-};
-*/
-
-/*
-isCorrect = true;
-( e : any ) => { 
-	let t = e ? true : false;
-	return t;
-} 
-*/
