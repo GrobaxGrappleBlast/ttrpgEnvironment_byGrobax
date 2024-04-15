@@ -1,6 +1,6 @@
 {
     "name": "ttrpg-environment",
-    "version": "a.0.1",
+    "version": "a.0.21",
     "description": "A plugin development template for devs who want to use svelte in Obsidian.",
     "main": "main.js",
     "type": "module",
