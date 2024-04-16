@@ -604,3 +604,35 @@ test(' graph Create and Get And Delete And Get', () => {
 				
 
 })
+
+
+
+test('try to add dependency to a Fixed Node', () => {
+
+	let sys = new TTRPGSystemGraphModel();
+	sys.setOut(out);
+	out.clean();
+
+	function createFunctions( group ){
+		
+		for (let c = 0; c < 5; c++){
+			const colName = (c+1) + 'c';
+			const collection = sys.createCollection(group,colName)
+			for (let i = 0; i < 5; i++) {
+				sys.createNode(group,colName,(i+1)+'n');
+			} 
+		}
+	}
+ 
+	createFunctions('derived');
+	createFunctions('fixed');
+
+	let node1 = sys.getFixedNode('1c','1n');
+	let node2 = sys.getFixedNode('1c','2n');
+	let add = node1.addDependency(node2)
+	expect(add).toBe(false);
+
+	let rem = node1.removeDependency(node2)
+	expect(rem).toBe(false);
+
+})

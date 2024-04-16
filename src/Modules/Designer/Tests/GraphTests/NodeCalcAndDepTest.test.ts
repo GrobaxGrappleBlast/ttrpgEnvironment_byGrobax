@@ -49,30 +49,24 @@ test('Calculate the first node', () => {
 	let fix1 = sys.getFixedNode('1c','1n');
 
 	// add calc
-	der1.calc = '@a - @b + @c';
-	der1.parseCalculation();
+	der1.setCalc('@a - @b + @c',true); 
 	expect(der1.origins.length).toBe(3);
 
-	der1.calc = '@a - @b + @c';
-	der1.parseCalculation();
+	der1.setCalc('@a - @b + @c',true); 
 	expect(der1.origins.length).toBe(3);
 
-	der1.calc = '@a - @b + @c + @a * @a';
-	der1.parseCalculation();
+	der1.setCalc('@a - @b + @c + @a * @a',true); 
 	expect(der1.origins.length).toBe(3);
 
-	der1.calc = '@a - @b + @c + @a * @a - @c ';
-	der1.parseCalculation();
+	der1.setCalc('@a - @b + @c + @a * @a - @c ',true); 
 	expect(der1.origins.length).toBe(3);
 
-	der1.calc = '@a';
-	der1.parseCalculation();
+	der1.setCalc( '@a',true); 
 	expect(der1.origins.length).toBe(1);
 
-	der1.calc = 'Math.floor((@a - 10)/2);';
-	der1.parseCalculation();
+	der1.setCalc('Math.floor((@a - 10)/2);',true); 
 	expect(der1.origins.length).toBe(1);
-	der1.addOriginDependency('@a',fix1);
+	der1.setOrigin('@a',fix1);
 
 	// test the calculation.
 	let calcValue : number = 0;
@@ -145,9 +139,8 @@ test('Test Dnd AbilityModifier CalcValues', () => {
 	let fix1 = sys.getFixedNode('1c','1n');
 
 	
-	der1.calc = 'Math.floor((@a - 10)/2);';
-	der1.parseCalculation();
-	der1.addOriginDependency('@a',fix1);
+	der1.setCalc('Math.floor((@a - 10)/2);',true);
+	der1.setOrigin('@a',fix1);
 
 	let calcValue:number;
 	function testScoreIn_modifierOut( abilityScore, abilityModifier ){
@@ -188,17 +181,15 @@ test('Test Dnd AbilityModifier CalcValues _ Exstended', () => {
 	let fix1 = sys.getFixedNode('1c','1n');
 
 	// set der1 calc
-	der1.calc = 'Math.floor((@a - 10)/2);';
-	der1.parseCalculation();
-	der1.addOriginDependency('@a',fix1);
+	der1.setCalc('Math.floor((@a - 10)/2);',true); 
+	der1.setOrigin('@a',fix1);
 
 	// set der2 calc
 	let der2 = sys.getDerivedNode('1c','2n');
-	der2.calc = '@a * 2 + @b';
-	der2.parseCalculation(); 
+	der2.setCalc( '@a * 2 + @b',true); 
 
-	der2.addOriginDependency('@a',der1);
-	der2.addOriginDependency('@b',fix1);
+	der2.setOrigin('@a',der1);
+	der2.setOrigin('@b',fix1);
 
 	let calcValue:number;
 	function testScoreIn_modifierOut( abilityScore, modifier, attackPower ){
