@@ -41,6 +41,14 @@ export abstract class GrobNode<T extends GrobNode<T>> extends AGraphItem{
 
 	abstract addDependency( node:GrobNodeType) : boolean 
 	abstract removeDependency( node:GrobNodeType)  : boolean
+	abstract nullifyDependency( node:GrobNodeType ): boolean
+	public nullifyDependent(node:GrobNodeType){
+		let dep = this.dependents[node.getKey()];
+		if(!dep)
+			return false;
+
+		return dep.nullifyDependency(this as any)
+	}
 	public getDependencies(): GrobNodeType[] {
 		//@ts-ignore
 		return Object.values( this.dependencies ) as GrobNodeType[] ?? [];
@@ -66,6 +74,28 @@ export abstract class GrobNode<T extends GrobNode<T>> extends AGraphItem{
 		seg[1] = this.parent?.getName() ?? 'unknown';
 		seg[2] = this.getName() ?? 'unknown';
 		return seg;
+	}
+
+	dispose () {
+		// delete references all
+		
+
+		for(const key in this.dependencies){
+			const curr = this.dependencies[key]
+			curr.nullifyDependent(this as any)
+		}
+		
+		for(const key in this.dependents){
+			const curr = this.dependents[key]
+			curr.nullifyDependency(this as any)
+		}
+
+		//@ts-ignore
+		this.parent = null;
+		this.key = null;
+		//@ts-ignore
+		this.name = null;
+
 	}
 
 }
@@ -97,6 +127,7 @@ export class GrobFixedNode extends GrobNode<GrobFixedNode>{
 
 	public addDependency(node:GrobNodeType){ return false } 
 	public removeDependency(node:GrobNodeType){ return false  }
+	public nullifyDependency(node:GrobNodeType){return false}
 }
  
 var grobDerivedSymbolRegex =/@[a-zA-Z]/g;
@@ -130,7 +161,6 @@ export class GrobDerivedNode extends GrobNode<GrobDerivedNode> {
 		node.addDependent(this);
 		return true;
 	}
- 
 	public removeDependency(node:GrobNodeType){
 		 
 		// delete the dependency
@@ -151,7 +181,18 @@ export class GrobDerivedNode extends GrobNode<GrobDerivedNode> {
 
 		return this.dependencies[key] == null ;
 	}
- 
+	public nullifyDependency(node:GrobNodeType){
+		// first Empty the origin.
+		let key = node.getKey();
+		let orig = this.origins.find( p => p.origin?.getKey() == key );
+		if(orig){
+			orig.origin = null;	
+		}
+		
+		// then nulify the dependency
+		return this.removeDependency(node);
+	}
+	
 	public setOrigin( symbol, node : GrobNodeType , standardValue : number | null = null ){
 
 
@@ -379,8 +420,6 @@ export class GrobDerivedNode extends GrobNode<GrobDerivedNode> {
 		}  
 		return { success:recalcSuccess, value:value};
 	}
-
-
 	public update( ){
 
 		if(!this.isValid()){

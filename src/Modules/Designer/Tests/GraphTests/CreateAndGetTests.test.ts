@@ -485,10 +485,28 @@ test(' graph Create and Get And Delete And Get', () => {
 	let n1_2 : any ;
 	let col	 : GrobCollection<GrobNodeType>;
 	let group : 'derived' | 'fixed' = 'derived';
+
+	// first add some fixed nodes as dependencies to a derived;
+	let fn1 = sys.getFixedNode('1c','1n')
+	let fn2 = sys.getFixedNode('1c','1n')
+	let dn1 = sys.getDerivedNode('1c','1n')
+
+	dn1.setCalc('@a + @b');
+	dn1.setOrigin('@a',fn1,1);
+	dn1.setOrigin('@b',fn2,1);
+
+
 	group = 'fixed';
 	// FIXED 
 		sys.deleteNode(group ,'1c','1n');
 		sys.deleteFixedNode  ('1c','2n');
+
+		// now ensure that the Derived Node has null references to the fixed nodes 
+		expect(dn1.getDependencies().length).toBe(0);
+		for (let i = 0; i < dn1.origins.length; i++) {
+			const orig = dn1.origins[i];
+			expect(orig.origin).toBe(null);
+		}
 		
 		expect(sys.hasFixedNode( '1c','1n')).toBe(false);
 		expect(sys.hasNode(group,'1c','1n')).toBe(false);
@@ -499,8 +517,8 @@ test(' graph Create and Get And Delete And Get', () => {
 		n1_1 = sys.getNode(group,'1c','1n') 
 		n1_2 = sys.getFixedNode( '1c','2n') 
 
-		expect(n1_1).toBe(null) 
-		expect(n1_2).toBe(null) 
+		expect(n1_1 == null ).toBe(true ) 
+		expect(n1_2 == null ).toBe(true ) 
 		expect(sys.hasFixedNode( '1c','1n')).toBe(false);
 		expect(sys.hasNode(group,'1c','1n')).toBe(false);
 		expect(sys.hasFixedNode( '1c','2n')).toBe(false);
@@ -525,11 +543,23 @@ test(' graph Create and Get And Delete And Get', () => {
 		expect(keys.length).toBe(3);
 		expect(nameKeys).toEqual(['3n','4n','5n']);
 		
+
 	
 	group = 'derived';
 
+		// add a dependency
+		dn1 = sys.getDerivedNode('1c','1n');
+		let dn3 = sys.getDerivedNode('1c','3n');
+		dn1.setCalc('@a/2');
+		dn1.setOrigin('@a',dn3);
+
+
 		sys.deleteNode(group ,'1c','1n');
 		sys.deleteDerivedNode  ('1c','2n');
+
+		// test that dn2 have no reference to dn1 
+		expect(dn3.getDependents().length).toBe(0);
+
 		
 		expect(sys.hasDerivedNode( '1c','1n')).toBe(false);
 		expect(sys.hasNode(group,'1c','1n')).toBe(false);

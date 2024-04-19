@@ -299,6 +299,31 @@ export class TTRPGSystemGraphModel extends TTRPGSystemGraphAbstractModel {
 	}
 
 	// delete Statements 
+	protected _deleteGroup		(group:GrobGroupType | string ){
+
+		if(typeof group == 'string'){
+			const name = group;
+			group = this._getGroup(group) as GrobGroupType;
+			if(!group){
+				this.out.outError('No Collection by name ' + name);
+				return false;
+			}
+		}
+
+		if(group.getName() == 'fixed' ){
+			// @ts-ignore
+			this.fixed = null;
+			this.fixedKey = null;
+		}
+
+		if(group.getName() == 'derived' ){
+			// @ts-ignore
+			this.derived = null;
+			this.derivedKey = null;
+		}
+
+		super._deleteGroup(group);
+	}
 	public deleteCollection( group : groupKeyType , col : string | GrobCollection<GrobNodeType>){
 		const grp = this._getGroup(group);
 		if(!grp){
@@ -316,10 +341,10 @@ export class TTRPGSystemGraphModel extends TTRPGSystemGraphAbstractModel {
 		return this._deleteCollection(col);
 	}
 	public deleteDerivedCollection(col:string | GrobCollection<GrobDerivedNode>| string ){
-		this.deleteCollection(derived,col)
+		return this.deleteCollection(derived,col)
 	}
 	public deleteFixedCollection(col:string | GrobCollection<GrobFixedNode> ){
-		this.deleteCollection(fixed,col)
+		return this.deleteCollection(fixed,col)
 	}
 	public deleteNode( group : groupKeyType , col : GrobCollection<GrobNodeType> | string , name : string){
 		
@@ -339,7 +364,7 @@ export class TTRPGSystemGraphModel extends TTRPGSystemGraphAbstractModel {
 
 		
 		let node = col.getNode(name);
-		return	this._deleteNode(node);
+		return col.removeNode(node);
 	}
 	public deleteDerivedNode( col : GrobCollection<GrobDerivedNode> | string , name : string){
 		return this.deleteNode(derived,col,name);

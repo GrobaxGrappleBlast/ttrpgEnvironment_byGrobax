@@ -11,14 +11,30 @@ import { GrobDerivedNode } from "../GrobNodte";
 export abstract class TTRPGSystemGraphAbstractModel {
 	 
 	public data : Record< string , GrobGroup<GrobNodeType> > = {} 
-	
+ 
 	protected out : IOutputHandler;
 	public setOut( out : IOutputHandler | null  ){
 		this.out = out ? out : newOutputHandler();
 	}  
 	
-	protected _deleteGroup		(group:GrobGroupType) {
+	protected _deleteGroup		(group:GrobGroupType | string ) {
+
+		if(typeof group == 'string'){
+			let g = this._getGroup(group);
+			if(!g)
+				return false
+			group = g;
+		}
+
 		const key = group.getKey();
+		let g = this.data[key]
+		if (!g){
+			this.out.outError('tried to delete non existant group')
+			return false;
+		}
+
+
+		group.dispose();
 		delete this.data[key]; 
 	}
 	protected _createGroup		(name:string ) {
@@ -40,6 +56,14 @@ export abstract class TTRPGSystemGraphAbstractModel {
 	}
 	protected _getGroup_key ( key:string ){
 		return this.data[key];
+	}
+	protected _getGroup ( name:string ){
+		for (const key in this.data){
+			if (this.data[key].getName() == name){
+				return this.data[key];
+			}
+		}
+		return null;
 	}
 
 	protected _deleteCollection	( collection:GrobCollectionType ) {
@@ -79,21 +103,8 @@ export abstract class TTRPGSystemGraphAbstractModel {
 	protected _deleteNode		( node: GrobNodeType ) {
 		
 		const col = node.parent;
- 
-		// for each dependent, we remove the dependency
-		for ( const key in node.dependents ){
-			const dep = node.dependents[key] as any;
-			node.removeDependency(dep);
-		}
-
-		// we then remove this as a dependent on each of its dependencies
-		for( const key in node.dependencies ){
-			const dep = node.dependencies[key];
-			dep.removeDependent(node);
-		}
-
-		// @ts-ignore
-		let r = col.removeNode(node); 
+		let r = col.removeNode(node as any); 
+		node.dispose();
 		return r;
 		
 	} 
