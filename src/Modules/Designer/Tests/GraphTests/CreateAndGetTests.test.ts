@@ -486,6 +486,9 @@ test(' graph Create and Get And Delete And Get', () => {
 	let col	 : GrobCollection<GrobNodeType>;
 	let group : 'derived' | 'fixed' = 'derived';
 
+	
+
+
 	// first add some fixed nodes as dependencies to a derived;
 	let fn1 = sys.getFixedNode('1c','1n')
 	let fn2 = sys.getFixedNode('1c','1n')
@@ -664,5 +667,50 @@ test('try to add dependency to a Fixed Node', () => {
 
 	let rem = node1.removeDependency(node2)
 	expect(rem).toBe(false);
+
+})
+
+// test has methods
+test('Test Has Methods', () => {
+	
+	let sys = new TTRPGSystemGraphModel();
+	sys.setOut(out);
+	out.clean();
+
+	
+	function createFunctions( group ){
+		
+		for (let c = 0; c < 5; c++){
+			const colName = (c+1) + 'c';
+			const collection = sys.createCollection(group,colName)
+			for (let i = 0; i < 5; i++) {
+				sys.createNode(group,colName,(i+1)+'n');
+			} 
+		}
+	}
+	createFunctions('derived');
+	createFunctions('fixed');
+
+	// test has Methods
+	expect(sys.hasCollection('derived'	,'1c')).toBe(true);
+	expect(sys.hasCollection('fixed'	,'1c')).toBe(true);
+	//@ts-ignore
+	expect(sys.hasCollection('asdadsa'	,'1c')).toBe(false);
+	//@ts-ignore
+	expect(sys.hasCollection('asdasda'	,'1c')).toBe(false);
+	expect(sys.hasCollection('derived'	,'TJUBASDAD')).toBe(false);
+	expect(sys.hasCollection('fixed'	,'TJUBASDAD')).toBe(false);
+
+
+	expect(sys.hasNode('derived'	,'1c','1n')).toBe(true);
+	expect(sys.hasNode('fixed'		,'1c','1n')).toBe(true);
+	//@ts-ignore
+	expect(sys.hasNode('ASDASD'		,'1c','1n')).toBe(false);
+	//@ts-ignore
+	expect(sys.hasNode('ASDASD'		,'1c','1n')).toBe(false);
+	expect(sys.hasNode('derived'	,'TJUBASDAD','1n')).toBe(false);
+	expect(sys.hasNode('fixed'		,'TJUBASDAD','1n')).toBe(false);
+	expect(sys.hasNode('fixed'		,'1c','TSDADSASD')).toBe(false);
+	expect(sys.hasNode('derived'	,'1c','TSDADSASD')).toBe(false);
 
 })

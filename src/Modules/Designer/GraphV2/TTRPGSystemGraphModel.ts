@@ -120,11 +120,10 @@ export class TTRPGSystemGraphModel extends TTRPGSystemGraphAbstractModel {
 		const grp = this._getGroup(group);
 		if(!grp){
 			this.out.outError(`No group existed by name ${group}`)
-			return null;
+			return false;
 		}
 
-		const col = grp.getCollection(name) ;
-		return col ? true: false;
+		return grp.hasCollection(name) ;
 	}
 	public hasDerivedCollection(name:string){
 		return this.hasCollection(derived,name);
@@ -142,7 +141,7 @@ export class TTRPGSystemGraphModel extends TTRPGSystemGraphAbstractModel {
 		let _col = col;
 		if( typeof col === 'string'){
 			// @ts-ignore
-			_col = this.getDerivedCollection(name); 
+			_col = this.getCollection(grp,col); 
 			if(!_col){
 				this.out.outError(`attempted to get ${group} collection ${name}, but no collection existed by that name`);
 				return false
@@ -161,9 +160,15 @@ export class TTRPGSystemGraphModel extends TTRPGSystemGraphAbstractModel {
 
 
 	// get Statements 
-	public getCollection( group : groupKeyType , name : string){
+	public getCollection( group : groupKeyType | GrobGroupType, name : string){
 		
-		const grp = this._getGroup(group);
+		let grp : GrobGroupType;
+		if( typeof group == 'string'){
+			grp = this._getGroup(group) as GrobGroupType;
+		}else{
+			grp = group;
+		}
+
 		if(!grp){
 			this.out.outError(`No group existed by name ${group}`)
 			return null;

@@ -138,7 +138,8 @@ test('Test Dnd AbilityModifier CalcValues', () => {
 	let der1 = sys.getDerivedNode('1c','1n');
 	let fix1 = sys.getFixedNode('1c','1n');
 
-	
+	 
+
 	der1.setCalc('Math.floor((@a - 10)/2);',true);
 	der1.setOrigin('@a',fix1);
 
