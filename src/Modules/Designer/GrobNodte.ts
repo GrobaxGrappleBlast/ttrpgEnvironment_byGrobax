@@ -60,10 +60,7 @@ export abstract class GrobNode<T extends GrobNode<T>> extends AGraphItem{
 		super.setName(name);
 		this.parent.update_node_name(oldname,name);
 	} 
-
-	public getGraphLocationKey(){
-		return this.parent?.parent?.getName()??  +'.'+ this.parent.getName() +'.'+ this.getName()
-	}
+ 
 	public getLocationKey(){
 		let segs = this.getLocationKeySegments();
 		return segs.join('.');
@@ -74,6 +71,9 @@ export abstract class GrobNode<T extends GrobNode<T>> extends AGraphItem{
 		seg[1] = this.parent?.getName() ?? 'unknown';
 		seg[2] = this.getName() ?? 'unknown';
 		return seg;
+	}
+	public update( ){
+		return true;
 	}
 
 	dispose () {
@@ -431,10 +431,12 @@ export class GrobDerivedNode extends GrobNode<GrobDerivedNode> {
 		this.recalculate();
 
 		// then call update for all dependents 
+		let success = true;
 		for( const k in this.dependents ){
 			const dep = this.dependents[k] as GrobDerivedNode;
-			dep.update();
+			success = success && dep.update();
 		} 
+		return success;
 	}
 }
 
