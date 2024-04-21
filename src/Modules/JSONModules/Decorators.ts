@@ -1,4 +1,10 @@
 import "reflect-metadata"; 
+import { newOutputHandler, type IOutputHandler } from "../Designer/Abstractions/IOutputHandler";
+
+const NoOutput : IOutputHandler = {
+	outError(msg) {},
+	outLog(msg) {}
+}
 
 enum JSON_TAGS{
 	JSON_PROPERTY				= "JSON_PROPERTY"				, 
@@ -292,8 +298,13 @@ export class JSONHandler{
 		return result;
 	}
 
-	public static deserialize<T extends object>( target: Constructor<T> , json:any){
+	public static deserialize<T extends object>( target: Constructor<T> , json:any , writeOut? : IOutputHandler ){
 		
+		if(!writeOut){
+			writeOut = NoOutput;
+		}
+
+
 		const type = typeof json;
 		if(type == 'string'){
 			json = JSON.parse(json);
@@ -302,7 +313,7 @@ export class JSONHandler{
 		switch(type){
 			case 'boolean':
 			case 'number':
-				console.error( 'Cannot derserialize type of ' + type );
+				writeOut.outError( 'Cannot derserialize type of ' + type );
 				return;
 		}
 
@@ -310,6 +321,7 @@ export class JSONHandler{
 	} 
 
 	private static deserializeAndForceSimple( typekey , obj ){
+
 		let out : any = obj ;
 		// HANDLE Force Typing
 		//if( meta.includes(JSON_TAGS.JSON_PROPERTY_FORCE_BASE_TYPE)){
