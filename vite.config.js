@@ -25,7 +25,7 @@ export default defineConfig(() => {
             },
             lib: {
                 //  './modules/mainApp/starterIndex.ts'
-                entry: path.resolve(__dirname, './src/app.ts'),
+                entry: path.resolve(__dirname, './src/Modules/ObsidianUI/app.ts'),
                 formats: ['cjs'],
             },
             rollupOptions: {

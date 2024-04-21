@@ -1,5 +1,6 @@
 import { App, ItemView, Modal, Platform, Plugin, PluginSettingTab, Setting, TFile, WorkspaceLeaf, parseYaml } from 'obsidian';
- 
+import  SvelteSystemDesigner01 from './UIInterfaces/Designer01/SvelteSystemDesigner01.svelte';//' /UIInterfaces/Designer01/SvelteSystemDesigner01.svelte' 
+
 const VIEW_TYPE = "svelte-view";    
 interface MyPluginSettings {
 	mySetting: string;
@@ -43,7 +44,7 @@ export default class GrobaxTTRPGSystemHandler extends Plugin {
 		if (this.app.workspace.getLeavesOfType(VIEW_TYPE).length) {
 			return;
 		}
-		this.app.workspace.getRightLeaf(false).setViewState({
+		this.app.workspace.getRightLeaf(false)?.setViewState({
 			type: VIEW_TYPE,
 		});
 	}
@@ -76,7 +77,15 @@ class ModalMount extends Modal {
 		this.plugin = plugin; 
 	} 
 
-	onOpen() {}
+	onOpen() {
+		new SvelteSystemDesigner01({
+			target:this.contentEl,
+			props:{
+				//@ts-ignore
+				plugin: this.plugin
+			}
+		});
+	}
 
 	onClose() {
 		const {contentEl} = this;
