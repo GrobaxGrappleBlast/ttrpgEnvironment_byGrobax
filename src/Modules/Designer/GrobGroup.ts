@@ -31,14 +31,37 @@ export class GrobGroup<T extends GrobNodeType> extends AGraphItem {
 		return true;
 	}  
 	public removeCollection( collection : GrobCollection<T> ){ 
-		delete this.collections_names[collection.getName()]; 
-		delete this.collections_keys[collection.getKey()];
-		return this.collections_keys[collection.getKey()] == null;
+
+		const name = collection.getName();
+		const key = collection.getKey();
+		let c = this.collections_names[name];
+		if(!c)
+			return false;
+
+		collection.dispose();
+		delete this.collections_names[name]; 
+		delete this.collections_keys[key];
+		return this.collections_keys[key] == null;
 	}
 
 	public update_collection_name(oldName,newName){ 
 		this.collections_names[newName] = this.collections_names[oldName] ;
 		delete this.collections_names[oldName] ;
 	}
- 
+	
+	dispose () {
+		for( const key in this.collections_keys ){
+			const curr = this.collections_keys[key];
+			const name = curr.getName();
+			curr.dispose();
+			delete this.collections_keys[key];
+			delete this.collections_names[name];
+		}
+
+		this.controller = null;
+		this.key = null;
+		//@ts-ignore
+		this.name = null;
+	}
+
 }
