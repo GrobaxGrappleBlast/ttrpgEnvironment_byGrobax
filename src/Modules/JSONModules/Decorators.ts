@@ -6,6 +6,7 @@ const NoOutput : IOutputHandler = {
 	outLog(msg) {}
 }
 
+const BASE_SCHEME = '_base';
 enum JSON_TAGS{
 	JSON_PROPERTY				= "JSON_PROPERTY"				, 
 	JSON_PROPERTY_TYPED 		= "JSON_PROPERTY_TYPED"			, 
@@ -21,24 +22,57 @@ enum JSON_BASETYPES{
 	bool 	= 'bool',
 	number	= 'number'
 }
-
 type Constructor<T extends object> = new () => T;
 
+function hasMetaDataInScheme(metaTag , target , propertyKey , scheme ){
+	try{
+		let data = Reflect.getMetadata( metaTag , target , propertyKey ); 
+		if(data[scheme] != undefined)
+			return true;
+		return false;
+	}catch(e){
+		return false;
+	}
+}
+function getMetadata(metaTag , target , propertyKey , scheme : string = BASE_SCHEME){
+	let data = Reflect.getMetadata( metaTag , target , propertyKey ); 
+	if(!data)
+		return null;
+
+	let r = data[scheme] ?? data[BASE_SCHEME] ;
+	return r;
+}
+function setMetadata( metaTag , value , target , propertyKey , scheme : string = BASE_SCHEME){
+	
+	// get meta data if it exists 
+	let data = Reflect.getMetadata( metaTag , target , propertyKey ); 
+	if(!data)
+		data = {}
+
+	// set value to scheme;
+	data[scheme] = value;
+	
+	// define the metaData;
+	Reflect.defineMetadata( metaTag, data, target, propertyKey);
+}
 
 export interface JSONPropertyOptions {
+	scheme?:string,
 	name?: string ,
 	isArray?:boolean
 }
 interface JSONInnerPropertyOptions<IN extends object,OUT extends object> extends JSONPropertyOptions{
+	scheme?:string,
 	mappingFunctions? :{ out:( t:IN , serialize?:any ) => OUT , in:( b:OUT, deserialize?:any ) => IN } , 
 	type?: any,
 	forceBaseType?: false | keyof typeof JSON_BASETYPES
 }
 
 export function JsonProperty( option?:JSONInnerPropertyOptions<any,any> ) { 
-	return function (target: any, propertyKey: string) {
+	return function (target: any, propertyKey: string ) {
 
-		Reflect.defineMetadata( JSON_TAGS.JSON_PROPERTY , true		, target, propertyKey);
+		let scheme = option?.scheme ?? BASE_SCHEME;
+		setMetadata( JSON_TAGS.JSON_PROPERTY , true		, target, propertyKey, scheme );
 		if(!option){
 			return;
 		} 
@@ -48,31 +82,26 @@ export function JsonProperty( option?:JSONInnerPropertyOptions<any,any> ) {
 				case JSON_BASETYPES.string: 
 				case JSON_BASETYPES.number:
 				case JSON_BASETYPES.bool:	
-				Reflect.defineMetadata( 
-					JSON_TAGS.JSON_PROPERTY_FORCE_BASE_TYPE	,
-					option.forceBaseType,
-					target,
-					propertyKey
-				);
+					setMetadata( 	JSON_TAGS.JSON_PROPERTY_FORCE_BASE_TYPE	,	option.forceBaseType,	target,	propertyKey, scheme 	);
 			}
 		}
 
 		if(option.isArray){
-			Reflect.defineMetadata( JSON_TAGS.JSON_PROPERTY_FORCE_ARRAY		, true	, target, propertyKey);
+			setMetadata( JSON_TAGS.JSON_PROPERTY_FORCE_ARRAY, true	, target, propertyKey , scheme);
 		}	
 
 		if(option.name){
-			Reflect.defineMetadata( JSON_TAGS.JSON_PROPERTY_NAME_MAP_IN		, propertyKey	, target, option.name);
-			Reflect.defineMetadata( JSON_TAGS.JSON_PROPERTY_NAME_MAP_OUT	, option.name	, target, propertyKey);
+			setMetadata( JSON_TAGS.JSON_PROPERTY_NAME_MAP_IN, propertyKey	, target, option.name, scheme);
+			setMetadata( JSON_TAGS.JSON_PROPERTY_NAME_MAP_OUT, option.name	, target, propertyKey , scheme);
 		}	
 
 		if(option.mappingFunctions){
-			Reflect.defineMetadata( JSON_TAGS.JSON_PROPERTY_FUNC_MAP_IN	, option.mappingFunctions.in	, target, propertyKey );
-			Reflect.defineMetadata( JSON_TAGS.JSON_PROPERTY_FUNC_MAP_OUT, option.mappingFunctions.out	, target, propertyKey);
+			setMetadata( JSON_TAGS.JSON_PROPERTY_FUNC_MAP_IN, option.mappingFunctions.in	, target, propertyKey , scheme);
+			setMetadata( JSON_TAGS.JSON_PROPERTY_FUNC_MAP_OUT, option.mappingFunctions.out	, target, propertyKey , scheme);
 		}	
  
 		if(option.type){
-			Reflect.defineMetadata( JSON_TAGS.JSON_PROPERTY_TYPED				, option.type	, target, propertyKey);
+			setMetadata( JSON_TAGS.JSON_PROPERTY_TYPED		, option.type	, target, propertyKey , scheme);
 		}
 		
 	};
@@ -82,10 +111,12 @@ export function JsonArrayProperty	( option?:JSONPropertyOptions ){
 	( option as JSONInnerPropertyOptions<any,any>).isArray 		 = true;
 	return JsonProperty(option);
 }
-
 function cleanNonAccesibleSettings( option?:JSONPropertyOptions ){
 	if(!option)
 		return {};
+
+	option.scheme = option.scheme == '' ? BASE_SCHEME : option.scheme;
+	option.scheme = option.scheme ?? BASE_SCHEME;
 
 	(option as any).mappingFunctions	= null;
 	(option as any).type 				= null;
@@ -142,6 +173,7 @@ export function JsonArrayClassTyped<T extends object>( type : Constructor<T> , o
  
 // Mappings
 interface JsonMappingParameters<IN extends object,OUT extends object>{
+	scheme?:string,
 	inFunction:( b:OUT, deserialize?:any ) => IN,
 	outFunction:( t:IN , serialize?:any ) => OUT ,
 	type? : Constructor<IN>,
@@ -164,6 +196,7 @@ export function JsonMapping<IN extends object,OUT extends object>( params : Json
 }
 
 interface specialRecordArrayMappingProperties<IN extends object,OUT extends object> extends JSONInnerPropertyOptions<IN,OUT>{
+	scheme?:string,
 	KeyPropertyName:string
 }
 export function JsonMappingRecordInArrayOut<IN extends object,OUT extends object>( option : specialRecordArrayMappingProperties<IN,OUT> ){
@@ -212,10 +245,10 @@ export function JsonMappingRecordInArrayOut<IN extends object,OUT extends object
 
 export class JSONHandler{
  
-	public static serialize(obj: any): string {
-		return JSON.stringify(JSONHandler.serializeRaw(obj));
+	public static serialize(obj: any  , scheme : string = BASE_SCHEME ): string {
+		return JSON.stringify(JSONHandler.serializeRaw(obj, scheme ));
 	} 
-	private static serializeRaw( obj:any ): object{
+	private static serializeRaw( obj:any  , scheme : string = BASE_SCHEME ): object{
 
 		if(!obj){
 			return obj;
@@ -243,42 +276,47 @@ export class JSONHandler{
 			const key = propertyNames[i];
 			let meta = Reflect.getMetadataKeys( obj , key );	
 			
+			// check if the scheme we are about to export have The Property in it
+			if( meta.length != 0 && !hasMetaDataInScheme(JSON_TAGS.JSON_PROPERTY,obj,key,scheme)){
+				continue;
+			}
+
 			// create the name of the property, but if there is a mapped out name, get that instead
 			let PropertyName = key;
 			if ( meta.includes(JSON_TAGS.JSON_PROPERTY_NAME_MAP_OUT )){
-				PropertyName = Reflect.getMetadata( JSON_TAGS.JSON_PROPERTY_NAME_MAP_OUT , obj , key ); 
+				PropertyName = getMetadata( JSON_TAGS.JSON_PROPERTY_NAME_MAP_OUT , obj , key  , scheme ); 
 			}
 
 			// if there is a mapping function
 			let out : any = null;
 			if ( meta.includes(JSON_TAGS.JSON_PROPERTY_FUNC_MAP_OUT )){
-				let outFunction = Reflect.getMetadata( JSON_TAGS.JSON_PROPERTY_FUNC_MAP_OUT , obj , key ); 
-				out = outFunction(obj[key], JSONHandler.serializeRaw );
+				let outFunction = getMetadata( JSON_TAGS.JSON_PROPERTY_FUNC_MAP_OUT , obj , key  , scheme  ); 
+				out = outFunction(obj[key], (o)=>JSONHandler.serializeRaw( o, scheme ) );
 			} 
 			else if( meta.includes(JSON_TAGS.JSON_PROPERTY_FORCE_ARRAY ) ){
 				out = [];
 				if(obj[key]){
 					if(Array.isArray(obj[key])){
 						for (let j = 0; j < obj[key].length; j++) {
-							const e = JSONHandler.serializeRaw(obj[key][j]);
+							const e = JSONHandler.serializeRaw(obj[key][j] , scheme );
 							out.push(e)
 						}
 					}else{
 						out.push(
-							JSONHandler.serializeRaw(obj[key])
+							JSONHandler.serializeRaw(obj[key] , scheme )
 						)
 					}
 				}
 			}
 			else {
 				 
-				out = JSONHandler.serializeRaw(obj[key]);
+				out = JSONHandler.serializeRaw(obj[key] , scheme );
 				 
 			}
 
 			// HANDLE Force Typing
 			if( meta.includes(JSON_TAGS.JSON_PROPERTY_FORCE_BASE_TYPE)){
-				let typekey = Reflect.getMetadata( JSON_TAGS.JSON_PROPERTY_FORCE_BASE_TYPE , obj , key )
+				let typekey = getMetadata( JSON_TAGS.JSON_PROPERTY_FORCE_BASE_TYPE , obj , key  , scheme )
 				
 				let convFunc = (e) => JSONHandler.deserializeAndForceSimple(typekey, e);
 				if ( meta.includes(JSON_TAGS.JSON_PROPERTY_FORCE_ARRAY  )) {
@@ -298,7 +336,7 @@ export class JSONHandler{
 		return result;
 	}
 
-	public static deserialize<T extends object>( target: Constructor<T> , json:any , writeOut? : IOutputHandler ){
+	public static deserialize<T extends object>( target: Constructor<T> , json:any  , scheme : string = BASE_SCHEME, writeOut? : IOutputHandler ){
 		
 		if(!writeOut){
 			writeOut = NoOutput;
@@ -317,7 +355,7 @@ export class JSONHandler{
 				return;
 		}
 
-		return this.deserializeRaw(target,json);
+		return this.deserializeRaw(target,json , scheme );
 	} 
 
 	private static deserializeAndForceSimple( typekey , obj ){
@@ -361,7 +399,7 @@ export class JSONHandler{
 		out = convFunc(out);
 		return out;				
 	}
-	private static deserializeRaw<T extends object>(target : Constructor<T>, obj : any){
+	private static deserializeRaw<T extends object>(target : Constructor<T>, obj : any  , scheme : string = BASE_SCHEME){
 		
 		if(!obj){
 			return obj;
@@ -384,19 +422,19 @@ export class JSONHandler{
 			// if this is an Out key, convert it to an IN Key, so we can get the right meta data. 
 			if ( meta.includes(JSON_TAGS.JSON_PROPERTY_NAME_MAP_IN ) ){
 				// get out key from the in Key
-				key = Reflect.getMetadata( JSON_TAGS.JSON_PROPERTY_NAME_MAP_IN , prototype , key ); 
+				key = getMetadata( JSON_TAGS.JSON_PROPERTY_NAME_MAP_IN , prototype , key  , scheme ); 
 				meta = Reflect.getMetadataKeys( prototype , key );
 				PropertyName = key;
 			} 
  
 			// Get the constructor if there is any, Generics take priority
 			let out : any = null; 
-			let	constr	= Reflect.getMetadata( JSON_TAGS.JSON_PROPERTY_TYPED			, prototype , key )
+			let	constr	= getMetadata( JSON_TAGS.JSON_PROPERTY_TYPED			, prototype , key  , scheme )
 			
 			if ( meta.includes(JSON_TAGS.JSON_PROPERTY_FUNC_MAP_IN )) {
-				let inFunction = Reflect.getMetadata( JSON_TAGS.JSON_PROPERTY_FUNC_MAP_IN , prototype , key ); 
+				let inFunction = getMetadata( JSON_TAGS.JSON_PROPERTY_FUNC_MAP_IN , prototype , key  , scheme ); 
 				if (constr) {
-					out = inFunction(obj[inKey], (obj) => JSONHandler.deserializeRaw(constr, obj) );
+					out = inFunction(obj[inKey], (obj) => JSONHandler.deserializeRaw(constr, obj  , scheme ) );
 				} 
 				else {
 					out = inFunction(obj[inKey], (obj) => obj );
@@ -407,7 +445,7 @@ export class JSONHandler{
 				// if it needs deserializing
 				let convert = ( e ) => e;
 				if(constr){
-					convert = ( e ) => JSONHandler.deserializeRaw(constr, e);
+					convert = ( e ) => JSONHandler.deserializeRaw(constr, e , scheme );
 				}else{
 					// as stated above
 				}
@@ -423,7 +461,7 @@ export class JSONHandler{
 				}
 				
 				out = [];
-				const typekey = Reflect.getMetadata( JSON_TAGS.JSON_PROPERTY_FORCE_BASE_TYPE , prototype , key )
+				const typekey = getMetadata( JSON_TAGS.JSON_PROPERTY_FORCE_BASE_TYPE , prototype , key  , scheme  )
 				for (let j = 0; j < obj[inKey].length; j++) {
 					let e = obj[inKey][j];
 					let r = convert2(e,typekey);
@@ -432,15 +470,14 @@ export class JSONHandler{
 			}
 			else {
 				if (constr) {
-					out = JSONHandler.deserializeRaw(constr, obj[inKey]);
+					out = JSONHandler.deserializeRaw(constr, obj[inKey]  , scheme );
 				} 
 				else{
 					out = obj[inKey];
 				}
 			}
 
-			result[PropertyName] = out;
-			let a = 1;
+			result[PropertyName] = out; 
 		}
 		return result;
 	}
