@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { flip } from 'svelte/animate';
     import { onMount } from "svelte";
-    import { slidefade } from '../Transitions/SlideFly';
+    import { slidefade } from '../../Transitions/SlideFly';
 	import './CustomSelect.scss'
 
 	export let options	: string[];
