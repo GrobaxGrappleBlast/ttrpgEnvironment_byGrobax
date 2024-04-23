@@ -1,10 +1,13 @@
 
 <script lang="ts">
     import GrobaxTTRPGSystemHandler from "../../app";
+    import CustomSelect from "./CustomSelect/CustomSelect.svelte";
 	
 	let plugin: GrobaxTTRPGSystemHandler;
 
 </script>
 <div>
-	<b>HEJ HANS</b>
+	<CustomSelect options={['V','B','ASDASDADSADASDSADADA','asdadasasdad','asdadadsasdadsad']}>
+		
+	</CustomSelect>
 </div>
