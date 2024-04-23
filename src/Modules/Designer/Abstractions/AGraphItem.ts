@@ -7,14 +7,11 @@ import { KeyManager } from "./KeyManager";
 var keyManager = new KeyManager();
 export abstract class AGraphItem{
 	
-	constructor( name , key , controller : any ) {
+	constructor( name = '' , key = '' ) {
 		this.name = name; 
-		this.key = key + keyManager.getNewKey(); 
-		this.controller = controller;
+		this.key = key + keyManager.getNewKey();  
 	} 
-
-	protected controller:any;
-	
+ 
 	@JsonString()
 	public name: string
 	public key : any;

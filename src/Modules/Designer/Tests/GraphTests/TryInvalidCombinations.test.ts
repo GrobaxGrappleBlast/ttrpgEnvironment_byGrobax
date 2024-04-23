@@ -77,10 +77,11 @@ test('Try to Get Groups and Collections and nodes that does not exist', () => {
 
 })
 
+
 test('Get Placement key from Unparented node', () => {
 	
 	// @ts-ignore
-	const node = new GrobDerivedNode('trythis', {}  );
+	const node = new GrobDerivedNode('trythis', { getName(){return null} }  );
 
 	const locKey = node.getLocationKey();
 	const locKeySeg = node.getLocationKeySegments(); 

@@ -1,6 +1,8 @@
 
 import { JSONHandler } from '../../../JSONModules';
 import {
+	GrobCollection,
+	GrobDerivedNode,
 	TTRPGSystem,
 } from '../../index'
 
@@ -149,4 +151,22 @@ test('Test that we can serialize every part of such a system ', () => {
 	let n = sys.getDerivedNode('Spell DC', 'wisdom');
 	let ser = (JSONHandler.serialize(sys));
  
+});
+test('Test that we get when deserializing', () => {
+
+	let sys = setUpTests();
+
+	// let ser = JSON.parse(JSONHandler.serialize(sys,'preview')); 
+	let c = sys.getDerivedCollection('Spell DC');
+	let n = sys.getDerivedNode('Spell DC', 'wisdom');
+	let ser = (JSONHandler.serialize(n));
+ 
+	
+	let des : any ; 
+	des = JSONHandler.deserialize(GrobDerivedNode,ser)
+	//des = JSONHandler.deserialize(GrobCollection,ser)
+	//des = JSONHandler.deserialize(TTRPGSystem,ser)
+	debugger;
+	console.log(des);
+
 });

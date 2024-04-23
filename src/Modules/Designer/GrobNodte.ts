@@ -30,12 +30,14 @@ export class GrobDerivedOrigin {
 
 export abstract class GrobNode<T extends GrobNode<T>> extends AGraphItem{
 
-	constructor(name , keystart , controller : TTRPGSystemGraphAbstractModel) {  
-		super(name, keystart,controller) 
+	constructor(name? , keystart? , parent? : GrobCollection<GrobNodeType> ) {  
+		super(name, keystart) 
+		if(parent)
+			this.parent = parent;
 	}
 	
 	// @ts-ignore
- 	parent: GrobCollection<T>;
+ 	parent: GrobCollection<GrobNodeType>;
 
 	public dependencies :Record<any,GrobNodeType> = {};
 	public dependents : Record<any,GrobNodeType> = {};
@@ -88,7 +90,7 @@ export abstract class GrobNode<T extends GrobNode<T>> extends AGraphItem{
 	public getLocationKeySegments() : string [] {
 		let seg : string[] = ['','',''];
 		seg[0] = this.parent?.parent?.getName() ?? 'unknown';
-		seg[1] = this.parent?.getName() ?? 'unknown';
+		seg[1] = this.parent?.getName () ?? 'unknown';
 		seg[2] = this.getName() ?? 'unknown';
 		return seg;
 	}
@@ -139,8 +141,8 @@ export abstract class GrobNode<T extends GrobNode<T>> extends AGraphItem{
   
 export class GrobFixedNode extends GrobNode<GrobFixedNode>{
 	
-	constructor(name , controller : TTRPGSystemGraphAbstractModel) {  
-		super(name ,'NF',controller) 
+	constructor(name ,  parent? : GrobCollection<GrobFixedNode>) {  
+		super(name ,'NF',parent) 
 	}
 
 	@JsonNumber({name : 'standardValue'})
@@ -172,8 +174,8 @@ export class GrobFixedNode extends GrobNode<GrobFixedNode>{
 
 export class GrobDerivedNode extends GrobNode<GrobDerivedNode> {
 	
-	constructor(name , controller : TTRPGSystemGraphAbstractModel) {  
-		super(name  ,'ND' ,controller)  
+	constructor(name? , parent? : GrobCollection<GrobDerivedNode> ) {  
+		super(name  ,'ND', parent)  
 	}
 
 	@JsonString({name : 'calculationString'})

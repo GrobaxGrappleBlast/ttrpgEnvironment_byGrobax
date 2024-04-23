@@ -10,8 +10,8 @@ import { JsonMappingRecordInArrayOut } from "../JSONModules/index";
 export type GrobGroupType = GrobGroup<GrobNodeType>;
 export class GrobGroup<T extends GrobNodeType> extends AGraphItem {
 	 
-	constructor(name , controller : TTRPGSystemGraphAbstractModel) { 
-		super(name,'G',controller) 
+	constructor(name? , parent? : any ) { 
+		super(name,'G' ) 
 	}
    
 	@JsonMappingRecordInArrayOut({KeyPropertyName:'getKey'})
@@ -67,8 +67,7 @@ export class GrobGroup<T extends GrobNodeType> extends AGraphItem {
 			delete this.collections_keys[key];
 			delete this.collections_names[name];
 		}
-
-		this.controller = null;
+ 
 		this.key = null;
 		//@ts-ignore
 		this.name = null;

@@ -86,7 +86,7 @@ export abstract class TTRPGSystemGraphAbstractModel {
 			return null;
 		}
 
-		const collection = new GrobCollection<GrobNodeType>( name, this );
+		const collection = new GrobCollection<GrobNodeType>( name, group );
 		group.addCollection(collection);
 		return collection;
 	}

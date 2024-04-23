@@ -25,7 +25,7 @@ export interface JSONPropertyOptions {
 }
 interface JSONInnerPropertyOptions<IN extends object,OUT extends object> extends JSONPropertyOptions{
 	scheme?:string,
-	mappingFunctions? :{ postIn: (parent:any ) => void,  out:( t:IN , serialize?:any ) => OUT , in:( b:OUT, deserialize?:any ) => IN } , 
+	mappingFunctions? :{ out:( t:IN , serialize?:any ) => OUT , in:( b:OUT, deserialize?:any ) => IN } , 
 	type?: any,
 	forceBaseType?: false | keyof typeof JSON_BASETYPES
 }
@@ -126,8 +126,7 @@ export function JsonArrayClassTyped<T extends object>( type : Constructor<T> , o
  
 // Mappings
 interface JsonMappingParameters<IN extends object,OUT extends object>{
-	scheme?:string,
-	afterInFunction( parent:any ) ,
+	scheme?:string, 
 	inFunction:( b:OUT, deserialize?:any ) => IN,
 	outFunction:( t:IN , serialize?:any ) => OUT ,
 	type? : Constructor<IN>,
@@ -144,8 +143,7 @@ export function JsonMapping<IN extends object,OUT extends object>( params : Json
 	// Set mapping functions 
 	(option as JSONInnerPropertyOptions<IN,OUT>).mappingFunctions = {
 		out:params.outFunction,
-		in:params.inFunction,
-		postIn:params.afterInFunction,
+		in:params.inFunction, 
 	}
 	return JsonProperty(option);
 }
@@ -153,7 +151,6 @@ export function JsonMapping<IN extends object,OUT extends object>( params : Json
 interface specialRecordArrayMappingProperties<IN extends object,OUT extends object> extends JSONInnerPropertyOptions<IN,OUT>{
 	scheme?:string,
 	KeyPropertyName:string,
-	afterInFunction?: ( parent:any ) => void, 
 }
 export function JsonMappingRecordInArrayOut<IN extends object,OUT extends object>( option : specialRecordArrayMappingProperties<IN,OUT> ){
 	// clean the input.
@@ -181,9 +178,6 @@ export function JsonMappingRecordInArrayOut<IN extends object,OUT extends object
 		return r as IN;
 	} 
 
-	let postIn = option.afterInFunction;
-	if(!postIn)
-		postIn = ( a : any ) => {}
 
 	if(type){
 		option.type = type;
@@ -192,8 +186,7 @@ export function JsonMappingRecordInArrayOut<IN extends object,OUT extends object
 	// Set mapping functions 
 	option.mappingFunctions = {
 		out:outfunc,
-		in:infunc,
-		postIn:postIn,
+		in:infunc, 
 	}
 
 	return JsonProperty(option);

@@ -38,7 +38,7 @@ export class JSONHandler{
 			let meta = Reflect.getMetadataKeys( obj , key );	
 			
 			// check if the scheme we are about to export have The Property in it
-			if( !hasMetaDataInScheme(JSON_TAGS.JSON_PROPERTY,obj,key,scheme)){
+			if( !hasMetaDataInScheme(JSON_TAGS.JSON_PROPERTY,obj,key,scheme) ){
 				continue;
 			}
 
@@ -196,7 +196,10 @@ export class JSONHandler{
 			if ( meta.includes(JSON_TAGS.JSON_PROPERTY_FUNC_MAP_IN )) {
 				let inFunction = getMetadata( JSON_TAGS.JSON_PROPERTY_FUNC_MAP_IN , prototype , key  , scheme ); 
 				if (constr) {
-					out = inFunction(obj[inKey], (obj) => JSONHandler.deserializeRaw(constr, obj  , scheme ) );
+					out = inFunction(obj[inKey], (obj) => {
+						let res = JSONHandler.deserializeRaw(constr, obj  , scheme )
+						return res;
+					} );
 				} 
 				else {
 					out = inFunction(obj[inKey], (obj) => obj );

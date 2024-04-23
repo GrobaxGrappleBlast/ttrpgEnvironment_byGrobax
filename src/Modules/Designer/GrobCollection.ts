@@ -9,8 +9,8 @@ export type GrobCollectionType = GrobCollection<GrobNodeType>;
 
 export class GrobCollection<T extends GrobNodeType> extends AGraphItem {
 	
-	constructor(name , controller : TTRPGSystemGraphAbstractModel) {
-		super(name, 'C', controller)
+	constructor(name? ,parent? : GrobGroup<T>) {
+		super(name, 'C')
 	} 
 	
 	@JsonMappingRecordInArrayOut({KeyPropertyName:'getKey',name:'data'})

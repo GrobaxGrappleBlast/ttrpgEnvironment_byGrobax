@@ -95,27 +95,30 @@ export class TTRPGSystemGraphModel extends TTRPGSystemGraphAbstractModel {
 			return null;
 		}
 
-		const node = new GrobDerivedNode(name,this);
+		const node = new GrobDerivedNode(name,col);
 		col.addNode(node); 
 		return node as GrobDerivedNode;
 	}
 	public createFixedNode( col : GrobCollection<GrobFixedNode> | string  , name : string){
 		
+		let grp = this._getGroup_key(this.fixedKey);
+
 		let colName = col;
 		if( typeof col !== 'string'){
 			// @ts-ignore
 			colName = col.getName();
 		}
+		else{
+			col = grp.getCollection(colName) as GrobCollection<GrobFixedNode>;
+		}
 
-		let grp = this._getGroup_key(this.fixedKey);
-		const _col = grp.getCollection(colName);
-		if(!_col){
+		if(!col){
 			this.out.outError(`No Fixed collection found by name: ${colName} `);
 			return null;
 		}
 
-		const node = new GrobFixedNode(name,this);
-		_col.addNode(node); 
+		const node = new GrobFixedNode(name,col);
+		col.addNode(node); 
 
 	}
 
@@ -239,39 +242,6 @@ export class TTRPGSystemGraphModel extends TTRPGSystemGraphAbstractModel {
 	}
 	public getDerivedNode( col : GrobCollection<GrobDerivedNode> | string , name : string){
 		return this.getNode(derived,col,name ) as GrobDerivedNode;
-		/*
-		// define output
-		let node : derivedNode;
-
-		// if this is a collection, just get the node.
-		if ( typeof col !== 'string') {
-			node = (col as  Collection<derivedNode>).getNode(name);
-		}
-		
-		// if col is a string, then let it be seen as the name of the collection, and fetch it.
-		else {
-			
-			// get data
-			col = this.derived.getCollection(col) as Collection<derivedNode> ;
-			
-			// error handling.
-			if( !col ){
-				this.out.outError(`attempted to get derived collection ${name}, but did not exist`);
-				return null;
-			}
-
-			// defined output
-			node = col.getNode(name);
-		}
-
-		// error handling
-		if ( !node ){
-			this.out.outError(`attempted to get derived Node ${name}, but did not exist`);
-			return null;
-		}
-
-
-		return node;*/
 	}
 	public getFixedNode( col : GrobCollection<GrobFixedNode> | string  , name : string){
 		return this.getNode(fixed,col,name ) as GrobFixedNode;
