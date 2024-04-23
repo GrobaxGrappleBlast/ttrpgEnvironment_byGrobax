@@ -1,4 +1,5 @@
 
+import { JsonString } from "../../../../src/Modules/JSONModules/Decorators";
 import { KeyManager } from "./KeyManager";
 
 
@@ -13,8 +14,10 @@ export abstract class AGraphItem{
 	} 
 
 	protected controller:any;
-	protected name: string
-	protected key : any;
+	
+	@JsonString()
+	public name: string
+	public key : any;
 
 	public getName(){
 		return this.name;

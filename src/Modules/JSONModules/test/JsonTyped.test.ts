@@ -1,7 +1,7 @@
 import exp from "constants";
 import { JSONHandler, JsonArrayBoolean, JsonArrayClassTyped, JsonArrayNumber, JsonArrayString, JsonBoolean, JsonClassTyped, JsonMappingRecordInArrayOut, JsonNumber, JsonProperty, JsonString 
 	
-} from "../Decorators";
+} from  "../index";
 
 
 

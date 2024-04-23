@@ -4,6 +4,7 @@ import { newOutputHandler, type IOutputHandler } from "../Abstractions/IOutputHa
 import type { GrobNodeType } from "./TTRPGSystemsGraphDependencies";
 import { GrobDerivedNode, GrobFixedNode } from "../GrobNodte";
 import { TTRPGSystemGraphAbstractModel } from "./TTRPGSystemGraphAbstractModel"; 
+import { JsonProperty } from "../../JSONModules/index";
 
 const derived 	= 'derived';
 const fixed 	= 'fixed';
@@ -15,8 +16,7 @@ export type groupKeyType = 'fixed' | 'derived';
 */
 export class TTRPGSystemGraphModel extends TTRPGSystemGraphAbstractModel {
 	  
-	private fixed : GrobGroup<GrobFixedNode>;
-	private derived:GrobGroup<GrobDerivedNode>;
+	
 	private fixedKey:any;
 	private derivedKey:any;
 
@@ -24,10 +24,10 @@ export class TTRPGSystemGraphModel extends TTRPGSystemGraphAbstractModel {
 		super();
 
 		// create the main groups;  
-		this.fixed 		= this._createGroup( 'fixed' ) 	 as GrobGroup<GrobFixedNode>;
-		this.derived 	= this._createGroup( 'derived' ) as GrobGroup<GrobDerivedNode>; 
-		this.fixedKey 	= this.fixed.getKey();
-		this.derivedKey = this.derived.getKey();
+		let fixed 		= this._createGroup( 'fixed' ) 	 as GrobGroup<GrobFixedNode>;
+		let derived 	= this._createGroup( 'derived' ) as GrobGroup<GrobDerivedNode>; 
+		this.fixedKey 	= fixed.getKey();
+		this.derivedKey = derived.getKey();
 		this.setOut( newOutputHandler() );
 	}
 
@@ -39,14 +39,18 @@ export class TTRPGSystemGraphModel extends TTRPGSystemGraphAbstractModel {
 			this.out.outError(`No group existed by name ${group}`)
 		}
 		
-
+		let grp : GrobGroupType | null = null;
 		if(group == 'fixed'){
-			return this._createCollection(this.fixed , name);
+			grp = this._getGroup_key(this.fixedKey);
 		} 
 		else if(group == 'derived'){
-			return this._createCollection(this.derived, name);
+			grp = this._getGroup_key(this.derivedKey); 
 		}
-		return null;
+
+		if(!grp)
+			return null;
+
+		return this._createCollection( grp , name);
 	}
 	public createDerivedCollection( name : string) : GrobCollection<GrobDerivedNode>{
 		return this.createCollection(derived, name) as  GrobCollection<GrobDerivedNode>;
@@ -79,8 +83,8 @@ export class TTRPGSystemGraphModel extends TTRPGSystemGraphAbstractModel {
 		
 		let colName = col;
 		if( typeof col == 'string'){
-			// @ts-ignore
-			col = this.derived.getCollection(col);
+			let grp = this._getGroup_key(this.derivedKey);
+			col = grp.getCollection(col) as GrobCollection<GrobDerivedNode> ;
 		}else{
 			colName = col.getName();
 		}
@@ -103,7 +107,8 @@ export class TTRPGSystemGraphModel extends TTRPGSystemGraphAbstractModel {
 			colName = col.getName();
 		}
 
-		const _col = this.fixed.getCollection(colName);
+		let grp = this._getGroup_key(this.fixedKey);
+		const _col = grp.getCollection(colName);
 		if(!_col){
 			this.out.outError(`No Fixed collection found by name: ${colName} `);
 			return null;
@@ -210,11 +215,12 @@ export class TTRPGSystemGraphModel extends TTRPGSystemGraphAbstractModel {
 		else {
 			
 			// get data
+			const colName = col;
 			col = grp.getCollection(col) as GrobCollection<GrobNodeType> ;
 			
 			// error handling.
 			if( !col ){
-				this.out.outError(`attempted to get derived collection ${name}, but did not exist`);
+				this.out.outError(`attempted to get ${group} collection ${colName}, but did not exist`);
 				return null;
 			}
 
@@ -224,7 +230,7 @@ export class TTRPGSystemGraphModel extends TTRPGSystemGraphAbstractModel {
 
 		// error handling
 		if ( !node ){
-			this.out.outError(`attempted to get derived Node ${name}, but did not exist`);
+			this.out.outError(`attempted to get ${group}.${col.getName()} Node ${name}, but did not exist`);
 			return null;
 		}
 
@@ -269,40 +275,7 @@ export class TTRPGSystemGraphModel extends TTRPGSystemGraphAbstractModel {
 	}
 	public getFixedNode( col : GrobCollection<GrobFixedNode> | string  , name : string){
 		return this.getNode(fixed,col,name ) as GrobFixedNode;
-		/*
-			// define output
-			let node : fixedNode;
 
-			// if this is a collection, just get the node.
-			if ( typeof col !== 'string') {
-				node = (col as  Collection<fixedNode>).getNode(name);
-			}
-			
-			// if col is a string, then let it be seen as the name of the collection, and fetch it.
-			else {
-				
-				// get data
-				col = this.fixed.getCollection(col) as Collection<fixedNode> ;
-				
-				// error handling.
-				if( !col ){
-					this.out.outError(`attempted to get fixed collection ${name}, but did not exist`);
-					return null;
-				}
-	
-				// defined output
-				node = col.getNode(name);
-			}
-	
-			// error handling
-			if ( !node ){
-				this.out.outError(`attempted to get fixed Node ${name}, but did not exist`);
-				return null;
-			}
-	
-	
-			return node;
-			*/
 	}
 
 	// delete Statements 

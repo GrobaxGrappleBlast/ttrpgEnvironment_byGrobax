@@ -1,4 +1,4 @@
-import { JSONHandler, JsonProperty } from "../Decorators";
+import { JSONHandler, JsonProperty } from  "../index";
 
 export class Container {
 	

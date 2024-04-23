@@ -5,6 +5,7 @@ import { GrobNode } from "./GrobNodte";
 import type { GrobNodeType } from "./GraphV2/TTRPGSystemsGraphDependencies";
 import { TTRPGSystemGraphModel } from "./GraphV2/TTRPGSystemGraphModel";
 import { TTRPGSystemGraphAbstractModel } from "./GraphV2/TTRPGSystemGraphAbstractModel"; 
+import { JsonMappingRecordInArrayOut } from "../JSONModules/index";
 
 export type GrobGroupType = GrobGroup<GrobNodeType>;
 export class GrobGroup<T extends GrobNodeType> extends AGraphItem {
@@ -13,7 +14,7 @@ export class GrobGroup<T extends GrobNodeType> extends AGraphItem {
 		super(name,'G',controller) 
 	}
    
-	
+	@JsonMappingRecordInArrayOut({KeyPropertyName:'getKey'})
 	collections_keys: Record<string, GrobCollection<T>> = {};
 	 
 	collections_names: Record<string, GrobCollection<T>> = {};
@@ -43,12 +44,21 @@ export class GrobGroup<T extends GrobNodeType> extends AGraphItem {
 		delete this.collections_keys[key];
 		return this.collections_keys[key] == null;
 	}
-
 	public update_collection_name(oldName,newName){ 
 		this.collections_names[newName] = this.collections_names[oldName] ;
 		delete this.collections_names[oldName] ;
 	}
 	
+	public setName( name ){
+		super.setName(name);
+		for(const key in this.collections_keys){
+			const curr = this.collections_keys[key];
+			curr.updateLocation( this );
+		}
+	} 
+	
+
+
 	dispose () {
 		for( const key in this.collections_keys ){
 			const curr = this.collections_keys[key];

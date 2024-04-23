@@ -2,7 +2,8 @@ import { GrobGroup } from "./GrobGroup";
 import { AGraphItem } from "./Abstractions/AGraphItem"; 
 import type { GrobNodeType } from "./GraphV2/TTRPGSystemsGraphDependencies"; 
 import { TTRPGSystemGraphAbstractModel } from "./GraphV2/TTRPGSystemGraphAbstractModel";
- 
+import { JsonMapping, JsonMappingRecordInArrayOut } from "../JSONModules/index";
+  
 export type GrobCollectionType = GrobCollection<GrobNodeType>;
 
 
@@ -11,6 +12,8 @@ export class GrobCollection<T extends GrobNodeType> extends AGraphItem {
 	constructor(name , controller : TTRPGSystemGraphAbstractModel) {
 		super(name, 'C', controller)
 	} 
+	
+	@JsonMappingRecordInArrayOut({KeyPropertyName:'getKey',name:'data'})
 	nodes_keys: Record<string, T> = {}
 	nodes_names: Record<string, T> = {}
 	parent: GrobGroup<T>; 
@@ -51,8 +54,17 @@ export class GrobCollection<T extends GrobNodeType> extends AGraphItem {
 		const oldname= this.getName();
 		super.setName(name);
 		this.parent.update_collection_name(oldname,name);
-	} 
 
+		this.updateLocation(this.parent);
+	} 
+	updateLocation( parent ){
+		this.parent = parent;
+		for(const key in this.nodes_keys){
+			const curr = this.nodes_keys[key];
+			curr.updateLocation( this );
+		}
+	}
+ 
 	dispose () {
 		
 		for( const key in this.nodes_keys ){
@@ -69,6 +81,5 @@ export class GrobCollection<T extends GrobNodeType> extends AGraphItem {
 		//@ts-ignore
 		this.name = null;
 		
-	}
- 
+	} 
 }

@@ -608,9 +608,13 @@ test(' graph Create and Get And Delete And Get', () => {
 		
 		expect(sys.hasCollection	(group,'1c')).toBe(false);
 		expect(sys.hasDerivedCollection	  ('2c')).toBe(false);
-		names 	 = Object.values((sys as any).derived.collections_names)
-		keys 	 = Object.values((sys as any).derived.collections_keys )
-		nameKeys = Object.keys	((sys as any).derived.collections_names)
+
+		//@ts-ignore
+		let derived = sys.data[ sys.derivedKey];
+
+		names 	 = Object.values(derived.collections_names)
+		keys 	 = Object.values(derived.collections_keys )
+		nameKeys = Object.keys	(derived.collections_names)
 
 		expect( names.length).toBe(3);
 		expect( keys.length ).toBe(3); 
@@ -627,9 +631,9 @@ test(' graph Create and Get And Delete And Get', () => {
 		
 		expect(sys.hasCollection	(group,'1c')).toBe(false);
 		expect(sys.hasFixedCollection	  ('2c')).toBe(false);
-		names 	 = Object.values((sys as any).derived.collections_names)
-		keys 	 = Object.values((sys as any).derived.collections_keys )
-		nameKeys = Object.keys	((sys as any).derived.collections_names)
+		names 	 = Object.values(derived.collections_names)
+		keys 	 = Object.values(derived.collections_keys )
+		nameKeys = Object.keys	(derived.collections_names)
 		
 		expect( names.length).toBe(3);
 		expect( keys.length ).toBe(3); 

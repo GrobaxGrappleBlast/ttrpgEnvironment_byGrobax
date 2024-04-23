@@ -1,5 +1,5 @@
 import exp from "constants";
-import { JSONHandler, JsonMapping, JsonMappingRecordInArrayOut, JsonProperty } from "../Decorators";
+import { JSONHandler, JsonMapping, JsonMappingRecordInArrayOut, JsonProperty } from  "../index";
 
 
 var SecretKeyGen = 0;
