@@ -4,6 +4,7 @@ import {
 	GrobCollection,
 	GrobDerivedNode,
 	TTRPGSystem,
+	TTRPG_SCHEMES,
 } from '../../index'
 
 function setUpTests(){
@@ -153,6 +154,7 @@ test('Test that we can serialize every part of such a system ', () => {
 	let ser = (JSONHandler.serialize(sys));
  
 });
+
 test('Test that we get when deserializing', () => {
 
 	let sys = setUpTests();
@@ -165,6 +167,19 @@ test('Test that we get when deserializing', () => {
 	
 	let des : any ; 
 	des = JSONHandler.deserialize(GrobDerivedNode,ser)
+	//des = JSONHandler.deserialize(GrobCollection,ser)
+	//des = JSONHandler.deserialize(TTRPGSystem,ser)
+	 
+});
+
+test('MANUEL TEST: check that the PREVIEW json is stil korrekt', () => {
+
+	let sys = setUpTests();
+	let regular = (JSONHandler.serialize(sys,TTRPG_SCHEMES.GRAPH	)); 
+	let preview = (JSONHandler.serialize(sys,TTRPG_SCHEMES.PREVIEW	)); 
+	debugger;
+	console.log(regular)
+	console.log(preview)
 	//des = JSONHandler.deserialize(GrobCollection,ser)
 	//des = JSONHandler.deserialize(TTRPGSystem,ser)
 	 
