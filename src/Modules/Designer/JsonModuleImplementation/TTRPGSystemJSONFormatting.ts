@@ -4,10 +4,9 @@ import { newOutputHandler, type IOutputHandler } from "../Abstractions/IOutputHa
 import type { GrobNodeType } from "../GraphV2/TTRPGSystemsGraphDependencies";
 import { GrobDerivedNode, GrobDerivedOrigin, GrobFixedNode } from "../GrobNodte";
 import { TTRPGSystemGraphAbstractModel } from "../GraphV2/TTRPGSystemGraphAbstractModel"; 
-import { JsonProperty,JsonObject, JsonMappingRecordInArrayOut, JsonClassTyped } from "../../JSONModules/index"; 
+import { JsonProperty,JsonObject, JsonMappingRecordInArrayOut, JsonClassTyped, JsonString } from "../../JSONModules/index"; 
 import { TTRPGSystemGraphModel } from "../GraphV2/TTRPGSystemGraphModel";
-
-
+import { BASE_SCHEME } from "../../../../src/Modules/JSONModules/JsonModuleConstants";
  
 class GrobCollectionDerived extends GrobCollection<GrobDerivedNode>{
 	
@@ -35,6 +34,11 @@ class GrobGroupFixed extends GrobGroup<GrobFixedNode>{
 
 }
 
+let baseSchemeValue = BASE_SCHEME
+export class TTRPG_SCHEMES {
+	static GRAPH 	= BASE_SCHEME ;
+	static PREVIEW ='mini';
+} 
 
 /**
  *  handles Model operations and Data Containment, 
@@ -86,6 +90,23 @@ export class TTRPGSystemJSONFormatting extends TTRPGSystemGraphModel {
 
 	@JsonClassTyped ( GrobGroupDerived )
 	public derived 	: GrobGroupDerived
+
+	@JsonString()
+	@JsonString({scheme:TTRPG_SCHEMES.PREVIEW})
+	public author : string = "";
+
+	@JsonString()
+	@JsonString({scheme:TTRPG_SCHEMES.PREVIEW})
+	public version: string = "";
+	
+	@JsonString()
+	@JsonString({scheme:TTRPG_SCHEMES.PREVIEW})
+	public systemCodeName:string = "";
+	
+	@JsonString()
+	@JsonString({scheme:TTRPG_SCHEMES.PREVIEW})
+	public systemName:string = "";
+	
 
 	public constructor(){
 		super();
