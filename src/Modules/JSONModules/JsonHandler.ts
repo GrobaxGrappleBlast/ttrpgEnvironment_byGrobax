@@ -1,5 +1,5 @@
 import type { IOutputHandler } from "../Designer/Abstractions/IOutputHandler";
-import { getMetadata, hasMetaDataInScheme } from "./JsonModuleBaseFunction";
+import { getMetadata, getOwnMetaData, getOwnMetaDataKeys, hasMetaDataInScheme } from "./JsonModuleBaseFunction";
 import { BASE_SCHEME, JSON_BASETYPES, JSON_TAGS, NoOutput, type Constructor } from "./JsonModuleConstants";
 
 
@@ -171,6 +171,12 @@ export class JSONHandler{
 		let result = new target();
 		let prototype = target.prototype;
 
+		// EVENT ON BEFORE DESERIALIZE
+		// todo implement;
+		
+
+
+
 		// get propertynames and loop through 
 		let propertyNames = Object.getOwnPropertyNames( obj );
 		for (let i = 0; i < propertyNames.length; i++) {
@@ -244,6 +250,17 @@ export class JSONHandler{
 
 			result[PropertyName] = out; 
 		}
+ 
+		// EVENT ON AFTER DESERIALIZE
+		let ObjectMeta  = getOwnMetaDataKeys(result); 
+ 
+		// if there is an After serialize function get it and run it. 
+		if(ObjectMeta.includes(JSON_TAGS.JSON_OBJECT_ON_AFTER_DE_SERIALIZATION)){
+			// get meta data function and run it on the resulting object
+			let f = getOwnMetaData(JSON_TAGS.JSON_OBJECT_ON_AFTER_DE_SERIALIZATION,result,scheme);
+			f(result);
+		}
+
 		return result;
 	}
 }

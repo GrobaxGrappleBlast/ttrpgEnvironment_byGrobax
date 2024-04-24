@@ -2,7 +2,7 @@ import "reflect-metadata";
 import { newOutputHandler, type IOutputHandler } from "../Designer/Abstractions/IOutputHandler";
 import type { Constructor } from "obsidian";
 import { BASE_SCHEME, JSON_BASETYPES, JSON_TAGS } from "./JsonModuleConstants";
-import { setMetadata } from "./JsonModuleBaseFunction";
+import { setMetadata, setOwnMetaData } from "./JsonModuleBaseFunction";
 
 function cleanNonAccesibleSettings( option?:JSONPropertyOptions ){
 	if(!option)
@@ -122,8 +122,6 @@ export function JsonArrayClassTyped<T extends object>( type : Constructor<T> , o
 }
 
 
-
- 
 // Mappings
 interface JsonMappingParameters<IN extends object,OUT extends object>{
 	scheme?:string, 
@@ -192,5 +190,30 @@ export function JsonMappingRecordInArrayOut<IN extends object,OUT extends object
 	return JsonProperty(option);
 }
 
+interface JsonObjectProperties {
+	scheme?:string,
+	onAfterDeSerialization?: ( self:any ) => any
+}
+function cleanObjectOptions( option?:JsonObjectProperties ){
 
+	console.log('cleaning Options')
+	console.log(option);
 
+	if(!option)
+		option = {};
+
+	if(!option.onAfterDeSerialization){
+		option.onAfterDeSerialization = ( o ) => {};
+	}
+
+	if(option.scheme == '')
+		option.scheme = undefined;
+	option.scheme = option.scheme ?? BASE_SCHEME;
+	return option;
+}
+export function JsonObject( option : JsonObjectProperties){
+	option = cleanObjectOptions(option);
+	return function (target: any ) {
+		setOwnMetaData( JSON_TAGS.JSON_OBJECT_ON_AFTER_DE_SERIALIZATION, target , option.onAfterDeSerialization , option.scheme );
+	}
+}
