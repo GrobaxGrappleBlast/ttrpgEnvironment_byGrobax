@@ -167,8 +167,7 @@ test('Test Deleted Collection', () => {
 		fn1_try =  sys.getNode(fn1keys[0] as any,fn1keys[1],fn1keys[2]);
 		expect(fn1_try==null).toBe(true)
 
-	// Collection DELETE ASSURANCE
-		expect(Object.keys(fc1.nodes_keys).length).toBe(0)
+	// Collection DELETE ASSURANCE 
 		expect(Object.keys(fc1.nodes_names).length).toBe(0)
 		expect(fc1.parent==null).toBe(true)
  
@@ -224,13 +223,11 @@ test('Test Group Deletion', () => {
 		fn1_try =  sys.getNode(fn1keys[0] as any,fn1keys[1],fn1keys[2]);
 		expect(fn1_try == null).toBe(true)
 
-	// Collection DELETE ASSURANCE
-		expect(Object.keys(fc1.nodes_keys).length).toBe(0)
+	// Collection DELETE ASSURANCE 
 		expect(Object.keys(fc1.nodes_names).length).toBe(0)
 		expect(fc1.parent == null ).toBe(true)
 
-	// Group Deletion Assurance
-		expect(Object.keys(fg1.collections_keys).length).toBe(0)
+	// Group Deletion Assurance 
 		expect(Object.keys(fg1.collections_names).length).toBe(0)
 
 		// @ts-ignore

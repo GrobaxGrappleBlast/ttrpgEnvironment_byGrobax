@@ -9,12 +9,12 @@ export abstract class AGraphItem{
 	
 	constructor( name = '' , key = '' ) {
 		this.name = name; 
-		this.key = key + keyManager.getNewKey();  
+		this._key = key + keyManager.getNewKey();  
 	} 
  
 	@JsonString()
 	public name: string
-	public key : any;
+	public _key : any;
 
 	public getName(){
 		return this.name;
@@ -22,9 +22,9 @@ export abstract class AGraphItem{
 	
 	public setName( name ){
 		this.name = name; 
+	} 
 
-	} 
-	public getKey(){
-		return this.key;
-	} 
+	public _____getKey(){
+		return this._key
+	}
 }

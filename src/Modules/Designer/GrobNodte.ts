@@ -45,7 +45,7 @@ export abstract class GrobNode<T extends GrobNode<T>> extends AGraphItem{
 	}
 
 	public addDependent(node: GrobNodeType ) : boolean {
-		const key = node.getKey();
+		const key = node._____getKey();
 
 		if(this.dependents[key]){
 			return false;
@@ -55,8 +55,8 @@ export abstract class GrobNode<T extends GrobNode<T>> extends AGraphItem{
 		return true;
 	} 
 	public removeDependent(node:GrobNodeType) : boolean{
-		delete this.dependents[node.getKey()];
-		return this.dependents[node.getKey()] == null;
+		delete this.dependents[node._____getKey()];
+		return this.dependents[node._____getKey()] == null;
 	}
 	public getDependents(): GrobNodeType[] {
 		//@ts-ignore
@@ -67,13 +67,6 @@ export abstract class GrobNode<T extends GrobNode<T>> extends AGraphItem{
 	abstract removeDependency( node:GrobNodeType)  : boolean
 	abstract nullifyDependency( node:GrobNodeType ): boolean
 
-	public nullifyDependent(node:GrobNodeType){
-		let dep = this.dependents[node.getKey()];
-		if(!dep)
-			return false;
-
-		return dep.nullifyDependency(this as any)
-	}
 	public getDependencies(): GrobNodeType[] {
 		//@ts-ignore
 		return Object.values( this.dependencies ) as GrobNodeType[] ?? [];
@@ -102,7 +95,7 @@ export abstract class GrobNode<T extends GrobNode<T>> extends AGraphItem{
 
 		for(const key in this.dependencies){
 			const curr = this.dependencies[key]
-			curr.nullifyDependent(this as any)
+			curr.removeDependent(this as any)
 		}
 		
 		for(const key in this.dependents){
@@ -112,7 +105,6 @@ export abstract class GrobNode<T extends GrobNode<T>> extends AGraphItem{
 
 		//@ts-ignore
 		this.parent = null;
-		this.key = null;
 		//@ts-ignore
 		this.name = null;
 
@@ -198,7 +190,7 @@ export class GrobDerivedNode extends GrobNode<GrobDerivedNode> {
 	}
 
 	public addDependency(node:GrobNodeType){
-		const key = node.getKey()
+		const key = node._____getKey()
 		this.dependencies[key] = node; 
 
 		node.addDependent(this);
@@ -207,7 +199,7 @@ export class GrobDerivedNode extends GrobNode<GrobDerivedNode> {
 	public removeDependency(node:GrobNodeType){
 		 
 		// delete the dependency
-		const key = node.getKey()
+		const key = node._____getKey()
 		if(this.dependencies[key]){
 			delete this.dependencies[key];
 			node.removeDependent(this);
@@ -217,7 +209,7 @@ export class GrobDerivedNode extends GrobNode<GrobDerivedNode> {
 		// we find the origin, with the key value, and remove it.
 		for (let i = 0; i < this.origins.length; i++) {
 			const orig = this.origins[i];
-			if(orig.origin != null && orig.origin.getKey() == key){
+			if(orig.origin != null && orig.origin._____getKey() == key){
 				orig.origin = null;
 			}
 		}  
@@ -226,8 +218,8 @@ export class GrobDerivedNode extends GrobNode<GrobDerivedNode> {
 	}
 	public nullifyDependency(node:GrobNodeType){
 		// first Empty the origin.
-		let key = node.getKey();
-		let orig = this.origins.find( p => p.origin?.getKey() == key );
+		let key = node._____getKey();
+		let orig = this.origins.find( p => p.origin?._____getKey() == key );
 		if(orig){
 			orig.origin = null;	
 			orig.originKey = GrobDerivedOrigin.UnkownLocationKey;
@@ -317,10 +309,10 @@ export class GrobDerivedNode extends GrobNode<GrobDerivedNode> {
 
 			// handle Dependencies 
 			let oldDependencies : Record<string,GrobNodeType > = {};
-			this.getDependencies().forEach(p => oldDependencies[p.getKey()] = p );
+			this.getDependencies().forEach(p => oldDependencies[p.getName()] = p );
 
 			let newDependencies : Record<string,GrobNodeType >= {};
-			this.origins.forEach( p => { if(p.origin != null){ newDependencies[ p.origin?.getKey()] = p.origin }});
+			this.origins.forEach( p => { if(p.origin != null){ newDependencies[ p.origin?.getName()] = p.origin }});
 
 			// remove old Dependencies 
 			for(const key in oldDependencies){
@@ -438,7 +430,7 @@ export class GrobDerivedNode extends GrobNode<GrobDerivedNode> {
 	public update( ){
 
 		if(!this.isValid()){
-			console.error(`Node isent Valid ${this.getKey()} ${this.getLocationKey()} Stopping update`);
+			console.error(`Node isent Valid ${this.getName()} ${this.getLocationKey()} Stopping update`);
 			return false;
 		}
 
@@ -455,7 +447,7 @@ export class GrobDerivedNode extends GrobNode<GrobDerivedNode> {
 	}
 
 	public updateDependecysLocation( dependency ){
-		let orig = this.origins.find( p => p.origin?.getKey() == dependency.getKey() );
+		let orig = this.origins.find( p => p.origin?.getName() == dependency.getName() );
 		if(!orig)
 			return;
 

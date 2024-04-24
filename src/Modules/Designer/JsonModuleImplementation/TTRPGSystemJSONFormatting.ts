@@ -47,10 +47,8 @@ class GrobGroupFixed extends GrobGroup<GrobFixedNode>{
 	},
 	onAfterDeSerialization:(self:TTRPGSystemJSONFormatting) => {
 		// add derived and fixed to groups
-		self.data[self.fixed.getKey()] = self.fixed; 
-		self.data[self.derived.getKey()] = self.derived;
-		(self as any).fixedKey	 = self.fixed.getKey();
-		(self as any).derivedKey = self.derived.getKey();
+		self.data[self.fixed	.getName()] = self.fixed; 
+		self.data[self.derived	.getName()] = self.derived; 
 
 		// For all groups 
 		for(const group_key in (self as any).data ){
@@ -60,12 +58,12 @@ class GrobGroupFixed extends GrobGroup<GrobFixedNode>{
 			for(const col_key in (group as any).collections_names ){
 				const collection : GrobCollection<GrobNodeType> = group.collections_names[col_key];
 				collection.parent = group;
-				group.collections_keys[collection.getKey()] = collection;
+				group.collections_names[collection.getName()] = collection;
 
 				for( const node_key in (collection as any).nodes_names ){
 					const node = (collection as any).nodes_names[node_key];
 					node.parent = collection;
-					collection.nodes_keys[node.getKey()] = node;
+					collection.nodes_names[node.getName()] = node;
 
 					const origins : GrobDerivedOrigin[] = node.origins ?? [];
 					origins.forEach( origin  => {

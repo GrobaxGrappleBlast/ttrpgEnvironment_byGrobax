@@ -15,9 +15,6 @@ export type groupKeyType = 'fixed' | 'derived';
 */ 
 export class TTRPGSystemGraphModel extends TTRPGSystemGraphAbstractModel {
 
-	private fixedKey:any;
-	private derivedKey:any;
-
 	public constructor(){
 		super();
 		this.setOut( newOutputHandler() );
@@ -26,8 +23,8 @@ export class TTRPGSystemGraphModel extends TTRPGSystemGraphAbstractModel {
 	//TODO : find better solution than this.
 	// r 
 	public initAsNew(){
-		this.fixedKey 	=  (this._createGroup( 'fixed' )	as any	).getKey();
-		this.derivedKey =  (this._createGroup( 'derived' )	as any	).getKey();
+		this._createGroup( 'fixed' )	;
+		this._createGroup( 'derived' )	;
 	}
 
 
@@ -39,14 +36,7 @@ export class TTRPGSystemGraphModel extends TTRPGSystemGraphAbstractModel {
 			this.out.outError(`No group existed by name ${group}`)
 		}
 		
-		let grp : GrobGroupType | null = null;
-		if(group == 'fixed'){
-			grp = this._getGroup_key(this.fixedKey);
-		} 
-		else if(group == 'derived'){
-			grp = this._getGroup_key(this.derivedKey); 
-		}
-
+		let grp : GrobGroupType | null = this._getGroup(group);
 		if(!grp)
 			return null;
 
@@ -83,7 +73,9 @@ export class TTRPGSystemGraphModel extends TTRPGSystemGraphAbstractModel {
 		
 		let colName = col;
 		if( typeof col == 'string'){
-			let grp = this._getGroup_key(this.derivedKey);
+			let grp = this._getGroup(derived);
+			if(!grp)
+				return null;
 			col = grp.getCollection(col) as GrobCollection<GrobDerivedNode> ;
 		}else{
 			colName = col.getName();
@@ -101,7 +93,9 @@ export class TTRPGSystemGraphModel extends TTRPGSystemGraphAbstractModel {
 	}
 	public createFixedNode( col : GrobCollection<GrobFixedNode> | string  , name : string){
 		
-		let grp = this._getGroup_key(this.fixedKey);
+		let grp = this._getGroup(fixed);
+		if(!grp)
+			return null;
 
 		let colName = col;
 		if( typeof col !== 'string'){
@@ -260,18 +254,6 @@ export class TTRPGSystemGraphModel extends TTRPGSystemGraphAbstractModel {
 			}
 		}
 
-		if(group.getName() == 'fixed' ){
-			// @ts-ignore
-			this.fixed = null;
-			this.fixedKey = null;
-		}
-
-		if(group.getName() == 'derived' ){
-			// @ts-ignore
-			this.derived = null;
-			this.derivedKey = null;
-		}
-
 		super._deleteGroup(group);
 	}
 	public deleteCollection( group : groupKeyType , col : string | GrobCollection<GrobNodeType>){
@@ -325,13 +307,8 @@ export class TTRPGSystemGraphModel extends TTRPGSystemGraphAbstractModel {
 
 
 	protected _getGroup( name ){
-		switch(name){
-			case derived:
-				return this._getGroup_key(this.derivedKey);
-			case fixed:
-				return this._getGroup_key(this.fixedKey);
-		}
-		return null;
+		let grp = this.data[name]
+		return grp ?? null ;
 	}
 
 	

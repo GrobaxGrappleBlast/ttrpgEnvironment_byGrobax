@@ -11,9 +11,7 @@ export class GrobGroup<T extends GrobNodeType> extends AGraphItem {
 	constructor(name? , parent? : any ) { 
 		super(name,'G' ) 
 	}
-   
-	collections_keys: Record<string, GrobCollection<T>> = {};
-
+    
 	@JsonMappingRecordInArrayOut({KeyPropertyName:'getName', type :GrobCollection<GrobNodeType> })
 	collections_names: Record<string, GrobCollection<T>> = {};
 	 
@@ -26,21 +24,18 @@ export class GrobGroup<T extends GrobNodeType> extends AGraphItem {
 	public addCollection(collection: GrobCollection<T>) {
 		collection.parent = this;
 		this.collections_names[collection.getName()] = collection;
-		this.collections_keys[collection.getKey()] = collection;
 		return true;
 	}  
 	public removeCollection( collection : GrobCollection<T> ){ 
 
 		const name = collection.getName();
-		const key = collection.getKey();
 		let c = this.collections_names[name];
 		if(!c)
 			return false;
 
 		collection.dispose();
 		delete this.collections_names[name]; 
-		delete this.collections_keys[key];
-		return this.collections_keys[key] == null;
+		return this.collections_names[name] == null;
 	}
 	public update_collection_name(oldName,newName){ 
 		this.collections_names[newName] = this.collections_names[oldName] ;
@@ -49,22 +44,19 @@ export class GrobGroup<T extends GrobNodeType> extends AGraphItem {
 	
 	public setName( name ){
 		super.setName(name);
-		for(const key in this.collections_keys){
-			const curr = this.collections_keys[key];
+		for(const name in this.collections_names){
+			const curr = this.collections_names[name];
 			curr.updateLocation( this );
 		}
 	} 
 	
 	dispose () {
-		for( const key in this.collections_keys ){
-			const curr = this.collections_keys[key];
-			const name = curr.getName();
-			curr.dispose();
-			delete this.collections_keys[key];
+		for( const name in this.collections_names ){
+			const curr = this.collections_names[name]; 
+			curr.dispose(); 
 			delete this.collections_names[name];
 		}
- 
-		this.key = null;
+
 		//@ts-ignore
 		this.name = null;
 	}

@@ -395,8 +395,7 @@ test(' graph Create and Get and Update then GetAgain', () => {
 		c1_2 = sys.getCollection(group, i+'collection') as GrobCollection<GrobNodeType> ;
 		
 		expect(c1_1.getName()).toBe(c1_2.getName()) 
-		expect(c1_1.getName()).toContain(name) 
-		expect(c1_1.getKey()).toBe(c1_2.getKey())
+		expect(c1_1.getName()).toContain(name)  
 	}
 	
 	group = 'fixed';
@@ -412,8 +411,7 @@ test(' graph Create and Get and Update then GetAgain', () => {
 		c1_2 = sys.getCollection(group, i+'collection') as GrobCollection<GrobNodeType> ;
 		
 		expect(c1_1.getName()).toBe(c1_2.getName()) 
-		expect(c1_1.getName()).toContain(name)
-		expect(c1_1.getKey()).toBe(c1_2.getKey())
+		expect(c1_1.getName()).toContain(name) 
 	}
 
 	let n1_1 : any ;
@@ -493,8 +491,6 @@ test(' graph Create and Get And Delete And Get', () => {
 	let group : 'derived' | 'fixed' = 'derived';
 
 	
-
-
 	// first add some fixed nodes as dependencies to a derived;
 	let fn1 = sys.getFixedNode('1c','1n')
 	let fn2 = sys.getFixedNode('1c','1n')
@@ -544,12 +540,10 @@ test(' graph Create and Get And Delete And Get', () => {
 		expect(col.getNode('2n')).toBe(null);
 
 		// Ensure the collection only have 3 elements now bth in names and keys 
-		let names = Object.values	((col as any).nodes_names)
-		let keys  = Object.values	((col as any).nodes_keys )
+		let names = Object.values	((col as any).nodes_names) 
 		let nameKeys = Object.keys	((col as any).nodes_names)
 		
-		expect(names.length).toBe(3);
-		expect(keys.length).toBe(3);
+		expect(names.length).toBe(3); 
 		expect(nameKeys).toEqual(['3n','4n','5n']);
 		
 
@@ -597,11 +591,9 @@ test(' graph Create and Get And Delete And Get', () => {
 		expect(col.getNode('2n')).toBe(null);
 
 		// Ensure the collection only have 3 elements now bth in names and keys 
-		names 	 = Object.values((col as any).nodes_names)
-		keys  	 = Object.values((col as any).nodes_keys )
+		names 	 = Object.values((col as any).nodes_names) 
 		nameKeys = Object.keys	((col as any).nodes_names)
-		expect(names.length).toBe(3);
-		expect(keys.length).toBe(3);
+		expect(names.length).toBe(3); 
 		expect(nameKeys).toEqual(['3n','4n','5n']);
 	
 	// Collection delete
@@ -616,14 +608,12 @@ test(' graph Create and Get And Delete And Get', () => {
 		expect(sys.hasDerivedCollection	  ('2c')).toBe(false);
 
 		//@ts-ignore
-		let derived = sys.data[ sys.derivedKey];
+		let derived = sys._getGroup('derived')
 
-		names 	 = Object.values(derived.collections_names)
-		keys 	 = Object.values(derived.collections_keys )
+		names 	 = Object.values(derived.collections_names) 
 		nameKeys = Object.keys	(derived.collections_names)
 
-		expect( names.length).toBe(3);
-		expect( keys.length ).toBe(3); 
+		expect( names.length).toBe(3); 
 		expect( nameKeys ).toEqual(['3c','4c','5c']);
 		
 		// fixed
@@ -637,12 +627,10 @@ test(' graph Create and Get And Delete And Get', () => {
 		
 		expect(sys.hasCollection	(group,'1c')).toBe(false);
 		expect(sys.hasFixedCollection	  ('2c')).toBe(false);
-		names 	 = Object.values(derived.collections_names)
-		keys 	 = Object.values(derived.collections_keys )
+		names 	 = Object.values(derived.collections_names) 
 		nameKeys = Object.keys	(derived.collections_names)
 		
-		expect( names.length).toBe(3);
-		expect( keys.length ).toBe(3); 
+		expect( names.length).toBe(3); 
 		expect( nameKeys ).toEqual(['3c','4c','5c']);
 				
 

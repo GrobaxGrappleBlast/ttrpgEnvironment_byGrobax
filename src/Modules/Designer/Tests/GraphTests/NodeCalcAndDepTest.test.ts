@@ -198,7 +198,6 @@ test('Test Dnd AbilityModifier CalcValues _ Exstended', () => {
 
 		calcValue = der2.getValue();
 		expect(calcValue).toBe(attackPower);
-
 	} 
 	
 	testScoreIn_modifierOut(0 ,-5 , (-5 * 2) + 0  );
