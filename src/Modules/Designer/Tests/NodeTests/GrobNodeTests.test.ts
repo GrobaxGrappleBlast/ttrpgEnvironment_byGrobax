@@ -1,6 +1,6 @@
 import exp from "constants";
 import type { IOutputHandler } from "../../Abstractions/IOutputHandler";
-import { TTRPGSystemGraphModel } from "../../GraphV2/TTRPGSystemGraphModel";
+import { TTRPGSystem } from "../../index";
 
 interface TestIOutputHandler extends IOutputHandler{
 	errorMessages 	:string[],
@@ -26,7 +26,8 @@ var out : TestIOutputHandler = {
 
 
 function startTest(){
-	let sys = new TTRPGSystemGraphModel();
+	let sys = new TTRPGSystem();
+	sys.initAsNew();
 	sys.setOut(out);
 	out.clean();
 

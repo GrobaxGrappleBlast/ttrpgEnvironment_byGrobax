@@ -1,9 +1,10 @@
-import type { GrobNodeType } from "src/Modules/Designer/GraphV2/TTRPGSystemsGraphDependencies";
-import type { IOutputHandler } from "../../Abstractions/IOutputHandler";
-import { TTRPGSystemGraphModel } from "../../GraphV2/TTRPGSystemGraphModel";
+import type { GrobNodeType } from "../../../../../src/Modules/Designer/GraphV2/TTRPGSystemsGraphDependencies";
+import type { IOutputHandler } from "../../Abstractions/IOutputHandler"; 
 import { GrobCollection } from "../../GrobCollection";
 import { GrobDerivedNode, GrobFixedNode } from "../../GrobNodte";
-
+import{
+	TTRPGSystem,
+} from '../../index'
  
 
 interface TestIOutputHandler extends IOutputHandler{
@@ -31,7 +32,8 @@ var out : TestIOutputHandler = {
 
 test(' Graph Create and Get', () => {
 	
-	let sys = new TTRPGSystemGraphModel();
+	let sys = new TTRPGSystem();
+	sys.initAsNew();
 	sys.setOut(out);
 	out.clean();
 
@@ -174,7 +176,8 @@ test(' Graph Create and Get', () => {
 test(' Graph Create and Get, global calls', () => {
 	
 
-	let sys = new TTRPGSystemGraphModel();
+	let sys = new TTRPGSystem();
+	sys.initAsNew();
 	sys.setOut(out);
 	out.clean();
 
@@ -285,7 +288,8 @@ test(' Graph Create and Get, global calls', () => {
 test(' graph Create and Get Collections', () => {
 	
 
-	let sys = new TTRPGSystemGraphModel();
+	let sys = new TTRPGSystem();
+	sys.initAsNew();
 	sys.setOut(out);
 	out.clean();
 
@@ -354,7 +358,8 @@ test(' graph Create and Get Collections', () => {
 
 test(' graph Create and Get and Update then GetAgain', () => {
 
-	let sys = new TTRPGSystemGraphModel();
+	let sys = new TTRPGSystem();
+	sys.initAsNew();
 	sys.setOut(out);
 	out.clean();
 
@@ -390,8 +395,7 @@ test(' graph Create and Get and Update then GetAgain', () => {
 		c1_2 = sys.getCollection(group, i+'collection') as GrobCollection<GrobNodeType> ;
 		
 		expect(c1_1.getName()).toBe(c1_2.getName()) 
-		expect(c1_1.getName()).toContain(name) 
-		expect(c1_1.getKey()).toBe(c1_2.getKey())
+		expect(c1_1.getName()).toContain(name)  
 	}
 	
 	group = 'fixed';
@@ -407,8 +411,7 @@ test(' graph Create and Get and Update then GetAgain', () => {
 		c1_2 = sys.getCollection(group, i+'collection') as GrobCollection<GrobNodeType> ;
 		
 		expect(c1_1.getName()).toBe(c1_2.getName()) 
-		expect(c1_1.getName()).toContain(name)
-		expect(c1_1.getKey()).toBe(c1_2.getKey())
+		expect(c1_1.getName()).toContain(name) 
 	}
 
 	let n1_1 : any ;
@@ -463,7 +466,8 @@ test(' graph Create and Get and Update then GetAgain', () => {
 
 test(' graph Create and Get And Delete And Get', () => {
 
-	let sys = new TTRPGSystemGraphModel();
+	let sys = new TTRPGSystem();
+	sys.initAsNew();
 	sys.setOut(out);
 	out.clean();
 
@@ -487,8 +491,6 @@ test(' graph Create and Get And Delete And Get', () => {
 	let group : 'derived' | 'fixed' = 'derived';
 
 	
-
-
 	// first add some fixed nodes as dependencies to a derived;
 	let fn1 = sys.getFixedNode('1c','1n')
 	let fn2 = sys.getFixedNode('1c','1n')
@@ -538,12 +540,10 @@ test(' graph Create and Get And Delete And Get', () => {
 		expect(col.getNode('2n')).toBe(null);
 
 		// Ensure the collection only have 3 elements now bth in names and keys 
-		let names = Object.values	((col as any).nodes_names)
-		let keys  = Object.values	((col as any).nodes_keys )
+		let names = Object.values	((col as any).nodes_names) 
 		let nameKeys = Object.keys	((col as any).nodes_names)
 		
-		expect(names.length).toBe(3);
-		expect(keys.length).toBe(3);
+		expect(names.length).toBe(3); 
 		expect(nameKeys).toEqual(['3n','4n','5n']);
 		
 
@@ -591,11 +591,9 @@ test(' graph Create and Get And Delete And Get', () => {
 		expect(col.getNode('2n')).toBe(null);
 
 		// Ensure the collection only have 3 elements now bth in names and keys 
-		names 	 = Object.values((col as any).nodes_names)
-		keys  	 = Object.values((col as any).nodes_keys )
+		names 	 = Object.values((col as any).nodes_names) 
 		nameKeys = Object.keys	((col as any).nodes_names)
-		expect(names.length).toBe(3);
-		expect(keys.length).toBe(3);
+		expect(names.length).toBe(3); 
 		expect(nameKeys).toEqual(['3n','4n','5n']);
 	
 	// Collection delete
@@ -608,12 +606,14 @@ test(' graph Create and Get And Delete And Get', () => {
 		
 		expect(sys.hasCollection	(group,'1c')).toBe(false);
 		expect(sys.hasDerivedCollection	  ('2c')).toBe(false);
-		names 	 = Object.values((sys as any).derived.collections_names)
-		keys 	 = Object.values((sys as any).derived.collections_keys )
-		nameKeys = Object.keys	((sys as any).derived.collections_names)
 
-		expect( names.length).toBe(3);
-		expect( keys.length ).toBe(3); 
+		//@ts-ignore
+		let derived = sys._getGroup('derived')
+
+		names 	 = Object.values(derived.collections_names) 
+		nameKeys = Object.keys	(derived.collections_names)
+
+		expect( names.length).toBe(3); 
 		expect( nameKeys ).toEqual(['3c','4c','5c']);
 		
 		// fixed
@@ -627,12 +627,10 @@ test(' graph Create and Get And Delete And Get', () => {
 		
 		expect(sys.hasCollection	(group,'1c')).toBe(false);
 		expect(sys.hasFixedCollection	  ('2c')).toBe(false);
-		names 	 = Object.values((sys as any).derived.collections_names)
-		keys 	 = Object.values((sys as any).derived.collections_keys )
-		nameKeys = Object.keys	((sys as any).derived.collections_names)
+		names 	 = Object.values(derived.collections_names) 
+		nameKeys = Object.keys	(derived.collections_names)
 		
-		expect( names.length).toBe(3);
-		expect( keys.length ).toBe(3); 
+		expect( names.length).toBe(3); 
 		expect( nameKeys ).toEqual(['3c','4c','5c']);
 				
 
@@ -642,7 +640,8 @@ test(' graph Create and Get And Delete And Get', () => {
 
 test('try to add dependency to a Fixed Node', () => {
 
-	let sys = new TTRPGSystemGraphModel();
+	let sys = new TTRPGSystem();
+	sys.initAsNew();
 	sys.setOut(out);
 	out.clean();
 
@@ -673,7 +672,8 @@ test('try to add dependency to a Fixed Node', () => {
 // test has methods
 test('Test Has Methods', () => {
 	
-	let sys = new TTRPGSystemGraphModel();
+	let sys = new TTRPGSystem();
+	sys.initAsNew();
 	sys.setOut(out);
 	out.clean();
 

@@ -2,7 +2,7 @@ import { GrobCollection, type GrobCollectionType } from "../GrobCollection";
 import { GrobGroup, type GrobGroupType } from "../GrobGroup";
 import { newOutputHandler, type IOutputHandler } from "../Abstractions/IOutputHandler"; 
 import type { GrobNodeType } from "./TTRPGSystemsGraphDependencies";
-import { GrobDerivedNode } from "../GrobNodte";
+import { GrobDerivedNode } from "../GrobNodte"; 
 
 /**
 * a general and flexible implementation of TTRPG system. it focusses on not diskrimination or sorting data. 
@@ -10,6 +10,7 @@ import { GrobDerivedNode } from "../GrobNodte";
 */
 export abstract class TTRPGSystemGraphAbstractModel {
 	 
+	
 	public data : Record< string , GrobGroup<GrobNodeType> > = {} 
  
 	protected out : IOutputHandler;
@@ -26,7 +27,7 @@ export abstract class TTRPGSystemGraphAbstractModel {
 			group = g;
 		}
 
-		const key = group.getKey();
+		const key = group.getName();
 		let g = this.data[key]
 		if (!g){
 			this.out.outError('tried to delete non existant group')
@@ -43,7 +44,7 @@ export abstract class TTRPGSystemGraphAbstractModel {
 			return null;
 		} 
 		let gp = new GrobGroup<GrobNodeType>(name,this);
-		this.data[gp.getKey()] = gp;
+		this.data[gp.getName()] = gp;
 		return gp;
 	}
 	protected _hasGroup		( name:string ){
@@ -86,7 +87,7 @@ export abstract class TTRPGSystemGraphAbstractModel {
 			return null;
 		}
 
-		const collection = new GrobCollection<GrobNodeType>( name, this );
+		const collection = new GrobCollection<GrobNodeType>( name, group );
 		group.addCollection(collection);
 		return collection;
 	}

@@ -1,9 +1,6 @@
-import type { GrobNodeType } from "src/Modules/Designer/GraphV2/TTRPGSystemsGraphDependencies";
-import type { IOutputHandler } from "../../Abstractions/IOutputHandler";
-import { TTRPGSystemGraphModel } from "../../GraphV2/TTRPGSystemGraphModel";
-import { GrobCollection } from "../../GrobCollection";
-import { GrobDerivedNode, GrobFixedNode } from "../../GrobNodte";
-import exp from "constants";
+
+import { TTRPGSystem } from "../../index";
+
 
  
 var out = {
@@ -24,7 +21,8 @@ var out = {
 }
  
 function setupTest(){
-	let sys = new TTRPGSystemGraphModel();
+	let sys = new TTRPGSystem();
+	sys.initAsNew();
 	sys.setOut(out);
 	out.clean();
 	function createFunctions( group ){
@@ -49,13 +47,13 @@ test('dependency, create check dependent and dependency', () => {
 	
 	sys.addNodeDependency(der1,fix1);
 
-	expect( der1.dependencies[fix1.getKey()].getKey() ).toBe(fix1.getKey());
-	expect( fix1.dependents[der1.getKey()].getKey() ).toBe(der1.getKey());
+	expect( der1.dependencies[fix1._____getKey()].getName() ).toBe(fix1.getName());
+	expect( fix1.dependents[der1._____getKey()].getName() ).toBe(der1.getName());
 	
 	sys.removeNodeDependency(der1,fix1);
 
-	expect( der1.dependencies[fix1.getKey()] ?? null ).toBe(null);
-	expect( fix1.dependents[der1.getKey()] ?? null ).toBe(null);
+	expect( der1.dependencies[fix1._____getKey()] ?? null ).toBe(null);
+	expect( fix1.dependents[der1._____getKey()] ?? null ).toBe(null);
 
 })
 

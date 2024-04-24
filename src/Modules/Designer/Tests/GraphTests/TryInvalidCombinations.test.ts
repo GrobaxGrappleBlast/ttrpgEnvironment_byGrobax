@@ -1,5 +1,5 @@
 import type { IOutputHandler } from "../../Abstractions/IOutputHandler";
-import { TTRPGSystemGraphModel } from "../../GraphV2/TTRPGSystemGraphModel";
+import { TTRPGSystem } from "../../index";
 import type { GrobNodeType } from "../../GraphV2/TTRPGSystemsGraphDependencies";
 import type { GrobCollection, GrobCollectionType } from "../../GrobCollection";
 import type { GrobGroup, GrobGroupType } from "../../GrobGroup";
@@ -23,8 +23,9 @@ var out = {
 	}
 }
  
-function setupTest() : IGraphAbstractModel | TTRPGSystemGraphModel{
-	let sys = new TTRPGSystemGraphModel();
+function setupTest() : IGraphAbstractModel | TTRPGSystem{
+	let sys = new TTRPGSystem();
+	sys.initAsNew();
 	sys.setOut(out);
 	out.clean();
 	function createFunctions( group ){
@@ -62,7 +63,7 @@ interface IGraphAbstractModel {
 
 test('Try to Get Groups and Collections and nodes that does not exist', () => {
 	
-	let sys  :TTRPGSystemGraphModel = setupTest() as TTRPGSystemGraphModel;
+	let sys  :TTRPGSystem = setupTest() as TTRPGSystem;
 	//@ts-ignore
 	let asys :IGraphAbstractModel 	= sys as IGraphAbstractModel;
 
@@ -77,10 +78,11 @@ test('Try to Get Groups and Collections and nodes that does not exist', () => {
 
 })
 
+
 test('Get Placement key from Unparented node', () => {
 	
 	// @ts-ignore
-	const node = new GrobDerivedNode('trythis', {}  );
+	const node = new GrobDerivedNode('trythis', { getName(){return null} }  );
 
 	const locKey = node.getLocationKey();
 	const locKeySeg = node.getLocationKeySegments(); 
