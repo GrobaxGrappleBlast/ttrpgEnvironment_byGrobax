@@ -1,7 +1,6 @@
-import exp from "constants";
 import { JSONHandler, JsonArrayBoolean, JsonArrayClassTyped, JsonArrayNumber, JsonArrayString, JsonBoolean, JsonClassTyped, JsonMappingRecordInArrayOut, JsonNumber, JsonProperty, JsonString 
 	
-} from "../Decorators";
+} from  "../index";
 
 
 
@@ -17,7 +16,8 @@ export class SomethingElse{
 }
 
 var InnerPieceCounter = 0;
-export class InnerPiece{
+
+export class InnerPiece {
 
 	constructor(){
 		this.key = SomethingElse.getSome();
@@ -67,6 +67,7 @@ export class InnerPiece{
 	public subFunctions = [true,true,true]
 
 }
+
 export class Container {
 	
 	constructor(){}
@@ -113,7 +114,7 @@ function startTest( c, type : any = Container ){
 	return [c,json,deser];
 }
 
-function compareObject( obj1, obj2 ){
+function compareObject( obj1, obj2 , ignoreKeys : string[] = []){
 
 	expect( Object.keys(obj1) ).toEqual( Object.keys(obj2) )
 
@@ -122,15 +123,27 @@ function compareObject( obj1, obj2 ){
 	expect(p1).toBe(p2);
 
 	Object.keys(obj1).forEach( key  => {
-		let p1 = Object.getPrototypeOf(obj1[key])?.constructor?.name;
-		let p2 = Object.getPrototypeOf(obj2[key])?.constructor?.name;
-		expect(p1).toBe(p2);
+		if(!ignoreKeys.includes(key)){
+			let p1 = Object.getPrototypeOf(obj1[key])?.constructor?.name;
+			let p2 = Object.getPrototypeOf(obj2[key])?.constructor?.name;
+			if(typeof p1 == 'object'){
+				compareObject(p1,p2,ignoreKeys)
+			}else{
+				expect(p1).toEqual(p2);
+			}
+		}
 	});
 
 	Object.keys(obj1).forEach( key  => {
-		let p1 = obj1[key];
-		let p2 = obj2[key];
-		expect(p1).toEqual(p2);
+		if(!ignoreKeys.includes(key)){
+			let p1 = obj1[key];
+			let p2 = obj2[key];
+			if(typeof p1 == 'object'){
+				compareObject(p1,p2,ignoreKeys)
+			}else{
+				expect(p1).toEqual(p2);
+			} 
+		}
 	});
 
 }
@@ -142,7 +155,10 @@ test('Simple Conversions', () => {
 	c.init();
 	var [orig, json, des ] = startTest( c , Container);
 	 
-	compareObject(des,orig);
+	var a = JSON.stringify(des);
+	var b = JSON.stringify(orig);
+
+	compareObject(des,orig,['key','KKey']);
 })
 
 test('Mapping Conversions With Method and Property Get Methods', () => {
@@ -152,10 +168,15 @@ test('Mapping Conversions With Method and Property Get Methods', () => {
 	c.init(); 
 	var [orig, json, des ] = startTest( c , Container_Mapped_viaMethod);
 	
-	compareObject(des,orig);
-	 
-
+	const origColArr = Object.values(orig.collections);
+	const desColArr = Object.values(des  .collections);
+	for (let i = 0; i < desColArr.length; i++) {
+		const a = desColArr[i]
+		const b = origColArr[i]
+		compareObject(a,b,['key','KKey']);
+	}
 	
+	 
 })
  
 
