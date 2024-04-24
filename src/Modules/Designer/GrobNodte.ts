@@ -1,8 +1,6 @@
 import { GrobCollection } from "./GrobCollection"; 
 import { AGraphItem } from "./Abstractions/AGraphItem"; 
 import type { GrobNodeType } from "./GraphV2/TTRPGSystemsGraphDependencies"; 
-import { TTRPGSystemGraphAbstractModel } from "./GraphV2/TTRPGSystemGraphAbstractModel";
-import { stat } from "fs";
 import { JsonArrayClassTyped, JsonClassTyped, JsonNumber, JsonProperty, JsonString } from "../JSONModules/index";
 
 var grobDerivedSymbolRegex =/@[a-zA-Z]/g;
@@ -398,39 +396,6 @@ export class GrobDerivedNode extends GrobNode<GrobDerivedNode> {
 		let res = this._recalculate(rec,statement);
 		this._value = res.value;
 		return res.success;
-
-
-
-
-		/*
-		const symbols = this.calc.match( grobDerivedSymbolRegex );  
-		let rec = 
-			useTempValues ?
-			Object.fromEntries( this.origins.map(p => [ p.symbol, p.standardValue])):	
-			Object.fromEntries( this.origins.map(p => [ p.symbol, p.origin?.getValue() ]));
-		let statement = this.calc;
-
-		symbols?.forEach( key => { 
-			const v =  rec[key] ;
-			statement = statement.replace( key , v + "" );
-		}); 
-
-		var recalcSuccess = false;
-		try{
-			var res = eval(statement);  
-			if(typeof res === 'number'){
-				recalcSuccess = true; 
-				this._value = res;
-			}
-			else{
-				recalcSuccess = false;
-				this._value = 0;
-			}
-		}catch(e){ 
-			recalcSuccess = false;
-		}  
-		return recalcSuccess;
-		*/
 	}
 	public testCalculate( statement ){
 		const symbols = statement.match( grobDerivedSymbolRegex );  

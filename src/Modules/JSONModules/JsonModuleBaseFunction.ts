@@ -40,7 +40,7 @@ export function getOwnMetaData( metaTag , target , scheme : string = BASE_SCHEME
 	data = data ?? {};
 	if(data[scheme] != undefined)
 		return data[scheme];
-	return data[BASE_SCHEME];
+	return null;
 }
 export function setOwnMetaData( metaTag , target , value , scheme : string = BASE_SCHEME ){
 

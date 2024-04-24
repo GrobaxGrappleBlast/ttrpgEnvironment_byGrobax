@@ -1,6 +1,6 @@
 import exp from "constants";
 import type { IOutputHandler } from "../../Abstractions/IOutputHandler";
-import { TTRPGSystemGraphModel } from "../../GraphV2/TTRPGSystemGraphModel";
+import { TTRPGSystem } from "../../index";
 import type { GrobNodeType } from "../../GraphV2/TTRPGSystemsGraphDependencies";
 import type { GrobCollection, GrobCollectionType } from "../../GrobCollection";
 import type { GrobGroup, GrobGroupType } from "../../GrobGroup";
@@ -29,7 +29,8 @@ var out : TestIOutputHandler = {
 }
 
 function startTest(){
-	let sys = new TTRPGSystemGraphModel();
+	let sys = new TTRPGSystem();
+	sys.initAsNew();
 	sys.setOut(out);
 	out.clean(); 
 	return sys;
@@ -37,7 +38,8 @@ function startTest(){
 
 
 function startTest2(){
-	let sys = new TTRPGSystemGraphModel();
+	let sys = new TTRPGSystem();
+	sys.initAsNew();
 	sys.setOut(out);
 	out.clean();
 
@@ -173,7 +175,7 @@ test('Test Deleted Collection', () => {
 });
 
 test('Test Group Deletion', () => {
-	let sys : IGraphAbstractModel | TTRPGSystemGraphModel = startTest2();
+	let sys : IGraphAbstractModel | TTRPGSystem = startTest2();
 	let dn1 = sys.getDerivedNode('c1','n1')
 
 	let fn1 = sys.getFixedNode('c1','n1')

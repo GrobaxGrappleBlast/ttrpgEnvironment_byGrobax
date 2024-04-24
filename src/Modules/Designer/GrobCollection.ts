@@ -3,6 +3,7 @@ import { AGraphItem } from "./Abstractions/AGraphItem";
 import type { GrobNodeType } from "./GraphV2/TTRPGSystemsGraphDependencies"; 
 import { TTRPGSystemGraphAbstractModel } from "./GraphV2/TTRPGSystemGraphAbstractModel";
 import { JsonMapping, JsonMappingRecordInArrayOut } from "../JSONModules/index";
+import { GrobDerivedNode, GrobFixedNode } from "./GrobNodte";
   
 export type GrobCollectionType = GrobCollection<GrobNodeType>;
 
@@ -13,8 +14,10 @@ export class GrobCollection<T extends GrobNodeType> extends AGraphItem {
 		super(name, 'C')
 	} 
 	
-	@JsonMappingRecordInArrayOut({KeyPropertyName:'getKey',name:'data'})
+	
 	nodes_keys: Record<string, T> = {}
+	
+	@JsonMappingRecordInArrayOut({KeyPropertyName:'getName',name:'data'})
 	nodes_names: Record<string, T> = {}
 	parent: GrobGroup<T>; 
 
@@ -64,7 +67,6 @@ export class GrobCollection<T extends GrobNodeType> extends AGraphItem {
 			curr.updateLocation( this );
 		}
 	}
- 
 	dispose () {
 		
 		for( const key in this.nodes_keys ){
@@ -83,3 +85,4 @@ export class GrobCollection<T extends GrobNodeType> extends AGraphItem {
 		
 	} 
 }
+

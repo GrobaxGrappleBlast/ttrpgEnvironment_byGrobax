@@ -167,7 +167,7 @@ export function JsonMappingRecordInArrayOut<IN extends object,OUT extends object
 				}catch(e){
 					let messageAddon = v.length > 0 ? ', Note that message must have 0 Arguments, that arent either optional or have default values': ''; 
 					let message = `Something went wrong with callign method '${option.KeyPropertyName}'${messageAddon}`
-					console.log(e);
+					console.error(e);
 					throw new Error(message);
 				}
 			}
@@ -192,12 +192,10 @@ export function JsonMappingRecordInArrayOut<IN extends object,OUT extends object
 
 interface JsonObjectProperties {
 	scheme?:string,
+	onBeforeSerialization?:(self:any) => any,
 	onAfterDeSerialization?: ( self:any ) => any
 }
 function cleanObjectOptions( option?:JsonObjectProperties ){
-
-	console.log('cleaning Options')
-	console.log(option);
 
 	if(!option)
 		option = {};
@@ -214,6 +212,12 @@ function cleanObjectOptions( option?:JsonObjectProperties ){
 export function JsonObject( option : JsonObjectProperties){
 	option = cleanObjectOptions(option);
 	return function (target: any ) {
-		setOwnMetaData( JSON_TAGS.JSON_OBJECT_ON_AFTER_DE_SERIALIZATION, target , option.onAfterDeSerialization , option.scheme );
+		
+		if(option.onAfterDeSerialization)
+			setOwnMetaData( JSON_TAGS.JSON_OBJECT_ON_AFTER_DE_SERIALIZATION	, target , option.onAfterDeSerialization , option.scheme );
+
+		if(option.onBeforeSerialization)
+			setOwnMetaData( JSON_TAGS.JSON_OBJECT_ON_BEFORE_SERIALIZATION	, target , option.onBeforeSerialization , option.scheme );
+
 	}
 }

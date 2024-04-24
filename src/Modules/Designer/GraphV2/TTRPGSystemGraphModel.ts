@@ -2,9 +2,8 @@ import { GrobCollection, type GrobCollectionType } from "../GrobCollection";
 import { GrobGroup, type GrobGroupType } from "../GrobGroup";
 import { newOutputHandler, type IOutputHandler } from "../Abstractions/IOutputHandler"; 
 import type { GrobNodeType } from "./TTRPGSystemsGraphDependencies";
-import { GrobDerivedNode, GrobFixedNode } from "../GrobNodte";
+import { GrobDerivedNode, GrobDerivedOrigin, GrobFixedNode } from "../GrobNodte";
 import { TTRPGSystemGraphAbstractModel } from "./TTRPGSystemGraphAbstractModel"; 
-import { JsonProperty } from "../../JSONModules/index";
 
 const derived 	= 'derived';
 const fixed 	= 'fixed';
@@ -13,23 +12,24 @@ export type groupKeyType = 'fixed' | 'derived';
 /**
  *  handles Model operations and Data Containment, 
  * Ensures that data is maintained, as well as graphlinks
-*/
+*/ 
 export class TTRPGSystemGraphModel extends TTRPGSystemGraphAbstractModel {
-	  
-	
+
 	private fixedKey:any;
 	private derivedKey:any;
 
 	public constructor(){
 		super();
-
-		// create the main groups;  
-		let fixed 		= this._createGroup( 'fixed' ) 	 as GrobGroup<GrobFixedNode>;
-		let derived 	= this._createGroup( 'derived' ) as GrobGroup<GrobDerivedNode>; 
-		this.fixedKey 	= fixed.getKey();
-		this.derivedKey = derived.getKey();
 		this.setOut( newOutputHandler() );
 	}
+
+	//TODO : find better solution than this.
+	// r 
+	public initAsNew(){
+		this.fixedKey 	=  (this._createGroup( 'fixed' )	as any	).getKey();
+		this.derivedKey =  (this._createGroup( 'derived' )	as any	).getKey();
+	}
+
 
 	/// Create Statements 
 	public createCollection( group : groupKeyType , name : string){

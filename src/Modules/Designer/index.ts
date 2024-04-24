@@ -6,6 +6,7 @@ import type { GrobNodeType } from './GraphV2/TTRPGSystemsGraphDependencies';
 import { GrobCollection, type GrobCollectionType } from './GrobCollection';
 import { GrobGroup, type GrobGroupType } from './GrobGroup';
 import { GrobDerivedNode, GrobDerivedOrigin, GrobFixedNode } from './GrobNodte';
+import { TTRPGSystemJSONFormatting } from './JsonModuleImplementation/TTRPGSystemJSONFormatting';
  
 	/*
 	abstract class DerivedNode {
@@ -117,7 +118,7 @@ import { GrobDerivedNode, GrobDerivedOrigin, GrobFixedNode } from './GrobNodte';
 	*/
  
 	export { 
-		TTRPGSystemGraphModel as TTRPGSystem,
+		TTRPGSystemJSONFormatting as TTRPGSystem,
 		GrobFixedNode		,
 		GrobDerivedNode		,
 		GrobDerivedOrigin	,

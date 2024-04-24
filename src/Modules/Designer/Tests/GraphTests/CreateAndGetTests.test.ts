@@ -1,9 +1,10 @@
-import type { GrobNodeType } from "src/Modules/Designer/GraphV2/TTRPGSystemsGraphDependencies";
-import type { IOutputHandler } from "../../Abstractions/IOutputHandler";
-import { TTRPGSystemGraphModel } from "../../GraphV2/TTRPGSystemGraphModel";
+import type { GrobNodeType } from "../../../../../src/Modules/Designer/GraphV2/TTRPGSystemsGraphDependencies";
+import type { IOutputHandler } from "../../Abstractions/IOutputHandler"; 
 import { GrobCollection } from "../../GrobCollection";
 import { GrobDerivedNode, GrobFixedNode } from "../../GrobNodte";
-
+import{
+	TTRPGSystem,
+} from '../../index'
  
 
 interface TestIOutputHandler extends IOutputHandler{
@@ -31,7 +32,8 @@ var out : TestIOutputHandler = {
 
 test(' Graph Create and Get', () => {
 	
-	let sys = new TTRPGSystemGraphModel();
+	let sys = new TTRPGSystem();
+	sys.initAsNew();
 	sys.setOut(out);
 	out.clean();
 
@@ -174,7 +176,8 @@ test(' Graph Create and Get', () => {
 test(' Graph Create and Get, global calls', () => {
 	
 
-	let sys = new TTRPGSystemGraphModel();
+	let sys = new TTRPGSystem();
+	sys.initAsNew();
 	sys.setOut(out);
 	out.clean();
 
@@ -285,7 +288,8 @@ test(' Graph Create and Get, global calls', () => {
 test(' graph Create and Get Collections', () => {
 	
 
-	let sys = new TTRPGSystemGraphModel();
+	let sys = new TTRPGSystem();
+	sys.initAsNew();
 	sys.setOut(out);
 	out.clean();
 
@@ -354,7 +358,8 @@ test(' graph Create and Get Collections', () => {
 
 test(' graph Create and Get and Update then GetAgain', () => {
 
-	let sys = new TTRPGSystemGraphModel();
+	let sys = new TTRPGSystem();
+	sys.initAsNew();
 	sys.setOut(out);
 	out.clean();
 
@@ -463,7 +468,8 @@ test(' graph Create and Get and Update then GetAgain', () => {
 
 test(' graph Create and Get And Delete And Get', () => {
 
-	let sys = new TTRPGSystemGraphModel();
+	let sys = new TTRPGSystem();
+	sys.initAsNew();
 	sys.setOut(out);
 	out.clean();
 
@@ -646,7 +652,8 @@ test(' graph Create and Get And Delete And Get', () => {
 
 test('try to add dependency to a Fixed Node', () => {
 
-	let sys = new TTRPGSystemGraphModel();
+	let sys = new TTRPGSystem();
+	sys.initAsNew();
 	sys.setOut(out);
 	out.clean();
 
@@ -677,7 +684,8 @@ test('try to add dependency to a Fixed Node', () => {
 // test has methods
 test('Test Has Methods', () => {
 	
-	let sys = new TTRPGSystemGraphModel();
+	let sys = new TTRPGSystem();
+	sys.initAsNew();
 	sys.setOut(out);
 	out.clean();
 

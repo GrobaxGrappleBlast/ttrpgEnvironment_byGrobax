@@ -1,9 +1,4 @@
-import type { GrobNodeType } from "src/Modules/Designer/GraphV2/TTRPGSystemsGraphDependencies";
-import type { IOutputHandler } from "../../Abstractions/IOutputHandler";
-import { TTRPGSystemGraphModel } from "../../GraphV2/TTRPGSystemGraphModel";
-import { GrobCollection } from "../../GrobCollection";
-import { GrobDerivedNode, GrobFixedNode } from "../../GrobNodte";
-import exp from "constants";
+import { TTRPGSystem } from "../../index";
 
  
 var out = {
@@ -24,7 +19,8 @@ var out = {
 }
  
 function setupTest(){
-	let sys = new TTRPGSystemGraphModel();
+	let sys = new TTRPGSystem();
+	sys.initAsNew();
 	sys.setOut(out);
 	out.clean();
 	function createFunctions( group ){

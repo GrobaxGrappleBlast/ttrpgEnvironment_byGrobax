@@ -1,10 +1,16 @@
+import exp from 'constants';
+import { JSONHandler } from '../../../JSONModules';
 import 
 {
+	GrobDerivedOrigin,
 	TTRPGSystem,
 } from '../../index'
 
+import {type GrobNodeType } from '../../index';
+
 function setUpTests(){
 	let sys = new TTRPGSystem();
+	sys.initAsNew();
 	
 	// Create Basic Stats 
 	let colF = sys.createFixedCollection('stats');
@@ -60,7 +66,7 @@ function setUpTests(){
 
 		bonus.setCalc('@a + @b');
 		let profBonus =sys.getFixedNode('generel','proficiency bonus')
-		let modifier  =sys.getFixedNode('modifiers',stat)
+		let modifier  =sys.getDerivedNode('modifiers',stat)
 		bonus.setOrigin('@a',profBonus	);
 		bonus.setOrigin('@b',modifier	); 
 	}
@@ -82,7 +88,7 @@ function setUpTests(){
 
 		bonus.setCalc('8 + @a + @b');
 		let profBonus =sys.getFixedNode('generel','proficiency bonus')
-		let modifier  =sys.getFixedNode('modifiers',stat)
+		let modifier  =sys.getDerivedNode('modifiers',stat)
 		bonus.setOrigin('@a',profBonus	);
 		bonus.setOrigin('@b',modifier	); 
 	}
@@ -166,5 +172,81 @@ test('First Test', () => {
 	expect(sys.getDerivedNode('Test','TestNode')).toBe(null);
 	expect(sys.getDerivedCollection('Test')).toBe(null);
 
+});
+
+test('Json expo', () => {
+
+	let sys = setUpTests();
+	
+	let node = sys.getNode('derived','Spell DC','dexterity')
+	let coll = sys.getCollection('derived','Spell DC');
+	let grp = (sys as any)._getGroup('derived');
+
+	let json = JSONHandler.serialize(sys);
+	
+
+});
+
+
+test('Test After Deserialization, that everything is ok!', () => {
+
+	let sys = setUpTests();
+	let json = JSONHandler.serialize(sys);
+	let des = JSONHandler.deserialize(TTRPGSystem,json);
+
+	for (const group_key in (des as any).data ) {
+		const group = (des as any).data[group_key];
+
+		// tests for group
+		expect(group.parent).toBe(des);
+
+		for(const col_key in (group as any).collections_names ){
+			const collection = group.collections_names[col_key];
+
+			// tests for collection
+			expect(collection.parent).toBe(group);
+
+			for( const node_key in (collection as any).nodes_names ){
+				const node = (collection as any).nodes_names[node_key];
+				
+				// tests for nodes
+				// derived nodes
+				expect(node.parent).toBe(collection);
+
+				const origins : GrobDerivedOrigin[] = node.origins ?? [];
+				origins.forEach( origin  => {
+					try {
+						// Expect originkey and targets locationkey to match
+						expect(origin.originKey).toEqual(origin.origin?.getLocationKey())
+
+						// ensure that the key can be looked up correctly. and target the right guy
+						const origpieces = origin.originKey.split('.'); 
+						expect(origin.origin).toEqual(des.getNode(origpieces[0] as any ,origpieces[1],origpieces[2]))
+
+						// ensure all origins are precent in the dependencies list.
+						const deplist			= Object.values((node as GrobNodeType).dependencies);
+						const findoriginInDep	= deplist.findIndex(p => p.getKey() == origin.origin?.getKey()) ;
+						expect(findoriginInDep != -1 ).toBe(true)
+
+						// ensure that this node exists as a dependent on the target node
+						const deptsList = Object.values((origin.origin  as GrobNodeType).dependents);
+						const findOriginInDepts = deptsList.findIndex( p => p.getKey() == node.getKey() );
+						expect(findOriginInDepts != -1 ).toBe(true)
+
+					} catch (e) {
+						e.message = e.message + 
+							`for ${group_key}.${col_key}.${node_key}` + "\n" +
+							`something was wrong with origin` + "\n" +
+							`${JSONHandler.serialize(origin)};`
+						throw e;
+					}
+				}); 
+			}
+
+		}
+		
+	} 
+
+	expect(true).toBe(true);
 
 });

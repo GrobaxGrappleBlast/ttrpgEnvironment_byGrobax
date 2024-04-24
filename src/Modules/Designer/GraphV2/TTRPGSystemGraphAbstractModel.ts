@@ -2,7 +2,7 @@ import { GrobCollection, type GrobCollectionType } from "../GrobCollection";
 import { GrobGroup, type GrobGroupType } from "../GrobGroup";
 import { newOutputHandler, type IOutputHandler } from "../Abstractions/IOutputHandler"; 
 import type { GrobNodeType } from "./TTRPGSystemsGraphDependencies";
-import { GrobDerivedNode } from "../GrobNodte";
+import { GrobDerivedNode } from "../GrobNodte"; 
 
 /**
 * a general and flexible implementation of TTRPG system. it focusses on not diskrimination or sorting data. 
@@ -10,6 +10,7 @@ import { GrobDerivedNode } from "../GrobNodte";
 */
 export abstract class TTRPGSystemGraphAbstractModel {
 	 
+	
 	public data : Record< string , GrobGroup<GrobNodeType> > = {} 
  
 	protected out : IOutputHandler;

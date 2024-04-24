@@ -8,6 +8,7 @@ import {
 
 function setUpTests(){
 	let sys = new TTRPGSystem();
+	sys.initAsNew();
 	
 	// Create Basic Stats 
 	let colF = sys.createFixedCollection('stats');
@@ -166,7 +167,5 @@ test('Test that we get when deserializing', () => {
 	des = JSONHandler.deserialize(GrobDerivedNode,ser)
 	//des = JSONHandler.deserialize(GrobCollection,ser)
 	//des = JSONHandler.deserialize(TTRPGSystem,ser)
-	debugger;
-	console.log(des);
-
+	 
 });

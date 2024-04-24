@@ -28,6 +28,16 @@ export class JSONHandler{
 		// serializedObject is a new object, without non Jsonproperties
 		let result = {};
 
+		// EVENT BFORE SERIALIZATION
+		let ObjectMeta  = getOwnMetaDataKeys(obj);  
+		// if there is an After serialize function get it and run it. 
+		if(ObjectMeta.includes(JSON_TAGS.JSON_OBJECT_ON_BEFORE_SERIALIZATION)){
+			// get meta data function and run it on the resulting object
+			let f = getOwnMetaData(JSON_TAGS.JSON_OBJECT_ON_BEFORE_SERIALIZATION,obj,scheme);
+			if(f)
+				f(obj);
+		}
+
 		// get propertynames and loop through 
 		let propertyNames;
 		propertyNames = Object.getOwnPropertyNames( obj );
@@ -258,7 +268,8 @@ export class JSONHandler{
 		if(ObjectMeta.includes(JSON_TAGS.JSON_OBJECT_ON_AFTER_DE_SERIALIZATION)){
 			// get meta data function and run it on the resulting object
 			let f = getOwnMetaData(JSON_TAGS.JSON_OBJECT_ON_AFTER_DE_SERIALIZATION,result,scheme);
-			f(result);
+			if(f)
+				f(result);
 		}
 
 		return result;

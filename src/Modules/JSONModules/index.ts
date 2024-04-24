@@ -12,6 +12,7 @@ import {
 	JsonArrayClassTyped			,
 	JsonMapping					,
 	JsonMappingRecordInArrayOut	,
+	JsonObject
 } from './Decorators'
 
 import { 
@@ -32,4 +33,5 @@ export {
 	JsonMapping					,
 	JsonMappingRecordInArrayOut	,
 	JSONHandler 				, 
+	JsonObject
 }
