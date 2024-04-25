@@ -1,5 +1,5 @@
 import { App, ItemView, Modal, Platform, Plugin, PluginSettingTab, Setting, TFile, WorkspaceLeaf, parseYaml } from 'obsidian';
-import  SvelteSystemDesigner01 from './UIInterfaces/Designer01/SvelteSystemDesigner01.svelte';//' /UIInterfaces/Designer01/SvelteSystemDesigner01.svelte' 
+import  SvelteApp from './UIInterfaces/Designer01/app.svelte';
 
 const VIEW_TYPE = "svelte-view";    
 interface MyPluginSettings {
@@ -78,7 +78,7 @@ class ModalMount extends Modal {
 	} 
 
 	onOpen() {
-		new SvelteSystemDesigner01({
+		new SvelteApp({
 			target:this.contentEl,
 			props:{
 				//@ts-ignore

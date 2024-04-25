@@ -1,0 +1,9 @@
+@import '../../SystemStandards.scss';
+@import '../app.scss';
+
+.SystemDescriptor { 
+	display:grid;
+	grid-template-columns: 1fr 1fr;
+	gap:10px;
+	grid-auto-rows: $standard_LineHeight; 
+}
