@@ -1,8 +1,8 @@
-import { GrobCollection, type GrobCollectionType } from "../GrobCollection";
-import { GrobGroup, type GrobGroupType } from "../GrobGroup";
-import { newOutputHandler, type IOutputHandler } from "../Abstractions/IOutputHandler"; 
+import { GrobCollection } from "../GrobCollection";
+import { type GrobGroupType } from "../GrobGroup";
+import { newOutputHandler } from "../Abstractions/IOutputHandler"; 
 import type { GrobNodeType } from "./TTRPGSystemsGraphDependencies";
-import { GrobDerivedNode, GrobDerivedOrigin, GrobFixedNode } from "../GrobNodte";
+import { GrobDerivedNode, GrobFixedNode } from "../GrobNodte";
 import { TTRPGSystemGraphAbstractModel } from "./TTRPGSystemGraphAbstractModel"; 
 
 const derived 	= 'derived';

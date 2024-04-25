@@ -1,7 +1,7 @@
 
 
 
-import { TTRPGSystemGraphModel, type groupKeyType } from './GraphV2/TTRPGSystemGraphModel';
+import { type groupKeyType } from './GraphV2/TTRPGSystemGraphModel';
 import type { GrobNodeType } from './GraphV2/TTRPGSystemsGraphDependencies';
 import { GrobCollection, type GrobCollectionType } from './GrobCollection';
 import { GrobGroup, type GrobGroupType } from './GrobGroup';
