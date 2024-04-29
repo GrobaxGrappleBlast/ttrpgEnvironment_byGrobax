@@ -1,4 +1,4 @@
-<!--script lang="ts">
+<script lang="ts">
 	import { SystemPreview } from '../../../../../../src/Modules/ObsidianUI/core/model/systemPreview';
     import { onMount } from 'svelte';
 	import './SystemDescriptor.scss';
@@ -9,8 +9,7 @@
 
 	onMount(()=>{
 		_data = Object.assign( new SystemPreview() , data );
-	})
-
+	}) 
 </script>
 <div class="SystemDescriptor" >
 	<div>Author</div>
@@ -24,4 +23,4 @@
 
 	<div>SystemName</div>
 	<div>{_data?.systemName ?? unknownString}</div>
-</div-->
+</div>

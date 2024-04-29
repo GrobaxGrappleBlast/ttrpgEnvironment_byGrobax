@@ -1,4 +1,3 @@
-import exp from "constants";
 import { JSONHandler, JsonMapping, JsonMappingRecordInArrayOut, JsonProperty } from '../index'
 
 

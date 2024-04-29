@@ -1,11 +1,12 @@
 
 import { JsonString } from "../../../../src/Modules/JSONModules/Decorators";
+import type { IGraphItem } from "./IGraphItem";
 import { KeyManager } from "./KeyManager";
 
 
 
 var keyManager = new KeyManager();
-export abstract class AGraphItem{
+export abstract class AGraphItem implements IGraphItem{
 	
 	constructor( name = '' , key = '' ) {
 		this.name = name; 

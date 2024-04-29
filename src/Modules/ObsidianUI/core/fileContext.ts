@@ -5,77 +5,77 @@ import { TTRPGSystem, TTRPG_SCHEMES } from "../../../../src/Modules/Designer/ind
 import { SystemPreview } from "./model/systemPreview";
 
 export class FileContext {
-	/*
-		private static mutex:Mutex = new Mutex();
-		public loadedSystem : string;
-		public availableFiles : string[];
-		public foldersWithNoIndex: string[];
-		public availableSystems: SystemPreview[];
-		public availableFilesWithErrors:string[];
 
-		public async loadAllAvailableFiles(){
-			let release = await FileContext.mutex.acquire(); 
+	private static mutex:Mutex = new Mutex();
+	public loadedSystem : string;
+	public availableFiles : string[];
+	public foldersWithNoIndex: string[];
+	public availableSystems: SystemPreview[];
+	public availableFilesWithErrors:string[];
 
-				let lsDir = await FileHandler.lsdir('');
-				let filesFound = await Promise.all( lsDir.folders.map(async ( folderPath ) => {
-					// find an index.json.
-					const foldercontent =  await FileHandler.lsdir( folderPath ); 
-					let file =  foldercontent.files.find(p=>p == 'index.json' );
-					return [file,folderPath];
-				})) 
+	public async loadAllAvailableFiles(){
+		let release = await FileContext.mutex.acquire(); 
 
-				let found	: string[] = [];
-				let unfound	: string[] = [];
-				filesFound.forEach( p => {
-					if (p[0]==null) {
-						unfound.push( p[1] as string );
-					}
-					else {
-						found.push( p[0] );
-					}
-				})
+			let lsDir = await FileHandler.lsdir('');
+			let filesFound = await Promise.all( lsDir.folders.map(async ( folderPath ) => {
+				// find an index.json.
+				const foldercontent =  await FileHandler.lsdir( folderPath ); 
+				let file =  foldercontent.files.find(p=>p == 'index.json' );
+				return [file,folderPath];
+			})) 
 
-				this.foldersWithNoIndex = unfound;
-				this.availableFiles 	= found; 
+			let found	: string[] = [];
+			let unfound	: string[] = [];
+			filesFound.forEach( p => {
+				if (p[0]==null) {
+					unfound.push( p[1] as string );
+				}
+				else {
+					found.push( p[0] );
+				}
+			})
 
-				this.availableSystems = [];
-				this.availableFilesWithErrors = []
-				this.availableFiles.forEach( file => {
-					let preview = JSONHandler.deserialize(SystemPreview,file);
-					preview.filePath=file;
-					if (preview) {
-						this.availableSystems.push(preview)
-					} else {
-						this.availableFilesWithErrors.push(file)
-					} 
-				});
+			this.foldersWithNoIndex = unfound;
+			this.availableFiles 	= found; 
 
-			release();
-		}
-
-		public async cleanAllFoldersWithoutSystems(){
-			let release = await FileContext.mutex.acquire(); 
-
-			release();
-		}
-
-		public async loadSystem( systemIndexPath:string ){
-			let release = await FileContext.mutex.acquire();
-
-				let exists = FileHandler.exists( systemIndexPath );
-				if(!exists){
-					release();
-					return false;
+			this.availableSystems = [];
+			this.availableFilesWithErrors = []
+			this.availableFiles.forEach( file => {
+				let preview = JSONHandler.deserialize(SystemPreview,file);
+				preview.filePath=file;
+				if (preview) {
+					this.availableSystems.push(preview)
+				} else {
+					this.availableFilesWithErrors.push(file)
 				} 
-				let filetext	= FileHandler.readFile( systemIndexPath );
-				let system		= JSONHandler.deserialize(TTRPGSystem,filetext,TTRPG_SCHEMES.GRAPH);
-			
-			release();
-			return system	;
-		}
+			});
 
-		public async saveSystem( system:TTRPGSystem ){
-			throw new Error('NOT IMPLEMENTED'); 
-		}
-	*/
+		release();
+	}
+
+	public async cleanAllFoldersWithoutSystems(){
+		let release = await FileContext.mutex.acquire(); 
+
+		release();
+	}
+
+	public async loadSystem( systemIndexPath:string ){
+		let release = await FileContext.mutex.acquire();
+
+			let exists = FileHandler.exists( systemIndexPath );
+			if(!exists){
+				release();
+				return false;
+			} 
+			let filetext	= FileHandler.readFile( systemIndexPath );
+			let system		= JSONHandler.deserialize(TTRPGSystem,filetext,TTRPG_SCHEMES.GRAPH);
+		
+		release();
+		return system	;
+	}
+
+	public async saveSystem( system:TTRPGSystem ){
+		throw new Error('NOT IMPLEMENTED'); 
+	}
+	
 }

@@ -1,5 +1,5 @@
 
-<!-- script lang="ts">
+<script lang="ts">
     import GrobaxTTRPGSystemHandler from "../../../app";
     import SystemDescriptor from "./SystemDescriptor.svelte";
 	import './SystemSelector.scss';
@@ -14,8 +14,7 @@
 	function onClickSystem( self ){
 		debugger;
 	}
-
-
+ 
 </script>
 <div class="SystemSelectorContainer" >
 	<div class="SystemSelectorContainerHeader" >
@@ -33,4 +32,4 @@
 			</div>
 		</div>
 	</div>
-</div -->
+</div>
