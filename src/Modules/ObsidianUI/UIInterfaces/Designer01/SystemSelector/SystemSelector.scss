@@ -8,19 +8,8 @@
 	grid-template-rows: 1fr;
 }
 
-.SystemSelectorContainer .SelectionContainer {
-	display:flex;
-	flex-direction: column; 
-
-	
-}
-
-.SelectionContainerOption{
-	padding-left:10px;
-	height:$standard_LineHeight;
-	cursor:pointer;
-
-	&:hover{
-		background-color: $blue;
-	}
-}
+  
+ .SystemSelectorOptionsContainer{
+	max-height: $standard_LineHeight * 7 ;
+	overflow-y: scroll;
+ }

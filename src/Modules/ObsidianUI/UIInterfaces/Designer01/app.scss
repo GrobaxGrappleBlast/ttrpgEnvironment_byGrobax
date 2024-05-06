@@ -63,8 +63,8 @@ div {
 	}
 }
 
-.GrobsInteractiveContainer{ 
-    overflow: hidden;
+.GrobsInteractiveContainer {   
+    overflow-y:scroll;
     border: solid var(--border-width) $blue;
     background: $backgroundInput;
     border: var(--input-border-width) solid var(--background-modifier-border);
@@ -85,5 +85,5 @@ div {
 		border-radius: var(--input-radius);
 		outline: none; 
 		transition: 0.3s ease;
-	}
+	} 
 }

@@ -5,16 +5,19 @@
 	import './SystemSelector.scss';
 	import { createEventDispatcher } from "svelte"; 
     import { SystemPreview } from '../../../../../../src/Modules/ObsidianUI/core/model/systemPreview';
+    import SelectableCollectionV2 from "../BaseComponents/editAbleList/EditAbleList.svelte";
+    import { writable } from "svelte/store";
 
 	let plugin: GrobaxTTRPGSystemHandler;
 	const dispatch = createEventDispatcher();
-	export let previews : SystemPreview[];
+	export let previews : SystemPreview[] = [];
 	let _active_preview : SystemPreview | undefined = undefined ;
 
 	function onClickSystem( self ){
 		debugger;
 	}
- 
+	
+
 </script>
 <div class="SystemSelectorContainer" >
 	<div class="SystemSelectorContainerHeader" >
@@ -23,13 +26,16 @@
 				data = { _active_preview }
 			
 			/>
-		</div>
-		<div class="SelectionContainer"  >
-			<div class="GrobsInteractiveContainer" style="height:100%" >
-				{#each previews as opt , i }
-					<div class="SelectionContainerOption" on:click={onClickSystem} data-selected={opt.id == (_active_preview?.id ?? null )} > {opt.systemName} </div>
-				{/each}
-			</div>
+		</div> 
+		<div class="GrobsInteractiveContainer SystemSelectorOptionsContainer">
+		 
+			<SelectableCollectionV2 
+				isEditableContainer={false}
+				collection={ previews.map(p => p.systemName ) }
+				onSelect={ (s) =>{console.log(s); return true} }
+				onAdd={ () => { return {} }}
+			/>
+		 
 		</div>
 	</div>
 </div>

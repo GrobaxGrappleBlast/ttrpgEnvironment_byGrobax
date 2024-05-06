@@ -1,0 +1,41 @@
+@import '../../../SystemStandards.scss';
+@import '../../app.scss';
+
+.editableTable{
+	position: relative;
+}
+
+.Editable_row{
+	height:$standard_LineHeight ;
+	//line-height: $standard_fontSize	;
+	padding-left:5px;
+	cursor:pointer;
+}
+
+// Color Specifications
+.Editable_row{
+	&[data-can-hover="true"]{
+		&:hover{
+			&[data-selected="true"]{
+				background: StrippedBackground($green , $blue);
+			}
+			background: $blue  ;
+			
+		}
+	}
+	&[data-selected="true"]{
+		background: $green  ;
+	}
+}
+
+.Editable_rowPlusButton{
+	background: $backgroundInput;
+	position: sticky;
+    width: 100%;
+    bottom: 0;
+}
+.Editable_Icon{
+	display: flex;
+    justify-content: center;
+    align-content: center;
+}

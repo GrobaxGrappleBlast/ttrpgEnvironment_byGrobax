@@ -11,3 +11,12 @@ $textColor          : var(--text-normal);
 
 $standard_LineHeight 	: 24px;
 $standard_fontSize	 	: 12px;
+
+
+
+
+$stripedBackground_StripeThickness : 4px;
+@function StrippedBackground($color1 , $color2) {
+	@return repeating-linear-gradient(-45deg, $color1 , $color1  $stripedBackground_StripeThickness , $color2 $stripedBackground_StripeThickness , $color2 10px);
+}
+ 
