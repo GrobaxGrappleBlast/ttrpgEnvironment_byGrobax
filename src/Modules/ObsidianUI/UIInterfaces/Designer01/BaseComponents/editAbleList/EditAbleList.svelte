@@ -23,7 +23,7 @@
 	let writableCol : Writable< IViewElement[]> = writable([]);
 	let selected : IViewElement | null = null;
 	onMount(()=>{ 
-
+ 
 		init(); 
 		let nameOfSelected : string | null = null;
 		if($writableCol.length != 0){
