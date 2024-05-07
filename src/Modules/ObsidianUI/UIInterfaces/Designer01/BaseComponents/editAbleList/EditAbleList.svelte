@@ -12,7 +12,7 @@
 	export let isEditableContainer:boolean = true;
     export let collection: string[]; 
 	export let onSelect: ( d: any ) => boolean;
-	export let onAdd:(() => any) | null = null;
+	export let onAdd:(() => any) | null = null; 
 
 	interface IViewElement{
 		name:string;
@@ -98,8 +98,8 @@
 
 </script>
 
-<div>
-    <div class={ isEditableContainer ? "GrobsInteractiveContainer editableTable" : "editableTable"}>
+
+    <div class={ isEditableContainer ? "GrobsInteractiveContainer editableTable" : "editableTable"} >
 			{#each $writableCol as element ( element ) }
 				<div
 					class="Editable_row" 
@@ -140,5 +140,5 @@
 			{/if}
 		 
 	</div>
-</div>
+
  

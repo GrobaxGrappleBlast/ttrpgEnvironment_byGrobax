@@ -2,7 +2,7 @@
 @import '../../app.scss';
 
 .editableTable{
-	position: relative;
+	height: 100%; 
 }
 
 .Editable_row{
@@ -33,6 +33,7 @@
 	background: $backgroundInput;
 	position: sticky;
     width: 100%;
+	top: inherit;
     bottom: 1px;
 }
 .Editable_Icon{

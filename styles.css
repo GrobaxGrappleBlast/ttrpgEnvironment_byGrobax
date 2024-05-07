@@ -22,11 +22,11 @@ div {
 }
 
 .GrobsBordered_section[data-edgeColor=blue] {
-  border-color: var(--color-blue);
+  border-color: var(--interactive-accent);
 }
 
 .GrobsBordered_section[data-edgeColor=blue]::before {
-  color: var(--color-blue);
+  color: var(--interactive-accent);
 }
 
 .GrobsBordered_section[data-edgeColor=red] {
@@ -53,7 +53,7 @@ div {
 }
 
 *[data-color=blue] {
-  background-color: var(--color-blue);
+  background-color: var(--interactive-accent);
 }
 
 *[data-color=red] {
@@ -61,8 +61,9 @@ div {
 }
 
 .GrobsInteractiveContainer {
-  overflow-y: scroll;
-  border: solid var(--border-width) var(--color-blue);
+  overflow-y: auto;
+  overflow-x: hidden;
+  border: solid var(--border-width) var(--interactive-accent);
   background: var(--background-modifier-form-field);
   border: var(--input-border-width) solid var(--background-modifier-border);
   color: var(--text-normal);
@@ -74,7 +75,7 @@ div {
 }
 
 .GrobsInteractiveContainer[data-disabled=true] {
-  border: solid var(--border-width) var(--color-blue);
+  border: solid var(--border-width) var(--interactive-accent);
   background: transparent;
   border: var(--input-border-width) solid var(--background-modifier-border);
   color: var(--text-normal);
@@ -85,11 +86,90 @@ div {
   transition: 0.3s ease;
 }
 
-.SystemDescriptor {
+.GrobsButton, .SystemDescriptorButton {
+  height: 24px;
+  padding: 24px;
+  border-radius: 2px;
+  background: var(--interactive-normal);
+  box-shadow: var(--input-shadow);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--text-normal);
+  font-size: var(--font-ui-small);
+  border-radius: var(--button-radius);
+  border: 0;
+  padding: var(--size-4-1) var(--size-4-3);
+  height: var(--input-height);
+  font-weight: var(--input-font-weight);
+  cursor: var(--cursor);
+  font-family: inherit;
+  outline: none;
+  user-select: none;
+  white-space: nowrap;
+  cursor: pointer;
+}
+
+.GrobsButton:hover, .SystemDescriptorButton:hover {
+  background-color: var(--interactive-accent);
+  color: var(--text-on-accent);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--text-normal);
+  font-size: var(--font-ui-small);
+  border-radius: var(--button-radius);
+  border: 0;
+  padding: var(--size-4-1) var(--size-4-3);
+  height: var(--input-height);
+  font-weight: var(--input-font-weight);
+  font-family: inherit;
+  outline: none;
+  user-select: none;
+  white-space: nowrap;
+}
+
+.SystemDescriptor, .SystemDescriptorCreator {
   display: grid;
-  grid-template-columns: 1fr 1fr;
   gap: 10px;
   grid-auto-rows: 24px;
+  grid-template-columns: 1fr 1fr;
+}
+
+.SystemDescriptorCheckBox:not([data-text=""]) {
+  height: 24px;
+  border-radius: 2px;
+}
+
+.SystemDescriptorCheckBox:not([data-text=""])[data-isValid=true] {
+  border: solid 1px var(--color-green);
+}
+
+.SystemDescriptorCheckBox:not([data-text=""])[data-isValid=false] {
+  border: solid 1px var(--color-red);
+}
+
+.SystemDescriptorCheckBox:not([data-text=""])::before {
+  content: attr(data-text);
+}
+
+.SystemDescriptorButtonRow {
+  display: flex;
+  flex-direction: row;
+  gap: 10px;
+}
+
+.SystemDescriptorButton[data-disabled=true] {
+  cursor: auto;
+  background: var(--color-base-40);
+}
+
+.SystemDescriptorButton[data-disabled=true]:hover {
+  background: var(--color-base-40);
+}
+
+.SystemDescriptorEditField {
+  padding-left: 10px;
 }div {
   vertical-align: middle;
   line-height: 24px;
@@ -114,11 +194,11 @@ div {
 }
 
 .GrobsBordered_section[data-edgeColor=blue] {
-  border-color: var(--color-blue);
+  border-color: var(--interactive-accent);
 }
 
 .GrobsBordered_section[data-edgeColor=blue]::before {
-  color: var(--color-blue);
+  color: var(--interactive-accent);
 }
 
 .GrobsBordered_section[data-edgeColor=red] {
@@ -145,7 +225,7 @@ div {
 }
 
 *[data-color=blue] {
-  background-color: var(--color-blue);
+  background-color: var(--interactive-accent);
 }
 
 *[data-color=red] {
@@ -153,8 +233,9 @@ div {
 }
 
 .GrobsInteractiveContainer {
-  overflow-y: scroll;
-  border: solid var(--border-width) var(--color-blue);
+  overflow-y: auto;
+  overflow-x: hidden;
+  border: solid var(--border-width) var(--interactive-accent);
   background: var(--background-modifier-form-field);
   border: var(--input-border-width) solid var(--background-modifier-border);
   color: var(--text-normal);
@@ -166,7 +247,7 @@ div {
 }
 
 .GrobsInteractiveContainer[data-disabled=true] {
-  border: solid var(--border-width) var(--color-blue);
+  border: solid var(--border-width) var(--interactive-accent);
   background: transparent;
   border: var(--input-border-width) solid var(--background-modifier-border);
   color: var(--text-normal);
@@ -177,9 +258,247 @@ div {
   transition: 0.3s ease;
 }
 
+.GrobsButton {
+  height: 24px;
+  padding: 24px;
+  border-radius: 2px;
+  background: var(--interactive-normal);
+  box-shadow: var(--input-shadow);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--text-normal);
+  font-size: var(--font-ui-small);
+  border-radius: var(--button-radius);
+  border: 0;
+  padding: var(--size-4-1) var(--size-4-3);
+  height: var(--input-height);
+  font-weight: var(--input-font-weight);
+  cursor: var(--cursor);
+  font-family: inherit;
+  outline: none;
+  user-select: none;
+  white-space: nowrap;
+  cursor: pointer;
+}
+
+.GrobsButton:hover {
+  background-color: var(--interactive-accent);
+  color: var(--text-on-accent);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--text-normal);
+  font-size: var(--font-ui-small);
+  border-radius: var(--button-radius);
+  border: 0;
+  padding: var(--size-4-1) var(--size-4-3);
+  height: var(--input-height);
+  font-weight: var(--input-font-weight);
+  font-family: inherit;
+  outline: none;
+  user-select: none;
+  white-space: nowrap;
+}
+
+.ErrorHandlerSignage {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+
+.signage, .OKHandlerSign, .VerboseHandlerSign, .ErrorHandlerSign {
+  cursor: pointer;
+  border-radius: 2px;
+  padding: 5px 15px 5px 15px;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.signage:hover, .OKHandlerSign:hover, .VerboseHandlerSign:hover, .ErrorHandlerSign:hover {
+  margin-left: -5px;
+  transition: ease 0.4s;
+  margin-right: 5px;
+}
+
+.signage::before, .OKHandlerSign::before, .VerboseHandlerSign::before, .ErrorHandlerSign::before {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid white;
+  content: "!";
+  width: 15px;
+  height: 15px;
+  border-radius: 100%;
+}
+
+.ErrorHandlerSign {
+  background-color: var(--color-red);
+}
+
+.ErrorHandlerSign::before {
+  content: "!";
+}
+
+.VerboseHandlerSign {
+  background-color: var(--interactive-accent);
+}
+
+.VerboseHandlerSign::before {
+  content: "!";
+}
+
+.OKHandlerSign {
+  background-color: var(--color-green);
+}
+
+.OKHandlerSign::before {
+  content: "!";
+}div {
+  vertical-align: middle;
+  line-height: 24px;
+  font-size: 12px;
+}
+
+.GrobsBordered_section {
+  padding: 10px;
+  border: 1px solid;
+  border-color: var(--text-normal);
+  border-radius: 5px;
+  position: relative;
+  margin-top: 10px;
+}
+
+.GrobsBordered_section[data-edgeColor=green] {
+  border-color: var(--color-green);
+}
+
+.GrobsBordered_section[data-edgeColor=green]::before {
+  color: var(--color-green);
+}
+
+.GrobsBordered_section[data-edgeColor=blue] {
+  border-color: var(--interactive-accent);
+}
+
+.GrobsBordered_section[data-edgeColor=blue]::before {
+  color: var(--interactive-accent);
+}
+
+.GrobsBordered_section[data-edgeColor=red] {
+  border-color: var(--color-red) !important;
+}
+
+.GrobsBordered_section[data-edgeColor=red]::before {
+  color: var(--color-red) !important;
+}
+
+.GrobsBordered_section::before {
+  content: attr(data-label);
+  position: absolute;
+  top: -10px;
+  left: 10px;
+  padding-left: 5px;
+  padding-right: 5px;
+  color: var(--text-normal);
+  background-color: var(--background-primary);
+}
+
+*[data-color=green] {
+  background-color: var(--color-green);
+}
+
+*[data-color=blue] {
+  background-color: var(--interactive-accent);
+}
+
+*[data-color=red] {
+  background-color: var(--color-red);
+}
+
+.GrobsInteractiveContainer {
+  overflow-y: auto;
+  overflow-x: hidden;
+  border: solid var(--border-width) var(--interactive-accent);
+  background: var(--background-modifier-form-field);
+  border: var(--input-border-width) solid var(--background-modifier-border);
+  color: var(--text-normal);
+  font-family: inherit;
+  font-size: var(--font-ui-small);
+  border-radius: var(--input-radius);
+  outline: none;
+  transition: 0.3s ease;
+}
+
+.GrobsInteractiveContainer[data-disabled=true] {
+  border: solid var(--border-width) var(--interactive-accent);
+  background: transparent;
+  border: var(--input-border-width) solid var(--background-modifier-border);
+  color: var(--text-normal);
+  font-family: inherit;
+  font-size: var(--font-ui-small);
+  border-radius: var(--input-radius);
+  outline: none;
+  transition: 0.3s ease;
+}
+
+.GrobsButton {
+  height: 24px;
+  padding: 24px;
+  border-radius: 2px;
+  background: var(--interactive-normal);
+  box-shadow: var(--input-shadow);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--text-normal);
+  font-size: var(--font-ui-small);
+  border-radius: var(--button-radius);
+  border: 0;
+  padding: var(--size-4-1) var(--size-4-3);
+  height: var(--input-height);
+  font-weight: var(--input-font-weight);
+  cursor: var(--cursor);
+  font-family: inherit;
+  outline: none;
+  user-select: none;
+  white-space: nowrap;
+  cursor: pointer;
+}
+
+.GrobsButton:hover {
+  background-color: var(--interactive-accent);
+  color: var(--text-on-accent);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--text-normal);
+  font-size: var(--font-ui-small);
+  border-radius: var(--button-radius);
+  border: 0;
+  padding: var(--size-4-1) var(--size-4-3);
+  height: var(--input-height);
+  font-weight: var(--input-font-weight);
+  font-family: inherit;
+  outline: none;
+  user-select: none;
+  white-space: nowrap;
+}
+
+/*
+.SystemSelectorContainer{
+	display:grid;
+	grid-template-columns: 1fr;
+	grid-template-rows: 1fr;
+}
+  */
+
 .SystemSelectorContainerHeader {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
   grid-template-rows: 1fr;
 }
 
@@ -210,11 +529,11 @@ div {
 }
 
 .GrobsBordered_section[data-edgeColor=blue] {
-  border-color: var(--color-blue);
+  border-color: var(--interactive-accent);
 }
 
 .GrobsBordered_section[data-edgeColor=blue]::before {
-  color: var(--color-blue);
+  color: var(--interactive-accent);
 }
 
 .GrobsBordered_section[data-edgeColor=red] {
@@ -241,7 +560,7 @@ div {
 }
 
 *[data-color=blue] {
-  background-color: var(--color-blue);
+  background-color: var(--interactive-accent);
 }
 
 *[data-color=red] {
@@ -249,8 +568,9 @@ div {
 }
 
 .GrobsInteractiveContainer {
-  overflow-y: scroll;
-  border: solid var(--border-width) var(--color-blue);
+  overflow-y: auto;
+  overflow-x: hidden;
+  border: solid var(--border-width) var(--interactive-accent);
   background: var(--background-modifier-form-field);
   border: var(--input-border-width) solid var(--background-modifier-border);
   color: var(--text-normal);
@@ -262,7 +582,7 @@ div {
 }
 
 .GrobsInteractiveContainer[data-disabled=true] {
-  border: solid var(--border-width) var(--color-blue);
+  border: solid var(--border-width) var(--interactive-accent);
   background: transparent;
   border: var(--input-border-width) solid var(--background-modifier-border);
   color: var(--text-normal);
@@ -273,22 +593,66 @@ div {
   transition: 0.3s ease;
 }
 
+.GrobsButton {
+  height: 24px;
+  padding: 24px;
+  border-radius: 2px;
+  background: var(--interactive-normal);
+  box-shadow: var(--input-shadow);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--text-normal);
+  font-size: var(--font-ui-small);
+  border-radius: var(--button-radius);
+  border: 0;
+  padding: var(--size-4-1) var(--size-4-3);
+  height: var(--input-height);
+  font-weight: var(--input-font-weight);
+  cursor: var(--cursor);
+  font-family: inherit;
+  outline: none;
+  user-select: none;
+  white-space: nowrap;
+  cursor: pointer;
+}
+
+.GrobsButton:hover {
+  background-color: var(--interactive-accent);
+  color: var(--text-on-accent);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--text-normal);
+  font-size: var(--font-ui-small);
+  border-radius: var(--button-radius);
+  border: 0;
+  padding: var(--size-4-1) var(--size-4-3);
+  height: var(--input-height);
+  font-weight: var(--input-font-weight);
+  font-family: inherit;
+  outline: none;
+  user-select: none;
+  white-space: nowrap;
+}
+
 .editableTable {
-  position: relative;
+  height: 100%;
 }
 
 .Editable_row {
+  width: inherit;
   height: 24px;
   padding-left: 5px;
   cursor: pointer;
 }
 
 .Editable_row[data-can-hover=true]:hover {
-  background: var(--color-blue);
+  background: var(--interactive-accent);
 }
 
 .Editable_row[data-can-hover=true]:hover[data-selected=true] {
-  background: repeating-linear-gradient(-45deg, var(--color-green), var(--color-green) 4px, var(--color-blue) 4px, var(--color-blue) 10px);
+  background: repeating-linear-gradient(-45deg, var(--color-green), var(--color-green) 4px, var(--interactive-accent) 4px, var(--interactive-accent) 10px);
 }
 
 .Editable_row[data-selected=true] {
@@ -299,13 +663,14 @@ div {
   background: var(--background-modifier-form-field);
   position: sticky;
   width: 100%;
-  bottom: 0;
+  top: inherit;
+  bottom: 1px;
 }
 
 .Editable_Icon {
   display: flex;
   justify-content: center;
-  align-content: center;
+  align-items: center;
 }div {
   vertical-align: middle;
   line-height: 24px;
@@ -330,11 +695,11 @@ div {
 }
 
 .GrobsBordered_section[data-edgeColor=blue] {
-  border-color: var(--color-blue);
+  border-color: var(--interactive-accent);
 }
 
 .GrobsBordered_section[data-edgeColor=blue]::before {
-  color: var(--color-blue);
+  color: var(--interactive-accent);
 }
 
 .GrobsBordered_section[data-edgeColor=red] {
@@ -361,7 +726,7 @@ div {
 }
 
 *[data-color=blue] {
-  background-color: var(--color-blue);
+  background-color: var(--interactive-accent);
 }
 
 *[data-color=red] {
@@ -369,8 +734,9 @@ div {
 }
 
 .GrobsInteractiveContainer {
-  overflow-y: scroll;
-  border: solid var(--border-width) var(--color-blue);
+  overflow-y: auto;
+  overflow-x: hidden;
+  border: solid var(--border-width) var(--interactive-accent);
   background: var(--background-modifier-form-field);
   border: var(--input-border-width) solid var(--background-modifier-border);
   color: var(--text-normal);
@@ -382,7 +748,7 @@ div {
 }
 
 .GrobsInteractiveContainer[data-disabled=true] {
-  border: solid var(--border-width) var(--color-blue);
+  border: solid var(--border-width) var(--interactive-accent);
   background: transparent;
   border: var(--input-border-width) solid var(--background-modifier-border);
   color: var(--text-normal);
@@ -391,4 +757,47 @@ div {
   border-radius: var(--input-radius);
   outline: none;
   transition: 0.3s ease;
+}
+
+.GrobsButton {
+  height: 24px;
+  padding: 24px;
+  border-radius: 2px;
+  background: var(--interactive-normal);
+  box-shadow: var(--input-shadow);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--text-normal);
+  font-size: var(--font-ui-small);
+  border-radius: var(--button-radius);
+  border: 0;
+  padding: var(--size-4-1) var(--size-4-3);
+  height: var(--input-height);
+  font-weight: var(--input-font-weight);
+  cursor: var(--cursor);
+  font-family: inherit;
+  outline: none;
+  user-select: none;
+  white-space: nowrap;
+  cursor: pointer;
+}
+
+.GrobsButton:hover {
+  background-color: var(--interactive-accent);
+  color: var(--text-on-accent);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--text-normal);
+  font-size: var(--font-ui-small);
+  border-radius: var(--button-radius);
+  border: 0;
+  padding: var(--size-4-1) var(--size-4-3);
+  height: var(--input-height);
+  font-weight: var(--input-font-weight);
+  font-family: inherit;
+  outline: none;
+  user-select: none;
+  white-space: nowrap;
 }

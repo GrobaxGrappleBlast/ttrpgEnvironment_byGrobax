@@ -4,6 +4,7 @@
 	import './SystemDescriptor.scss';
 	
 	export let data : SystemPreview = new SystemPreview();
+	export let edit : boolean  = false;
 	let _data 		: SystemPreview;
 	const unknownString = ' no Value '
 
@@ -11,16 +12,21 @@
 		_data = Object.assign( new SystemPreview() , data );
 	}) 
 </script>
-<div class="SystemDescriptor" >
-	<div>Author</div>
-	<div>{_data?.author ?? unknownString}</div>
+<div class="SystemDescriptor" data-is-edit={ false } >
 
-	<div>Version</div>
-	<div>{_data?.version ?? unknownString}</div>
+	<div>Author</div> 
+	<div >{_data?.author ?? unknownString}</div>
 
-	<div>SystemCodeName</div>
-	<div>{_data?.systemCodeName ?? unknownString}</div>
+	<div>Version</div> 
+	<div >{_data?.version ?? unknownString}</div>
 
-	<div>SystemName</div>
-	<div>{_data?.systemName ?? unknownString}</div>
+	<div>SystemCodeName</div> 
+	<div >{_data?.systemCodeName ?? unknownString}</div>
+
+	<div>SystemName</div> 
+	<div >{_data?.systemName ?? unknownString}</div>
+ 
+	<div>folder name</div> 
+	<div >{_data?.folderName ?? unknownString}</div>
+ 
 </div>

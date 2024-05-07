@@ -1,0 +1,109 @@
+<script lang="ts">
+	import { SystemPreview } from '../../../core/model/systemPreview';
+    import { onMount } from 'svelte';
+	import './SystemDescriptor.scss';
+	import { StringFunctions } from '../BaseFunctions/stringfunctions';
+	import StaticMessageHandler from '../BaseComponents/Messages/StaticMessageHandler.svelte';
+	import { MessageTypes } from '../BaseComponents/Messages/StaticMessageHandler.svelte';
+
+	export let data : SystemPreview = new SystemPreview();
+	export let onEnd :( preview: SystemPreview | null ) => any|null ;
+	let _data 		: SystemPreview = new SystemPreview(); 
+
+	let messageHandler:StaticMessageHandler ;
+	let isValidated = false;
+
+	onMount(()=>{
+		_data = Object.assign( new SystemPreview() , data );
+	}) 
+
+	function validate		(){
+		let isValid = true;
+		messageHandler.removeAllMessages();
+
+		let _ = ''; 
+		// Author 
+		if( !_data.author  ){	
+			messageHandler.addMessage('author1','a author is not required but helpfull to users', MessageTypes.verbose as any )
+		}
+
+		// Version 
+		if( !_data.version  ){	
+			messageHandler.addMessage('version1','a version is not required but helpfull to users', MessageTypes.verbose as any )
+		}
+
+		// SystemCodeName 
+		if( !_data.systemCodeName  ){	
+			isValid = false;  
+			messageHandler.addMessage('systemCodeName1','Did not have a systemCodeName.', MessageTypes.error as any )
+		}else if (!StringFunctions.isValidSystemCodeName(_data.systemCodeName)){
+			isValid = false;  
+			messageHandler.addMessage('systemCodeName2','Did not have a valid systemCodeName', MessageTypes.error as any )
+		}
+
+		// SystemName No \n characters.
+		if( !_data.systemName  ){	
+			isValid = false;  
+			messageHandler.addMessage('systemName1','Did not have a system name.', MessageTypes.error as any )
+		}else if (!StringFunctions.isValidWindowsFileString(_data.systemName)){
+			isValid = false;  
+			messageHandler.addMessage('systemName2','Did not have a valid system name', MessageTypes.error as any )
+		}
+
+		// folder only allow windows folder name accepted folder names.
+		if( !_data.folderName  ){	
+			_data.folderName = StringFunctions.uuidv4(); 
+			messageHandler.addMessage('folder1','Did not have a folder name so created one', MessageTypes.verbose as any )
+		} 
+		else if (!StringFunctions.isValidWindowsFileString(_data.folderName)){ 
+			isValid = false;  
+			messageHandler.addMessage('folder2','folder name was not valid windows folder name')
+		} 
+
+		if (isValid){
+			messageHandler.addMessage('all','All is Good', MessageTypes.good as any )
+			isValidated = true;
+		}
+	}
+	function createSystem	(){
+		if(!isValidated)
+			return;
+		onEnd( null );
+	}
+	function cancel			(){
+		onEnd( null );
+	}
+	function _onChange(){
+		isValidated = false;
+	}
+	
+</script>
+<div>
+	<StaticMessageHandler 
+		bind:this={messageHandler} 
+	/>
+	<div style="height:5px;"></div>
+	<div class="SystemDescriptorCreator"  >
+
+		<div>Author</div> 
+		<input type="text" class='SystemDescriptorEditField'  on:change={_onChange}  bind:value= { _data.author } />
+
+		<div>Version</div> 
+		<input type="text" class='SystemDescriptorEditField' on:change={_onChange}  bind:value={_data.version} />
+
+		<div>SystemCodeName</div> 
+		<input type="text" class='SystemDescriptorEditField' on:change={_onChange}  bind:value={_data.systemCodeName} />
+
+		<div>SystemName</div> 
+		<input type="text" class='SystemDescriptorEditField' on:change={_onChange}  bind:value={_data.systemName} />
+	
+		<div>folder name</div> 
+		<input type="text" class='GrobsInteractiveContainer SystemDescriptorEditField' on:change={_onChange}  bind:value={_data.folderName} />
+	 
+	</div>
+	<div class="SystemDescriptorButtonRow" >
+		<div class="SystemDescriptorButton" on:click={validate}		>Validate		</div>
+		<div class="SystemDescriptorButton" on:click={createSystem}	data-disabled={!isValidated} >Create			</div>
+		<div class="SystemDescriptorButton" on:click={cancel}		>Cancel Creation</div>
+	</div>
+</div>

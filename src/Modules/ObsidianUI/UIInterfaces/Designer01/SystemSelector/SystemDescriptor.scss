@@ -1,9 +1,53 @@
 @import '../../SystemStandards.scss';
 @import '../app.scss';
 
-.SystemDescriptor { 
+.SystemDescriptor{
 	display:grid;
-	grid-template-columns: 1fr 1fr;
 	gap:10px;
 	grid-auto-rows: $standard_LineHeight; 
+	grid-template-columns: 1fr 1fr; 
+}
+.SystemDescriptorCreator{
+	@extend .SystemDescriptor; 
+}
+
+.SystemDescriptorCheckBox[data-text=""]{
+	
+}
+.SystemDescriptorCheckBox:not([data-text=""]){
+	height:$standard_LineHeight;
+	border-radius: 2px;
+	&[data-isValid="true"] {
+		border:solid 1px $green;
+	}
+	&[data-isValid="false"]{
+		border:solid 1px $red;
+	}
+	&::before{
+		content:attr(data-text);
+	}
+}
+
+.SystemDescriptorButtonRow{
+	display: flex;
+	flex-direction: row;
+	gap:10px;
+ }
+
+
+ .SystemDescriptorButton{
+	@extend .GrobsButton; 
+	&[data-disabled="true"]{
+		cursor: auto;
+		background:$disabledInteraction;
+		&:hover{
+			background:$disabledInteraction;
+		}
+	}
+ }
+
+
+
+.SystemDescriptorEditField{
+	padding-left: 10px; 
 }

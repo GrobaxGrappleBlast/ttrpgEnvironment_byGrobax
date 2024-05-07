@@ -8,6 +8,16 @@ export class SystemPreview {
 	public id : string = systemPreviewKeyManager.getNewKey();
 	public filePath:string ;
 
+	public constructor(){
+		
+	}
+	public init(){
+		this.author = "grobax";
+		this.version = "0.0.1";
+		this.systemCodeName = "grobdnd";
+		this.systemName = "Grobax' DnD TTPRPG";
+	}
+
 	@JsonString()
 	public author			: string ;
 	
@@ -20,6 +30,17 @@ export class SystemPreview {
 	@JsonString()
 	public systemName		: string ;
 
+	public folderName		: string ;
 
 }
 
+
+export class FilledSystemPreview  extends SystemPreview  {
+	public constructor(){
+		super();
+		this.author = "grobax";
+		this.version = "0.0.1";
+		this.systemCodeName = "grobdnd";
+		this.systemName = "Grobax' DnD TTPRPG";
+	}
+}

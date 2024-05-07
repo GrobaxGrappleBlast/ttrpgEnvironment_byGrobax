@@ -62,9 +62,11 @@ div {
 		background-color: $red ;
 	}
 }
-
+ 
+ 
 .GrobsInteractiveContainer {   
-    overflow-y:scroll;
+    overflow-y:auto;
+    overflow-x:hidden;
     border: solid var(--border-width) $blue;
     background: $backgroundInput;
     border: var(--input-border-width) solid var(--background-modifier-border);
@@ -74,7 +76,7 @@ div {
     border-radius: var(--input-radius);
     outline: none; 
     transition: 0.3s ease; 
-	
+
 	&[data-disabled="true"]{ 
 		border: solid var(--border-width) $blue;
 		background:transparent;
@@ -86,4 +88,51 @@ div {
 		outline: none; 
 		transition: 0.3s ease;
 	} 
+}
+
+.GrobsButton{
+    height:$standard_LineHeight;
+    padding:$standard_LineHeight;
+    border-radius: 2px;
+    background: var(--interactive-normal);
+    box-shadow: var(--input-shadow);
+     
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--text-normal);
+    font-size: var(--font-ui-small);
+    border-radius: var(--button-radius);
+    border: 0;
+    padding: var(--size-4-1) var(--size-4-3);
+    height: var(--input-height);
+    font-weight: var(--input-font-weight);
+    cursor: var(--cursor);
+    font-family: inherit;
+    outline: none;
+    user-select: none;
+    white-space: nowrap;
+
+    cursor: pointer;
+
+    &:hover{
+        background-color: var(--interactive-accent);
+        color: var(--text-on-accent);
+ 
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        color: var(--text-normal);
+        font-size: var(--font-ui-small);
+        border-radius: var(--button-radius);
+        border: 0;
+        padding: var(--size-4-1) var(--size-4-3);
+        height: var(--input-height);
+        font-weight: var(--input-font-weight); 
+        font-family: inherit;
+        outline: none;
+        user-select: none;
+        white-space: nowrap;
+    }
+
 }
