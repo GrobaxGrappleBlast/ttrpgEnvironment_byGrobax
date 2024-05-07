@@ -1,0 +1,73 @@
+<script context="module" lang="ts">
+	export 	const MessageTypes = {
+		error	:"error",
+		verbose	:"verbose", 
+		good	:"good"
+	}
+	type MessageTypeTypes = keyof typeof MessageTypes;
+</script> 
+<script lang="ts">
+    import { slide } from "svelte/transition";
+	import './StaticMessageHandler.scss'; 
+    import { ok } from "assert";
+    import { slidefade } from "../../Transitions/SlideFly";
+    import { writable, type Writable } from "svelte/store";
+    import { flip } from "svelte/animate";
+ 
+
+	let messages : Writable<Record<any,{msg:string, type : MessageTypeTypes}>> = writable({});
+	let messagesLength =  Object.entries(messages).length;
+	let entries : [string,{msg:string, type : MessageTypeTypes}] [] = [];
+
+	messages.subscribe( p => { 
+		entries =  Object.entries(p);
+		messagesLength = entries.length; 
+	})
+
+	export function addMessage( key: any , msg : string , type : MessageTypeTypes = 'error' ){  
+		messages.update( r => {
+			r[key] = {msg:msg,type:type}; 
+			return r;
+		})
+	}
+	export function removeError( key : any ){ 
+		messages.update( r => {
+			delete r[key]; 
+			return r;
+		}) 
+	}
+	export function removeAllMessages(  ){ 
+		messages.update( r => {
+			return {};
+		})
+	}
+
+	function onclick(key){ 
+		removeError( key  );
+	}
+
+</script>
+
+<div class="ErrorHandlerSignageContainer" >
+	{#if messagesLength != 0} 
+		<div class="ErrorHandlerSignage" >
+			{#each entries as [key, obj] (key) } 
+				<div 
+				transition:slide
+				
+				class={ 
+					(obj.type == MessageTypes.error) ? "ErrorHandlerSign" : 
+					(obj.type == MessageTypes.verbose) ?  "VerboseHandlerSign" : 
+					(obj.type == MessageTypes.good) ?  "OKHandlerSign" : 
+					''
+				} 
+				on:keydown={ () => onclick(key) }
+				on:click={ () => onclick(key) }
+				>
+				
+					<p>{obj.msg}</p>
+				</div>
+			{/each}
+		</div> 
+	{/if}
+</div>

@@ -1,0 +1,64 @@
+@import '../../../SystemStandards.scss';
+@import '../../app.scss';
+
+
+.ErrorHandlerSignageContainer{
+	//background-color: beige;
+}
+.ErrorHandlerSignage{
+	display: flex;	
+	flex-direction: column;
+	gap:5px;
+} 
+.signage{
+	cursor: pointer;
+	border-radius: 2px;
+	padding:$standard_padding ; 
+	display: flex;	
+	flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+
+	&:hover {
+		margin-left:-5px;
+		transition:ease 0.4s;
+		margin-right:5px;
+	}
+
+	&::before{
+		display: flex;	
+		flex-direction: row;
+		align-items: center;
+		justify-content: center;
+		border:1px solid white;
+ 
+		content:'!';
+		width:15px;
+		height:15px;
+		border-radius:100%; 
+	} 
+}
+
+.ErrorHandlerSign{
+	@extend .signage;
+	background-color: $red; 
+	&::before{ 
+		content:'!'; 
+	}
+}
+ 
+.VerboseHandlerSign{
+	@extend .signage;
+	background-color: $blue; 
+	&::before{ 
+		content:'!'; 
+	}
+}
+ 
+.OKHandlerSign{
+	@extend .signage;
+	background-color: $green; 
+	&::before{ 
+		content:'!'; 
+	}
+}
