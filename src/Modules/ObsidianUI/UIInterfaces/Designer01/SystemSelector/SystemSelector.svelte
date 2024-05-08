@@ -4,12 +4,13 @@
     import SystemDescriptor from "./SystemDescriptor.svelte";
 	import SystemDescriptorCreator from "./SystemDescriptorCreator.svelte";
 	import './SystemSelector.scss';
-	import { createEventDispatcher } from "svelte"; 
+	import { createEventDispatcher, onMount } from "svelte"; 
     import { FilledSystemPreview, SystemPreview } from '../../../../../../src/Modules/ObsidianUI/core/model/systemPreview';
 	
     import EditableList from "../BaseComponents/editAbleList/EditAbleList.svelte";
     import { writable } from "svelte/store";
     import { slide } from "svelte/transition";
+    import { FileContext } from "../../../../../../src/Modules/ObsidianUI/core/fileContext";
 
 	let plugin: GrobaxTTRPGSystemHandler;
 	const dispatch = createEventDispatcher();
@@ -23,6 +24,9 @@
 	}
 	let state = SystemSelectorStates.preview;
 
+	onMount(() => {
+		debugger
+	})
 
 	function onClickSystem( self ){
 		debugger;
@@ -32,8 +36,12 @@
 	function onCreateNewSystem_START(){
 		state = SystemSelectorStates.create;
 	} 
-	function onCreateNewSystem_END( result : any | null ){
+	function onCreateNewSystem_END( result : SystemPreview | null ){
 		state = SystemSelectorStates.preview;
+		if (!result)
+			return;
+
+		FileContext.createSystemDefinition( result );
 	} 
 
 </script>
@@ -57,7 +65,7 @@
 				<div class="GrobsInteractiveContainer SystemSelectorOptionsContainer"> 
 					<EditableList 
 						isEditableContainer={false}
-						collection={previews.map(p => p.systemName )}
+						collection={previews.map( p => {return {key : p.filePath , value : p.systemName} })}
 						onSelect={ (s) =>{console.log(s); return true} }
 						onAdd={ onCreateNewSystem_START }
 					/> 

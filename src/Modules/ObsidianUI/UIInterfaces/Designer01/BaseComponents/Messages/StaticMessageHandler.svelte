@@ -4,7 +4,7 @@
 		verbose	:"verbose", 
 		good	:"good"
 	}
-	type MessageTypeTypes = keyof typeof MessageTypes;
+	export type MessageTypeTypes = keyof typeof MessageTypes;
 </script> 
 <script lang="ts">
     import { slide } from "svelte/transition";
@@ -13,7 +13,6 @@
     import { slidefade } from "../../Transitions/SlideFly";
     import { writable, type Writable } from "svelte/store";
     import { flip } from "svelte/animate";
- 
 
 	let messages : Writable<Record<any,{msg:string, type : MessageTypeTypes}>> = writable({});
 	let messagesLength =  Object.entries(messages).length;
@@ -24,7 +23,20 @@
 		messagesLength = entries.length; 
 	})
 
-	export function addMessage( key: any , msg : string , type : MessageTypeTypes = 'error' ){  
+	export function addMessage( key: any , msg : {msg:string, type : MessageTypeTypes } ){  
+		
+		if(!msg)
+			return;
+
+		if(!msg.type)
+			msg.type = 'error';
+		
+		messages.update( r => {
+			r[key] = msg 
+			return r;
+		})
+	}
+	export function addMessageManual( key: any , msg : string , type : MessageTypeTypes = 'error' ){  
 		messages.update( r => {
 			r[key] = {msg:msg,type:type}; 
 			return r;

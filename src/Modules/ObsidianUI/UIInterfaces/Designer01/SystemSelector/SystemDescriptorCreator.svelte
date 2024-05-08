@@ -24,51 +24,51 @@
 		let _ = ''; 
 		// Author 
 		if( !_data.author  ){	
-			messageHandler.addMessage('author1','a author is not required but helpfull to users', MessageTypes.verbose as any )
+			messageHandler.addMessageManual('author1','a author is not required but helpfull to users', MessageTypes.verbose as any )
 		}
 
 		// Version 
 		if( !_data.version  ){	
-			messageHandler.addMessage('version1','a version is not required but helpfull to users', MessageTypes.verbose as any )
+			messageHandler.addMessageManual('version1','a version is not required but helpfull to users', MessageTypes.verbose as any )
 		}
 
 		// SystemCodeName 
 		if( !_data.systemCodeName  ){	
 			isValid = false;  
-			messageHandler.addMessage('systemCodeName1','Did not have a systemCodeName.', MessageTypes.error as any )
+			messageHandler.addMessageManual('systemCodeName1','Did not have a systemCodeName.', MessageTypes.error as any )
 		}else if (!StringFunctions.isValidSystemCodeName(_data.systemCodeName)){
 			isValid = false;  
-			messageHandler.addMessage('systemCodeName2','Did not have a valid systemCodeName', MessageTypes.error as any )
+			messageHandler.addMessageManual('systemCodeName2','Did not have a valid systemCodeName', MessageTypes.error as any )
 		}
 
 		// SystemName No \n characters.
 		if( !_data.systemName  ){	
 			isValid = false;  
-			messageHandler.addMessage('systemName1','Did not have a system name.', MessageTypes.error as any )
+			messageHandler.addMessageManual('systemName1','Did not have a system name.', MessageTypes.error as any )
 		}else if (!StringFunctions.isValidWindowsFileString(_data.systemName)){
 			isValid = false;  
-			messageHandler.addMessage('systemName2','Did not have a valid system name', MessageTypes.error as any )
+			messageHandler.addMessageManual('systemName2','Did not have a valid system name', MessageTypes.error as any )
 		}
 
 		// folder only allow windows folder name accepted folder names.
 		if( !_data.folderName  ){	
 			_data.folderName = StringFunctions.uuidv4(); 
-			messageHandler.addMessage('folder1','Did not have a folder name so created one', MessageTypes.verbose as any )
+			messageHandler.addMessageManual('folder1','Did not have a folder name so created one', MessageTypes.verbose as any )
 		} 
 		else if (!StringFunctions.isValidWindowsFileString(_data.folderName)){ 
 			isValid = false;  
-			messageHandler.addMessage('folder2','folder name was not valid windows folder name')
+			messageHandler.addMessageManual('folder2','folder name was not valid windows folder name')
 		} 
 
 		if (isValid){
-			messageHandler.addMessage('all','All is Good', MessageTypes.good as any )
+			messageHandler.addMessageManual('all','All is Good', MessageTypes.good as any )
 			isValidated = true;
 		}
 	}
 	function createSystem	(){
 		if(!isValidated)
 			return;
-		onEnd( null );
+		onEnd( _data );
 	}
 	function cancel			(){
 		onEnd( null );

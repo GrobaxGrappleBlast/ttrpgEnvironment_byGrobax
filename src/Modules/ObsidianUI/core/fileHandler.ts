@@ -3,7 +3,6 @@ import GrobaxTTRPGSystemHandler from "../app";
 export class FileHandler{
 
 	private static _instance : FileHandler;  
-
 	public constructor(){
 		if(FileHandler._instance == null ){
 			FileHandler._instance  = new FileHandler(); 

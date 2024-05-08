@@ -9,18 +9,26 @@
     import SelectableCollectionV2 from "./BaseComponents/editAbleList/EditAbleList.svelte";
     import { writable } from "svelte/store";
 
-	let fileContext = new FileContext();
+	let fileContext = FileContext.getInstance();
 	let previews : SystemPreview[] = [];
+	let loaded = false;
 
-	onMount(()=>{
-		fileContext.loadAllAvailableFiles();
-		previews = fileContext.availableSystems ?? [];	 
+	onMount( async () => {
+		await fileContext.loadAllAvailableFiles(); 
+		previews = fileContext.availableSystems ?? [];	
+		loaded = true; 
 	})
 	 
 </script>
 <div>
 	<br>
-	<SystemSelector
-		previews= {previews}
-	/> 
+	{#if loaded }
+		<SystemSelector
+			previews= {previews}
+		/> 
+	{:else}
+		<div>
+			<p>Loading...</p>
+		</div>
+	{/if}
 </div>

@@ -14,22 +14,25 @@ const DEFAULT_SETTINGS: MyPluginSettings = {
 
 export default class GrobaxTTRPGSystemHandler extends Plugin { 
 
-	public static App : App;
-	public static PATH_PLUGIN_SETTINGS_FOLDER 	: string;
-	public static ROOT		  					: string;	
-	public static PATH_PLUGIN_FOLDER			: string;
-	public static self							: GrobaxTTRPGSystemHandler;  
+	public static App : App; 
+	public static ROOT		  	: string;	
+	public static PLUGIN_ROOT	: string;
+	public static SYSTEMS_FOLDER_NAME	: string;
+	public static self			: GrobaxTTRPGSystemHandler;  
 	settings: MyPluginSettings;  
 
 
 	async onload() {
 
-		await this.loadSettings();
+		await this.loadSettings(); 
 		GrobaxTTRPGSystemHandler.self = this;
 		GrobaxTTRPGSystemHandler.App  = this.app;  
 		GrobaxTTRPGSystemHandler.ROOT = GrobaxTTRPGSystemHandler.App.vault.configDir; 
-		GrobaxTTRPGSystemHandler.PATH_PLUGIN_FOLDER = "plugins"
-		GrobaxTTRPGSystemHandler.PATH_PLUGIN_SETTINGS_FOLDER = "settings"
+		GrobaxTTRPGSystemHandler.PLUGIN_ROOT = this.manifest.dir as string; 
+		GrobaxTTRPGSystemHandler.SYSTEMS_FOLDER_NAME = "Systems"
+		
+		
+ 
 
 		// add Ribbon Icons, these are the icons in the left bar of the window
 		this.addRibbonIcon('dice', 'Hanss\' Plugin', (evt: MouseEvent) => {

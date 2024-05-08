@@ -1,4 +1,4 @@
-import { KeyManager } from "../../../../../src/Modules/Designer/Abstractions/KeyManager";
+import { KeyManager } from "../../../Designer/Abstractions/KeyManager";
 import { JsonString } from "../../../JSONModules";
 
 const systemPreviewKeyManager = new KeyManager();
@@ -29,9 +29,10 @@ export class SystemPreview {
 
 	@JsonString()
 	public systemName		: string ;
-
+	
+	public folderPath		: string ;
 	public folderName		: string ;
-
+	
 }
 
 

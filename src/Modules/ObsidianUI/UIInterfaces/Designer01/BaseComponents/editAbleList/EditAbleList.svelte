@@ -10,11 +10,12 @@
 	import './EditAbleList.scss'; 
 
 	export let isEditableContainer:boolean = true;
-    export let collection: string[]; 
+    export let collection: string[] | {key:string, value:string}[]; 
 	export let onSelect: ( d: any ) => boolean;
 	export let onAdd:(() => any) | null = null; 
 
 	interface IViewElement{
+		key:string;
 		name:string;
 		isSelected:boolean;
 		nameEdit:string; 
@@ -25,25 +26,38 @@
 	onMount(()=>{ 
  
 		init(); 
-		let nameOfSelected : string | null = null;
+		let keyOfSelected : string | null = null;
 		if($writableCol.length != 0){
 			let s = $writableCol.find( p => p.isSelected != false );
-			nameOfSelected = s?.name ?? null ;
+			keyOfSelected = s?.key ?? null ;
 		}
 
 		let arr :IViewElement[] = [];
 		for (let i = 0; i < collection.length; i++) {
 			const e = collection[i];
-			const item = {
-				isSelected : false,
-				nameEdit :e,
-				name :e
-			} as IViewElement;
-			arr.push(item);
+			let item : IViewElement;
+			if(typeof e == "string"){
+				item = {
+					key:e,
+					isSelected : false,
+					nameEdit :e,
+					name :e
+				} as IViewElement;
+				arr.push(item);
+			}else{
+				item = {
+					key:e.key,
+					isSelected : false,
+					nameEdit :e.value,
+					name :e.value
+				} as IViewElement;
+				arr.push(item);
+			}
+			
 		}
 		
-		if(nameOfSelected != null){
-			const i = arr.findIndex(p => p.name == nameOfSelected);
+		if(keyOfSelected != null){
+			const i = arr.findIndex(p => p.key == keyOfSelected);
 			if(i != -1){
 				arr[i].isSelected = true;
 			}
@@ -74,8 +88,8 @@
 		if( i != -1 )
 			$writableCol[i].isSelected = false;
 
-		i = $writableCol.findIndex( p => p.name == item.name );  
-		const isSelected = onSelect($writableCol[i].name); 
+		i = $writableCol.findIndex( p => p.key == item.key );  
+		const isSelected = onSelect($writableCol[i].key); 
 		if(isSelected){
 			selected = $writableCol[i];
 		}else{
@@ -100,7 +114,7 @@
 
 
     <div class={ isEditableContainer ? "GrobsInteractiveContainer editableTable" : "editableTable"} >
-			{#each $writableCol as element ( element ) }
+			{#each $writableCol as element ( element.key ) }
 				<div
 					class="Editable_row" 
 					data-selected={ element.isSelected }
