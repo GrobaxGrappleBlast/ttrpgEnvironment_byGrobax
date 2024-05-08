@@ -1,5 +1,5 @@
 import { KeyManager } from "../../../Designer/Abstractions/KeyManager";
-import { JsonString } from "../../../JSONModules";
+import { JsonBoolean, JsonString } from "../../../JSONModules";
 
 const systemPreviewKeyManager = new KeyManager();
 
@@ -17,6 +17,9 @@ export class SystemPreview {
 		this.systemCodeName = "grobdnd";
 		this.systemName = "Grobax' DnD TTPRPG";
 	}
+
+	@JsonBoolean()
+	public isEditable		: boolean = true ;
 
 	@JsonString()
 	public author			: string ;

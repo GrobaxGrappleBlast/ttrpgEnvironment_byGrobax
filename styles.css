@@ -311,8 +311,8 @@ div {
   cursor: pointer;
   border-radius: 2px;
   padding: 5px 15px 5px 15px;
-  display: flex;
-  flex-direction: row;
+  display: grid;
+  grid-template-columns: 20px 1fr;
   align-items: center;
   justify-content: space-between;
 }
@@ -321,6 +321,11 @@ div {
   margin-left: -5px;
   transition: ease 0.4s;
   margin-right: 5px;
+}
+
+.signage p, .OKHandlerSign p, .VerboseHandlerSign p, .ErrorHandlerSign p {
+  text-align: right;
+  line-height: 12px;
 }
 
 .signage::before, .OKHandlerSign::before, .VerboseHandlerSign::before, .ErrorHandlerSign::before {

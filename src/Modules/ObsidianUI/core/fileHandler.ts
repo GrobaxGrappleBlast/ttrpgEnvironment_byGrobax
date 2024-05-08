@@ -39,4 +39,8 @@ export class FileHandler{
 		return await GrobaxTTRPGSystemHandler.App.vault.adapter.remove(path);
 	}
 
+	public static async copy(path:string, newPath:string ){ 
+		return await GrobaxTTRPGSystemHandler.App.vault.adapter.copy(path,newPath);
+	}
+
 }

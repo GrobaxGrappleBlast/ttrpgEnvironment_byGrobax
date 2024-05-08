@@ -23,6 +23,9 @@
 	<div>SystemCodeName</div> 
 	<div >{_data?.systemCodeName ?? unknownString}</div>
 
+	<div>editable</div> 
+	<div >{_data?.isEditable ?? 'unknown'}</div>
+
 	<div>SystemName</div> 
 	<div >{_data?.systemName ?? unknownString}</div>
  

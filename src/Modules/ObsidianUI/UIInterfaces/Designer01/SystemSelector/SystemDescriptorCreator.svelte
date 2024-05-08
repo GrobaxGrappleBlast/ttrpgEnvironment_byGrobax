@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { FileContext } from '../../../../../../src/Modules/ObsidianUI/core/fileContext'; 
 	import { SystemPreview } from '../../../core/model/systemPreview';
     import { onMount } from 'svelte';
 	import './SystemDescriptor.scss';
@@ -17,7 +18,7 @@
 		_data = Object.assign( new SystemPreview() , data );
 	}) 
 
-	function validate		(){
+	async function validate		(){
 		let isValid = true;
 		messageHandler.removeAllMessages();
 
@@ -35,10 +36,10 @@
 		// SystemCodeName 
 		if( !_data.systemCodeName  ){	
 			isValid = false;  
-			messageHandler.addMessageManual('systemCodeName1','Did not have a systemCodeName.', MessageTypes.error as any )
+			messageHandler.addMessageManual('systemCodeName1','Did not have a systemCodeName.\n can only contain regular letter and numbers, no special characters or whitespace', MessageTypes.error as any )
 		}else if (!StringFunctions.isValidSystemCodeName(_data.systemCodeName)){
 			isValid = false;  
-			messageHandler.addMessageManual('systemCodeName2','Did not have a valid systemCodeName', MessageTypes.error as any )
+			messageHandler.addMessageManual('systemCodeName2','Did not have a systemCodeName.\n can only contain regular letter and numbers, no special characters or whitespace', MessageTypes.error as any )
 		}
 
 		// SystemName No \n characters.
@@ -52,8 +53,14 @@
 
 		// folder only allow windows folder name accepted folder names.
 		if( !_data.folderName  ){	
-			_data.folderName = StringFunctions.uuidv4(); 
-			messageHandler.addMessageManual('folder1','Did not have a folder name so created one', MessageTypes.verbose as any )
+
+			let newFoldername = await recursiveFindNewFolderName(0,5);
+			if(!newFoldername){
+				messageHandler.addMessageManual('folder1','A new folder name is required, Must be unique', MessageTypes.error as any )
+			}else{
+				_data.folderName = newFoldername//
+				messageHandler.addMessageManual('folder1','Did not have a folder name so created one', MessageTypes.verbose as any )
+			}
 		} 
 		else if (!StringFunctions.isValidWindowsFileString(_data.folderName)){ 
 			isValid = false;  
@@ -75,8 +82,22 @@
 	}
 	function _onChange(){
 		isValidated = false;
+		messageHandler.removeAllMessages();
+		validate();
+	} 
+	async function recursiveFindNewFolderName( depth = 0, maxDepth = 5){
+
+		if(depth == maxDepth){
+			return null;
+		}
+
+		let uuid = StringFunctions.uuidShort();
+		if(await FileContext.systemDefinitionExistsInFolder(uuid)){
+			return this.recursiveFindNewFolderName(depth + 1);
+		}
+		return uuid;
 	}
-	
+
 </script>
 <div>
 	<StaticMessageHandler 

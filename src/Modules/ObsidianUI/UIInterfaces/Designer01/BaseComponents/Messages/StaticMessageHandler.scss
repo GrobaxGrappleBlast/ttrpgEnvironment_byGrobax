@@ -14,8 +14,8 @@
 	cursor: pointer;
 	border-radius: 2px;
 	padding:$standard_padding ; 
-	display: flex;	
-	flex-direction: row;
+	display: grid;
+    grid-template-columns: 20px 1fr;
     align-items: center;
     justify-content: space-between;
 
@@ -23,6 +23,11 @@
 		margin-left:-5px;
 		transition:ease 0.4s;
 		margin-right:5px;
+	}
+
+	p{
+		text-align: right;
+   		line-height: 12px;
 	}
 
 	&::before{
