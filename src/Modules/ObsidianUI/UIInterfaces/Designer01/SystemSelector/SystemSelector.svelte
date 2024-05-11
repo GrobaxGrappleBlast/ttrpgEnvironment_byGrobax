@@ -20,7 +20,8 @@
 	const SystemSelectorStates = {
 		preview: "preview",
 		create: "create", 
-		copy:"copy"
+		copy:"copy",
+		edit:"edit"
 	}
 	let state = SystemSelectorStates.preview;
 
@@ -29,6 +30,7 @@
 	})
 
 	function onPreviewSelected(){}
+	// CREATE FUNCTIONALITY 
 	function onCreateNewSystem_START(){
 		state = SystemSelectorStates.create;
 	} 
@@ -44,7 +46,7 @@
 		}
 	}  
 
-
+	// COPY FUNCTIONALITY 
 	let copyObject : SystemPreview;
 	function onCopyNewSystem_START(){
 		copyObject =  Object.assign({}, _active_preview) as SystemPreview;
@@ -55,8 +57,7 @@
 	async function onCopyNewSystem_END( newCopy : SystemPreview | null ){
 		state = SystemSelectorStates.preview;
 		if (!newCopy)
-			return;
-  
+			return; 
 		let savedAndReloaded = await FileContext.copySystemDefinition( _active_preview,newCopy );
 		if (savedAndReloaded){
 			previews.push(savedAndReloaded);
@@ -76,7 +77,13 @@
 		}
 	}
 
-	
+	// EDIT FUNCTIONALITY 
+	function onEditSystem_START(){
+
+	} 
+	function onEditSystem_END(){
+		
+	}
 
 </script>
 <div class="SystemSelectorContainer" >
@@ -108,6 +115,7 @@
 							<button> Load System 	</button>
 							<button on:click={ onCopyNewSystem_START }> Copy System 	</button>
 							{#if _active_preview.isEditable } <button> Delete System	</button> {/if}
+							{#if _active_preview.isEditable } <button on:click={ onEditSystem_START }> Edit System	</button> {/if}
 						</div>
 					{/if}
 				{/key} 
@@ -131,6 +139,17 @@
 					<SystemDescriptorCreator 
 						data = { copyObject } 
 						onEnd = { onCopyNewSystem_END } 
+					/>
+				</div> 
+			</div> 
+		</div>
+	{:else if (state == SystemSelectorStates.edit)}
+		<div class="SystemSelectorState" transition:slide >
+			<div class="SystemSelectorContainerHeader" >
+				<div>
+					<SystemDescriptorCreator 
+						data = { copyObject } 
+						onEnd = { onEditSystem_END } 
 					/>
 				</div> 
 			</div> 
