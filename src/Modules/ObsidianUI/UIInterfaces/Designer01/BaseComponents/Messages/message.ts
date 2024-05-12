@@ -4,3 +4,4 @@ export interface Message{
 	msg:string;
 	type:MessageTypeTypes;
 }
+export type messageList = Record<string,Message>;

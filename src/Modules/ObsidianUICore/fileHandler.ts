@@ -1,4 +1,4 @@
-import GrobaxTTRPGSystemHandler from "../app";
+import GrobaxTTRPGSystemHandler from "../ObsidianUI/app";
 
 export class FileHandler{
 

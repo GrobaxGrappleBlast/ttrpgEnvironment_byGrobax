@@ -1,14 +1,17 @@
 <script lang="ts">
-	import { FileContext } from '../../../../../../src/Modules/ObsidianUI/core/fileContext'; 
-	import { SystemPreview } from '../../../core/model/systemPreview';
-    import { onMount } from 'svelte';
-	import './SystemDescriptor.scss';
-	import { StringFunctions } from '../BaseFunctions/stringfunctions';
-	import StaticMessageHandler from '../BaseComponents/Messages/StaticMessageHandler.svelte';
-	import { MessageTypes } from '../BaseComponents/Messages/StaticMessageHandler.svelte';
 
-	export let data : SystemPreview = new SystemPreview();
-	export let onEnd :( preview: SystemPreview | null ) => any|null ;
+	
+    import { onMount } from 'svelte';
+	import './SystemDescriptor.scss'; 
+	import StaticMessageHandler from '../BaseComponents/Messages/StaticMessageHandler.svelte'; 
+    import { SystemPreview } from '../../../../../../src/Modules/ObsidianUICore/model/systemPreview';
+	import { ObsidianUICoreAPI } from '../../../../ObsidianUICore/API'; 
+    import type { APIReturnModel } from '../../../../../../src/Modules/ObsidianUICore/APIReturnModel';
+	import { createEventDispatcher } from "svelte"; 
+
+	const dispatch = createEventDispatcher();
+	export let data : SystemPreview = new SystemPreview(); 
+	export let onCreateCall : (sys : SystemPreview) => Promise<APIReturnModel<SystemPreview|null>>; 
 	let _data 		: SystemPreview = new SystemPreview(); 
 
 	let messageHandler:StaticMessageHandler ;
@@ -19,84 +22,35 @@
 	}) 
 
 	async function validate		(){
-		let isValid = true;
+		let api = ObsidianUICoreAPI.getInstance();
+		let resp = await api.systemDefinition.validateSystem(_data);
+		isValidated = resp.response == true;
+
 		messageHandler.removeAllMessages();
-
-		let _ = ''; 
-		// Author 
-		if( !_data.author  ){	
-			messageHandler.addMessageManual('author1','a author is not required but helpfull to users', MessageTypes.verbose as any )
-		}
-
-		// Version 
-		if( !_data.version  ){	
-			messageHandler.addMessageManual('version1','a version is not required but helpfull to users', MessageTypes.verbose as any )
-		}
-
-		// SystemCodeName 
-		if( !_data.systemCodeName  ){	
-			isValid = false;  
-			messageHandler.addMessageManual('systemCodeName1','Did not have a systemCodeName.\n can only contain regular letter and numbers, no special characters or whitespace', MessageTypes.error as any )
-		}else if (!StringFunctions.isValidSystemCodeName(_data.systemCodeName)){
-			isValid = false;  
-			messageHandler.addMessageManual('systemCodeName2','Did not have a systemCodeName.\n can only contain regular letter and numbers, no special characters or whitespace', MessageTypes.error as any )
-		}
-
-		// SystemName No \n characters.
-		if( !_data.systemName  ){	
-			isValid = false;  
-			messageHandler.addMessageManual('systemName1','Did not have a system name.', MessageTypes.error as any )
-		}else if (!StringFunctions.isValidWindowsFileString(_data.systemName)){
-			isValid = false;  
-			messageHandler.addMessageManual('systemName2','Did not have a valid system name', MessageTypes.error as any )
-		}
-
-		// folder only allow windows folder name accepted folder names.
-		if( !_data.folderName  ){	
-
-			let newFoldername = await recursiveFindNewFolderName(0,5);
-			if(!newFoldername){
-				messageHandler.addMessageManual('folder1','A new folder name is required, Must be unique', MessageTypes.error as any )
-			}else{
-				_data.folderName = newFoldername//
-				messageHandler.addMessageManual('folder1','Did not have a folder name so created one', MessageTypes.verbose as any )
-			}
-		} 
-		else if (!StringFunctions.isValidWindowsFileString(_data.folderName)){ 
-			isValid = false;  
-			messageHandler.addMessageManual('folder2','folder name was not valid windows folder name')
-		} 
-
-		if (isValid){
-			messageHandler.addMessageManual('all','All is Good', MessageTypes.good as any )
-			isValidated = true;
+		for(const key in resp.messages){
+			messageHandler.addMessage(key, resp.messages[key]);
 		}
 	}
-	function createSystem	(){
+	async function createSystem	(){
 		if(!isValidated)
 			return;
-		onEnd( _data );
+ 
+		let resp = await onCreateCall(_data); 
+		if (resp.responseCode == 200 && resp.response != null){
+			dispatch('onSelect', resp.response );
+			dispatch('onStateEnd');
+		}
+
+		isValidated = false;
+		validate();
 	}
-	function cancel			(){
-		onEnd( null );
+	async function cancel			(){
+		dispatch('onStateEnd');
 	}
 	function _onChange(){
 		isValidated = false;
-		messageHandler.removeAllMessages();
 		validate();
 	} 
-	async function recursiveFindNewFolderName( depth = 0, maxDepth = 5){
-
-		if(depth == maxDepth){
-			return null;
-		}
-
-		let uuid = StringFunctions.uuidShort();
-		if(await FileContext.systemDefinitionExistsInFolder(uuid)){
-			return this.recursiveFindNewFolderName(depth + 1);
-		}
-		return uuid;
-	}
 
 </script>
 <div>

@@ -1,5 +1,5 @@
-import { KeyManager } from "../../../Designer/Abstractions/KeyManager";
-import { JsonBoolean, JsonString } from "../../../JSONModules";
+import { KeyManager } from "../../Designer/Abstractions/KeyManager";
+import { JsonBoolean, JsonString } from "../../JSONModules";
 
 const systemPreviewKeyManager = new KeyManager();
 

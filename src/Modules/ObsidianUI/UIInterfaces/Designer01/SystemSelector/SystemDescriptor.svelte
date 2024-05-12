@@ -1,7 +1,8 @@
 <script lang="ts">
-	import { SystemPreview } from '../../../../../../src/Modules/ObsidianUI/core/model/systemPreview';
+	
     import { onMount } from 'svelte';
 	import './SystemDescriptor.scss';
+    import { SystemPreview } from '../../../../../../src/Modules/ObsidianUICore/model/systemPreview';
 	
 	export let data : SystemPreview = new SystemPreview();
 	export let edit : boolean  = false;

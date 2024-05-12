@@ -81,6 +81,14 @@
 
 		selected = null;
 	}
+
+	export function select( key : string ){
+		debugger;
+		let item = $writableCol.find( p => p.key == key );
+		if( item ){
+			_onSelect( item );
+		}
+	}
 	 
 	function _onSelect(item : IViewElement){ 
 	

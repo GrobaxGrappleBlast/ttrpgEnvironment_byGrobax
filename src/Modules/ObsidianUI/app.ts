@@ -1,6 +1,6 @@
 import { App, ItemView, Modal, Platform, Plugin, PluginSettingTab, Setting, TFile, WorkspaceLeaf, parseYaml } from 'obsidian';
 import  SvelteApp from './UIInterfaces/Designer01/app.svelte';
-import { TTRPGSystem } from '../Designer';
+
 
 const VIEW_TYPE = "svelte-view";    
 interface MyPluginSettings {

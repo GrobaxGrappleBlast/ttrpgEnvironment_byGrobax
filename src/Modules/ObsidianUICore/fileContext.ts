@@ -1,10 +1,10 @@
 import { Mutex } from "async-mutex";
 import { FileHandler } from "./fileHandler";
-import { JSONHandler } from "../../../../src/Modules/JSONModules";
-import { TTRPGSystem, TTRPG_SCHEMES } from "../../../../src/Modules/Designer/index";
+import { JSONHandler } from "../JSONModules";
+import { TTRPGSystem, TTRPG_SCHEMES } from "../Designer/index";
 import { SystemPreview } from "./model/systemPreview";
-import type { Message } from "../UIInterfaces/Designer01/BaseComponents/Messages/message";
-import GrobaxTTRPGSystemHandler from "../app";
+import type { Message, messageList } from "../ObsidianUI/UIInterfaces/Designer01/BaseComponents/Messages/message";
+import GrobaxTTRPGSystemHandler from "../ObsidianUI/app";
 
 export class FileContext {
 
@@ -16,7 +16,6 @@ export class FileContext {
 	private constructor(){
 		this.path = GrobaxTTRPGSystemHandler.PLUGIN_ROOT + '/' +
 					GrobaxTTRPGSystemHandler.SYSTEMS_FOLDER_NAME; + '/' ;
-
 	}
 	public static getInstance(){ 
 		if(!FileContext.instance){
@@ -58,7 +57,7 @@ export class FileContext {
 		let instance = FileContext.getInstance();
 		return instance.loadAllAvailableFiles();
 	}
-	public async loadAllAvailableFiles(){ 
+	public async loadAllAvailableFiles( messages : messageList = {} ){ 
 		let release = await FileContext.mutex.acquire(); 
 
 			// find all folders, that could contain a system. 
@@ -81,11 +80,11 @@ export class FileContext {
 		release();
 	}
  
-	public static async createSystemDefinition( system : SystemPreview , out : (k:string,msg : Message) => any = (a,b) => null) : Promise<SystemPreview | null> {
+	public static async createSystemDefinition( system : SystemPreview , messages : messageList = {} ) : Promise<SystemPreview | null> {
 		let instance = FileContext.getInstance();
-		return instance.createSystemDefinition(system,out);
+		return instance.createSystemDefinition(system, messages );
 	}
-	public async createSystemDefinition( system : SystemPreview , out : (k:string,msg : Message) => any) : Promise<SystemPreview | null>  {
+	public async createSystemDefinition( system : SystemPreview , messages : messageList = {}) : Promise<SystemPreview | null>  {
 		let release = await FileContext.mutex.acquire(); 
 
 		 	this.initSystemsStructure();
@@ -97,7 +96,7 @@ export class FileContext {
 			}
 			else {
 				if (await FileHandler.exists(folderPath + '/index.json')){
-					out('createSystem',{msg:`folder '${system.folderName}' already existed, and contained a system. \nEither delete the old system, or choose another foldername`, type:'error'});
+					messages['createSystem'] = {msg:`folder '${system.folderName}' already existed, and contained a system. \nEither delete the old system, or choose another foldername`, type:'error'};
 					release();
 					return null;
 				}
@@ -107,7 +106,7 @@ export class FileContext {
 			let filepath = folderPath+'/index.json';
 			await FileHandler.saveFile( filepath , JSONHandler.serialize(system) )
 			if (! await FileHandler.exists(filepath)){
-				out('createSystem',{msg:`tried to save index.json at '${filepath} \n but something went wrong.`, type:'error'});
+				messages['createSystem'] = {msg:`tried to save index.json at '${filepath} \n but something went wrong.`, type:'error'};
 				release();
 				return null;
 			}
@@ -118,13 +117,13 @@ export class FileContext {
 		return systemReloaded;
 	}
 
-	public static async copySystemDefinition( system : SystemPreview , systemNew : SystemPreview , out : (k:string,msg : Message) => any = (a,b) => null ) : Promise<SystemPreview | null>   {
+	public static async copySystemDefinition( system : SystemPreview , systemNew : SystemPreview , messages : messageList = {} ) : Promise<SystemPreview | null>   {
 		let instance = FileContext.getInstance();
-		return instance.copySystemDefinition(system,systemNew,out);
+		return instance.copySystemDefinition(system,systemNew,messages);
 	}
-	public async copySystemDefinition( system : SystemPreview , systemNew : SystemPreview , out : (k:string,msg : Message) => any) : Promise<SystemPreview | null>  {
+	public async copySystemDefinition( system : SystemPreview , systemNew : SystemPreview , messages : messageList = {}) : Promise<SystemPreview | null>  {
 		
-		let copiedSystem = await this.createSystemDefinition(systemNew, out);
+		let copiedSystem = await this.createSystemDefinition(systemNew, messages);
 		if (!copiedSystem){
 			return null;
 		}
@@ -149,8 +148,7 @@ export class FileContext {
 				await FileHandler.saveFile(newPath + '/'+ fileName ,file);
 			}));
  
-			await Promise.all( ls.folders.map(async ( folderPath ) => {
-				debugger
+			await Promise.all( ls.folders.map(async ( folderPath ) => { 
 				let segmentsPath = folderPath.split('/'); 
 				let foldername = segmentsPath.pop();
 				let newFolderPath = newPath + '/' + foldername;
