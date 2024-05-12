@@ -4,7 +4,7 @@
 	import Image_plus from "../buttons/plus.svelte";
     import Image_edit from "../buttons/edit.svelte"; 
     import { fade, slide } from "svelte/transition";
-    import { onMount } from "svelte"; 
+    import { createEventDispatcher, onMount } from "svelte"; 
     import { writable , type  Writable } from 'svelte/store';
 
 	import './EditAbleList.scss'; 
@@ -13,6 +13,7 @@
     export let collection: string[] | {key:string, value:string}[]; 
 	export let onSelect: ( d: any ) => boolean;
 	export let onAdd:(() => any) | null = null; 
+	const dispatch = createEventDispatcher();
 
 	interface IViewElement{
 		key:string;
@@ -80,27 +81,39 @@
 		writableCol.update( r => r ); 
 
 		selected = null;
+		dispatch('onDeSelect')
 	}
 
 	export function select( key : string ){
-		debugger;
 		let item = $writableCol.find( p => p.key == key );
-		if( item ){
+		if ( item ){
 			_onSelect( item );
 		}
 	}
 	 
 	function _onSelect(item : IViewElement){ 
-	
+
+		// get last selected 
 		let i = $writableCol.findIndex( p => p.isSelected ); 
-		if( i != -1 )
+	
+		// ensure that a Click on the same item is a deselect
+		if ( i != -1 && $writableCol[i].key == item.key ){
+			$writableCol[i].isSelected = false;
+			writableCol.update( r => r ); 
+			selected = null;
+			dispatch('onDeSelect')
+			return;
+		}
+
+		// deselect
+		if ( i != -1 )
 			$writableCol[i].isSelected = false;
 
 		i = $writableCol.findIndex( p => p.key == item.key );  
 		const isSelected = onSelect($writableCol[i].key); 
-		if(isSelected){
+		if (isSelected){
 			selected = $writableCol[i];
-		}else{
+		} else{
 			selected = null;
 		}
  

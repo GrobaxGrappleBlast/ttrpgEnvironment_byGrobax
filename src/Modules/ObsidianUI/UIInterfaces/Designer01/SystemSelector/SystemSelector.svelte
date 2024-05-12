@@ -132,6 +132,7 @@
 							collection={previews.map( p => {return {key : p.filePath , value : p.systemName} })}
 							onSelect={ onSelectSystem }
 							onAdd={ () => { state = SystemSelectorStates.create; } }
+							on:onDeSelect={ () => { _active_preview = new SystemPreview() }}
 						/> 
 					{/key}
 				</div>
