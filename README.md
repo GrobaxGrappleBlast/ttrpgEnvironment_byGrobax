@@ -1,43 +1,20 @@
 # grobax-ttrpg-system
+Welcome to Grobax TTRPG System. 
 
-A starter template for creating an Obsidian plugin with SvelteJS.
+This is a plugin for obsidianMD, where the user gets to design their very own, Tabletop Role-Playing Game (TTRPG). This system will then create an object for that system, and launch a View for that system on a .md page using data written inside the ```grobax-(MySystemCodeName) ``` block. This view will have the capability to read, update, and save the block's data. 
 
-# Features
+## Features 
+- *Dynamic environment creation* you will be able to launch your environment and render custom UI views. This can aid you in taking notes about TTPRPG characters, npc's, and other standard statblocks.
 
-This project comes preconfigured with [Typescript](https://www.typescriptlang.org/), [vite](https://vitejs.dev), and
-[Rollup.js](https://rollupjs.org).
+- *Custom TTPRPG Design* You can design a TTPRPG system from scratch. you get to design derived and fixed values. Fixed values being those values that should be saved inside the View's block data. derived is that data wich is derived from other data ( Derived or fixed ).
 
-# Getting Started
+- *Create Custom Views* This app allows you to create a Custom UI Template for a system, eks Create a new alternative View for DnD characters. you can export a development .ts class that represent a given environment, and create and compile a UI for that and upload it as a ui template for that system. Then in your block data  you specify the template using it's code name, and then your node will use your new View.
 
-Click "use this template" to create your own fork of this repo. Make sure to reference the official sample plugin for
-information about how to get started with the Obsidian API and how to submit your plugin to the Community Plugin
-Gallery.
+## Getting started. 
+This app is not finished yet. stil in early development. 
 
-```bash
-# for local development
-npm install
-npm run dev
-// Or yarn dev
 
-# for a production bundle
-npm install
-npm run build
-// Or yarn build
 
-# change version
-npm bumpversion
-// Or yarn bumpversion
-```
 
-# Stats
 
-The production output of this sample plugin is ~10 KB.
 
-```
-./styles.css   0.44 KiB / gzip: 0.19 KiB
-./main.js      12.63 KiB / gzip: 3.70 KiB
-```
-
-## API Documentation
-
-See https://github.com/obsidianmd/obsidian-api
