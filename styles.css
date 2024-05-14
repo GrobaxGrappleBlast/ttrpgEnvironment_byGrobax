@@ -805,4 +805,75 @@ div {
   outline: none;
   user-select: none;
   white-space: nowrap;
+}.MainMenuButton_icon:not([data-disabled=true])[data-selected=true] {
+  background-color: wheat;
+  color: black;
 }
+
+.MainMenuButton_desc > p {
+  background-color: wheat;
+}
+
+.MainMenuButton_icon[data-disabled=true] {
+  color: darkgray;
+}
+
+.MainMenuButton {
+  height: 66px;
+  margin-top: -16px;
+  position: relative;
+}
+
+.MainMenuButton .MainMenuButton_icon {
+  width: 100%;
+  height: 70px;
+  padding: 15px;
+  padding-top: 20px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 12px;
+}
+
+.MainMenuButton .MainMenuButton_desc {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: absolute;
+  top: -10px;
+}
+
+.MainMenuButton .MainMenuButton_desc p {
+  padding: 5px;
+  padding-left: 15px;
+  padding-right: 15px;
+  overflow: hidden;
+  position: fixed;
+}
+
+.MainMenuButton .MainMenuButton_icon + .MainMenuButton_desc {
+  width: 0;
+  opacity: 0;
+}
+
+.MainMenuButton:not([data-selected=true]):not([data-disabled=true]) .MainMenuButton_icon:hover {
+  background-color: rgba(0, 0, 0, 0.115);
+}
+
+.MainMenuButton:not([data-selected=true]):not([data-disabled=true]) .MainMenuButton_icon:hover + .MainMenuButton_desc {
+  width: 100px;
+  opacity: 1;
+}
+
+.MainMenuButton .MainMenuButton_icon {
+  transition: 0.3s ease background-color;
+}
+
+.MainMenuButton .MainMenuButton_desc {
+  transition: 1s ease width, 0.3s ease opacity;
+}
+
+.MainMenuButton .MainMenuButton_desc p {
+  overflow: hidden;
+}.AppMainMenu.svelte-1ul43qu{display:grid;grid-template-columns:60px 60px 60px}

@@ -1,0 +1,87 @@
+
+@import '../../SystemStandards.scss';
+
+
+$mainAppHeight : 50px;
+$hoverColor:wheat;
+$diabledColor:darkgray;
+
+// Colors 
+.MainMenuButton_icon:not([data-disabled=true])[data-selected=true]{
+	background-color:$hoverColor;
+	color : black;
+}
+.MainMenuButton_desc > p {
+	background-color:$hoverColor;
+}
+.MainMenuButton_icon[data-disabled=true]{
+	color: $diabledColor;
+}
+
+// Size and position
+.MainMenuButton{
+	height:$mainAppHeight + 16px;
+	margin-top:-16px; 
+	position: relative;
+
+	.MainMenuButton_icon{
+		width:100%;  
+		height:$mainAppHeight + 20px;
+		padding: $standard_padding_large;
+		padding-top:20px;
+		cursor: pointer;
+		display: flex;
+		align-items: center; 
+		justify-content: center;
+		font-size: 12px;
+	
+	}
+
+	.MainMenuButton_desc {
+		display: flex; 
+		align-items: center;
+		justify-content: center;  
+		position:absolute;
+		top: -10px; 
+
+		p {
+			padding:$standard_padding_small;
+			padding-left: $standard_padding_large;
+			padding-right: $standard_padding_large;
+			overflow: hidden;
+			position:fixed;
+		}	 
+	}
+}
+
+// Show and Hide 
+.MainMenuButton{ 
+	.MainMenuButton_icon{
+		& + .MainMenuButton_desc {
+			width:0;
+			opacity: 0;
+		}
+	}
+}
+.MainMenuButton:not([data-selected=true]):not([data-disabled=true]){ 
+	.MainMenuButton_icon:hover{
+		background-color: rgba(0, 0, 0, 0.115);
+		& + .MainMenuButton_desc {
+			width: 2* $mainAppHeight;
+			opacity: 1;
+		}
+	}
+}
+
+// Transition Definitions
+.MainMenuButton{ 
+	.MainMenuButton_icon{
+		transition: 0.3s ease background-color;
+	}
+	.MainMenuButton_desc {
+		transition: 1s ease width,0.3s ease opacity; 
+		p {
+			overflow: hidden;
+		}
+	}
+}

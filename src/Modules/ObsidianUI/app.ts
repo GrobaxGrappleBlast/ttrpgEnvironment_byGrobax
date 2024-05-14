@@ -70,6 +70,13 @@ class SampleSettingTab extends PluginSettingTab {
 	display(): void {
 		const { containerEl } = this; 
 		containerEl.empty();    
+		new SvelteApp({
+			target:this.containerEl,
+			props:{
+				//@ts-ignore
+				plugin: this.plugin
+			}
+		});
 	}
 
 }

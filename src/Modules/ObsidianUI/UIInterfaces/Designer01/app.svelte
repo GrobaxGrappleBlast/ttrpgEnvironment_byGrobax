@@ -4,58 +4,68 @@
     
 	import SystemSelector from "./SystemSelector/SystemSelector.svelte";
 	import './app.scss' 
-    import SelectableCollectionV2 from "./BaseComponents/editAbleList/EditAbleList.svelte";
-    import { writable } from "svelte/store";
     import { ObsidianUICoreAPI } from "../../../../../src/Modules/ObsidianUICore/API";
     import StaticMessageHandler from "./BaseComponents/Messages/StaticMessageHandler.svelte";
-    import { SystemPreview } from "../../../../../src/Modules/ObsidianUICore/model/systemPreview";
-    import Minus from "./BaseComponents/buttons/minus.svelte";
+    import { SystemPreview } from "../../../../../src/Modules/ObsidianUICore/model/systemPreview"; 
+    import MainMenuButton from "./Menu/MainMenuButton.svelte";
 
-	let previews : SystemPreview[] = [];
-	let loaded = false;
-	let loadingFailed= false;
-	let msgHandler : StaticMessageHandler;
-
-	onMount( () => {
-		Load()
-	})
-	 
-	async function Load(){
-		let getDataRequest =  (await ObsidianUICoreAPI.getInstance().systemDefinition.getAllSystems());
-		
-		if ( getDataRequest.responseCode != 200 ){
-			loadingFailed = true;
-			msgHandler.removeAllMessages();
-			for (const key in getDataRequest.messages) {
-				msgHandler.addMessage( key , getDataRequest.messages[key] );
-			}
-		}
-		console.log(getDataRequest);
-
-		previews = (await ObsidianUICoreAPI.getInstance().systemDefinition.getAllSystems()).response ?? [];	
-		loaded = true; 
+	
+	const SystemEditorStates = {
+		selector :"selector",
+		designer :"designer"
 	}
+	let state = SystemEditorStates.selector;
+
+
+	// data from subviews
+	let selectedSystemPreview : SystemPreview;
+
+	function changeState( nstate ){
+		if(state == nstate)	
+			return;
+		
+		state = nstate;
+		switch(state){
+			
+			// if reselectign the selector
+			case  SystemEditorStates.selector : 
+				break;
+
+			// if selecting the Designer 
+			case  SystemEditorStates.designer :
+				break;
+		}
+	 
+	}
+	
 
 </script>
-<div>
-	<br>
-	{#if loaded }
-		<SystemSelector
-			previews= {previews}
-		/> 
-	{:else if loadingFailed}
-		<div>
-			<div>
-				<p>Something went wrong with loading</p>
-				<button>try again</button>
-			</div>
-			<StaticMessageHandler 
-				bind:this={ msgHandler }
-			/>
-		</div>
-	{:else}
-		<div>
-			<p>Loading...</p>
-		</div>
-	{/if}
+<div class="MainAppContainer" >
+	<div class="AppMainMenu">
+		<MainMenuButton 
+			selected = { state == SystemEditorStates.selector }
+			onClick = { () => { changeState(SystemEditorStates.selector) }  }
+		/>
+		<MainMenuButton 
+			selected = { state == SystemEditorStates.designer }
+			onClick = {  () => { changeState(SystemEditorStates.designer ) }  }
+		/>
+	</div>
+	<div class="AppMainContent">
+		{#if state == SystemEditorStates.selector}
+			<SystemSelector 
+				on:onLoadSystem={(e)=>{let a = e.detail; selectedSystemPreview = Object.assign({}, a); state = SystemEditorStates.designer;  }} 
+			/> 
+		{:else if state == SystemEditorStates.designer }
+			<p>tstdtstt</p>
+		{/if}
+	</div>
 </div>
+
+<style>
+	
+.AppMainMenu{
+	display: grid;
+	grid-template-columns: 60px 60px 60px;
+}
+</style>

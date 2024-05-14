@@ -28,6 +28,7 @@ export class ObsidianUICoreAPI {
 	}
 
 	public systemDefinition = new SystemDefinitionManagement();
+	public systemFactory	= new SystemFactory();
 }
 
 
@@ -200,6 +201,8 @@ class SystemDefinitionManagement{
 	}
 }
 
-class SystemManagement{
-
+class SystemFactory{
+	public async getOrCreateSystemFactory(){}
+	public async saveSystemFactory(){}
+	public async deleteSystemFactory(){}
 }
