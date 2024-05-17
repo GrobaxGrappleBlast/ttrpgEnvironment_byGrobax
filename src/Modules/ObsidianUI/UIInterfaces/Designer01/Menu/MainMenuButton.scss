@@ -63,8 +63,8 @@ $diabledColor:darkgray;
 		}
 	}
 }
-.MainMenuButton:not([data-selected=true]):not([data-disabled=true]){ 
-	.MainMenuButton_icon:hover{
+.MainMenuButton{ 
+	.MainMenuButton_icon:not([data-selected=true]):not([data-disabled=true]):hover{
 		background-color: rgba(0, 0, 0, 0.115);
 		& + .MainMenuButton_desc {
 			width: 2* $mainAppHeight;
@@ -80,8 +80,6 @@ $diabledColor:darkgray;
 	}
 	.MainMenuButton_desc {
 		transition: 1s ease width,0.3s ease opacity; 
-		p {
-			overflow: hidden;
-		}
+		
 	}
 }

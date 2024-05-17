@@ -10,7 +10,7 @@
 	import './EditAbleList.scss'; 
 
 	export let isEditableContainer:boolean = true;
-    export let collection: string[] | {key:string, value:string, isSelected?:boolean }[]; 
+    export let collection: Writable<string[] | {key:string, value:string, isSelected?:boolean }[]>; 
 	export let onSelect: ( d: any ) => boolean;
 	export let onAdd:(() => any) | null = null; 
 	const dispatch = createEventDispatcher();
@@ -27,8 +27,10 @@
 	onMount(()=>{ 
 		Mount();
 	})
+	collection.subscribe( p => { Mount() });
 
 	function Mount(){
+
 		let keyOfSelected : string | null = null;
 		if($writableCol.length != 0){
 			let s = $writableCol.find( p => p.isSelected != false );
@@ -36,8 +38,8 @@
 		}
 
 		let arr :IViewElement[] = [];
-		for (let i = 0; i < collection.length; i++) {
-			const e = collection[i];
+		for (let i = 0; i < $collection.length; i++) {
+			const e = $collection[i];
 			let item : IViewElement;
 			if(typeof e == "string"){
 				item = {
@@ -56,6 +58,7 @@
 				} as IViewElement;
 				arr.push(item);
 			}
+			
 		}
 		
 		if(keyOfSelected != null){

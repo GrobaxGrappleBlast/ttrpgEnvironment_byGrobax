@@ -47,8 +47,8 @@ export class TTRPG_SCHEMES {
 		self.fixed		= self._getGroup('fixed')	as GrobGroup<GrobFixedNode>;
 		self.derived	= self._getGroup('derived')	as GrobGroup<GrobDerivedNode>;
 	},
-	onAfterDeSerialization:(self:TTRPGSystemJSONFormatting) => {
-		// add derived and fixed to groups
+	onAfterDeSerialization:(self:TTRPGSystemJSONFormatting, ...args ) => {
+		// add derived and fixed to groups 
 		self.data[self.fixed	.getName()] = self.fixed; 
 		self.data[self.derived	.getName()] = self.derived; 
 
@@ -108,6 +108,11 @@ export class TTRPGSystemJSONFormatting extends TTRPGSystemGraphModel {
 
 	public constructor(){
 		super();
+	}
+
+	public initEmpty(){
+		this.fixed = new GrobGroupFixed();
+		this.derived = new GrobGroupDerived();
 	}
 }
 

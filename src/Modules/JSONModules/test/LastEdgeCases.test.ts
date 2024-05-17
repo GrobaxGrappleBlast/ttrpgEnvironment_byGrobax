@@ -47,7 +47,6 @@ test('if a Property is Null', () => {
 	let c = new Piece_NullProperty(); 
 	var [orig, json, des ] = startTest( c , Piece_NullProperty);
 	
-	debugger;
 	compareObject(des,orig);
 })
 

@@ -1,10 +1,11 @@
 import { promises } from "dns";
-import { MessageTypes } from "../ObsidianUI/UIInterfaces/Designer01/BaseComponents/Messages/StaticMessageHandler.svelte";
+import { MessageTypes, type MessageTypeTypes } from "../ObsidianUI/UIInterfaces/Designer01/BaseComponents/Messages/StaticMessageHandler.svelte";
 import type { Message, messageList } from "../ObsidianUI/UIInterfaces/Designer01/BaseComponents/Messages/message";
 import { StringFunctions } from "../ObsidianUI/UIInterfaces/Designer01/BaseFunctions/stringfunctions";
 import type { APIReturnModel } from "./APIReturnModel"; 
 import { SystemPreview } from "./model/systemPreview";
 import { FileContext } from '../../../src/Modules/ObsidianUICore/fileContext';
+import { TTRPGSystem } from "../Designer";
 
 
 // todo add convert code to message
@@ -15,6 +16,12 @@ function createResponse<T>( code : number , model:T , message : messageList ){
 		response:model,
 	} as APIReturnModel<T>;
 }
+function createMessage(key:string ,msg:string, type:MessageTypeTypes){
+	let list = {}
+	list[key] = {msg:msg, type:type};
+	return list;
+}
+
 
 export class ObsidianUICoreAPI {
 
@@ -30,7 +37,6 @@ export class ObsidianUICoreAPI {
 	public systemDefinition = new SystemDefinitionManagement();
 	public systemFactory	= new SystemFactory();
 }
-
 
 class SystemDefinitionManagement{
 
@@ -202,7 +208,19 @@ class SystemDefinitionManagement{
 }
 
 class SystemFactory{
-	public async getOrCreateSystemFactory(){}
+	public async getOrCreateSystemFactory( preview : SystemPreview ) : Promise<APIReturnModel<TTRPGSystem|null>> {
+		
+		if(!preview.folderPath){
+			return createResponse(406,null,createMessage('getOrCreateSystemFactory1','systemPreview was invalid', 'error'));
+		}
+
+		let fileContent = FileContext.getInstance();
+		let designer = await fileContent.getOrCreateSystemsDesigns( preview.folderPath );
+		if(designer){
+			return  createResponse(200, designer, createMessage('getOrCreateSystemFactory','System Designer Loaded','good') );
+		}
+		return createResponse(500, null , createMessage('getOrCreateSystemFactory','Something went wrong loading the file','error') );
+	}
 	public async saveSystemFactory(){}
 	public async deleteSystemFactory(){}
 }

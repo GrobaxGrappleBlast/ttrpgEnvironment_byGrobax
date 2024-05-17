@@ -16,6 +16,10 @@ export class GrobCollection<T extends GrobNodeType> extends AGraphItem implement
 	nodes_names: Record<string, T> = {}
 	parent: IGrobGroup<T>; 
 
+
+	public getNodeNames(){
+		return Object.keys( this.nodes_names );
+	}
 	public hasNode(name) {
 		return this.nodes_names[name] ? true : false;
 	}

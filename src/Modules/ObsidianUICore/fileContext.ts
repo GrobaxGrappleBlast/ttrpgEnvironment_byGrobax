@@ -180,5 +180,39 @@ export class FileContext {
 		return false;
 	}
 
+
+	public static async getOrCreateSystemsDesigns( folder:string){
+		return FileContext.getInstance().systemDefinitionExistsInFolder(folder);
+	}
+	public async getOrCreateSystemsDesigns( folder:string ){
+
+		// if the folder does not exist. return false 
+		if (! await FileHandler.exists(folder)){
+			return null;
+		}
+
+		// if the folder does not exist. return false 
+		if (! await FileHandler.exists(folder)){
+			return null;
+		}
+
+		// See if the file exists. 
+		let filepath = folder + '/designer.json';
+		if (!await FileHandler.exists(filepath)){
+
+			// Create the file. 
+			let designer = new TTRPGSystem();
+			designer.initAsNew();
+			await FileHandler.saveFile( filepath , JSONHandler.serialize(designer) );
+
+			return designer;
+		}
+		
+		let file = await FileHandler.readFile(filepath);
+		let loaded = JSONHandler.deserialize<TTRPGSystem>( TTRPGSystem, file );
+		return loaded as TTRPGSystem;
+	}
+
+
 	
 }
