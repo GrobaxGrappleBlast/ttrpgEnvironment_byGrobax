@@ -33,6 +33,7 @@
 		edit:"edit"
 	}
 	let state = SystemSelectorStates.preview;
+	let statePreviewAnimationInProgress = false;
 
 
 	onMount( () => {
@@ -147,11 +148,13 @@
 				<div class="SystemSelectorState" transition:slide >
 					<div class="SystemSelectorContainerHeader" >
 						<div>
+							 
 							{#key _active_preview }
 								<SystemDescriptor 
 									data = { _active_preview } 
 								/>
 							{/key} 
+						 
 						</div> 
 						<div class="GrobsInteractiveContainer SystemSelectorOptionsContainer"> 
 							{#key previews}
@@ -169,7 +172,8 @@
 					<div>
 						{#key _active_preview }
 							{#if _active_preview.filePath}
-								<div transition:slide >
+								<div transition:slide|global >
+									<div class="lineBreak" ></div>
 									<button on:click={ () => { dispatch('onLoadSystem', _active_preview ) }}> Load System 	</button>
 									<button on:click={ () => { onEditStart(); state = SystemSelectorStates.copy; } }> Copy System 	</button>
 									{#if _active_preview.isEditable } <button> Delete System	</button> {/if}

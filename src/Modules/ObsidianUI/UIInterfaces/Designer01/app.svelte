@@ -56,13 +56,14 @@
 		/>
 	</div>
 	<div class="AppMainContent">
+		<div class="lineBreak" ></div>
 		{#if state == SystemEditorStates.selector}
-			<div class="lineBreak" ></div>
 			<SystemSelector 
 				on:onLoadSystem={(e)=>{
 					let a = e.detail; 
 					let b = {}
 					Object.assign(b, a)
+					//@ts-ignore
 					selectedSystemPreview.set( b );
 					state = SystemEditorStates.designer;  
 				}} 

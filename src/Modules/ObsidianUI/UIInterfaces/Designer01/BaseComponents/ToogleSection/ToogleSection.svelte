@@ -1,4 +1,6 @@
 <script lang="ts">
+    import { slide } from "svelte/transition";
+	import './ToogleSection.scss'
 
 	export let title : string ;
 	let toogled = false;
@@ -10,7 +12,7 @@
 	</div>
 	<div class="toogleSectionBody" > 
 		{#if toogled}
-			<div>
+			<div transition:slide >
 				<slot />
 			</div>
 		{/if}

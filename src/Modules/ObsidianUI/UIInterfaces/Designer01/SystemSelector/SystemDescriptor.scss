@@ -3,8 +3,8 @@
 
 .SystemDescriptor{
 	display:grid;
-	gap:10px;
-	grid-auto-rows: $standard_LineHeight; 
+	//gap:10px;
+	//grid-auto-rows: $standard_LineHeight; 
 	grid-template-columns: 1fr 1fr; 
 }
 .SystemDescriptorCreator{
@@ -31,7 +31,7 @@
 .SystemDescriptorButtonRow{
 	display: flex;
 	flex-direction: row;
-	gap:10px;
+//	gap:10px;
  }
 
 

@@ -135,8 +135,6 @@ div {
 
 .SystemDescriptor, .SystemDescriptorCreator {
   display: grid;
-  gap: 10px;
-  grid-auto-rows: 24px;
   grid-template-columns: 1fr 1fr;
 }
 
@@ -160,7 +158,6 @@ div {
 .SystemDescriptorButtonRow {
   display: flex;
   flex-direction: row;
-  gap: 10px;
 }
 
 .SystemDescriptorButton[data-disabled=true] {
@@ -892,10 +889,13 @@ div {
 
 .MainMenuButton .MainMenuButton_desc {
   transition: 1s ease width, 0.3s ease opacity;
+}.toogleSectionHeader {
+  cursor: pointer;
 }.SystemDesignerBlockSet {
   height: 200px;
   display: grid;
   grid-template-columns: 1fr 1fr;
-  grid-row: 1fr;
-  gap: 5px;
+}.ItemDesigner_TwoColumnData {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
 }.AppMainMenu.svelte-1ul43qu{display:grid;grid-template-columns:60px 60px 60px}

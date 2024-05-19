@@ -4,6 +4,7 @@ import type { IGrobCollection } from "./IGrobCollection";
 
 export interface IGrobGroup<T extends GrobNodeType> extends IGraphItem {
 	 
+	name: string
 	hasCollection(name) 
 	getCollection(name) 
 	addCollection(collection: IGrobCollection<T>) 
