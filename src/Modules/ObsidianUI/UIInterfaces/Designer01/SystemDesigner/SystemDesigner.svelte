@@ -269,6 +269,7 @@
 			return false;
 		}
 		 
+		debugger
 		if (type == 'fixed'){
 			selectedFixedNode.set(object as GrobFixedNode)
 			selectedFixedNodeName = $selectedFixedNode?.name ?? null;
@@ -335,7 +336,8 @@
 		$designer.createNode(type, collection, name)
 		 
 		// updateList
-		let selectedName = type == 'fixed' ? selectedDerivedCollectionName : selectedFixedCollectionName;
+		debugger
+		let selectedName = type == 'fixed' ? selectedFixedNodeName : selectedDerivedNodeName;
 		let names = ($designer as TTRPGSystem).getCollection(type,collection)?.getNodeNames() ?? [];
 		let mapped = names.map( p => {
 			return nameToIViewItem(p, p == selectedName ) 

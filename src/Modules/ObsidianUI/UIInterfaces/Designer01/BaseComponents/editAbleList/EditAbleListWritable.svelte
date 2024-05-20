@@ -10,7 +10,7 @@
 	import './EditAbleList.scss'; 
 
 	export let isEditableContainer:boolean = true;
-    export let collection: Writable<string[] | {key:string, value:string, isSelected?:boolean }[]>; 
+    export let collection: Writable<string[] | {key?:string, value:string, isSelected?:boolean }[]>; 
 	export let onSelect: ( d: any ) => boolean;
 	export let onAdd:(() => any) | null = null; 
 	const dispatch = createEventDispatcher();
@@ -27,16 +27,11 @@
 	onMount(()=>{ 
 		Mount();
 	})
+	
 	collection.subscribe( p => { Mount() });
 
 	function Mount(){
-
-		let keyOfSelected : string | null = null;
-		if($writableCol.length != 0){
-			let s = $writableCol.find( p => p.isSelected != false );
-			keyOfSelected = s?.key ?? null ;
-		}
-
+  
 		let arr :IViewElement[] = [];
 		for (let i = 0; i < $collection.length; i++) {
 			const e = $collection[i];
@@ -51,7 +46,7 @@
 				arr.push(item);
 			}else{
 				item = {
-					key:e.key,
+					key:e.key ?? e.value,
 					isSelected : e.isSelected != undefined ? e.isSelected : false,
 					nameEdit :e.value,
 					name :e.value
@@ -59,13 +54,6 @@
 				arr.push(item);
 			}
 			
-		}
-		
-		if(keyOfSelected != null){
-			const i = arr.findIndex(p => p.key == keyOfSelected);
-			if(i != -1){
-				arr[i].isSelected = true;
-			}
 		}
 		
 		writableCol.set(arr); 
@@ -127,7 +115,7 @@
 		if(!onAdd)
 			return;	
  
-		deselect();
+		//deselect();
 		onAdd();
 	}
 
