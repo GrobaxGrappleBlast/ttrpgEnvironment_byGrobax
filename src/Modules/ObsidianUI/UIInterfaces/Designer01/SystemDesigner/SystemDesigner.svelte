@@ -350,6 +350,21 @@
 		noteUpdate()
 	}
 	
+	async function onSaveClick(){
+
+		if (!$designer ){
+			return;
+		}
+
+		let api = ObsidianUICoreAPI.getInstance();
+		let response = await api.systemFactory.saveSystemDesigner( $systemPreview , $designer );
+		if ( response.responseCode >= 200 && response.responseCode < 300 ){
+			console.log('OK')
+		}
+
+
+	}
+
 </script>
 <div>
 	{#if $designer}
@@ -360,8 +375,7 @@
 					overrideClickText={'Click here to go to error'}
 					overrideClick={ GoToError }
 				/>
-				<button>Save Changes To File</button>
-				<button>Undo All changes</button>
+				<button on:click={onSaveClick}>Save Changes To File</button>
 			</div>
 		{/if}
 

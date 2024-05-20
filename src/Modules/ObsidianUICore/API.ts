@@ -42,12 +42,12 @@ class SystemDefinitionManagement{
 
 	private async recursiveFindNewFolderName( depth = 0, maxDepth = 5) : Promise<string | null>  {
 
-		if(depth == maxDepth){
+		if (depth == maxDepth){
 			return null;
 		}
 
 		let uuid = StringFunctions.uuidShort();
-		if(await FileContext.systemDefinitionExistsInFolder(uuid)){
+		if (await FileContext.systemDefinitionExistsInFolder(uuid)){
 			return this.recursiveFindNewFolderName(depth + 1);
 		}
 		return uuid;
@@ -59,24 +59,24 @@ class SystemDefinitionManagement{
 
 		let _ = ''; 
 		// Author 
-		if( !sys.author  ){	
+		if ( !sys.author  ){	
 			invalidMessages[systemPreviewValidationCode+'1'] = {msg:'a author is not required but helpfull to users', type:  MessageTypes.verbose as any  } 
 		}
 
 		// Version 
-		if( !sys.version  ){	
+		if ( !sys.version  ){	
 			invalidMessages[systemPreviewValidationCode+'2'] = {msg:'a version is not required but helpfull to users', type:  MessageTypes.verbose as any  }  
 		}
 
 		// SystemCodeName 
-		if( !sys.systemCodeName  ){	
+		if ( !sys.systemCodeName  ){	
 			isValid = false;  
 			invalidMessages[systemPreviewValidationCode+'3'] = {msg:'Did not have a systemCodeName.\n can only contain regular letter and numbers, no special characters or whitespace', type:  MessageTypes.error as any  }  
 		}else if (!StringFunctions.isValidSystemCodeName(sys.systemCodeName)){
 			isValid = false;  
 			invalidMessages[systemPreviewValidationCode+'4'] = {msg:'Did not have a valid systemCodeName.\n can only contain regular letter and numbers, no special characters or whitespace', type:  MessageTypes.error as any  } 
 		}
-		else if(
+		else if (
 			(FileContext.getInstance().availableSystems.findIndex( p => p.systemCodeName == sys.systemCodeName))
 			!= 
 			-1
@@ -86,14 +86,14 @@ class SystemDefinitionManagement{
 		}
 
 		// SystemName No \n characters.
-		if( !sys.systemName  ){	
+		if ( !sys.systemName  ){	
 			isValid = false;  
 			invalidMessages[systemPreviewValidationCode+'5'] = {msg:'Did not have a system name.', type:  MessageTypes.error as any  }  
 		}else if (!StringFunctions.isValidWindowsFileString(sys.systemName)){
 			isValid = false;  
 			invalidMessages[systemPreviewValidationCode+'6'] = {msg:'Did not have a valid system name.', type:  MessageTypes.error as any  }  
 		}
-		else if(
+		else if (
 			(FileContext.getInstance().availableSystems.findIndex( p => p.systemName == sys.systemName))
 			!= 
 			-1
@@ -103,10 +103,10 @@ class SystemDefinitionManagement{
 		}
 
 		// folder only allow windows folder name accepted folder names.
-		if( !sys.folderName  ){	
+		if ( !sys.folderName  ){	
 
 			let newFoldername = await this.recursiveFindNewFolderName(0,5);
-			if(!newFoldername){
+			if (!newFoldername){
 				invalidMessages[systemPreviewValidationCode+'7'] = {msg:'A new folder name is required, Must be unique.', type:  MessageTypes.error as any  }   
 			}else{
 				sys.folderName = newFoldername//
@@ -117,7 +117,7 @@ class SystemDefinitionManagement{
 			isValid = false;  
 			invalidMessages[systemPreviewValidationCode+'9'] = {msg:'folder name was not valid windows folder name.', type:  MessageTypes.error as any  }   
 		} 
-		else if(
+		else if (
 			(FileContext.getInstance().availableSystems.findIndex( p => p.folderPath.endsWith('/' + sys.folderName)))
 			!= 
 			-1
@@ -126,7 +126,7 @@ class SystemDefinitionManagement{
 			invalidMessages[systemPreviewValidationCode+'d3'] = {msg:'folder name was already used, you must use another, or use an overwrite feature.', type:  MessageTypes.error as any  }
 		}
 
-		if(isValid){
+		if (isValid){
 			invalidMessages[systemPreviewValidationCode+'OK'] = {msg:'All is Good.', type:  MessageTypes.good as any  }
 		}
 		return isValid;
@@ -210,17 +210,35 @@ class SystemDefinitionManagement{
 class SystemFactory{
 	public async getOrCreateSystemFactory( preview : SystemPreview ) : Promise<APIReturnModel<TTRPGSystem|null>> {
 		
-		if(!preview.folderPath){
+		if (!preview.folderPath){
 			return createResponse(406,null,createMessage('getOrCreateSystemFactory1','systemPreview was invalid', 'error'));
 		}
 
 		let fileContent = FileContext.getInstance();
 		let designer = await fileContent.getOrCreateSystemsDesigns( preview.folderPath );
-		if(designer){
+		if (designer){
 			return  createResponse(200, designer, createMessage('getOrCreateSystemFactory','System Designer Loaded','good') );
 		}
 		return createResponse(500, null , createMessage('getOrCreateSystemFactory','Something went wrong loading the file','error') );
 	}
-	public async saveSystemFactory(){}
+	public async saveSystemDesigner( preview : SystemPreview , designer : TTRPGSystem ){
+
+		debugger;
+		if (!preview.folderPath){
+			return createResponse(406,null,createMessage('saveSystemFactory1','systemPreview was invalid', 'error'));
+		}
+
+		if ( !designer.isValid() ){
+			return createResponse(406,null,createMessage('saveSystemFactory1','system Designer validated to invalid. ', 'error'));
+		}
+
+
+		let fileContent = FileContext.getInstance();
+		if (await fileContent.saveSystemsDesigns( preview.folderPath, designer )){
+			return createResponse(200, null , createMessage('saveSystemFactory1','saved designer','good') );
+		}
+		return createResponse(500, null , createMessage('saveSystemFactory1','Something went wrong loading the file','error') );
+	}
+
 	public async deleteSystemFactory(){}
 }

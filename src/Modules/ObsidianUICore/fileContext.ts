@@ -212,6 +212,25 @@ export class FileContext {
 		let loaded = JSONHandler.deserialize<TTRPGSystem>( TTRPGSystem, file );
 		return loaded as TTRPGSystem;
 	}
+	public async saveSystemsDesigns( folder:string , designer: TTRPGSystem ){
+
+		// if the folder does not exist. return false 
+		if (! await FileHandler.exists(folder)){
+			return null;
+		}
+
+		// if the folder does not exist. return false 
+		if (! await FileHandler.exists(folder)){
+			return null;
+		}
+
+		// See if the file exists. 
+		let filepath = folder + '/designer.json';
+		await FileHandler.saveFile( filepath , JSONHandler.serialize(designer) ); 
+		return true;
+	}
+
+
 
 
 	
