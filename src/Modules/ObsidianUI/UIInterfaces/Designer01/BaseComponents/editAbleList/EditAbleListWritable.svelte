@@ -70,9 +70,7 @@
 		
 		writableCol.set(arr); 
 	}
-
  
-
 	export function deselect(){
 		if(!selected)
 			return;

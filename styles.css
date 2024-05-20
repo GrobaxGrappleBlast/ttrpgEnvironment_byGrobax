@@ -4,6 +4,10 @@ div {
   font-size: 12px;
 }
 
+button {
+  cursor: pointer;
+}
+
 .GrobsBordered_section {
   padding: 10px;
   border: 1px solid;
@@ -84,6 +88,61 @@ div {
   border-radius: var(--input-radius);
   outline: none;
   transition: 0.3s ease;
+}
+
+.GrobsInteractiveColoredBorder {
+  border: 1px solid;
+  padding: 10px;
+  margin-top: 10px;
+  border-radius: 2px;
+}
+
+.GrobsInteractiveColoredBorder {
+  transition: border-color 0.3s ease;
+}
+
+.GrobsInteractiveColoredBorder[data-state=good] {
+  border-color: var(--background-modifier-success);
+}
+
+.GrobsInteractiveColoredBorder[data-state=error] {
+  border-color: var(--background-modifier-error);
+}
+
+.GrobsInteractiveColoredBorder[data-state=verbose] {
+  border-color: var(--color-blue);
+}
+
+.GrobsInteractiveColoredBorder[data-state=flash] {
+  border-color: var(--color-yellow-light);
+}
+
+.GrobsInteractiveColoredBorder[data-state-text][data-state=good]::before {
+  color: var(--background-modifier-success);
+}
+
+.GrobsInteractiveColoredBorder[data-state-text][data-state=error]::before {
+  color: var(--background-modifier-error);
+}
+
+.GrobsInteractiveColoredBorder[data-state-text][data-state=verbose]::before {
+  color: var(--color-blue);
+}
+
+.GrobsInteractiveColoredBorder[data-state-text][data-state=flash]::before {
+  color: var(--color-yellow-light);
+}
+
+.GrobsInteractiveColoredBorder[data-state-text]::before {
+  transition: color 0.3s ease;
+  display: block;
+  width: fit-content;
+  padding-left: 15px;
+  padding-right: 15px;
+  height: 24px;
+  margin-top: -24px;
+  content: attr(data-state-text);
+  background-color: var(--background-primary);
 }
 
 .GrobsButton, .SystemDescriptorButton {
@@ -177,6 +236,10 @@ div {
   font-size: 12px;
 }
 
+button {
+  cursor: pointer;
+}
+
 .GrobsBordered_section {
   padding: 10px;
   border: 1px solid;
@@ -257,6 +320,61 @@ div {
   border-radius: var(--input-radius);
   outline: none;
   transition: 0.3s ease;
+}
+
+.GrobsInteractiveColoredBorder {
+  border: 1px solid;
+  padding: 10px;
+  margin-top: 10px;
+  border-radius: 2px;
+}
+
+.GrobsInteractiveColoredBorder {
+  transition: border-color 0.3s ease;
+}
+
+.GrobsInteractiveColoredBorder[data-state=good] {
+  border-color: var(--background-modifier-success);
+}
+
+.GrobsInteractiveColoredBorder[data-state=error] {
+  border-color: var(--background-modifier-error);
+}
+
+.GrobsInteractiveColoredBorder[data-state=verbose] {
+  border-color: var(--color-blue);
+}
+
+.GrobsInteractiveColoredBorder[data-state=flash] {
+  border-color: var(--color-yellow-light);
+}
+
+.GrobsInteractiveColoredBorder[data-state-text][data-state=good]::before {
+  color: var(--background-modifier-success);
+}
+
+.GrobsInteractiveColoredBorder[data-state-text][data-state=error]::before {
+  color: var(--background-modifier-error);
+}
+
+.GrobsInteractiveColoredBorder[data-state-text][data-state=verbose]::before {
+  color: var(--color-blue);
+}
+
+.GrobsInteractiveColoredBorder[data-state-text][data-state=flash]::before {
+  color: var(--color-yellow-light);
+}
+
+.GrobsInteractiveColoredBorder[data-state-text]::before {
+  transition: color 0.3s ease;
+  display: block;
+  width: fit-content;
+  padding-left: 15px;
+  padding-right: 15px;
+  height: 24px;
+  margin-top: -24px;
+  content: attr(data-state-text);
+  background-color: var(--background-primary);
 }
 
 .GrobsButton {
@@ -329,8 +447,17 @@ div {
 }
 
 .signage p, .OKHandlerSign p, .VerboseHandlerSign p, .ErrorHandlerSign p {
+  grid-column: 2;
   text-align: right;
   line-height: 12px;
+}
+
+.signage i, .OKHandlerSign i, .VerboseHandlerSign i, .ErrorHandlerSign i {
+  margin-top: -10px;
+  grid-column: 2;
+  text-align: right;
+  line-height: 12px;
+  opacity: 0.5;
 }
 
 .signage::before, .OKHandlerSign::before, .VerboseHandlerSign::before, .ErrorHandlerSign::before {
@@ -371,6 +498,10 @@ div {
   vertical-align: middle;
   line-height: 24px;
   font-size: 12px;
+}
+
+button {
+  cursor: pointer;
 }
 
 .GrobsBordered_section {
@@ -453,6 +584,61 @@ div {
   border-radius: var(--input-radius);
   outline: none;
   transition: 0.3s ease;
+}
+
+.GrobsInteractiveColoredBorder {
+  border: 1px solid;
+  padding: 10px;
+  margin-top: 10px;
+  border-radius: 2px;
+}
+
+.GrobsInteractiveColoredBorder {
+  transition: border-color 0.3s ease;
+}
+
+.GrobsInteractiveColoredBorder[data-state=good] {
+  border-color: var(--background-modifier-success);
+}
+
+.GrobsInteractiveColoredBorder[data-state=error] {
+  border-color: var(--background-modifier-error);
+}
+
+.GrobsInteractiveColoredBorder[data-state=verbose] {
+  border-color: var(--color-blue);
+}
+
+.GrobsInteractiveColoredBorder[data-state=flash] {
+  border-color: var(--color-yellow-light);
+}
+
+.GrobsInteractiveColoredBorder[data-state-text][data-state=good]::before {
+  color: var(--background-modifier-success);
+}
+
+.GrobsInteractiveColoredBorder[data-state-text][data-state=error]::before {
+  color: var(--background-modifier-error);
+}
+
+.GrobsInteractiveColoredBorder[data-state-text][data-state=verbose]::before {
+  color: var(--color-blue);
+}
+
+.GrobsInteractiveColoredBorder[data-state-text][data-state=flash]::before {
+  color: var(--color-yellow-light);
+}
+
+.GrobsInteractiveColoredBorder[data-state-text]::before {
+  transition: color 0.3s ease;
+  display: block;
+  width: fit-content;
+  padding-left: 15px;
+  padding-right: 15px;
+  height: 24px;
+  margin-top: -24px;
+  content: attr(data-state-text);
+  background-color: var(--background-primary);
 }
 
 .GrobsButton {
@@ -525,6 +711,10 @@ div {
   font-size: 12px;
 }
 
+button {
+  cursor: pointer;
+}
+
 .GrobsBordered_section {
   padding: 10px;
   border: 1px solid;
@@ -605,6 +795,61 @@ div {
   border-radius: var(--input-radius);
   outline: none;
   transition: 0.3s ease;
+}
+
+.GrobsInteractiveColoredBorder {
+  border: 1px solid;
+  padding: 10px;
+  margin-top: 10px;
+  border-radius: 2px;
+}
+
+.GrobsInteractiveColoredBorder {
+  transition: border-color 0.3s ease;
+}
+
+.GrobsInteractiveColoredBorder[data-state=good] {
+  border-color: var(--background-modifier-success);
+}
+
+.GrobsInteractiveColoredBorder[data-state=error] {
+  border-color: var(--background-modifier-error);
+}
+
+.GrobsInteractiveColoredBorder[data-state=verbose] {
+  border-color: var(--color-blue);
+}
+
+.GrobsInteractiveColoredBorder[data-state=flash] {
+  border-color: var(--color-yellow-light);
+}
+
+.GrobsInteractiveColoredBorder[data-state-text][data-state=good]::before {
+  color: var(--background-modifier-success);
+}
+
+.GrobsInteractiveColoredBorder[data-state-text][data-state=error]::before {
+  color: var(--background-modifier-error);
+}
+
+.GrobsInteractiveColoredBorder[data-state-text][data-state=verbose]::before {
+  color: var(--color-blue);
+}
+
+.GrobsInteractiveColoredBorder[data-state-text][data-state=flash]::before {
+  color: var(--color-yellow-light);
+}
+
+.GrobsInteractiveColoredBorder[data-state-text]::before {
+  transition: color 0.3s ease;
+  display: block;
+  width: fit-content;
+  padding-left: 15px;
+  padding-right: 15px;
+  height: 24px;
+  margin-top: -24px;
+  content: attr(data-state-text);
+  background-color: var(--background-primary);
 }
 
 .GrobsButton {
@@ -695,6 +940,10 @@ div {
   font-size: 12px;
 }
 
+button {
+  cursor: pointer;
+}
+
 .GrobsBordered_section {
   padding: 10px;
   border: 1px solid;
@@ -775,6 +1024,61 @@ div {
   border-radius: var(--input-radius);
   outline: none;
   transition: 0.3s ease;
+}
+
+.GrobsInteractiveColoredBorder {
+  border: 1px solid;
+  padding: 10px;
+  margin-top: 10px;
+  border-radius: 2px;
+}
+
+.GrobsInteractiveColoredBorder {
+  transition: border-color 0.3s ease;
+}
+
+.GrobsInteractiveColoredBorder[data-state=good] {
+  border-color: var(--background-modifier-success);
+}
+
+.GrobsInteractiveColoredBorder[data-state=error] {
+  border-color: var(--background-modifier-error);
+}
+
+.GrobsInteractiveColoredBorder[data-state=verbose] {
+  border-color: var(--color-blue);
+}
+
+.GrobsInteractiveColoredBorder[data-state=flash] {
+  border-color: var(--color-yellow-light);
+}
+
+.GrobsInteractiveColoredBorder[data-state-text][data-state=good]::before {
+  color: var(--background-modifier-success);
+}
+
+.GrobsInteractiveColoredBorder[data-state-text][data-state=error]::before {
+  color: var(--background-modifier-error);
+}
+
+.GrobsInteractiveColoredBorder[data-state-text][data-state=verbose]::before {
+  color: var(--color-blue);
+}
+
+.GrobsInteractiveColoredBorder[data-state-text][data-state=flash]::before {
+  color: var(--color-yellow-light);
+}
+
+.GrobsInteractiveColoredBorder[data-state-text]::before {
+  transition: color 0.3s ease;
+  display: block;
+  width: fit-content;
+  padding-left: 15px;
+  padding-right: 15px;
+  height: 24px;
+  margin-top: -24px;
+  content: attr(data-state-text);
+  background-color: var(--background-primary);
 }
 
 .GrobsButton {
@@ -895,7 +1199,213 @@ div {
   height: 200px;
   display: grid;
   grid-template-columns: 1fr 1fr;
-}.ItemDesigner_TwoColumnData {
+  gap: 5px;
+}div {
+  vertical-align: middle;
+  line-height: 24px;
+  font-size: 12px;
+}
+
+button {
+  cursor: pointer;
+}
+
+.GrobsBordered_section {
+  padding: 10px;
+  border: 1px solid;
+  border-color: var(--text-normal);
+  border-radius: 5px;
+  position: relative;
+  margin-top: 10px;
+}
+
+.GrobsBordered_section[data-edgeColor=green] {
+  border-color: var(--color-green);
+}
+
+.GrobsBordered_section[data-edgeColor=green]::before {
+  color: var(--color-green);
+}
+
+.GrobsBordered_section[data-edgeColor=blue] {
+  border-color: var(--interactive-accent);
+}
+
+.GrobsBordered_section[data-edgeColor=blue]::before {
+  color: var(--interactive-accent);
+}
+
+.GrobsBordered_section[data-edgeColor=red] {
+  border-color: var(--color-red) !important;
+}
+
+.GrobsBordered_section[data-edgeColor=red]::before {
+  color: var(--color-red) !important;
+}
+
+.GrobsBordered_section::before {
+  content: attr(data-label);
+  position: absolute;
+  top: -10px;
+  left: 10px;
+  padding-left: 5px;
+  padding-right: 5px;
+  color: var(--text-normal);
+  background-color: var(--background-primary);
+}
+
+*[data-color=green] {
+  background-color: var(--color-green);
+}
+
+*[data-color=blue] {
+  background-color: var(--interactive-accent);
+}
+
+*[data-color=red] {
+  background-color: var(--color-red);
+}
+
+.GrobsInteractiveContainer, .ItemDesignerInput {
+  overflow-y: auto;
+  overflow-x: hidden;
+  border: solid var(--border-width) var(--interactive-accent);
+  background: var(--background-modifier-form-field);
+  border: var(--input-border-width) solid var(--background-modifier-border);
+  color: var(--text-normal);
+  font-family: inherit;
+  font-size: var(--font-ui-small);
+  border-radius: var(--input-radius);
+  outline: none;
+  transition: 0.3s ease;
+}
+
+.GrobsInteractiveContainer[data-disabled=true], [data-disabled=true].ItemDesignerInput {
+  border: solid var(--border-width) var(--interactive-accent);
+  background: transparent;
+  border: var(--input-border-width) solid var(--background-modifier-border);
+  color: var(--text-normal);
+  font-family: inherit;
+  font-size: var(--font-ui-small);
+  border-radius: var(--input-radius);
+  outline: none;
+  transition: 0.3s ease;
+}
+
+.GrobsInteractiveColoredBorder {
+  border: 1px solid;
+  padding: 10px;
+  margin-top: 10px;
+  border-radius: 2px;
+}
+
+.GrobsInteractiveColoredBorder {
+  transition: border-color 0.3s ease;
+}
+
+.GrobsInteractiveColoredBorder[data-state=good] {
+  border-color: var(--background-modifier-success);
+}
+
+.GrobsInteractiveColoredBorder[data-state=error] {
+  border-color: var(--background-modifier-error);
+}
+
+.GrobsInteractiveColoredBorder[data-state=verbose] {
+  border-color: var(--color-blue);
+}
+
+.GrobsInteractiveColoredBorder[data-state=flash] {
+  border-color: var(--color-yellow-light);
+}
+
+.GrobsInteractiveColoredBorder[data-state-text][data-state=good]::before {
+  color: var(--background-modifier-success);
+}
+
+.GrobsInteractiveColoredBorder[data-state-text][data-state=error]::before {
+  color: var(--background-modifier-error);
+}
+
+.GrobsInteractiveColoredBorder[data-state-text][data-state=verbose]::before {
+  color: var(--color-blue);
+}
+
+.GrobsInteractiveColoredBorder[data-state-text][data-state=flash]::before {
+  color: var(--color-yellow-light);
+}
+
+.GrobsInteractiveColoredBorder[data-state-text]::before {
+  transition: color 0.3s ease;
+  display: block;
+  width: fit-content;
+  padding-left: 15px;
+  padding-right: 15px;
+  height: 24px;
+  margin-top: -24px;
+  content: attr(data-state-text);
+  background-color: var(--background-primary);
+}
+
+.GrobsButton {
+  height: 24px;
+  padding: 24px;
+  border-radius: 2px;
+  background: var(--interactive-normal);
+  box-shadow: var(--input-shadow);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--text-normal);
+  font-size: var(--font-ui-small);
+  border-radius: var(--button-radius);
+  border: 0;
+  padding: var(--size-4-1) var(--size-4-3);
+  height: var(--input-height);
+  font-weight: var(--input-font-weight);
+  cursor: var(--cursor);
+  font-family: inherit;
+  outline: none;
+  user-select: none;
+  white-space: nowrap;
+  cursor: pointer;
+}
+
+.GrobsButton:hover {
+  background-color: var(--interactive-accent);
+  color: var(--text-on-accent);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--text-normal);
+  font-size: var(--font-ui-small);
+  border-radius: var(--button-radius);
+  border: 0;
+  padding: var(--size-4-1) var(--size-4-3);
+  height: var(--input-height);
+  font-weight: var(--input-font-weight);
+  font-family: inherit;
+  outline: none;
+  user-select: none;
+  white-space: nowrap;
+}
+
+.lineBreak {
+  height: 24px;
+}
+
+.ItemDesigner_TwoColumnData {
   display: grid;
   grid-template-columns: 1fr 1fr;
+}
+
+.ItemDesignerInput {
+  padding-left: 10px;
+}
+
+.ItemDesignerButtonRow {
+  height: 30px;
+  display: flex;
+  flex-direction: row;
+  gap: 10px;
 }.AppMainMenu.svelte-1ul43qu{display:grid;grid-template-columns:60px 60px 60px}

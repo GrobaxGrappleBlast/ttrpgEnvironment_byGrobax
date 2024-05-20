@@ -306,6 +306,120 @@ export class TTRPGSystemGraphModel extends TTRPGSystemGraphAbstractModel {
 	}
 
 
+	// Renaming functions
+	public renameCollection	   (  group : groupKeyType | GrobGroupType , col : GrobCollection<GrobNodeType> | string , newName:string ){
+		
+		// check that group exists, and get the values. 
+		let grp : GrobGroupType;
+		let grpName;
+		if( typeof group == 'string'){
+			grpName = group;
+			grp = this._getGroup(group) as GrobGroupType;
+		}else{
+			grpName = group.getName();
+			grp = group;
+		}
+
+		if(!grp){
+			this.out.outError(`No group existed by name ${grpName}`)
+			return null;
+		}
+
+		// Check that Collection exists and get the values 
+		let colName = col;
+		if ( typeof col == 'string') {
+			colName = col;
+			col = grp.getCollection(col);
+		} else {
+			colName = col.getName();
+		}
+		
+		if (!col) {
+			this.out.outError(`No Collection existed by name ${ colName } in ${grpName}`)
+			return null;
+		}
+
+		// update 
+		return grp.update_collection_name(colName,newName);
+	}
+	public renameItem	   (  group : groupKeyType | GrobGroupType , col : GrobCollection<GrobNodeType> | string , oldName:string ,newName:string ){
+		
+		// check that group exists, and get the values. 
+		let grp : GrobGroupType;
+		let grpName;
+		if( typeof group == 'string'){
+			grpName = group;
+			grp = this._getGroup(group) as GrobGroupType;
+		}else{
+			grpName = group.getName();
+			grp = group;
+		}
+
+		if(!grp){
+			this.out.outError(`No group existed by name ${grpName}`)
+			return null;
+		}
+
+		// Check that Collection exists and get the values 
+		let colName = col;
+		if ( typeof col == 'string') {
+			colName = col;
+			col = grp.getCollection(col);
+		} else {
+			colName = col.getName();
+		}
+		
+		if (!col) {
+			this.out.outError(`No Collection existed by name ${ colName } in ${grpName}`)
+			return null;
+		}
+		
+
+		// check that the Node exists
+		if( !col.hasNode(oldName) ){
+			this.out.outError(`No Item existed by name ${ oldName } in ${grpName}.${colName}`)
+			return null;
+		}
+
+		// update 
+		return col.update_node_name(oldName,newName);
+	}
+
+	// Validation Functions
+	public isValid ( errorMessages : {msg:string, key:string[]}[] = []){
+
+		let key_group,key_collection,key_node;
+		let collectionNames, nodeNames;
+		let group,collection,node; 
+		let isValid;
+
+		// foreach group, get do this for all collections.
+		for ( key_group in this.data ){
+			group = this.data[key_group];
+			collectionNames =  group.getCollectionsNames();
+
+			// forach collection do this for all nodes 
+			for ( const colIndex in group.getCollectionsNames() ){
+				key_collection = collectionNames[colIndex];
+				collection = group.getCollection(key_collection);
+				nodeNames = collection.getNodeNames();
+
+				// do this for each node. 
+				for ( const nodeIndex in nodeNames ){
+					key_node = nodeNames[nodeIndex]
+					node	= collection.getNode(key_node);
+
+					isValid	= node.isValid();
+					if(!isValid){
+						let msg = `${key_group}.${key_collection}.${key_node} was invalid`;
+						let keys = [key_group , key_collection , key_node];
+						errorMessages.push({msg:msg, key:keys});
+					}
+				}
+			}
+		}
+		return errorMessages.length == 0;
+	} 
 	protected _getGroup( name ){
 		let grp = this.data[name]
 		return grp ?? null ;

@@ -57,6 +57,21 @@
 		}
 	}
 
+	// a value to track wether or not a change has been made to the system.
+	// this could be replaced with an elaborate trackker or item hasher, but we use a simple has changed bool
+	let anyChanges  = false;
+	let valid 		= true;
+	let savingMessageHandler: StaticMessageHandler; 
+
+	// views 
+	let toogleFixedSection	: ToogleSection;
+	let listViewFixed_1		: EditAbleListWritable; 
+	let listViewFixed_2		: EditAbleListWritable; 
+
+	let toogleDerivedSection: ToogleSection;
+	let listViewDerived_1	: EditAbleListWritable;
+	let listViewDerived_2	: EditAbleListWritable;
+
 	// fixed data
 	let fixedCollection 				: Writable<viewE[]>	= writable([]);
 	let selectedFixedCollectionName		: string | null 			= null
@@ -92,12 +107,63 @@
 		}
 		d.setOut( outputhandler );
 	})	
+ 
+	function noteUpdate(){
+		anyChanges = true;		
 
+		// if there is no designer, return true, not because its valid, but to avoid complications
+		if (!$designer)
+			return true;
 
-	fixedCollection.subscribe( p => {
-		console.log('fixedCollection updated')
-	})
+		// get a validation. 
+		let messages : {msg:string, key:string[]}[]= [];
+		valid = $designer.isValid( messages ) ;
+		if (!valid){
+			savingMessageHandler.removeAllMessages();
+			messages.forEach( msg => { 
+				savingMessageHandler.addMessageManual( msg.key , msg.msg, 'error');
+			});
+		}
 
+	}
+	async function GoToError( key : string ){
+		
+		const animationTime = 200;
+		let segments = key.split(',');
+		if( segments.length != 3){
+			messageHandler.addMessageManual( 'Error,InKey','Something Went Wrong going to Error','error')
+			return;
+		}
+		
+		// open the section
+		let selectedCollectionName:string;
+		let selectedNodeName:string
+		
+		if(segments[0] == 'fixed'){
+			toogleFixedSection.toogle(true);
+			toogleDerivedSection.toogle(false);
+			selectedCollectionName	= selectedFixedCollectionName	?? '';
+			selectedNodeName		= selectedFixedNodeName	?? '';
+			await sleep(animationTime)
+		} else {
+			toogleDerivedSection.toogle(true);
+			toogleFixedSection	.toogle(false);
+			selectedCollectionName	= selectedDerivedCollectionName	?? '';
+			selectedNodeName		= selectedDerivedNodeName	?? '';
+			await sleep(animationTime)
+		}
+		
+		if( selectedCollectionName != segments[1]){
+			await sleep(animationTime)
+			listViewFixed_1.select(segments[1]);
+		}
+
+		if( selectedNodeName != segments[2]){
+			await sleep(animationTime)
+			listViewFixed_2.select(segments[2]);
+		}
+	
+	}
 	
 
 	function selectCollection ( type: 'derived' | 'fixed' , collection:string ){
@@ -149,9 +215,14 @@
 		deSelectCollectionItem(type)
 		if ( type == 'fixed' ){
 			selectedFixedCollectionName = null; 
+			selectedFixedCollectionData.set([]);
+			selectedFixedNode.set(null)
 		} else {
-			selectedDerivedCollectionName = null;  
-		}
+			selectedDerivedCollectionName = null;
+			selectedDerivedCollectionData.set([]);  
+			selectedDerivedNode.set(null);
+		} 
+
 	}
 	function addNewCollection(type: 'derived' | 'fixed' ){
 		
@@ -179,6 +250,7 @@
 		}else{
 			fixedCollection.update( addName ) 
 		}
+		noteUpdate();
 	}	
 
 
@@ -199,8 +271,10 @@
 		 
 		if (type == 'fixed'){
 			selectedFixedNode.set(object as GrobFixedNode)
+			selectedFixedNodeName = $selectedFixedNode?.name ?? null;
 		} else {
 			selectedDerivedNode.set(object as GrobDerivedNode);
+			selectedDerivedNodeName = $selectedDerivedNode?.name  ?? null;
 		}
 		return true;
 	}
@@ -212,11 +286,23 @@
 		if (type == 'fixed'){
 			selectedFixedNode.set(null)
 			selectedFixedNodeName = null;
-			selectedFixedCollectionData.set([])
+			selectedFixedCollectionData.update( r => {
+				let index = r.findIndex( p => p.isSelected);
+				if (index != -1 ){
+					r[index].isSelected = false	
+				}
+				return r;
+			})
 		} else {
 			selectedDerivedNode.set(null);
 			selectedDerivedNodeName = null;
-			selectedDerivedCollectionData.set([])
+			selectedDerivedCollectionData.update( r => {
+				let index = r.findIndex( p => p.isSelected);
+				if (index != -1 ){
+					r[index].isSelected = false	
+				}
+				return r;
+			})
 		}
 	}
 	function addNewCollectionItem	( type: 'derived' | 'fixed' , collection:string, item:string ){
@@ -259,16 +345,33 @@
 		}else{
 			selectedFixedCollectionData		.set(mapped);
 		}
-		 
+		noteUpdate()
 	}
 	
 </script>
 <div>
 	{#if $designer}
-		<ToogleSection  title={'Fixed Data Collections'} >
+		{#if anyChanges}
+			<div  class="GrobsInteractiveColoredBorder" data-state={ valid ? 'good' : 'error' } data-state-text={ valid ? 'Save system disabled while error persists' : 'Save System changed to file'}>
+				<StaticMessageHandler 
+					bind:this={ savingMessageHandler }
+					overrideClickText={'Click here to go to error'}
+					overrideClick={ GoToError }
+				/>
+				<button>Save Changes To File</button>
+				<button>Undo All changes</button>
+			</div>
+		{/if}
+
+		<ToogleSection 
+			title={'Fixed Data Collections'} 
+			bind:this={toogleFixedSection}
+			on:close={ () => { deSelectCollection('fixed' )}}
+		>
 			<div class="SystemDesignerBlockSet">
 				<div class="SystemDesignerListBlock" >
 					<EditAbleListWritable 
+						bind:this={ listViewFixed_1 }
 						isEditableContainer={ true }
 						collection		= { fixedCollection}
 						onSelect		= { (e) => { return selectCollection('fixed',e);} }
@@ -278,6 +381,7 @@
 				</div>
 				<div class="SystemDesignerListBlock" >
 					<EditAbleListWritable 
+						bind:this={ listViewFixed_2 }
 						isEditableContainer={ true }
 						collection		= { selectedFixedCollectionData }
 						onSelect		= { (e) => { return selectCollectionItem('fixed',selectedFixedCollectionName ?? '',e)} }
@@ -288,9 +392,15 @@
 			</div>
 			<div class="SystemDesignerListBlock" >
 				{#if $selectedFixedNode}
-					<div transition:slide >
+					<div transition:slide|local >
 						<FixedItemDesigner 
-							node = { $selectedFixedNode }
+							on:save= { (e) => {
+								let _old = e.detail.old;
+								let _new = e.detail.new;
+								let result = $designer.renameCollection('fixed',_old,_new);
+								noteUpdate();
+							}}
+							node = { selectedFixedNode }
 						/>
 					</div>
 				{/if}
@@ -298,15 +408,15 @@
 		</ToogleSection>
 
 
-		<ToogleSection title={'Derived Data Collections'}  >
+		<ToogleSection title={'Derived Data Collections'}  bind:this={toogleDerivedSection}>
 
 			
 		</ToogleSection>
 		 
 	{/if}
-	<!--
-		<StaticMessageHandler 
-			bind:this={ messageHandler }
-		/>
-	-->
+	
+	<StaticMessageHandler 
+		bind:this={ messageHandler }
+	/>
+	
 </div>

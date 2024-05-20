@@ -6,6 +6,9 @@ div {
 	font-size: 	$standard_fontSize;
 }
 
+button{
+    cursor: pointer;
+}
 
 
 .GrobsBordered_section{
@@ -89,6 +92,59 @@ div {
 		transition: 0.3s ease;
 	} 
 }
+
+.GrobsInteractiveColoredBorder{
+    border: 1px solid ;
+    padding:10px;
+    margin-top:10px;
+    border-radius: 2px;
+    
+    // state colors 
+    & {
+        transition: border-color $flashAnimTime $flashAnimType;
+        &[data-state="good"]{
+            border-color:$color_success; 
+        }
+        &[data-state="error"]{
+            border-color:$color_error;
+        }
+        &[data-state="verbose"]{
+            border-color:$color_verbose;
+        }
+        &[data-state="flash"]{
+            border-color:$color_flash;
+        }
+    }
+
+    // cornerText 
+    &[data-state-text] {
+
+        &[data-state="good"]::before {
+            color:$color_success; 
+        }
+        &[data-state="error"]::before {
+            color:$color_error;
+        }
+        &[data-state="verbose"]::before {
+            color:$color_verbose;
+        }
+        &[data-state="flash"]::before {
+            color:$color_flash;
+        }
+        &::before{
+            transition: color $flashAnimTime $flashAnimType;
+            display: block;
+            width: fit-content;
+            padding-left:15px;
+            padding-right: 15px;
+            height:$standard_LineHeight;
+            margin-top: -1 * ($standard_LineHeight);
+            content:attr(data-state-text);
+            background-color: $backgroundStandard;
+        }
+    }
+}
+
 
 .GrobsButton{
     height:$standard_LineHeight;

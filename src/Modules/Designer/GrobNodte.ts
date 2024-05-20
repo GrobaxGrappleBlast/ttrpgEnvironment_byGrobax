@@ -127,7 +127,9 @@ export abstract class GrobNode<T extends GrobNode<T>> extends AGraphItem{
 
 	public updateDependecysLocation( dependency ){}
 
-
+	public isValid(  ){
+		return true;
+	}
 }
   
 export class GrobFixedNode extends GrobNode<GrobFixedNode>{
@@ -160,6 +162,7 @@ export class GrobFixedNode extends GrobNode<GrobFixedNode>{
 	public addDependency(node:GrobNodeType){ return false } 
 	public removeDependency(node:GrobNodeType){ return false  }
 	public nullifyDependency(node:GrobNodeType){return false}
+	
 }
  
 

@@ -16,7 +16,9 @@
 
 	let messages : Writable<Record<any,{msg:string, type : MessageTypeTypes}>> = writable({});
 	let messagesLength =  Object.entries(messages).length;
-	let entries : [string,{msg:string, type : MessageTypeTypes}] [] = [];
+	let entries : [any,{msg:string, type : MessageTypeTypes}] [] = [];
+	export let overrideClick : (( key : any ) => any ) | null = null ;
+	export let overrideClickText : string | null = null;
 
 	messages.subscribe( p => { 
 		entries =  Object.entries(p);
@@ -54,30 +56,37 @@
 		})
 	}
 
-	function onclick(key){ 
-		removeError( key  );
+	function onclick(key){  
+		if (overrideClick){
+			overrideClick( key )
+		}else{
+			removeError( key );
+		}
 	}
-
+	
 </script>
 
 <div class="ErrorHandlerSignageContainer" >
 	{#if messagesLength != 0} 
-		<div class="ErrorHandlerSignage" >
+		<div class="ErrorHandlerSignage" transition:slide|local >
 			{#each entries as [key, obj] (key) } 
 				<div 
-				transition:slide
-				
+				transition:slide|local
+				animate:flip
+
 				class={ 
 					(obj.type == MessageTypes.error) ? "ErrorHandlerSign" : 
 					(obj.type == MessageTypes.verbose) ?  "VerboseHandlerSign" : 
 					(obj.type == MessageTypes.good) ?  "OKHandlerSign" : 
 					''
 				} 
-				on:keydown={ () => onclick(key) }
-				on:click={ () => onclick(key) }
-				>
-				
+				on:keydown={ () =>	{ onclick(key)} }
+				on:click={ () =>	{ onclick(key)} }
+				> 
 					<p>{obj.msg}</p>
+					{#if overrideClickText }
+						<i>{overrideClickText}</i>
+					{/if}
 				</div>
 			{/each}
 		</div> 

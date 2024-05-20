@@ -26,8 +26,16 @@
 	}
 
 	p{
+		grid-column:2;
 		text-align: right;
    		line-height: 12px;
+	}
+	i{
+		margin-top:-10px;
+		grid-column:2;
+		text-align: right;
+   		line-height: 12px;
+		opacity: 0.5;
 	}
 
 	&::before{

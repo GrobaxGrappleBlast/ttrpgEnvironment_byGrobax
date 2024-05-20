@@ -50,7 +50,6 @@
 			}
 		}
 
-		console.log(getDataRequest);
 		previews = (await ObsidianUICoreAPI.getInstance().systemDefinition.getAllSystems()).response ?? [];	
 		loaded = true; 
 	}
