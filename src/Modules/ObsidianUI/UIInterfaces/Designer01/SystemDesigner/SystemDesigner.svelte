@@ -269,7 +269,6 @@
 			return false;
 		}
 		 
-		debugger
 		if (type == 'fixed'){
 			selectedFixedNode.set(object as GrobFixedNode)
 			selectedFixedNodeName = $selectedFixedNode?.name ?? null;
@@ -335,8 +334,7 @@
 		const name = findNewItemName('New Item ', collection );
 		$designer.createNode(type, collection, name)
 		 
-		// updateList
-		debugger
+		// updateList 
 		let selectedName = type == 'fixed' ? selectedFixedNodeName : selectedDerivedNodeName;
 		let names = ($designer as TTRPGSystem).getCollection(type,collection)?.getNodeNames() ?? [];
 		let mapped = names.map( p => {
@@ -350,6 +348,21 @@
 		noteUpdate()
 	}
 	
+	async function onSaveClick(){
+
+		if (!$designer ){
+			return;
+		}
+
+		let api = ObsidianUICoreAPI.getInstance();
+		let response = await api.systemFactory.saveSystemDesigner( $systemPreview , $designer );
+		if ( response.responseCode >= 200 && response.responseCode < 300 ){
+			console.log('OK')
+		}
+
+
+	}
+
 </script>
 <div>
 	{#if $designer}
@@ -360,8 +373,7 @@
 					overrideClickText={'Click here to go to error'}
 					overrideClick={ GoToError }
 				/>
-				<button>Save Changes To File</button>
-				<button>Undo All changes</button>
+				<button on:click={onSaveClick}>Save Changes To File</button>
 			</div>
 		{/if}
 
