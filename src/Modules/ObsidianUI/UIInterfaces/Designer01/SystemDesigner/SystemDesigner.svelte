@@ -196,15 +196,16 @@
 			return nameToIViewItem(p, p == selectedName ) 
 		} )
 
-		// save that it is selected
-		selectedFixedCollectionName = collection;
+	
 
 		// save as correct collection
 		if ( type == 'fixed' ){
 			selectedFixedCollectionData.set(mapped);
+			selectedFixedCollectionName = collection;
 			return true; 
 		} else {
 			selectedDerivedCollectionData.set(mapped);
+			selectedDerivedCollectionName = collection;
 			return true;
 		}
 		
@@ -306,7 +307,7 @@
 		}
 	}
 	function addNewCollectionItem	( type: 'derived' | 'fixed' , collection:string, item:string ){
-		 
+
 		// if there is no S
 		let selected = type == 'fixed' ? selectedFixedCollectionName : selectedDerivedCollectionName;
 		if(!selected){
@@ -422,9 +423,48 @@
 		</ToogleSection>
 
 
-		<ToogleSection title={'Derived Data Collections'}  bind:this={toogleDerivedSection}>
-
-			
+		<ToogleSection 
+			title={'Derived Data Collections'}  
+			bind:this={toogleDerivedSection}
+			on:close={ () => { deSelectCollection('derived' )}}
+		>
+			<div class="SystemDesignerBlockSet">
+				<div class="SystemDesignerListBlock" >
+					<EditAbleListWritable 
+						bind:this={ listViewDerived_1 }
+						isEditableContainer={ true }
+						collection		= { derivedCollection}
+						onSelect		= { (e) => { return selectCollection	('derived',e);} }
+						onAdd			= { () => 	 		addNewCollection	('derived')		}
+						on:onDeSelect	= { (e) => { 		deSelectCollection	('derived')}	}
+					/> 
+				</div>
+				<div class="SystemDesignerListBlock" >
+					<EditAbleListWritable 
+						bind:this={ listViewDerived_2 }
+						isEditableContainer={ true }
+						collection		= { selectedDerivedCollectionData }
+						onSelect		= { (e) => { return selectCollectionItem	('derived',selectedDerivedCollectionName ?? '',e)} }
+						onAdd			= { () => {			addNewCollectionItem	('derived',selectedDerivedCollectionName ?? '', 'DerivedItem ')} }
+						on:onDeSelect	= { (e) => { 		deSelectCollectionItem	('derived') } }
+					/> 
+				</div>
+			</div>
+			<div class="SystemDesignerListBlock" >
+				{#if $selectedDerivedNode}
+					<div transition:slide|local >
+						<FixedItemDesigner 
+							on:save= { (e) => {
+								let _old = e.detail.old;
+								let _new = e.detail.new;
+								let result = $designer.renameCollection('derived',_old,_new);
+								noteUpdate();
+							}}
+							node = { selectedFixedNode }
+						/>
+					</div>
+				{/if}
+			</div>
 		</ToogleSection>
 		 
 	{/if}
