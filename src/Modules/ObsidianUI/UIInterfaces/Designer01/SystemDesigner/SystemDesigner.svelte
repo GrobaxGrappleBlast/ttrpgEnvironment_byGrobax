@@ -11,6 +11,7 @@
     import EditAbleListWritable from "../BaseComponents/editAbleList/EditAbleListWritable.svelte";
     import type { IOutputHandler } from "src/Modules/Designer/Abstractions/IOutputHandler";
     import FixedItemDesigner from "./FixedItemDesigner.svelte";
+	import DerivedItemDesigner from "./DerivedItemDesigner.svelte";
     import { slide } from "svelte/transition";
 
 	export let systemPreview : Writable<SystemPreview>;
@@ -368,7 +369,12 @@
 <div>
 	{#if $designer}
 		{#if anyChanges}
-			<div  class="GrobsInteractiveColoredBorder" data-state={ valid ? 'good' : 'error' } data-state-text={ valid ? 'Save system disabled while error persists' : 'Save System changed to file'}>
+			<div
+				class="GrobsInteractiveColoredBorder"
+				data-state={ valid ? 'good' : 'error' }
+				data-state-text={ valid ? 'Save system disabled while error persists' : 'Save System changed to file'}
+				transition:slide
+			>
 				<StaticMessageHandler 
 					bind:this={ savingMessageHandler }
 					overrideClickText={'Click here to go to error'}
@@ -453,14 +459,14 @@
 			<div class="SystemDesignerListBlock" >
 				{#if $selectedDerivedNode}
 					<div transition:slide|local >
-						<FixedItemDesigner 
+						<DerivedItemDesigner 
 							on:save= { (e) => {
 								let _old = e.detail.old;
 								let _new = e.detail.new;
 								let result = $designer.renameCollection('derived',_old,_new);
 								noteUpdate();
 							}}
-							node = { selectedFixedNode }
+							node = { selectedDerivedNode }
 						/>
 					</div>
 				{/if}

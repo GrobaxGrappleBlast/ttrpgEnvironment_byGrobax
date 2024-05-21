@@ -1,4 +1,4 @@
-div {
+@charset "UTF-8";div {
   vertical-align: middle;
   line-height: 24px;
   font-size: 12px;
@@ -1408,4 +1408,120 @@ button {
   display: flex;
   flex-direction: row;
   gap: 10px;
+}
+.GrobSelect {
+  --optionheight:40px;
+}
+.GrobSelectLabel {
+  display: flex;
+  justify-content: space-around;
+  color: white;
+  background-color: var(--background-modifier-form-field);
+}
+.GrobSelectLabel::after {
+  background-color: white;
+}
+.GrobSelectLabel[data-isDisabled=true] {
+  color: rgb(133, 133, 133);
+  background-color: black;
+}
+.GrobSelectLabel[data-isDisabled=true]::after {
+  background-color: rgb(133, 133, 133);
+}
+.GrobSelectLabel[data-isError=true] {
+  background-color: var(--color-red);
+}
+.GrobSelectLabel[data-selected=true]:not([data-isError=true]) {
+  background-color: var(--interactive-accent);
+}
+.GrobSelectLabel {
+  cursor: pointer;
+  height: var(--optionheight);
+  padding-left: 5px;
+  padding-right: 5px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.GrobSelectLabel > *:nth-child(1) {
+  margin: 0;
+  height: 100%;
+  display: block;
+}
+.GrobSelectLabel::after {
+  height: 4px;
+  width: 8px;
+  clip-path: polygon(100% 100%, 50% 0%, 0% 100%);
+  content: " ";
+  transform-origin: center center;
+  transition: transform 0.5s ease;
+}
+.GrobSelectLabel:focus::after {
+  transform: scale(-1);
+}
+.GrobSelectOptionsWrapper {
+  left: 0;
+  right: 0;
+  position: absolute;
+  opacity: 0;
+  transform: translateY(-10px);
+}
+.GrobSelectLabel:focus + .GrobSelectOptionsWrapper,
+.GrobSelectLabel[data-isAlwaysOpen=true] + .GrobSelectOptionsWrapper {
+  transform: translateY(0px);
+  opacity: 1;
+}
+.GrobSelectOptionsInnerWrapper .Arrow {
+  left: 50%;
+  position: relative;
+  width: 20px;
+  height: 10px;
+  clip-path: polygon(100% 100%, 50% 0%, 0% 100%);
+  background-color: white;
+  margin-bottom: -1px;
+}
+.GrobSelectOptionsInnerWrapper .Blob {
+  background-color: rgba(255, 255, 255, 0.6666666667);
+  border-radius: 4px;
+  overflow-y: scroll;
+  background-color: white;
+  padding: 5px;
+  border-radius: 4px;
+}
+.GrobSelectOptionsInnerWrapper .Blob::-webkit-scrollbar {
+  width: 10px;
+  margin-left: -10px;
+}
+.GrobSelectOptionsInnerWrapper .Blob::-webkit-scrollbar-thumb {
+  height: 20px;
+  width: 10px;
+  background: var(--interactive-accent);
+}
+.GrobSelectOptionsInnerWrapper .Blob::-webkit-scrollbar-thumb:hover {
+  background: var(--color-green);
+}
+.GrobSelectOption {
+  height: var(--optionheight);
+  color: black;
+  padding-top: calc(var(--optionheight) / 4);
+  text-align: center;
+  border-bottom: 1px dashed lightgray;
+  cursor: pointer;
+}
+.GrobSelectOption:hover {
+  background-color: var(--interactive-accent);
+}
+.GrobSelectOptionsWrapper {
+  display: grid;
+  grid-template-columns: 1fr;
+  grid-template-rows: 0fr;
+  transition: 0.5s ease;
+}
+.GrobSelectOptionsWrapper > div {
+  overflow: hidden;
+  grid-column: 1;
+  grid-row: 1;
+}
+.GrobSelectLabel:focus + .GrobSelectOptionsWrapper {
+  grid-template-rows: 1fr;
 }.AppMainMenu.svelte-1ul43qu{display:grid;grid-template-columns:60px 60px 60px}
