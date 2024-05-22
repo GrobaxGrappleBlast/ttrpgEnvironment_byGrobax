@@ -1,12 +1,14 @@
 <script lang="ts">
 	import OriginEditor from './views/OriginEditor.svelte';
-    import { GrobDerivedNode } from "../../../../Designer";
+    import { GrobDerivedNode, TTRPGSystem } from "../../../../Designer";
     import StaticMessageHandler from "../BaseComponents/Messages/StaticMessageHandler.svelte";
 	import './ItemDesigner.scss'
     import { createEventDispatcher } from "svelte";
     import type { Writable } from 'svelte/store';
 
 	export let node : Writable<GrobDerivedNode|null>;
+	export let system : Writable<TTRPGSystem|null> ;
+
 	let messageHandler: StaticMessageHandler;
 	let valid : boolean = true;
 	let dispatch = createEventDispatcher();
@@ -99,44 +101,12 @@
 
 	</div>
 	<div>
-		<p>Origins</p>
-		<div class="FourColumnData" >
-			
-			<!-- Calculation text -->
-			<div>Calc text</div>
-			<input 
-				type="text" 
-				class="ItemDesignerInput" 
-				on:input={ ( e ) => { validateInputChange(e,null) } }
-				contenteditable bind:value={name}
+		{#if $node && $system}
+			<OriginEditor 
+				node={$node}
+				system={$system}
 			/>
-			<div>result</div>
-			<div>4</div>
-
-			<!-- Calculation text -->
-			<div>Calc text</div>
-			<input 
-				type="text" 
-				class="ItemDesignerInput" 
-				on:input={ ( e ) => { validateInputChange(e,null) } }
-				contenteditable bind:value={name}
-			/>
-			<div>result</div>
-			<div>4</div>
-			
-		</div>
-		<div>
-			{#if $node != null }
-				{#each $node.origins as orig} 
-						{#if orig.origin != null }
-							<OriginEditor />
-						{:else}
-							<div> unspecified </div>
-						{/if} 
-				{/each}
-				<button>add</button>
-			{/if}
-		</div>
+		{/if}
 	</div>
 
 	<div class="ItemDesignerButtonRow">

@@ -467,6 +467,7 @@
 								noteUpdate();
 							}}
 							node = { selectedDerivedNode }
+							system = { designer }
 						/>
 					</div>
 				{/if}
