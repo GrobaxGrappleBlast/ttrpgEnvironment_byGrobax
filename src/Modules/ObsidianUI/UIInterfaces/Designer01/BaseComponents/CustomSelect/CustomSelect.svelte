@@ -1,11 +1,12 @@
 <script lang="ts">
 	import { fade } from 'svelte/transition';
 	import { flip } from 'svelte/animate';
-    import { onMount } from "svelte";
+    import { createEventDispatcher, onMount } from "svelte";
     import { slidefade } from '../../Transitions/SlideFly';
 	import './CustomSelect.scss'
     import { slide } from 'svelte/transition';
 
+	let dispatch = createEventDispatcher();
 	export let options	: string[];
 	export let onSelect : ( v : string | null ) => any = (v) => null ;
 	export let selected : string | null = null ;
@@ -34,18 +35,21 @@
 		isFocussed = true;
 	}
 	function onblur(){
-		isFocussed = false
+		setTimeout( () => {
+			isFocussed = false
+		}, 200) 
 	}
 
-	function clickOption( option ){
-		
-		debugger;
-
-		if(selected == option){
-			return;
+	function clickOption( event ){
+		 
+		let value = event.target.getAttribute('data-value');
+		if (selected == value){
+			selected = null;
+			dispatch('onDeselect')
+		} else {
+			selected = value;
+			dispatch('onSelect',selected)
 		}
-		
-		selected = option;
 		
 	}
 
@@ -60,7 +64,7 @@
 			data-selected	={selected	?? false} 
 			tabindex="-1"  
 			on:focus={onFocus}
-			on:blur={onblur}
+			on:blur={ onblur }
 		>
 			{ selected == null ? unSelectedplaceholder : selected }
 		
@@ -81,7 +85,7 @@
 			>
 				<div class="Arrow" ></div>	
 				{#each options as opt (opt)}
-					<div  class="GrobSelectOption" data-selected={selected == opt} on:click={ () => clickOption(opt) } >
+					<div  class="GrobSelectOption" data-selected={selected == opt} data-value={opt} on:click={ clickOption } on:keydown={clickOption}>
 						{opt}
 					</div>
 				{/each}

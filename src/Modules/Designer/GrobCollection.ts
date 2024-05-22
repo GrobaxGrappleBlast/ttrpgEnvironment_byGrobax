@@ -12,7 +12,6 @@ export class GrobCollection<T extends GrobNodeType> extends AGraphItem implement
 		super(name, 'C')
 	} 
 	
-	@JsonMappingRecordInArrayOut({KeyPropertyName:'getName',name:'data'})
 	nodes_names: Record<string, T> = {}
 	parent: IGrobGroup<T>; 
 

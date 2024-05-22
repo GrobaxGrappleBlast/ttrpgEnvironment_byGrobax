@@ -11,7 +11,6 @@ export class GrobGroup<T extends GrobNodeType> extends AGraphItem implements IGr
 		super(name,'G' ) 
 	}
     
-	@JsonMappingRecordInArrayOut({KeyPropertyName:'getName', type :GrobCollection<GrobNodeType> })
 	collections_names: Record<string, GrobCollection<T>> = {};
 	 
 	public getCollectionsNames(){

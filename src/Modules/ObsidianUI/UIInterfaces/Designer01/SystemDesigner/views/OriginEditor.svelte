@@ -28,6 +28,11 @@
 		<div class="derivedCalcStatementResult" data-succes={resultSucces} >{result}</div>
 	</div>
 	<div class="derivedOriginRowsContainer">
-		<OriginRow />
+		
+		<OriginRow 
+			node ={ node }
+			system = { system }
+			deleteAllowed = {true}
+		/>
 	</div>
 </div>

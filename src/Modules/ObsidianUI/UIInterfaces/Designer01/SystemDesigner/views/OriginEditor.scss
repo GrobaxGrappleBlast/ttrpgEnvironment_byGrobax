@@ -39,7 +39,7 @@
 .derivedOriginRow {
 	height:40px;
 	display:grid;
-	grid-template-columns: 50px 1fr 1fr 1fr;
+	grid-template-columns: 50px 1fr 1fr 1fr 50px;
 	&>input, &> div {
 		border:none;
 		border-radius: 0;
@@ -54,4 +54,17 @@
 		color:white;
 		font-weight: bold;
 	}
+}
+
+.derivedOriginRowInteractionField{
+	display: flex;
+	justify-content: center;
+    align-items: center;
+	&[data-color="verbose"]{
+		background-color: $color_error ;
+		cursor: pointer;
+	}
+	 
+	background-color: $backgroundInput ;
+	
 }
