@@ -60,7 +60,8 @@
 	display: flex;
 	justify-content: center;
     align-items: center;
-	&[data-color="verbose"]{
+
+	&[data-color="error"]{
 		background-color: $color_error ;
 		cursor: pointer;
 	}

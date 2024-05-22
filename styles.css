@@ -1458,7 +1458,7 @@ button {
   align-items: center;
   background-color: var(--background-modifier-form-field);
 }
-.derivedOriginRowInteractionField[data-color=verbose] {
+.derivedOriginRowInteractionField[data-color=error] {
   background-color: var(--background-modifier-error);
   cursor: pointer;
 }.GrobSelectLabel {
