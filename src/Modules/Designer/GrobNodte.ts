@@ -361,7 +361,7 @@ export class GrobDerivedNode extends GrobNode<GrobDerivedNode> {
 	 * Parses calculation To a Number of Origins.
 	 * @returns  
 	 */
-	public parseCalculationToOrigins( calc:string ) :  {symbolsToRem:string[] , symbolsToAdd:string[] } | null { 
+	public parseCalculationToOrigins( calc:string ) :  {symbolsToRem:string[] , symbolsToAdd:string[] , totalSymbols: string[] } | null { 
 		
 		const calcValue = calc; 
 
@@ -377,7 +377,7 @@ export class GrobDerivedNode extends GrobNode<GrobDerivedNode> {
 		let symbolsToAdd = symbols.filter( p => !existingKeysArray.includes(p) )
 		let symbolsToRem = existingKeysArray.filter( p => !symbols.includes(p) );
 		 
-		return {symbolsToRem:symbolsToRem , symbolsToAdd:symbolsToAdd } ;
+		return {symbolsToRem:symbolsToRem , symbolsToAdd:symbolsToAdd , totalSymbols: symbols} ;
 	}
 	
 

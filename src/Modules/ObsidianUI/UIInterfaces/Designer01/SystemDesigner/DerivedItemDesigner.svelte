@@ -5,42 +5,33 @@
 	import './ItemDesigner.scss'
     import { createEventDispatcher } from "svelte";
     import type { Writable } from 'svelte/store';
+    import { FileContext } from '../../../../../../src/Modules/ObsidianUICore/fileContext';
+	import { Mutex } from "async-mutex";
 
 	export let node : Writable<GrobDerivedNode|null>;
 	export let system : Writable<TTRPGSystem|null> ;
 
 	let messageHandler: StaticMessageHandler;
+	let originEditor : OriginEditor;
 	let valid : boolean = true;
 	let dispatch = createEventDispatcher();
+	let mutex:Mutex = new Mutex();
 
-	let name =  $node?.getName()	?? 'name';
-	let value = $node?.getValue();
+	let name =  $node?.getName()	?? 'name'; 
 	let flash = false;	
 	node.subscribe(p => {
 		name =  $node?.getName() ?? 'name';
-		value = $node?.getValue() ;
-		
+		 
 		// flash as update
 		flash = true;
 		setTimeout( () => { flash = false} , 200)
 		
 	})
-	function validateItem( _name : string , _value : string | number ){
+	function validateItem( _name : string ){
 
 		let isValid = true ;
 	
-		if ( !_value ){
-			isValid = false;
-			messageHandler.addMessageManual('1','No standard value found', 'error')
-		}
-		else if (   isNaN( parseFloat( _value + "" ) ) ){
-			isValid = false;
-			messageHandler.addMessageManual('1','Standard value was not a numeric value', 'error')
-		} else {
-			messageHandler.removeError('1');
-		}
-
-
+	 
 		// check the name
 		if (_name.contains('.')){
 			isValid = false;
@@ -57,20 +48,40 @@
 	}
 	function validateInputChange ( nameEvent : any , valueEvent : any ){
 		if(nameEvent){
-			validateItem(nameEvent.target.value, value ?? "")
+			validateItem(nameEvent.target.value)
 		}else{
-			validateItem(name,valueEvent.target.value)
+			validateItem(name )
 		}
 	}
-	function save(){
-		validateItem(name,value ?? "");
+	async function save(){
 
-		if (!valid)
+		let release = await mutex.acquire();
+		messageHandler.removeAllMessages();
+		
+		// validate base item
+		validateItem(name );
+		
+		// validate origins
+		let originRes = originEditor.trySave();
+		let originValid = originRes.errorMessages.length == 0;
+		if( !originValid ){
+			let c = 0;
+			originRes.errorMessages.forEach( msg => {
+				messageHandler.addMessageManual( 'OriginError ' + c++ , msg, 'error' );
+			});
+		}
+
+		// if it is not valid we dont save
+		valid = valid && originValid;
+		if ( valid ){
+			release();
 			return;
+		}
 
-		$node?.setName(name)
-		$node?.setValue(value ?? 0)
+		$node?.setName(name) 
 		dispatch('save', {old:$node?.getName(), new:name});
+
+		release();
 	}
 	
 
@@ -95,14 +106,12 @@
 
 		<div>Node Location</div>
 		<div class="ItemDesignerInput" >{ ($node?.parent?.parent?.name ?? 'unknown collection') + '.' +( $node?.parent?.name ?? 'unknown collection') + '.' + $node?.name}</div>
-
-		<div>Standard Value</div>
-		<input type="number" class="ItemDesignerInput" on:input={ ( e ) => { validateInputChange(null,e) } } contenteditable bind:value={value} />
-
+ 
 	</div>
 	<div>
 		{#if $node && $system}
-			<OriginEditor 
+			<OriginEditor
+				bind:this={originEditor} 
 				node={$node}
 				system={$system}
 			/>
@@ -110,6 +119,6 @@
 	</div>
 
 	<div class="ItemDesignerButtonRow">
-		<button on:click={ save } disabled={!valid} >save changes</button> 
+		<button on:click={ save }  >save changes</button> 
 	</div>
 </div>

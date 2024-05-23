@@ -2,12 +2,12 @@
 
 	import CustomSelect from "../../BaseComponents/CustomSelect/CustomSelect.svelte";
 	import './OriginEditor.scss';
-	import { GrobDerivedNode, TTRPGSystem, GrobFixedNode, GrobDerivedOrigin} from "../../../../../../../src/Modules/Designer";
-	import Trash from '../../BaseComponents/buttons/Trash.svelte'
-	import Edit from '../../BaseComponents/buttons/Edit.svelte'
-    import { createEventDispatcher, onMount } from "svelte";
+	import { GrobDerivedNode, TTRPGSystem, GrobFixedNode, GrobDerivedOrigin } from "../../../../../../../src/Modules/Designer";
+	import Trash from '../../BaseComponents/buttons/Trash.svelte' 
+    import { createEventDispatcher, onMount } from "svelte"; 
+    import { type GrobNodeType } from "../../../../../../../src/Modules/Designer";
 	
-	export let node :GrobDerivedNode;
+	export let origin : GrobNodeType | null = null ;
 	export let system:TTRPGSystem;
 	export let inCalc : boolean = false;
 	export let symbol : string;
@@ -15,15 +15,11 @@
 
 	let dispatch = createEventDispatcher();
 
-	export let origin : GrobDerivedOrigin | null = null ;
 	onMount(()=>{
+		
 		if (origin){
 			let segments : string[] = [];
-			if (origin.origin){
-				segments = origin.origin.getLocationKeySegments();
-			}else{
-				segments = origin.originKey.split('.');
-			}
+			segments = origin.getLocationKeySegments();
  
 			selectedLevel_0 = segments[0];
 			selectedLevel_1 = segments[1];
@@ -67,6 +63,7 @@
 			case 2:
 				//@ts-ignore
 				let targetNode = system.getNode(selectedLevel_0,selectedLevel_1,value);
+				origin =targetNode;
 				dispatch('foundTargetNode',targetNode);
 				break;
 		}
@@ -101,12 +98,16 @@
 		dispatch('onDelete',symbol)
 	}
 
+	function onChangeSymbol( s ){
+		dispatch('onSymbolSelected',{old:symbol, new:s })
+	}
+
 </script>
 <div class="derivedOriginRow" >
 	{#if availableSymbols.length == 0}
 		<div class="derivedOriginRowInteractionField" >{symbol}</div>
 	{:else}
-		<CustomSelect selected={symbol} options={ [...availableSymbols, symbol] }	on:onSelect={(e) => console.log(e.detail ?? 'hej')} />
+		<CustomSelect selected={symbol} options={ [...availableSymbols, symbol] }	on:onSelect={(e) => {onChangeSymbol(e.detail)}} />
 	{/if} 
 
 

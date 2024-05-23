@@ -1434,23 +1434,31 @@ button {
 .derivedOriginRowsContainer {
   padding-top: 5px;
 }
-.derivedOriginRow {
+.derivedOriginRowContainer {
+  height: 40px;
+}
+.derivedOriginRow, .derivedOriginAddARow {
   height: 40px;
   display: grid;
   grid-template-columns: 50px 1fr 1fr 1fr 50px;
 }
-.derivedOriginRow > input, .derivedOriginRow > div {
+.derivedOriginRow > input, .derivedOriginAddARow > input, .derivedOriginRow > div, .derivedOriginAddARow > div {
   border: none;
   border-radius: 0;
 }
-.derivedOriginRow > .GrobSelect {
+.derivedOriginRow > .GrobSelect, .derivedOriginAddARow > .GrobSelect {
   height: 40px;
 }
-.derivedOriginRow > input {
+.derivedOriginRow > input, .derivedOriginAddARow > input {
   height: inherit;
   font-size: 12px;
   color: white;
   font-weight: bold;
+}
+.derivedOriginAddARow > div {
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 .derivedOriginRowInteractionField {
   display: flex;

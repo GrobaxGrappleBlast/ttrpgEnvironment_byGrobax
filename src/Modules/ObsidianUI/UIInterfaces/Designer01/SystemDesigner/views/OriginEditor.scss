@@ -36,6 +36,10 @@
 .derivedOriginRowsContainer{
 	padding-top:5px;
 }
+
+.derivedOriginRowContainer{
+	height:40px;
+}
 .derivedOriginRow {
 	height:40px;
 	display:grid;
@@ -55,6 +59,16 @@
 		font-weight: bold;
 	}
 }
+.derivedOriginAddARow{
+	@extend .derivedOriginRow;
+	& > div{
+		display:flex;
+		justify-content: center;
+		align-items: center;
+	}
+}
+
+
 
 .derivedOriginRowInteractionField{
 	display: flex;
