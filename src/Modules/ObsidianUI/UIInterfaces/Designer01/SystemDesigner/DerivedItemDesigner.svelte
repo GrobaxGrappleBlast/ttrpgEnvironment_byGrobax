@@ -79,13 +79,22 @@
 		}
 
 		$node?.setName(name) 
+		let dependencies = originEditor.getOriginsInCalc();
+		Object.entries(dependencies).forEach( dep => {
+		
+			debugger
+		
+		
+		//	if( dep[1] )
+		//		($node as GrobDerivedNode).setOrigin( dep[0] , dep[1] , 0 )
+		});
+
 		dispatch('save', {old:$node?.getName(), new:name});
 
 		release();
 	}
 	
-
-
+ 
 </script>
 <div class="GrobsInteractiveColoredBorder" data-state={ flash ? 'flash' : valid ? 'good' : 'error' } data-state-text={'hej hans'}>
 	<div>

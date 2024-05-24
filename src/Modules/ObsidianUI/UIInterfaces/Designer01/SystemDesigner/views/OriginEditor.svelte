@@ -15,8 +15,7 @@
 	let resultSucces : boolean | number = NaN ;
 	let calc 	= node.calc;
 	let symbolsInCalc : string[] = [];
-
-	let origins : Writable<Record<string , {obj:GrobNodeType | null, inCalc:boolean} | null   >> = writable({})
+	let origins : Writable<Record<string , {obj:GrobNodeType | null} | null   >> = writable({})
 	let availableSymbols : string [] = []
 	origins.subscribe( d => { 
 		availableSymbols = Object.entries(d)
@@ -28,7 +27,7 @@
 	onMount(()=>{ 
 		origins.update( data => {
 			node.origins.forEach( origin  => {
-				data[origin.symbol] ={ obj: origin.origin , inCalc:node.calc.contains(origin.symbol) };
+				data[origin.symbol] ={ obj: origin.origin };
 			});
 			return data;
 		})
@@ -39,6 +38,9 @@
 		// test if the calculation is valid
 		let calcValue = e.target.value ;
 		testCalcValue(calcValue);
+		if (resultSucces){
+			node.calc = calcValue;
+		}
 	}
 
 	function testCalcValue( calcValue : string ){
@@ -65,14 +67,7 @@
 
 			// add symbols
 			symbolsRes.symbolsToAdd.forEach( symbol => {
-				
-				// if it already exists, re-activate it
-				let orig = data[symbol];
-				if (orig){
-					orig.inCalc = true;
-					return;
-				}
-
+				 
 				// else create a new "temp row"
 				if ( (data[symbol] == undefined) )
 					data[symbol] = null;
@@ -81,9 +76,6 @@
 			// remove symbols
 			symbolsRes.symbolsToAdd.forEach( symbol => {
 				let orig = data[symbol];
-				if (orig){
-					orig.inCalc = false;
-				}
 			}); 
 			return data;
 		})
@@ -97,7 +89,7 @@
 		}
 		
 		origins.update( data => {  
-			data[symbol] = {obj:null, inCalc:true};
+			data[symbol] = {obj:null};
 			return data;
 		})
 
@@ -115,10 +107,6 @@
 				obj.errorMessages.push( symbol + " Origin was missing" )
 				continue;
 			}
-			else if (!orig.inCalc){
-				obj.errorMessages.push( symbol + " Is not in the calculation, please remove it before saving." )
-				continue;
-			} 
 			obj.origins.push( orig.obj );
 		}
 
@@ -127,7 +115,21 @@
 		}
 		return obj;
 	}
- 
+
+	export function getOriginsInCalc(){
+		let obj : any = {};
+		obj.calc = calc;
+		// create a list of only the items in the calculation.
+		let list = {};
+		for ( const key in $origins ){
+			if (calc.contains(key)){
+				list[key] = $origins[key]
+			}
+		}
+
+		return list;
+	}
+
 	const [send, receive] = crossfade({
 		duration: 600,
 		easing: cubicInOut
@@ -166,11 +168,9 @@
 								})
 							
 							}}
-							on:onSymbolSelected ={ (e) => {
-
+							on:onSymbolSelected ={ (e) => { 
 								const s0 = e.detail.old;
-								const s1 = e.detail.new;
-
+								const s1 = e.detail.new; 
 								origins.update(data => {
 									let d =  data[s0]
 									if (calc.contains(s0)){
@@ -178,8 +178,7 @@
 									}else{
 										delete data[s0];
 									}
-									data[s1] = d; 
- 
+									data[s1] = d;  
 									return data;
 								}) 
 							}}
