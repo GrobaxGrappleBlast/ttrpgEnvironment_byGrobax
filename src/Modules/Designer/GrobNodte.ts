@@ -379,6 +379,14 @@ export class GrobDerivedNode extends GrobNode<GrobDerivedNode> {
 		 
 		return {symbolsToRem:symbolsToRem , symbolsToAdd:symbolsToAdd , totalSymbols: symbols} ;
 	}
+	public static staticParseCalculationToOrigins( calc:string ) : string[] { 
+		const calcValue = calc; 
+
+		// get symbols from the calc. and turn it into an array. important, the array is an array of unique keys.
+		let symbols :string[] = calcValue.match( grobDerivedSymbolRegex ) ?? [];
+		symbols = Array.from(new Set(symbols))
+		return symbols;
+	}
 	
 
 	public recalculate( useTempValues = false ){ 
@@ -393,13 +401,10 @@ export class GrobDerivedNode extends GrobNode<GrobDerivedNode> {
 		this._value = res.value;
 		return res.success;
 	}
-	public testCalculate( statement ){
-		const symbols = statement.match( grobDerivedSymbolRegex );  
-		let rec = symbols ? Object.fromEntries( symbols.map( s => [s,1])) : {};
-		let res = this._recalculate(rec,statement); 
-		return res;
-	}
 	private _recalculate(  rec : Record<string,number> = {} , statement ){
+		return GrobDerivedNode.recalculate(rec,statement);
+	}
+	private static recalculate(  rec : Record<string,number> = {} , statement ){
 		
 		const symbols = statement.match( grobDerivedSymbolRegex );  
 		//let rec = 
@@ -431,6 +436,27 @@ export class GrobDerivedNode extends GrobNode<GrobDerivedNode> {
 		}  
 		return { success:recalcSuccess, value:value};
 	}
+
+	public testCalculate( statement ){
+		const symbols = statement.match( grobDerivedSymbolRegex );  
+		let rec = symbols ? Object.fromEntries( symbols.map( s => [s,1])) : {};
+		let res = this._recalculate(rec,statement); 
+		return res;
+	}
+	public static testCalculate( statement , symbolsToValue : Record<string,number> = {}){
+		const symbols = statement.match( grobDerivedSymbolRegex );  
+		function mapValueToSymbol( s,m ){
+			if (m[s]){
+				return m[s];
+			}
+			return 1;
+		}
+
+		let rec = symbols ? Object.fromEntries( symbols.map( s => [s,mapValueToSymbol(s,symbolsToValue)])) : {};
+		let res = GrobDerivedNode.recalculate(rec,statement); 
+		return res;
+	}
+
 	public update( ){
 
 		if(!this.isValid()){

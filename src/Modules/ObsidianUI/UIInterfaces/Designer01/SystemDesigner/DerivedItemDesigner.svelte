@@ -1,5 +1,5 @@
 <script lang="ts">
-	import OriginEditor from './views/OriginEditor.svelte';
+	import OriginEditor from './views/OriginEditorSimple.svelte';
     import { GrobDerivedNode, TTRPGSystem } from "../../../../Designer";
     import StaticMessageHandler from "../BaseComponents/Messages/StaticMessageHandler.svelte";
 	import './ItemDesigner.scss'
@@ -27,6 +27,9 @@
 		setTimeout( () => { flash = false} , 200)
 		
 	})
+
+
+
 	function validateItem( _name : string ){
 
 		let isValid = true ;
@@ -53,6 +56,8 @@
 			validateItem(name )
 		}
 	}
+
+	/*
 	async function save(){
 
 		let release = await mutex.acquire();
@@ -92,7 +97,9 @@
 		dispatch('save', {old:$node?.getName(), new:name});
 
 		release();
-	}
+	}*/
+
+	async function save(){}
 	
  
 </script>
@@ -121,6 +128,7 @@
 		{#if $node && $system}
 			<OriginEditor
 				bind:this={originEditor} 
+				calc={$node.calc}
 				node={$node}
 				system={$system}
 			/>

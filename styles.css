@@ -1440,7 +1440,7 @@ button {
 .derivedOriginRow, .derivedOriginAddARow {
   height: 40px;
   display: grid;
-  grid-template-columns: 50px 1fr 1fr 1fr 50px;
+  grid-template-columns: 50px 50px 1fr 1fr 1fr 50px;
 }
 .derivedOriginRow > input, .derivedOriginAddARow > input, .derivedOriginRow > div, .derivedOriginAddARow > div {
   border: none;
