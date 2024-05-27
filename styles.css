@@ -1407,7 +1407,6 @@ button {
   height: 30px;
   display: flex;
   flex-direction: row;
-  gap: 10px;
 }.OriginEditor {
   padding-top: 20px;
 }

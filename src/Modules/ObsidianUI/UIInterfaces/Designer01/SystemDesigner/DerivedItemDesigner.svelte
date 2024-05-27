@@ -1,5 +1,5 @@
 <script lang="ts">
-	import OriginEditor from './views/OriginEditorSimple.svelte';
+	import OriginEditor from './views/OriginEditor.svelte';
     import { GrobDerivedNode, TTRPGSystem } from "../../../../Designer";
     import StaticMessageHandler from "../BaseComponents/Messages/StaticMessageHandler.svelte";
 	import './ItemDesigner.scss'
@@ -13,6 +13,7 @@
 
 	let messageHandler: StaticMessageHandler;
 	let originEditor : OriginEditor;
+	let originEditorArray : {msg:string, type:'good'|'error'|'verbose',key:string}[] =[]
 	let valid : boolean = true;
 	let dispatch = createEventDispatcher();
 	let mutex:Mutex = new Mutex();
@@ -27,8 +28,6 @@
 		setTimeout( () => { flash = false} , 200)
 		
 	})
-
-
 
 	function validateItem( _name : string ){
 
@@ -49,6 +48,7 @@
 
 		valid = isValid;
 	}
+
 	function validateInputChange ( nameEvent : any , valueEvent : any ){
 		if(nameEvent){
 			validateItem(nameEvent.target.value)
@@ -57,49 +57,87 @@
 		}
 	}
 
-	/*
-	async function save(){
+	export function TEMP_FROM_ORIGINEDITOR(){ 
+		
+		if (!$node || !$system)
+			return;
+		 
+		try {
 
+			// get data from originEditor.
+			let calc = originEditor.getCurrentCalc();
+			let _mappedOrigins = originEditor.getMappedOririns();
+
+			// validate that all inCalc are finished
+			let stopError = false;
+			_mappedOrigins.forEach( o => {
+				if (o.inCalc && !(o.target)){
+					messageHandler.addMessageManual(o.key, `Cannot save until all dependencies used in the calc is defined \n ${o.key} Had no target` , 'error');
+					stopError = true;
+				}
+			})
+			if (stopError){
+				return false;
+			}
+			
+			//let test = node.parseCalculationToOrigins( calc );
+			let deps = $node.getDependencies();
+			deps.forEach(d => {
+				$node.removeDependency(d);
+			});
+
+			// Set Calc and dependencies 
+			$node.setCalc(calc);
+			let NMap = _mappedOrigins.filter( p => p.inCalc );
+		
+			// first validate all.
+			NMap.forEach( o => {	
+				if (!o.segments){
+					throw new Error(`Contents of ${o.key}'s segments was Null!'`);
+				}
+				
+				let dep = $system.getNode(o.segments[0] as any,o.segments[1] as any ,o.segments[2] as any) ;
+				if (!dep ){
+					throw new Error(`Target of ${o.key} location ${o.segments[0] +'.'+ o.segments[1] +'.'+ o.segments[2] } was invalid!'`);
+				}
+			}); 
+ 
+			// Then Save
+			NMap.forEach( o => {
+				let dep = $system.getNode(o.segments[0] as any,o.segments[1] as any ,o.segments[2] as any) ;
+				if ( dep )
+				$node.setOrigin( o.key , dep , o.testValue ?? 0 );
+			}); 
+
+			_mappedOrigins = NMap;
+		} catch (e)
+		{
+			messageHandler.addMessageManual( 'exception', e , 'error');
+			return false;
+		}
+
+		return true; 
+	}
+ 
+	async function save(){
+		
 		let release = await mutex.acquire();
 		messageHandler.removeAllMessages();
 		
-		// validate base item
-		validateItem(name );
-		
-		// validate origins
-		let originRes = originEditor.trySave();
-		let originValid = originRes.errorMessages.length == 0;
-		if( !originValid ){
-			let c = 0;
-			originRes.errorMessages.forEach( msg => {
-				messageHandler.addMessageManual( 'OriginError ' + c++ , msg, 'error' );
+		let originRes = originEditor.TEMP_FROM_ORIGINEDITOR();
+
+		if (!originRes){
+			originEditorArray.forEach( err => {
+				messageHandler.addMessageManual(err.key,err.msg,err.type);
 			});
+		}else{
+			messageHandler.addMessageManual('succes','Saved Node', 'good');
 		}
 
-		// if it is not valid we dont save
-		valid = valid && originValid;
-		if ( valid ){
-			release();
-			return;
-		}
-
-		$node?.setName(name) 
-		let dependencies = originEditor.getOriginsInCalc();
-		Object.entries(dependencies).forEach( dep => {
-		
-			debugger
-		
-		
-		//	if( dep[1] )
-		//		($node as GrobDerivedNode).setOrigin( dep[0] , dep[1] , 0 )
-		});
-
-		dispatch('save', {old:$node?.getName(), new:name});
 
 		release();
-	}*/
-
-	async function save(){}
+		
+	}
 	
  
 </script>
@@ -131,10 +169,11 @@
 				calc={$node.calc}
 				node={$node}
 				system={$system}
+				mappedOrigins={$node.origins}
+				bind:errors = {originEditorArray}
 			/>
 		{/if}
-	</div>
-
+	</div> 
 	<div class="ItemDesignerButtonRow">
 		<button on:click={ save }  >save changes</button> 
 	</div>

@@ -70,6 +70,7 @@
 	{#if messagesLength != 0} 
 		<div class="ErrorHandlerSignage" transition:slide|local >
 			{#each entries as [key, obj] (key) } 
+				{@const msgTransformed = obj.msg.replace('\n','<br />')}
 				<div 
 				transition:slide|local
 				animate:flip
@@ -83,7 +84,8 @@
 				on:keydown={ () =>	{ onclick(key)} }
 				on:click={ () =>	{ onclick(key)} }
 				> 
-					<p>{obj.msg}</p>
+					
+					<p>{@html msgTransformed }</p>
 					{#if overrideClickText }
 						<i>{overrideClickText}</i>
 					{/if}
