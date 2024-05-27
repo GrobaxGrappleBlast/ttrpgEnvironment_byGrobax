@@ -10,8 +10,7 @@
 			this.node = node;
 			this.system = system;
 		}
-		 
-
+		  
 		public name : string; 
 		public tempValue : number;
 		public calc: string;
@@ -174,6 +173,8 @@
 				throw err;
 			}
 		}
+
+		public onKeyDelete()
 	}
 
 </script> 
@@ -190,22 +191,48 @@
     import { flip } from 'svelte/animate'; 
 
 	export let node : Writable<GrobDerivedNode|null>;
-	export let system : Writable<TTRPGSystem|null> ;
-
+	export let system : Writable<TTRPGSystem|null>; 
 	let messageHandler: StaticMessageHandler; 
-	let originEditorArray : {msg:string, type:'good'|'error'|'verbose',key:string}[] =[]
-	let valid : boolean = true;
-	let dispatch = createEventDispatcher();
-	let mutex:Mutex = new Mutex();
 
-	let name =  $node?.getName()	?? 'name'; 
+
+	/*
+		let messageHandler: StaticMessageHandler; 
+		let originEditorArray : {msg:string, type:'good'|'error'|'verbose',key:string}[] =[]
+		let valid : boolean = true;
+		let dispatch = createEventDispatcher();
+		let mutex:Mutex = new Mutex();
+
+		let name =  $node?.getName()	?? 'name'; 
+		let flash = false;	
+		type originRowData = {key: string, segments:(string|null)[] , active :boolean , testValue :number, inCalc:boolean, target: GrobNodeType | null };
+		let _mappedOrigins:originRowData[] = []	
+		let calc: string;
+			$: availableSymbols = _mappedOrigins.filter(p => !p.active ).map( p => p.key );
+		let resultValue : any;
+		let resultSuccess:boolean;
+	*/
+
+	let controller : DerivedItemController = new DerivedItemController();
+	$: controller.setControllerDeps($node,$system)
+	$: controller.messageHandler = messageHandler;
+	$: availableSymbols = controller.mappedOrigins.filter(p => !p.active ).map( p => p.key );
 	let flash = false;	
-	type originRowData = {key: string, segments:(string|null)[] , active :boolean , testValue :number, inCalc:boolean, target: GrobNodeType | null };
-	let _mappedOrigins:originRowData[] = []	
-	let calc: string;
-		$: availableSymbols = _mappedOrigins.filter(p => !p.active ).map( p => p.key );
-	let resultValue : any;
-	let resultSuccess:boolean;
+
+	function onNameInput ( event : any  ){  
+		let name = event.target.value;
+	}
+
+	function onValueInput ( event : any  ){  
+		let name = event.target.value;
+	}
+
+	function onOriginInput ( event : any  ){  
+		let name = event.target.value;
+	}
+
+	function onCalcInput ( event : any  ){  
+		let name = event.target.value;
+	}
 
 	node.subscribe(p => {
 
@@ -226,7 +253,7 @@
 		
 		
 	})
-
+	/*
 	function validateItem( _name : string ){
 
 		let isValid = true ;
@@ -421,9 +448,50 @@
 		_mappedOrigins = _mappedOrigins;
 		return 
 	}
+	*/
+
+	function onDelete( e ){
+		const s0 = e.detail;
+		let old : originRowData | undefined = _mappedOrigins.find( p => p.key == s0 );
+		
+		if (!old)
+			return;
+
+		if (!old.active){
+			controller.mappedOrigins.remove(old);
+		} else {
+			if ( old.inCalc ){
+				old.active = false;
+				old.segments = new Array(3).fill(null);
+			}else {
+				_mappedOrigins.remove(old);
+			}
+		}
+		_mappedOrigins = _mappedOrigins;
+	}
+
+	function onSymbolSelected ( e ) {
+		const s0 = e.detail.old;
+		const s1 = e.detail.new; 
+		let t0 : originRowData | undefined = _mappedOrigins.find( p => p.key == s0 );
+		if (!t0)
+			return;
+
+		let t1 : originRowData | undefined = _mappedOrigins.find( p => p.key == s1 );
+		if (!t1)
+			return;
+
+		// we eval if s0 is in the calc. then we need to exchange then delete. 
+		t0.key = s1;
+		t0.inCalc = calc.contains(s1);
+		t1.key = s0;
+		t1.inCalc = calc.contains(s0);
+		_mappedOrigins = _mappedOrigins;
+		return 
+	}
 
 </script>
-<div class="GrobsInteractiveColoredBorder" data-state={ flash ? 'flash' : valid ? 'good' : 'error' } data-state-text={'hej hans'}>
+<div class="GrobsInteractiveColoredBorder" data-state={ flash ? 'flash' : controller.isValid ? 'good' : 'error' } data-state-text={'hej hans'}>
 	<div>
 		<StaticMessageHandler 
 			bind:this={ messageHandler }
@@ -438,8 +506,8 @@
 	<div class="ItemDesigner_TwoColumnData" >
 
 		<div>Node Name</div>
-		<input type="text" class="ItemDesignerInput" on:input={ ( e ) => { validateInputChange(e,null) } }   contenteditable bind:value={name}/>
-
+		<input type="text" class="ItemDesignerInput" on:input={ ( e ) => { onNameInput(e) } } contenteditable bind:value={controller.name}/>
+ 
 		<div>Node Location</div>
 		<div class="ItemDesignerInput" >{ ($node?.parent?.parent?.name ?? 'unknown collection') + '.' +( $node?.parent?.name ?? 'unknown collection') + '.' + $node?.name}</div>
  
@@ -447,21 +515,16 @@
 	<div>
 		{#if $node && $system}
 			<div class="OriginEditor">
-				<div class="derivedCalcStatementRow" data-succes={resultSuccess} >
+				<div class="derivedCalcStatementRow" data-succes={controller.resultSuccess} >
 					<div>Calc</div>
-					<input type="text" bind:value={calc} 
-						on:input={ (e ) => { 
-							//@ts-ignore
-							const value= e.target?.value ;
-							if(value)
-								testCalcValue(value)
-						}}
+					<input type="text" bind:value={controller.calc} 
+						on:input={ (e ) => { onCalcInput(e) }}
 						placeholder="insert calcStatement here"
 					/>
-					<div class="derivedCalcStatementResult" data-succes={resultSuccess} >{resultValue}</div>
+					<div class="derivedCalcStatementResult" data-succes={controller.resultSuccess} >{controller.resultValue}</div>
 				</div>
 				<div class="derivedOriginRowsContainer">
-					{#each _mappedOrigins as origin (origin.key) }
+					{#each controller.mappedOrigins as origin (origin.key) }
 						<div animate:flip transition:slide|local class="derivedOriginRowContainer"> 
 							<OriginRow 
 								bind:rowData 	 = { origin }
