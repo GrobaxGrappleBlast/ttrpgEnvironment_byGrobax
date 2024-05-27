@@ -46,6 +46,10 @@
 	}
 	export function removeError( key : any ){ 
 		messages.update( r => {
+
+			if(!r[key])
+				return r;
+
 			delete r[key]; 
 			return r;
 		}) 

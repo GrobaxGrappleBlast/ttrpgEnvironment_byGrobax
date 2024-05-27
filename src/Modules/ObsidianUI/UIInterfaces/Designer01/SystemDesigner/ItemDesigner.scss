@@ -18,3 +18,47 @@
 	flex-direction: row;
 
 }
+
+
+// DERIVED 
+
+.OriginEditor{
+	padding-top: 20px;
+
+	*[data-succes="true"]{
+		background-color: $color_success;
+	}
+	*[data-succes="false"]{
+		background-color: $color_error;
+	}
+	*[data-succes=NaN]{
+		background-color: $color_verbose;
+	}
+}
+
+.derivedCalcStatementRow{
+	display:grid;
+	grid-template-columns: auto 1fr auto;
+	gap:10px;
+	padding-left:10px;
+	padding-right:10px;
+	border-radius: 5px;;
+
+	& > input {
+		border-radius: 0;
+	}
+}
+
+.derivedCalcStatementResult{
+
+}
+
+
+.derivedOriginRowsContainer{
+	padding-top:5px;
+}
+
+.derivedOriginRowContainer{
+	height:40px;
+}
+ 

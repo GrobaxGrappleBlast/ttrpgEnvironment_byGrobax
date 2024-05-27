@@ -1407,18 +1407,24 @@ button {
   height: 30px;
   display: flex;
   flex-direction: row;
-}.OriginEditor {
+}
+
+.OriginEditor {
   padding-top: 20px;
 }
+
 .OriginEditor *[data-succes=true] {
   background-color: var(--background-modifier-success);
 }
+
 .OriginEditor *[data-succes=false] {
   background-color: var(--background-modifier-error);
 }
+
 .OriginEditor *[data-succes=NaN] {
   background-color: var(--color-blue);
 }
+
 .derivedCalcStatementRow {
   display: grid;
   grid-template-columns: auto 1fr auto;
@@ -1427,47 +1433,17 @@ button {
   padding-right: 10px;
   border-radius: 5px;
 }
+
 .derivedCalcStatementRow > input {
   border-radius: 0;
 }
+
 .derivedOriginRowsContainer {
   padding-top: 5px;
 }
+
 .derivedOriginRowContainer {
   height: 40px;
-}
-.derivedOriginRow, .derivedOriginAddARow {
-  height: 40px;
-  display: grid;
-  grid-template-columns: 50px 50px 1fr 1fr 1fr 50px;
-}
-.derivedOriginRow > input, .derivedOriginAddARow > input, .derivedOriginRow > div, .derivedOriginAddARow > div {
-  border: none;
-  border-radius: 0;
-}
-.derivedOriginRow > .GrobSelect, .derivedOriginAddARow > .GrobSelect {
-  height: 40px;
-}
-.derivedOriginRow > input, .derivedOriginAddARow > input {
-  height: inherit;
-  font-size: 12px;
-  color: white;
-  font-weight: bold;
-}
-.derivedOriginAddARow > div {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
-.derivedOriginRowInteractionField {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  background-color: var(--background-modifier-form-field);
-}
-.derivedOriginRowInteractionField[data-color=error] {
-  background-color: var(--background-modifier-error);
-  cursor: pointer;
 }.GrobSelectLabel {
   height: inherit;
   position: relative;
@@ -1527,4 +1503,36 @@ button {
   height: 8px;
   width: 16px;
   clip-path: polygon(100% 100%, 50% 0%, 0% 100%);
+}.derivedOriginRow, .derivedOriginAddARow {
+  height: 40px;
+  display: grid;
+  grid-template-columns: 50px 50px 1fr 1fr 1fr 50px;
+}
+.derivedOriginRow > input, .derivedOriginAddARow > input, .derivedOriginRow > div, .derivedOriginAddARow > div {
+  border: none;
+  border-radius: 0;
+}
+.derivedOriginRow > .GrobSelect, .derivedOriginAddARow > .GrobSelect {
+  height: 40px;
+}
+.derivedOriginRow > input, .derivedOriginAddARow > input {
+  height: inherit;
+  font-size: 12px;
+  color: white;
+  font-weight: bold;
+}
+.derivedOriginAddARow > div {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.derivedOriginRowInteractionField {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: var(--background-modifier-form-field);
+}
+.derivedOriginRowInteractionField[data-color=error] {
+  background-color: var(--background-modifier-error);
+  cursor: pointer;
 }.AppMainMenu.svelte-1ul43qu{display:grid;grid-template-columns:60px 60px 60px}
