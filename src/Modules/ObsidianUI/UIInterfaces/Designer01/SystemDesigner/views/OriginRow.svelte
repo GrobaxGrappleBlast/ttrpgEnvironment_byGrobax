@@ -119,13 +119,27 @@
 
 
 			<!-- Selects -->
-			<CustomSelect bind:selected={ rowData.segments[0] } options={ options_level0 }		on:onSelect={(e) => onSelect(0,e.detail)} on:onDeselect={()=>onDeselect(0)} />
-			{#key options_level1}
-				<CustomSelect bind:selected={rowData.segments[1]} options={options_level1}		on:onSelect={(e) => onSelect(1,e.detail)} on:onDeselect={()=>onDeselect(0)} disabled={ options_level1.length == 0 }/>
-			{/key}
-			{#key options_level2}
-				<CustomSelect bind:selected={rowData.segments[2]} options={options_level2}		on:onSelect={(e) => onSelect(2,e.detail)} on:onDeselect={()=>onDeselect(0)} disabled={ options_level2.length == 0 }/>
-			{/key}
+			<CustomSelect 
+				bind:selected={rowData.segments[0] }
+				options={ options_level0 }		
+				on:onSelect={(e) => onSelect(0,e.detail)} 
+				on:onDeselect={()=>onDeselect(0)} 
+				/>
+			<CustomSelect 
+				bind:selected={rowData.segments[1]} 
+				options={options_level1}	
+				disabled={!(options_level0)}	
+				on:onSelect={(e) => onSelect(1,e.detail)} 
+				on:onDeselect={()=>onDeselect(0)} 
+			/>
+			<CustomSelect 
+				bind:selected={rowData.segments[2]} 
+				options={options_level2}	
+				disabled={!(options_level1)}	
+				on:onSelect={(e) => onSelect(2,e.detail)}
+				on:onDeselect={()=>onDeselect(0)} 
+			
+			/>
 
 			<!-- Deletes -->
 			<div class="derivedOriginRowInteractionField" data-color={ rowData.inCalc ? 'verbose' : 'error' } on:click={ondelete} on:keydown={ondelete}>
