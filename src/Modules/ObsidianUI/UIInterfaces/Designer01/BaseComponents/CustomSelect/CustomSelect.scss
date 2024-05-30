@@ -28,7 +28,7 @@
 	width: inherit;
 	background-color: #fff;
 	overflow-y: initial;  
-	border-radius:5px;
+	border-radius:2px;
 	
 	&::-webkit-scrollbar{width:10px;margin-left:-10px;}
 	&::-webkit-scrollbar-track {}
@@ -70,3 +70,5 @@
 	width:16px;   
 	clip-path: polygon(100% 100%, 50% 0%, 0% 100%);
 }
+
+ 

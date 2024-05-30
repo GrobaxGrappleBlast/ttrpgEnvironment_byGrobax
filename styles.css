@@ -1467,7 +1467,7 @@ button {
   width: inherit;
   background-color: #fff;
   overflow-y: initial;
-  border-radius: 5px;
+  border-radius: 2px;
 }
 .SelectPopUp::-webkit-scrollbar {
   width: 10px;

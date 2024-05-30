@@ -58,13 +58,14 @@
 	{#key selected}
 		<div 
 			bind:this={label}
-			class="GrobSelectLabel effect"
+			class={"GrobSelectLabel effect"}
 			data-isDisabled	={disabled	?? false}
 			data-isError	={isError	?? false} 
 			data-selected	={selected	?? false} 
 			tabindex="-1"  
 			on:focus={onFocus}
 			on:blur={ onblur }
+			
 		>
 			{ selected == null ? unSelectedplaceholder : selected }
 		

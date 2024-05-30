@@ -3,46 +3,66 @@
 	type originRowData = {key: string, segments:(string|null)[] , active :boolean , testValue :number, inCalc:boolean, target: GrobNodeType | null };
 	export class DerivedItemController{
 		
-		private node:GrobDerivedNode | null	= null ;
-		private system:TTRPGSystem | null	= null ;
+		public node:GrobDerivedNode | null	= null ;
+		public system:TTRPGSystem | null	= null ;
 		public messageHandler: StaticMessageHandler | null;
+
+		public name 		: Writable<string>	= writable(''); 
+		public tempValue	: Writable<number>	= writable(1); 
+		public calc			: Writable<string>	= writable(''); 
+		public resultValue	: Writable<number>	= writable(0); 
+		public resultSuccess: Writable<boolean>	= writable(true); 
+		public isValid		: Writable<boolean>	= writable(true); 
+		public mappedOrigins: Writable<originRowData[]> = writable([]);
+
 		public setControllerDeps( node, system, ){
 			this.node = node;
 			this.system = system;
+
+			this.name 			.set(this.node?.name	?? '')
+			this.calc 			.set(this.node?.calc	?? '')
+			this.tempValue 		.set(0)
+			this.resultSuccess 	.set(true)
+			this.resultValue 	.set(0)
+			this.isValid 		.set(true)
+			
+			let m = this.node?.origins.map( p => {return {key:p.symbol, segments:p.originKey.split('.'), active: get(this.calc).contains(p.symbol), testValue: p.standardValue , inCalc: get(this.calc).contains(p.symbol) , target: p.origin }})
+			this.mappedOrigins.set( m ?? []);
 		}
 		  
-		public name : string; 
-		public tempValue : number;
-		public calc: string;
-		public resultValue : number;
-		public resultSuccess:boolean;
-		public isValid : boolean;
-		public mappedOrigins:originRowData[] = [];
 
-		private validateName( name , node:GrobDerivedNode , messageHandler: StaticMessageHandler | null = null ){
-			
+		private validateName( name , node:GrobDerivedNode , messageHandler: StaticMessageHandler | null = null , output:boolean ){
+			let out = (key,msg,error) => { if(output){ messageHandler?.addMessageManual(key,msg,error) }}
+
 			let isValid = true ; 
 			// check the name
-			if (name.contains('.')){
+			if (name== ''){
 				isValid = false;
-				messageHandler?.addMessageManual('2','The name cannot contain "."', 'error')
+				out('name','The name cannot be empty', 'error')
+			}
+			else if (name.contains('.')){
+				isValid = false;
+				out('name','The name cannot contain "."', 'error')
 			}
 			else if ( node.parent.hasNode( name ) && name != node.getName() ){
 				isValid = false;
-				messageHandler?.addMessageManual('2','The name is already in use, in the same collection', 'error')
+				out('name','The name is already in use, in the same collection', 'error')
 			}else{
-				messageHandler?.removeError('2');
+				messageHandler?.removeError('name');
 			}
 			return isValid;
 		} 
-		private validateOrigins(  mappedOrigins:originRowData[], calc:string ,  system:TTRPGSystem , messageHandler: StaticMessageHandler | null = null    ){
+		private validateOrigins(  mappedOrigins:originRowData[], calc:string ,  system:TTRPGSystem , messageHandler: StaticMessageHandler | null = null , output:boolean    ){
+			let out = (key,msg,error) => { if(output){ messageHandler?.addMessageManual(key,msg,error) }}
 
 			// validate that all inCalc are finished
 			let isValid = true ;  
-			mappedOrigins.forEach( o => {
-				if (o.inCalc && !(o.target)){
-					messageHandler?.addMessageManual(o.key, `Cannot save until all dependencies used in the calc is defined \n ${o.key} Had no target` , 'error');
+			mappedOrigins.forEach( obj => {
+				if (obj.inCalc && !(obj.target)){
+					out(obj.key + "1", `Cannot save until all dependencies used in the calc is defined \n ${obj.key} Had no target` , 'error');
 					isValid = false;
+				}else{
+					messageHandler?.removeError(obj.key + "1");
 				}
 			})
 			if (!isValid){
@@ -55,7 +75,7 @@
 				
 				// check if it has segments
 				if (!o.segments){ 
-					messageHandler?.addMessageManual( o.key, `Contents of ${o.key}'s segments was Null!'`, 'error');
+					out( o.key, `Contents of ${o.key}'s segments was Null!'`, 'error');
 					isValid = false;
 					return;
 				}
@@ -63,435 +83,307 @@
 				// check that it can create the propper target. AKA target exists in the system. not just empty obj-
 				let dep = system.getNode(o.segments[0] as any,o.segments[1] as any ,o.segments[2] as any) ;
 				if (!dep ){
-					messageHandler?.addMessageManual( o.key, `Target of ${o.key} location ${o.segments[0] +'.'+ o.segments[1] +'.'+ o.segments[2] } was invalid!'`, 'error');
+					out( o.key, `Target of ${o.key} location ${o.segments[0] +'.'+ o.segments[1] +'.'+ o.segments[2] } was invalid!'`, 'error');
 					isValid = false;
 					return;
 				}
+
+				messageHandler?.removeError( o.key );
 
 			}); 
 
 			return isValid;
 		}
-		private validateCalculation( calc:string , mappedOrigins:originRowData[] , messageHandler: StaticMessageHandler | null = null  ){
+		private validateCalculation( calc:string , mappedOrigins:originRowData[] , messageHandler: StaticMessageHandler | null = null , output :boolean  ){
+			let out = (key,msg,error) => { if(output){ messageHandler?.addMessageManual(key,msg,error) }}
+
 			// first test the calculation.
 			let o = {};
 			let mappedKeys : string[] = [];
 			mappedOrigins.forEach( p => { o[p.key]= p.testValue ; mappedKeys.push(p.key) } );
 			let calcres = GrobDerivedNode.testCalculate( calc , o );
 			
-			let succes= calcres[0];
-			let value = calcres[1];
+			let succes= calcres.success;
+			let value = calcres.value;
 			
-
+ 
 			// if there is an calc error shown remove it. . Also messagehandler has to be initialized
-			if ( succes ){
-				// message handler is not initialized, when quick openned. so skip this if it isent. 
-				if ( messageHandler && messageHandler.removeError !== undefined ){
-					messageHandler.removeError( 'calc');
-				}	 
-			}else {
-				messageHandler?.addMessageManual( 'calc' , `Calculation is invalid, meaning it could not parse`, 'error' );
-			} 
+			if ( !succes ){ 
+				out( 'calc' , `Calculation is invalid, meaning it could not parse`, 'error' );
+			} else{
+				messageHandler?.removeError('calc');
+			}
 
 
-			this.resultValue = value;
-			this.resultSuccess = succes;
+			this.resultValue 	.set(value);
+			this.resultSuccess 	.set(succes);
 			return succes as boolean;
 		}
-		private validateCalculationOrigins( calc:string , mappedOrigins:originRowData[],  messageHandler: StaticMessageHandler | null = null  ){
+		private validateCalculationOrigins( calc:string , mappedOrigins:originRowData[],  messageHandler: StaticMessageHandler | null = null , output :boolean ){
+			let out = (key,msg,error) => { if(output){ messageHandler?.addMessageManual(key,msg,error) }}
+
 			let symbols = GrobDerivedNode.staticParseCalculationToOrigins(calc);
 			mappedOrigins.forEach( o  => {
 				symbols.remove( o.key ); 
+				messageHandler?.removeError( o.key + 'missing' )
 			});
 
 			let isValid = true;
 			symbols.forEach( s  => {
 				isValid = false;
-				messageHandler?.addMessageManual( s, `symbol ${s} was missing from origins ` , 'error' )
+				out( s + 'missing' , `symbol ${s} was missing from origins ` , 'error' )
 			});
 
 			return isValid;
 		} 
-		private _checkIsValid(){
-		
+		private _checkIsValid(  output = true  ){
 			if(!this.node || !this.system){ 
 				return false;
 			}
 
-
 			let isValid = true;
 
+
 			// Check name is valid 
-			isValid = isValid && this.validateName		( this.name,  this.node , this.messageHandler );
+			isValid = isValid && this.validateName		( get(this.name) ?? '',  this.node , this.messageHandler , output );
 
 			// check that nothing is individually wrong with the origins. 
-			isValid = isValid && this.validateOrigins	( this.mappedOrigins , this.calc , this.system ,  this.messageHandler );
+			isValid = isValid && this.validateOrigins	( get(this.mappedOrigins) , get(this.calc) , this.system ,  this.messageHandler ,output  );
 
 			// Check that all calc origins are present.
-			isValid = isValid && this.validateCalculationOrigins( this.calc , this.mappedOrigins , this.messageHandler  );
+			isValid = isValid && this.validateCalculationOrigins( get(this.calc) , get(this.mappedOrigins) , this.messageHandler ,output );
 
 			// check that calculation can be calculated 
-			isValid = isValid && this.validateCalculation( this.calc , this.mappedOrigins , this.messageHandler );
+			isValid = isValid && this.validateCalculation( get(this.calc ), get(this.mappedOrigins) ,  this.messageHandler ,output );
  
 			return isValid;
 
 		}
-		public checkIsValid(){ 
-			this.isValid = this._checkIsValid(); 
+		public checkIsValid( output = true ){  
+			if (output){
+				this.messageHandler?.removeAllMessages();
+			}
+			let valid = this._checkIsValid( output ); 
+			this.isValid.set( valid ); 
+			return valid;
 		}  
 
 		public saveNodeChanges( ){
+ 
+			let success = this.checkIsValid();
+			if (!success){
+				return false ;
+			}
+
 			
+
 			// if the controller deps arent existing, return false; 
 			if(!this.node || !this.system){ 
 				return false;
 			}
 
 			try{
-				// save Name;
-				this.node.setName(this.name)
 
+				// save Name;
+				this.node.setName(get(this.name))
+				
 				// save Temp Value;
-				this.node.setValue(this.tempValue)
+				//this.node.setValue(get(this.tempValue))
 
 				// save calc
-				this.node.setCalc(this.calc);
-
+				this.node.setCalc(get(this.calc));
+/*
 				// save Origins.  ( in calculation ) 
-				let NMap = this.mappedOrigins.filter( p => p.inCalc ); 
+				let NMap = get(this.mappedOrigins).filter( p => p.inCalc ); 
 				NMap.forEach( o => {
 					// @ts-ignore
 					let dep = this.system.getNode(o.segments[0] as any,o.segments[1] as any ,o.segments[2] as any) ;
 					// @ts-ignore
-					node.setOrigin( o.key , dep , o.testValue ?? 0 );
+					this.node.setOrigin( o.key , dep , o.testValue ?? 0 );
 				}); 
-
-
-			}catch(e){
+				*/
+			} catch (e) {
+				success = false;
 				let err =  new Error('Exception while trying to save Node in UI' );
 				err.stack += e.stack;
 				throw err;
 			}
+
+			// User information
+			if (success){
+				this.messageHandler?.addMessageManual('save','Saved Node', 'good');
+				return true;
+			} else {
+				this.messageHandler?.addMessageManual('save','Exception while trying to save Node in UI', 'error');
+				return false;
+			} 
+			
 		}
 
-		public onKeyDelete()
+		public onKeyExchange( e ){ 
+
+			this.mappedOrigins.update( mappedOrigins => {
+				const s0 = e.detail.old;
+				const s1 = e.detail.new; 
+				let t0 : originRowData | undefined = mappedOrigins.find( p => p.key == s0 );
+				if (!t0)
+					return mappedOrigins;
+
+				let t1 : originRowData | undefined = mappedOrigins.find( p => p.key == s1 );
+				if (!t1)
+					return mappedOrigins;
+
+				// we eval if s0 is in the calc. then we need to exchange then delete. 
+				t0.key = s1;
+				t0.inCalc = get(this.calc).contains(s1);
+				t1.key = s0;
+				t1.inCalc = get(this.calc).contains(s0);
+				return mappedOrigins;
+			})
+			return 
+		}
+		public onKeyDelete( e ){ 
+			this.mappedOrigins.update( mappedOrigins => {
+				const key = e.detail;
+				let old : originRowData | undefined = mappedOrigins.find( p => p.key == key );
+				
+				if (!old)
+					return mappedOrigins;
+
+				if (!old.active || !old.inCalc){
+					mappedOrigins.remove(old);
+				} else {
+					old.active = false;
+					old.segments = new Array(3).fill(null);
+				}
+				return mappedOrigins;
+			})
+		}
+		public recalculateCalcAndOrigins(){ 
+			/// Handle Calculation
+			let o = {}; 
+			get(this.mappedOrigins).forEach( p => { o[p.key]= p.testValue; } );
+			let calc = get(this.calc) ; 
+			let res = GrobDerivedNode.testCalculate( calc , o );
+
+			// save and proccess values 
+			this.resultValue	.set(res.value);
+			this.resultSuccess	.set(res.success);
+
+			/// Handle Add Origins. 
+			// calculate the symbols
+			let symbols = GrobDerivedNode.staticParseCalculationToOrigins( calc );
+  
+			//remove keys that already exists from the array. and leave a pure toAdd list.
+			this.mappedOrigins.update( mappedOrigins =>{
+				mappedOrigins.forEach( d => {
+					let inCalc = symbols.contains(d.key);
+					if ( inCalc ){
+						symbols.remove(d.key);
+					}
+					else {
+						// in case an item is no longer in the calc, mark it as such. 
+						d.inCalc = false;
+					}
+				})
+				
+
+				// for each remaining, add it. 
+				symbols.forEach( s => {
+					mappedOrigins.push({key:s , segments:new Array(3).fill(null) , active:false , testValue: 1, inCalc:true, target : null })
+				})  
+				return mappedOrigins;
+			})
+		}
 	}
 
 </script> 
 <script lang="ts"> 
     import { GrobDerivedNode, TTRPGSystem, type GrobNodeType } from "../../../../Designer";
     import StaticMessageHandler from "../BaseComponents/Messages/StaticMessageHandler.svelte";
-	import './ItemDesigner.scss'
-    import { createEventDispatcher } from "svelte";
-    import type { Writable } from 'svelte/store';
-    import { FileContext } from '../../../../../../src/Modules/ObsidianUICore/fileContext';
-	import { Mutex } from "async-mutex";
+	import './ItemDesigner.scss' 
+    import { writable, type Writable, get } from 'svelte/store'; 
 	import OriginRow from "./views/OriginRow.svelte";
     import { slide } from 'svelte/transition';
     import { flip } from 'svelte/animate'; 
+    import { on } from "events";
+    import { onMount } from "svelte";
 
 	export let node : Writable<GrobDerivedNode|null>;
 	export let system : Writable<TTRPGSystem|null>; 
 	let messageHandler: StaticMessageHandler; 
 
-
-	/*
-		let messageHandler: StaticMessageHandler; 
-		let originEditorArray : {msg:string, type:'good'|'error'|'verbose',key:string}[] =[]
-		let valid : boolean = true;
-		let dispatch = createEventDispatcher();
-		let mutex:Mutex = new Mutex();
-
-		let name =  $node?.getName()	?? 'name'; 
-		let flash = false;	
-		type originRowData = {key: string, segments:(string|null)[] , active :boolean , testValue :number, inCalc:boolean, target: GrobNodeType | null };
-		let _mappedOrigins:originRowData[] = []	
-		let calc: string;
-			$: availableSymbols = _mappedOrigins.filter(p => !p.active ).map( p => p.key );
-		let resultValue : any;
-		let resultSuccess:boolean;
-	*/
-
 	let controller : DerivedItemController = new DerivedItemController();
 	$: controller.setControllerDeps($node,$system)
 	$: controller.messageHandler = messageHandler;
-	$: availableSymbols = controller.mappedOrigins.filter(p => !p.active ).map( p => p.key );
+	$: availableSymbols = get(controller.mappedOrigins).filter(p => !p.active ).map( p => p.key );
 	let flash = false;	
 
+	let controllerMappedOrigin	: Writable<originRowData[]>;
+	let controllerResultValue	: Writable<number>;
+	let controllerResultSucces	: Writable<boolean>;
+	let controllerName			: Writable<string>;
+	let controllerCalc			: Writable<string>;
+	let controllerIsValid		: Writable<boolean>;
+
 	function onNameInput ( event : any  ){  
+		messageHandler?.removeError('save');
 		let name = event.target.value;
+		controller.name.set( name);
+		controller.checkIsValid(false);  
 	}
-
-	function onValueInput ( event : any  ){  
-		let name = event.target.value;
+	function onCalcInput ( event : any  ){
+		let calc = event.target.value; 
+		controller.calc.set( calc);
+		messageHandler?.removeError('save');
+		controller.recalculateCalcAndOrigins();  
+		controller.checkIsValid(false);   
 	}
-
-	function onOriginInput ( event : any  ){  
-		let name = event.target.value;
+	function onDeleteClicked(e){
+		messageHandler?.removeError('save');
+		controller.onKeyDelete(e); 
+		controller.checkIsValid(false);  
 	}
-
-	function onCalcInput ( event : any  ){  
-		let name = event.target.value;
+	function onKeyExchange(e){
+		messageHandler?.removeError('save');
+		controller.onKeyExchange(e); 
+		controller.checkIsValid(false);  
 	}
+	function onSave(){
 
-	node.subscribe(p => {
-
-		// initialize all aditor options
-		name =  $node?.getName() ?? 'name';
-		calc = $node?.calc ?? '';
-		_mappedOrigins = [];
-		$node?.origins.forEach( ( p ) => {
-			let segs = p.originKey?.split('.') ?? null;
-			_mappedOrigins.push( {key:p.symbol , segments:segs ,active:true , testValue: 1, inCalc:true, target: p.origin })
-		}) 
-		_mappedOrigins = _mappedOrigins;
-		testCalcValue(calc);
-
-		// flash as update
-		flash = true;
-		setTimeout( () => { flash = false} , 200)
-		
-		
-	})
-	/*
-	function validateItem( _name : string ){
-
-		let isValid = true ;
-	
-	 
-		// check the name
-		if (_name.contains('.')){
-			isValid = false;
-			messageHandler.addMessageManual('2','The name cannot contain "."', 'error')
-		}
-		else if ( $node?.parent.hasNode( _name ) && name != $node?.getName() ){
-			isValid = false;
-			messageHandler.addMessageManual('2','The name is already in use, in the same collection', 'error')
-		}else{
-			messageHandler.removeError('2');
-		}
-
-		valid = isValid;
-	}
-
-	function validateInputChange ( nameEvent : any , valueEvent : any ){
-		if(nameEvent){
-			validateItem(nameEvent.target.value)
-		}else{
-			validateItem(name )
-		}
-	}
-
-	export function TEMP_FROM_ORIGINEDITOR(){ 
-		
-		if (!$node || !$system)
-			return;
+		messageHandler?.removeError('save');
+		controller.saveNodeChanges(); 
+		controller.checkIsValid(false);   
 		 
-		try { 
+	}
+	node.subscribe(p => {  
 
-			// validate that all inCalc are finished
-			let stopError = false;
-			_mappedOrigins.forEach( o => {
-				if (o.inCalc && !(o.target)){
-					messageHandler.addMessageManual(o.key, `Cannot save until all dependencies used in the calc is defined \n ${o.key} Had no target` , 'error');
-					stopError = true;
-				}
-			})
-			if (stopError){
-				return false;
-			}
-			
-			//let test = node.parseCalculationToOrigins( calc );
-			let deps = $node.getDependencies();
-			deps.forEach(d => {
-				$node.removeDependency(d);
-			});
-
-			// Set Calc and dependencies 
-			$node.setCalc(calc);
-			let NMap = _mappedOrigins.filter( p => p.inCalc );
-		
-			// first validate all.
-			NMap.forEach( o => {	
-				if (!o.segments){
-					throw new Error(`Contents of ${o.key}'s segments was Null!'`);
-				}
-				
-				let dep = $system.getNode(o.segments[0] as any,o.segments[1] as any ,o.segments[2] as any) ;
-				if (!dep ){
-					throw new Error(`Target of ${o.key} location ${o.segments[0] +'.'+ o.segments[1] +'.'+ o.segments[2] } was invalid!'`);
-				}
-			}); 
+		if ( p?._____getKey() == controller.node?._____getKey() )
+			return;
  
-			// Then Save
-			NMap.forEach( o => {
-				let dep = $system.getNode(o.segments[0] as any,o.segments[1] as any ,o.segments[2] as any) ;
-				if ( dep )
-				$node.setOrigin( o.key , dep , o.testValue ?? 0 );
-			}); 
-
-			_mappedOrigins = NMap;
-		} catch (e)
-		{
-			messageHandler.addMessageManual( 'exception', e , 'error');
-			return false;
-		}
-
-		return true; 
-	}
- 
-	async function save(){
+		controller.setControllerDeps( p , $system );
 		
-		let release = await mutex.acquire();
-		messageHandler.removeAllMessages();
-		
-		let originRes = TEMP_FROM_ORIGINEDITOR();
+ 		// flash as update
+		flash = true;
+		setTimeout( () => { flash = false} , 200)  
+	})	
+	onMount(() => { 
+		controller.setControllerDeps( $node , $system );
+		controller.recalculateCalcAndOrigins()
+		controller.checkIsValid(); 
+		controllerMappedOrigin	= controller.mappedOrigins;
+		controllerResultValue	= controller.resultValue;
+		controllerResultSucces	= controller.resultSuccess;
+		controllerName			= controller.name;
+		controllerCalc			= controller.calc;
+		controllerIsValid		= controller.isValid;
 
-		if (!originRes){
-			originEditorArray.forEach( err => {
-				messageHandler.addMessageManual(err.key,err.msg,err.type);
-			});
-		}else{
-			messageHandler.addMessageManual('succes','Saved Node', 'good');
-		}
-
-
-		release();
-		
-	}
-	
-	function testCalcValue( calcValue : string ){
-		
-		// first test the calculation.
-		let o = {};
-		let mappedKeys : string[] = [];
-		_mappedOrigins.forEach( p => { o[p.key]= p.testValue ; mappedKeys.push(p.key) } );
-		let calcres = GrobDerivedNode.testCalculate( calcValue , o );
-	
-		// 	second calculate the symbols
-		let symbData = GrobDerivedNode.staticParseCalculationToOrigins( calc );
-
-		// save and proccess values 
-		resultValue		= calcres.value;
-		resultSuccess	= calcres.success;
-
-		// if there is an calc error shown remove it. . Also messagehandler has to be initialized
-		if ( resultSuccess  ){
-			// message handler is not initialized, when quick openned. so skip this if it isent. 
-			if ( messageHandler && messageHandler.removeError !== undefined ){
-				messageHandler.removeError( 'calc');
-			}	 
-		}
-
-		//Mapp items no longer in the calc for delete ready. And if they arent initialized, just delete them
-		_mappedOrigins.forEach( d => {
-			
-			// set standard value to be overwritten if false
-			d.inCalc=true;
-
-			if (!symbData.contains(d.key) ){
-
-				// set incalc // this updates ui with colors and such
-				d.inCalc = false;
-				
-				// if its deleteable delete it. 
-				if ( !d.active){
-					_mappedOrigins.remove(d);
-				}
-			}
-		})
-		// For items not in the list, add them 
-		symbData.forEach( s => {
-			if ( !mappedKeys.contains(s) ){
-				_mappedOrigins.push({key:s , segments:new Array(3).fill(null) , active:false , testValue: 1, inCalc:true, target : null })
-			}
-		})
-		_mappedOrigins = _mappedOrigins;
-	}	
- 
-	function onDelete( e ){
-		const s0 = e.detail;
-		let old : originRowData | undefined = _mappedOrigins.find( p => p.key == s0 );
-		
-		if (!old)
-			return;
-
-		if (!old.active){
-			_mappedOrigins.remove(old);
-		} else {
-			if ( old.inCalc ){
-				old.active = false;
-				old.segments = new Array(3).fill(null);
-			}else {
-				_mappedOrigins.remove(old);
-			}
-		}
-		_mappedOrigins = _mappedOrigins;
-	}
-
-	function onSymbolSelected ( e ) {
-		const s0 = e.detail.old;
-		const s1 = e.detail.new; 
-		let t0 : originRowData | undefined = _mappedOrigins.find( p => p.key == s0 );
-		if (!t0)
-			return;
-
-		let t1 : originRowData | undefined = _mappedOrigins.find( p => p.key == s1 );
-		if (!t1)
-			return;
-
-		// we eval if s0 is in the calc. then we need to exchange then delete. 
-		t0.key = s1;
-		t0.inCalc = calc.contains(s1);
-		t1.key = s0;
-		t1.inCalc = calc.contains(s0);
-		_mappedOrigins = _mappedOrigins;
-		return 
-	}
-	*/
-
-	function onDelete( e ){
-		const s0 = e.detail;
-		let old : originRowData | undefined = _mappedOrigins.find( p => p.key == s0 );
-		
-		if (!old)
-			return;
-
-		if (!old.active){
-			controller.mappedOrigins.remove(old);
-		} else {
-			if ( old.inCalc ){
-				old.active = false;
-				old.segments = new Array(3).fill(null);
-			}else {
-				_mappedOrigins.remove(old);
-			}
-		}
-		_mappedOrigins = _mappedOrigins;
-	}
-
-	function onSymbolSelected ( e ) {
-		const s0 = e.detail.old;
-		const s1 = e.detail.new; 
-		let t0 : originRowData | undefined = _mappedOrigins.find( p => p.key == s0 );
-		if (!t0)
-			return;
-
-		let t1 : originRowData | undefined = _mappedOrigins.find( p => p.key == s1 );
-		if (!t1)
-			return;
-
-		// we eval if s0 is in the calc. then we need to exchange then delete. 
-		t0.key = s1;
-		t0.inCalc = calc.contains(s1);
-		t1.key = s0;
-		t1.inCalc = calc.contains(s0);
-		_mappedOrigins = _mappedOrigins;
-		return 
-	}
+		debugger
+	})
 
 </script>
-<div class="GrobsInteractiveColoredBorder" data-state={ flash ? 'flash' : controller.isValid ? 'good' : 'error' } data-state-text={'hej hans'}>
+{#key $node?.name}
+<div class="GrobsInteractiveColoredBorder" data-state={ flash ? 'flash' : $controllerIsValid ? 'good' : 'error' } data-state-text={'hej hans'}>
 	<div>
 		<StaticMessageHandler 
 			bind:this={ messageHandler }
@@ -506,40 +398,45 @@
 	<div class="ItemDesigner_TwoColumnData" >
 
 		<div>Node Name</div>
-		<input type="text" class="ItemDesignerInput" on:input={ ( e ) => { onNameInput(e) } } contenteditable bind:value={controller.name}/>
+		<input type="text" class="ItemDesignerInput" on:input={ ( e ) => { onNameInput(e) } } contenteditable bind:value={ $controllerName }/>
  
 		<div>Node Location</div>
-		<div class="ItemDesignerInput" >{ ($node?.parent?.parent?.name ?? 'unknown collection') + '.' +( $node?.parent?.name ?? 'unknown collection') + '.' + $node?.name}</div>
+		<div class="ItemDesignerInput" >{ ($node?.parent?.parent?.name ?? 'unknown collection') + '.' +( $node?.parent?.name ?? 'unknown collection') + '.' + $controllerName }</div>
  
 	</div>
 	<div>
-		{#if $node && $system}
+		{#if $node && $system }
 			<div class="OriginEditor">
-				<div class="derivedCalcStatementRow" data-succes={controller.resultSuccess} >
+				<div class="derivedCalcStatementRow" data-succes={ $controllerResultSucces } >
 					<div>Calc</div>
-					<input type="text" bind:value={controller.calc} 
-						on:input={ (e ) => { onCalcInput(e) }}
+					<input type="text" value={ $controllerCalc } 
+						on:input={ onCalcInput }
 						placeholder="insert calcStatement here"
 					/>
-					<div class="derivedCalcStatementResult" data-succes={controller.resultSuccess} >{controller.resultValue}</div>
+					<div class="derivedCalcStatementResult" data-succes={ $controllerResultSucces } >{ $controllerResultValue }</div>
 				</div>
 				<div class="derivedOriginRowsContainer">
-					{#each controller.mappedOrigins as origin (origin.key) }
+					{#if $controllerMappedOrigin}
+					{#each $controllerMappedOrigin as origin (origin.key) }
 						<div animate:flip transition:slide|local class="derivedOriginRowContainer"> 
 							<OriginRow 
 								bind:rowData 	 = { origin }
 								availableSymbols = { availableSymbols }
 								system 			 = { $system }
-								on:onDelete = {  onDelete }
-								on:onSymbolSelected ={ onSymbolSelected }
+								on:onDelete 		= { onDeleteClicked }
+								on:onSymbolSelected = { onKeyExchange }
+								on:foundTargetNode = { (e) =>{ controller.checkIsValid(false) }}
 							/>   
 						</div>
 					{/each}
+					{/if}
 				</div> 
 			</div>
 		{/if}
 	</div> 
+	<br>
 	<div class="ItemDesignerButtonRow">
-		<button on:click={ save }  >save changes</button> 
+		<button on:click={ onSave }  >save changes</button> 
 	</div>
 </div>
+{/key}
