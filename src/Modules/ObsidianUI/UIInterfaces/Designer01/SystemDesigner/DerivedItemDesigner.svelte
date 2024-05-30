@@ -188,11 +188,11 @@
 				this.node.setName(get(this.name))
 				
 				// save Temp Value;
-				//this.node.setValue(get(this.tempValue))
+				this.node.setValue(get(this.tempValue))
 
 				// save calc
 				this.node.setCalc(get(this.calc));
-/*
+ 
 				// save Origins.  ( in calculation ) 
 				let NMap = get(this.mappedOrigins).filter( p => p.inCalc ); 
 				NMap.forEach( o => {
@@ -200,8 +200,7 @@
 					let dep = this.system.getNode(o.segments[0] as any,o.segments[1] as any ,o.segments[2] as any) ;
 					// @ts-ignore
 					this.node.setOrigin( o.key , dep , o.testValue ?? 0 );
-				}); 
-				*/
+				});  
 			} catch (e) {
 				success = false;
 				let err =  new Error('Exception while trying to save Node in UI' );

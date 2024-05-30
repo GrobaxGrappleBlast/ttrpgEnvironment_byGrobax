@@ -289,6 +289,7 @@ export class GrobDerivedNode extends GrobNode<GrobDerivedNode> {
 
 	}
 	public updateOrigins(){
+		 
 		let originRes	= this.parseCalculationToOrigins(this.calc);
 		if( originRes ) {
 			let symbolsToRem = originRes.symbolsToRem;
@@ -335,13 +336,12 @@ export class GrobDerivedNode extends GrobNode<GrobDerivedNode> {
 		
 		// reset This' Value;
 		this._value = NaN;
-
+		
 		// test if it is calculateable
 		let testCalc	= this.testCalculate(calc);
 		if( testCalc == null || !testCalc.success ){
 			return false;
 		}
-		
 		this.calc = calc;
 
 		// update origins.
@@ -443,7 +443,7 @@ export class GrobDerivedNode extends GrobNode<GrobDerivedNode> {
 		let res = this._recalculate(rec,statement); 
 		return res;
 	}
-	public static testCalculate( statement , symbolsToValue : Record<string,number> = {}){
+	public static testCalculate( statement : string  , symbolsToValue : Record<string,number> = {}){
 		const symbols = statement.match( grobDerivedSymbolRegex );  
 		function mapValueToSymbol( s,m ){
 			if (m[s]){

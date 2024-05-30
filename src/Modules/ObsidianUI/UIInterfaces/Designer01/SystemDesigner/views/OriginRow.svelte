@@ -15,16 +15,16 @@
 
 	let dispatch = createEventDispatcher();
 
-	onMount(()=>{
+	onMount(()=>{  
 		if (origin && rowData.segments ){ 
 			if(!(rowData.segments[0])){
 				return
 			}
-			options_level1 = system.data[rowData.segments[0]].getCollectionsNames();
+			options_level1 = system.data[rowData.segments[0]].getCollectionsNames() ?? [];
 			if(!rowData.segments[1]){
 				return
 			}
-			options_level2 = system.data[rowData.segments[0]].getCollection(rowData.segments[1]).getNodeNames();
+			options_level2 = system.data[rowData.segments[0]].getCollection(rowData.segments[1]).getNodeNames() ?? [] ;
 		}
 	})
 

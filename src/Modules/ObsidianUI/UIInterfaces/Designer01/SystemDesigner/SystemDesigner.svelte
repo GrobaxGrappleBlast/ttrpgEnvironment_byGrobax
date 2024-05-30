@@ -120,9 +120,9 @@
 		let messages : {msg:string, key:string[]}[]= [];
 		valid = $designer.isValid( messages ) ;
 		if (!valid){
-			savingMessageHandler.removeAllMessages();
+			savingMessageHandler?.removeAllMessages();
 			messages.forEach( msg => { 
-				savingMessageHandler.addMessageManual( msg.key , msg.msg, 'error');
+				savingMessageHandler?.addMessageManual( msg.key , msg.msg, 'error');
 			});
 		}
 
