@@ -25,7 +25,7 @@ export abstract class AGraphItem implements IGraphItem{
 		this.name = name; 
 	} 
 
-	public _____getKey(){
+	public getKey(){
 		return this._key
 	}
 }

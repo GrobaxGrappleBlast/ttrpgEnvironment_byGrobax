@@ -357,7 +357,7 @@
 	}
 	node.subscribe(p => {  
 
-		if ( p?._____getKey() == controller.node?._____getKey() )
+		if ( p?.getKey() == controller.node?.getKey() )
 			return;
  
 		controller.setControllerDeps( p , $system );
@@ -376,8 +376,6 @@
 		controllerName			= controller.name;
 		controllerCalc			= controller.calc;
 		controllerIsValid		= controller.isValid;
-
-		debugger
 	})
 
 </script>

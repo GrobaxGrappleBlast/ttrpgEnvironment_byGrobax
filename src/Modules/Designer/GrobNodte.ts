@@ -46,7 +46,7 @@ export abstract class GrobNode<T extends GrobNode<T>> extends AGraphItem{
 	}
 
 	public addDependent(node: GrobNodeType ) : boolean {
-		const key = node._____getKey();
+		const key = node.getKey();
 
 		if(this.dependents[key]){
 			return false;
@@ -56,8 +56,8 @@ export abstract class GrobNode<T extends GrobNode<T>> extends AGraphItem{
 		return true;
 	} 
 	public removeDependent(node:GrobNodeType) : boolean{
-		delete this.dependents[node._____getKey()];
-		return this.dependents[node._____getKey()] == null;
+		delete this.dependents[node.getKey()];
+		return this.dependents[node.getKey()] == null;
 	}
 	public getDependents(): GrobNodeType[] {
 		//@ts-ignore
@@ -194,7 +194,7 @@ export class GrobDerivedNode extends GrobNode<GrobDerivedNode> {
 	}
 
 	public addDependency(node:GrobNodeType){
-		const key = node._____getKey()
+		const key = node.getKey()
 		this.dependencies[key] = node; 
 
 		node.addDependent(this);
@@ -203,7 +203,7 @@ export class GrobDerivedNode extends GrobNode<GrobDerivedNode> {
 	public removeDependency(node:GrobNodeType){
 		 
 		// delete the dependency
-		const key = node._____getKey()
+		const key = node.getKey()
 		if(this.dependencies[key]){
 			delete this.dependencies[key];
 			node.removeDependent(this);
@@ -213,7 +213,7 @@ export class GrobDerivedNode extends GrobNode<GrobDerivedNode> {
 		// we find the origin, with the key value, and remove it.
 		for (let i = 0; i < this.origins.length; i++) {
 			const orig = this.origins[i];
-			if(orig.origin != null && orig.origin._____getKey() == key){
+			if(orig.origin != null && orig.origin.getKey() == key){
 				orig.origin = null;
 			}
 		}  
@@ -222,8 +222,8 @@ export class GrobDerivedNode extends GrobNode<GrobDerivedNode> {
 	}
 	public nullifyDependency(node:GrobNodeType){
 		// first Empty the origin.
-		let key = node._____getKey();
-		let orig = this.origins.find( p => p.origin?._____getKey() == key );
+		let key = node.getKey();
+		let orig = this.origins.find( p => p.origin?.getKey() == key );
 		if(orig){
 			orig.origin = null;	
 			orig.originKey = GrobDerivedOrigin.UnkownLocationKey;

@@ -93,7 +93,6 @@ button {
 .GrobsInteractiveColoredBorder {
   border: 1px solid;
   padding: 10px;
-  margin-top: 10px;
   border-radius: 2px;
 }
 
@@ -140,7 +139,7 @@ button {
   padding-left: 15px;
   padding-right: 15px;
   height: 24px;
-  margin-top: -24px;
+  margin-top: -16.8px;
   content: attr(data-state-text);
   background-color: var(--background-primary);
 }
@@ -190,6 +189,10 @@ button {
 
 .lineBreak {
   height: 24px;
+}
+
+.blockBreak {
+  height: 45px;
 }
 
 .SystemDescriptor, .SystemDescriptorCreator {
@@ -325,7 +328,6 @@ button {
 .GrobsInteractiveColoredBorder {
   border: 1px solid;
   padding: 10px;
-  margin-top: 10px;
   border-radius: 2px;
 }
 
@@ -372,7 +374,7 @@ button {
   padding-left: 15px;
   padding-right: 15px;
   height: 24px;
-  margin-top: -24px;
+  margin-top: -16.8px;
   content: attr(data-state-text);
   background-color: var(--background-primary);
 }
@@ -422,6 +424,10 @@ button {
 
 .lineBreak {
   height: 24px;
+}
+
+.blockBreak {
+  height: 45px;
 }
 
 .ErrorHandlerSignage {
@@ -589,7 +595,6 @@ button {
 .GrobsInteractiveColoredBorder {
   border: 1px solid;
   padding: 10px;
-  margin-top: 10px;
   border-radius: 2px;
 }
 
@@ -636,7 +641,7 @@ button {
   padding-left: 15px;
   padding-right: 15px;
   height: 24px;
-  margin-top: -24px;
+  margin-top: -16.8px;
   content: attr(data-state-text);
   background-color: var(--background-primary);
 }
@@ -686,6 +691,10 @@ button {
 
 .lineBreak {
   height: 24px;
+}
+
+.blockBreak {
+  height: 45px;
 }
 
 /*
@@ -800,7 +809,6 @@ button {
 .GrobsInteractiveColoredBorder {
   border: 1px solid;
   padding: 10px;
-  margin-top: 10px;
   border-radius: 2px;
 }
 
@@ -847,7 +855,7 @@ button {
   padding-left: 15px;
   padding-right: 15px;
   height: 24px;
-  margin-top: -24px;
+  margin-top: -16.8px;
   content: attr(data-state-text);
   background-color: var(--background-primary);
 }
@@ -897,6 +905,10 @@ button {
 
 .lineBreak {
   height: 24px;
+}
+
+.blockBreak {
+  height: 45px;
 }
 
 .editableTable {
@@ -1029,7 +1041,6 @@ button {
 .GrobsInteractiveColoredBorder {
   border: 1px solid;
   padding: 10px;
-  margin-top: 10px;
   border-radius: 2px;
 }
 
@@ -1076,7 +1087,7 @@ button {
   padding-left: 15px;
   padding-right: 15px;
   height: 24px;
-  margin-top: -24px;
+  margin-top: -16.8px;
   content: attr(data-state-text);
   background-color: var(--background-primary);
 }
@@ -1126,6 +1137,10 @@ button {
 
 .lineBreak {
   height: 24px;
+}
+
+.blockBreak {
+  height: 45px;
 }.MainMenuButton_icon:not([data-disabled=true])[data-selected=true] {
   background-color: wheat;
   color: black;
@@ -1295,7 +1310,6 @@ button {
 .GrobsInteractiveColoredBorder {
   border: 1px solid;
   padding: 10px;
-  margin-top: 10px;
   border-radius: 2px;
 }
 
@@ -1342,7 +1356,7 @@ button {
   padding-left: 15px;
   padding-right: 15px;
   height: 24px;
-  margin-top: -24px;
+  margin-top: -16.8px;
   content: attr(data-state-text);
   background-color: var(--background-primary);
 }
@@ -1392,6 +1406,10 @@ button {
 
 .lineBreak {
   height: 24px;
+}
+
+.blockBreak {
+  height: 45px;
 }
 
 .ItemDesigner_TwoColumnData {

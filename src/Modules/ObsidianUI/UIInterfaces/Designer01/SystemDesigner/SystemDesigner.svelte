@@ -411,8 +411,10 @@
 					/> 
 				</div>
 			</div>
+			
 			<div class="SystemDesignerListBlock" >
 				{#if $selectedFixedNode}
+					<div class="lineBreak" transition:slide|local ></div>
 					<div transition:slide|local >
 						<FixedItemDesigner 
 							on:save= { (e) => {
@@ -428,6 +430,7 @@
 			</div>
 		</ToogleSection>
 
+		 
 
 		<ToogleSection 
 			title={'Derived Data Collections'}  
@@ -456,23 +459,28 @@
 					/> 
 				</div>
 			</div>
+			 
 			<div class="SystemDesignerListBlock" >
-				{#if $selectedDerivedNode}
+				{#key ($selectedDerivedNode)?.getKey() }
+					<div class="lineBreak" transition:slide|local ></div>
 					<div transition:slide|local >
-						<DerivedItemDesigner 
-							on:save= { (e) => {
-								let _old = e.detail.old;
-								let _new = e.detail.new;
-								let result = $designer.renameCollection('derived',_old,_new);
-								noteUpdate();
-							}}
-							node = { selectedDerivedNode }
-							system = { designer }
-						/>
-					</div>
-				{/if}
+						{#if $selectedDerivedNode} 
+							<DerivedItemDesigner 
+								on:save= { (e) => {
+									let _old = e.detail.old;
+									let _new = e.detail.new;
+									let result = $designer.renameCollection('derived',_old,_new);
+									noteUpdate();
+								}}
+								node = { selectedDerivedNode }
+								system = { designer }
+							/>
+						{/if}
+					</div> 
+				{/key}
 			</div>
 		</ToogleSection>
+		<div class="lineBreak"></div>
 		 
 	{/if}
 	

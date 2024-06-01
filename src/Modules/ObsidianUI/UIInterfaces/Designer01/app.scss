@@ -96,7 +96,6 @@ button{
 .GrobsInteractiveColoredBorder{
     border: 1px solid ;
     padding:10px;
-    margin-top:10px;
     border-radius: 2px;
     
     // state colors 
@@ -138,7 +137,7 @@ button{
             padding-left:15px;
             padding-right: 15px;
             height:$standard_LineHeight;
-            margin-top: -1 * ($standard_LineHeight);
+            margin-top: -0.7 * ($standard_LineHeight);
             content:attr(data-state-text);
             background-color: $backgroundStandard;
         }
@@ -195,4 +194,7 @@ button{
 
 .lineBreak{
     height:$standard_LineHeight;
+}
+.blockBreak{
+    height:$standard_BlockHeight;
 }

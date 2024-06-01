@@ -11,5 +11,5 @@ export interface IGraphItem{
 	
 	setName( name ) : void;
 
-	_____getKey() : string ;
+	getKey() : string ;
 }
