@@ -275,10 +275,12 @@
   
 			//remove keys that already exists from the array. and leave a pure toAdd list.
 			this.mappedOrigins.update( mappedOrigins =>{
+ 
 				mappedOrigins.forEach( d => {
 					let inCalc = symbols.contains(d.key);
 					if ( inCalc ){
 						symbols.remove(d.key);
+						d.inCalc = true;
 					}
 					else {
 						// in case an item is no longer in the calc, mark it as such. 
@@ -334,11 +336,16 @@
 		controller.checkIsValid(false);  
 	}
 	function onCalcInput ( event : any  ){
+
+		
+
 		let calc = event.target.value; 
 		controller.calc.set( calc);
 		messageHandler?.removeError('save');
 		controller.recalculateCalcAndOrigins();  
 		controller.checkIsValid(false);   
+
+		
 	}
 	function onDeleteClicked(e){
 		messageHandler?.removeError('save');
