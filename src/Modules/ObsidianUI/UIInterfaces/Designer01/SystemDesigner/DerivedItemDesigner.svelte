@@ -310,6 +310,8 @@
 
 	export let node : Writable<GrobDerivedNode|null>;
 	export let system : Writable<TTRPGSystem|null>; 
+	export let secondSlideInReady = false;
+
 	let messageHandler: StaticMessageHandler; 
 
 	let controller : DerivedItemController = new DerivedItemController();
@@ -413,19 +415,21 @@
 					<div class="derivedCalcStatementResult" data-succes={ $controllerResultSucces } >{ $controllerResultValue }</div>
 				</div>
 				<div class="derivedOriginRowsContainer">
-					{#if $controllerMappedOrigin}
-					{#each $controllerMappedOrigin as origin (origin.key) }
-						<div animate:flip transition:slide|local class="derivedOriginRowContainer"> 
-							<OriginRow 
-								bind:rowData 	 = { origin }
-								availableSymbols = { availableSymbols }
-								system 			 = { $system }
-								on:onDelete 		= { onDeleteClicked }
-								on:onSymbolSelected = { onKeyExchange }
-								on:foundTargetNode = { (e) =>{ controller.checkIsValid(false) }}
-							/>   
+					{#if $controllerMappedOrigin && secondSlideInReady }
+						<div transition:slide|local >
+							{#each $controllerMappedOrigin as origin (origin.key) }
+								<div animate:flip={{ delay: 20 }} transition:slide|local class="derivedOriginRowContainer"> 
+									<OriginRow 
+										bind:rowData 	 = { origin }
+										availableSymbols = { availableSymbols }
+										system 			 = { $system }
+										on:onDelete 		= { onDeleteClicked }
+										on:onSymbolSelected = { onKeyExchange }
+										on:foundTargetNode = { (e) =>{ controller.checkIsValid(false) }}
+									/>   
+								</div>
+							{/each}
 						</div>
-					{/each}
 					{/if}
 				</div> 
 			</div>

@@ -86,6 +86,9 @@
 	let selectedDerivedCollectionData	: Writable<viewE[]> 	= writable([]);
 	let selectedDerivedNodeName			: string | null 			= null 
 	let selectedDerivedNode				: Writable<GrobDerivedNode|null> = writable(null);
+
+	// UIEventbools
+	let derivedTransitionLevel0Ended = false;
 	
 	designer.subscribe( (d) => { 
 
@@ -463,7 +466,10 @@
 			<div class="SystemDesignerListBlock" >
 				{#key ($selectedDerivedNode)?.getKey() }
 					<div class="lineBreak" transition:slide|local ></div>
-					<div transition:slide|local >
+					<div transition:slide|local  
+						on:introstart={	() => { derivedTransitionLevel0Ended = false;	}} 
+						on:introend={	() => { derivedTransitionLevel0Ended = true;	}} 
+					>
 						{#if $selectedDerivedNode} 
 							<DerivedItemDesigner 
 								on:save= { (e) => {
@@ -474,6 +480,7 @@
 								}}
 								node = { selectedDerivedNode }
 								system = { designer }
+								secondSlideInReady = { derivedTransitionLevel0Ended }
 							/>
 						{/if}
 					</div> 
