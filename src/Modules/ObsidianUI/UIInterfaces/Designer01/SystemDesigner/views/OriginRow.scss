@@ -28,19 +28,23 @@
 		align-items: center;
 	}
 }
+.derivedOriginRow_3span{
+	grid-column: span 3;
+}
 
 
-
-.derivedOriginRowInteractionField{
+.derivedOriginRowItem{
 	display: flex;
 	justify-content: center;
-    align-items: center;
-
+	align-items: center;
+	cursor: pointer;
+}
+.derivedOriginRowInteractionField{
+	@extend .derivedOriginRowItem;
+	
 	&[data-color="error"]{
 		background-color: $color_error ;
 		cursor: pointer;
 	}
-	 
 	background-color: $backgroundInput ;
-	
 }

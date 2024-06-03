@@ -13,6 +13,7 @@
     export let collection: Writable<string[] | {key?:string, value:string, isSelected?:boolean }[]>; 
 	export let onSelect: ( d: any ) => boolean;
 	export let onAdd:(() => any) | null = null; 
+	export let onSpecialAdd:(() => any) | null = null;  
 	const dispatch = createEventDispatcher();
 
 	interface IViewElement{
@@ -142,24 +143,45 @@
 					</div>
 				</div>
 			{/each}
-			{#if onAdd != null }
-			<div
-				class="Editable_row Editable_rowPlusButton"
-				data-selected={ false }
-				transition:slide
-				data-can-hover={true}
-				style="display:flex;justify-content: center;"
-				on:click={ () => _onAdd() }
-				on:keyup={ () => _onAdd() }
-			>
-				<div 
-					tabindex="-1"
-					class="Editable_Icon"
-					contenteditable="false" 
-				>  
-					<Image_plus color={'#fff'}/>
-				</div>
-			</div>	
+			{#if onSpecialAdd != null || onAdd != null }
+				{#if onSpecialAdd != null}
+					<div
+						class="Editable_row Editable_rowPlusButton"
+						data-selected={ false }
+						transition:slide
+						data-can-hover={true}
+						style="display:flex;justify-content: center;"
+						on:click={ () => onSpecialAdd() }
+						on:keyup={ () => onSpecialAdd() }
+					>
+						<div 
+							tabindex="-1"
+							class="Editable_Icon"
+							contenteditable="false" 
+						>  
+							<Image_plus color={'yellow'}/>
+						</div>
+					</div>	
+				{/if}
+				{#if onAdd != null }
+					<div
+						class="Editable_row Editable_rowPlusButton"
+						data-selected={ false }
+						transition:slide
+						data-can-hover={true}
+						style="display:flex;justify-content: center;"
+						on:click={ () => _onAdd() }
+						on:keyup={ () => _onAdd() }
+					>
+						<div 
+							tabindex="-1"
+							class="Editable_Icon"
+							contenteditable="false" 
+						>  
+							<Image_plus color={'#fff'}/>
+						</div>
+					</div>	
+				{/if}
 			{/if}
 		 
 	</div>

@@ -44,6 +44,10 @@ export class GrobCollection<T extends GrobNodeType> extends AGraphItem implement
 		return this.nodes_names[name] == null;
 	}
 	public update_node_name(oldName,newName){
+
+		if (oldName == newName)
+			return;
+
 		this.nodes_names[newName] = this.nodes_names[oldName] ;
 		delete this.nodes_names[oldName] ;
 	}

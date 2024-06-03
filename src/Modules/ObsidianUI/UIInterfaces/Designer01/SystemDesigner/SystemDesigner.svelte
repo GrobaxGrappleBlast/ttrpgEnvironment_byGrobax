@@ -26,8 +26,8 @@
 	async function loadNewSystemDesign(){
 		
 		if(!systemPreview){
-			messageHandler.removeAllMessages();
-			messageHandler.addMessageManual('loadingtrouble','Something went wrong, and defined preview was null','error');
+			messageHandler?.removeAllMessages();
+			messageHandler?.addMessageManual('loadingtrouble','Something went wrong, and defined preview was null','error');
 			return;
 		}
 		
@@ -38,9 +38,9 @@
 			designer.set(response.response as TTRPGSystem);
 		}
 
-		messageHandler.removeAllMessages();
+		messageHandler?.removeAllMessages();
 		for(const key in response.messages){
-			messageHandler.addMessage(key,response.messages[key]);
+			messageHandler?.addMessage(key,response.messages[key]);
 		}
 	}
 
@@ -86,6 +86,16 @@
 	let selectedDerivedCollectionData	: Writable<viewE[]> 	= writable([]);
 	let selectedDerivedNodeName			: string | null 			= null 
 	let selectedDerivedNode				: Writable<GrobDerivedNode|null> = writable(null);
+	// UIEventbools
+	let derivedTransitionLevel0Ended = false;
+
+
+
+	// Special Derieved UI
+	let specialDerivedOpened = writable(false);
+	 
+
+	
 	
 	designer.subscribe( (d) => { 
 
@@ -120,9 +130,9 @@
 		let messages : {msg:string, key:string[]}[]= [];
 		valid = $designer.isValid( messages ) ;
 		if (!valid){
-			savingMessageHandler.removeAllMessages();
+			savingMessageHandler?.removeAllMessages();
 			messages.forEach( msg => { 
-				savingMessageHandler.addMessageManual( msg.key , msg.msg, 'error');
+				savingMessageHandler?.addMessageManual( msg.key , msg.msg, 'error');
 			});
 		}
 
@@ -132,7 +142,7 @@
 		const animationTime = 200;
 		let segments = key.split(',');
 		if( segments.length != 3){
-			messageHandler.addMessageManual( 'Error,InKey','Something Went Wrong going to Error','error')
+			messageHandler?.addMessageManual( 'Error,InKey','Something Went Wrong going to Error','error')
 			return;
 		}
 		
@@ -366,7 +376,10 @@
 	}
 
 </script>
+
+
 <div>
+
 	{#if $designer}
 		{#if anyChanges}
 			<div
@@ -411,8 +424,10 @@
 					/> 
 				</div>
 			</div>
+			
 			<div class="SystemDesignerListBlock" >
 				{#if $selectedFixedNode}
+					<div class="lineBreak" transition:slide|local ></div>
 					<div transition:slide|local >
 						<FixedItemDesigner 
 							on:save= { (e) => {
@@ -428,51 +443,80 @@
 			</div>
 		</ToogleSection>
 
-
 		<ToogleSection 
 			title={'Derived Data Collections'}  
 			bind:this={toogleDerivedSection}
 			on:close={ () => { deSelectCollection('derived' )}}
 		>
-			<div class="SystemDesignerBlockSet">
-				<div class="SystemDesignerListBlock" >
-					<EditAbleListWritable 
-						bind:this={ listViewDerived_1 }
-						isEditableContainer={ true }
-						collection		= { derivedCollection}
-						onSelect		= { (e) => { return selectCollection	('derived',e);} }
-						onAdd			= { () => 	 		addNewCollection	('derived')		}
-						on:onDeSelect	= { (e) => { 		deSelectCollection	('derived')}	}
+			{#if $specialDerivedOpened} 
+				<div  transition:slide|local  > 
+					<button on:click={ () =>{ specialDerivedOpened.update(r => !r) } }>X</button>
+					<DerivedItemDesigner 
+						on:save= { (e) => {
+							let _old = e.detail.old;
+							let _new = e.detail.new;
+							let result = $designer.renameCollection('derived',_old,_new);
+							noteUpdate();
+						}}
+						goodTitle = "Collection Creator"
+						badTitle = "Collection Creator : Error"
+						node = { selectedDerivedNode }
+						system = { designer }
+						secondSlideInReady = { derivedTransitionLevel0Ended }
 					/> 
 				</div>
-				<div class="SystemDesignerListBlock" >
-					<EditAbleListWritable 
-						bind:this={ listViewDerived_2 }
-						isEditableContainer={ true }
-						collection		= { selectedDerivedCollectionData }
-						onSelect		= { (e) => { return selectCollectionItem	('derived',selectedDerivedCollectionName ?? '',e)} }
-						onAdd			= { () => {			addNewCollectionItem	('derived',selectedDerivedCollectionName ?? '', 'DerivedItem ')} }
-						on:onDeSelect	= { (e) => { 		deSelectCollectionItem	('derived') } }
-					/> 
-				</div>
-			</div>
-			<div class="SystemDesignerListBlock" >
-				{#if $selectedDerivedNode}
-					<div transition:slide|local >
-						<DerivedItemDesigner 
-							on:save= { (e) => {
-								let _old = e.detail.old;
-								let _new = e.detail.new;
-								let result = $designer.renameCollection('derived',_old,_new);
-								noteUpdate();
-							}}
-							node = { selectedDerivedNode }
-							system = { designer }
-						/>
+			{:else}
+				<div  transition:slide|local >
+					<div class="SystemDesignerBlockSet">
+						<div class="SystemDesignerListBlock" >
+							<EditAbleListWritable 
+								bind:this={ listViewDerived_1 }
+								isEditableContainer={ true }
+								collection		= { derivedCollection}
+								onSelect		= { (e) => { return selectCollection	('derived',e);} }
+								onAdd			= { () =>	 addNewCollection	('derived')		}
+								onSpecialAdd	= { () =>  { specialDerivedOpened.update( (r) => { return !r } ) ; deSelectCollection('derived') }}
+								on:onDeSelect	= { (e) => { deSelectCollection	('derived')}	}
+							/> 
+						</div>
+						<div class="SystemDesignerListBlock" >
+							<EditAbleListWritable 
+								bind:this={ listViewDerived_2 }
+								isEditableContainer={ true }
+								collection		= { selectedDerivedCollectionData }
+								onSelect		= { (e) => { return selectCollectionItem	('derived',selectedDerivedCollectionName ?? '',e)} }
+								onAdd			= { () => {			addNewCollectionItem	('derived',selectedDerivedCollectionName ?? '', 'DerivedItem ')} }
+								on:onDeSelect	= { (e) => { 		deSelectCollectionItem	('derived') } }
+							/> 
+						</div>
+					</div> 
+					<div class="SystemDesignerListBlock" >
+						{#key ($selectedDerivedNode)?.getKey() }
+							<div class="lineBreak" transition:slide|local ></div>
+							<div transition:slide|local  
+								on:introstart={	() => { derivedTransitionLevel0Ended = false;	}} 
+								on:introend={	() => { derivedTransitionLevel0Ended = true;	}} 
+							>
+								{#if $selectedDerivedNode} 
+									<DerivedItemDesigner 
+										on:save= { (e) => {
+											let _old = e.detail.old;
+											let _new = e.detail.new;
+											let result = $designer.renameCollection('derived',_old,_new);
+											noteUpdate();
+										}}
+										node = { selectedDerivedNode }
+										system = { designer }
+										secondSlideInReady = { derivedTransitionLevel0Ended }
+									/>
+								{/if}
+							</div> 
+						{/key}
 					</div>
-				{/if}
-			</div>
+				</div>
+			{/if}
 		</ToogleSection>
+		<div class="lineBreak"></div>
 		 
 	{/if}
 	
