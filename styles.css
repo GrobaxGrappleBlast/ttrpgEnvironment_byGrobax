@@ -195,6 +195,17 @@ button {
   height: 45px;
 }
 
+.grobModal {
+  background-color: var(--background-primary);
+  border-radius: var(--modal-radius);
+  border: var(--modal-border-width) solid var(--modal-border-color);
+  padding: var(--size-4-4);
+  box-shadow: 4px 4px 0px 0px black;
+  width: calc(100% - 2 * var(--size-4-4));
+  position: absolute;
+  z-index: 100;
+}
+
 .SystemDescriptor, .SystemDescriptorCreator {
   display: grid;
   grid-template-columns: 1fr 1fr;
@@ -428,6 +439,17 @@ button {
 
 .blockBreak {
   height: 45px;
+}
+
+.grobModal {
+  background-color: var(--background-primary);
+  border-radius: var(--modal-radius);
+  border: var(--modal-border-width) solid var(--modal-border-color);
+  padding: var(--size-4-4);
+  box-shadow: 4px 4px 0px 0px black;
+  width: calc(100% - 2 * var(--size-4-4));
+  position: absolute;
+  z-index: 100;
 }
 
 .ErrorHandlerSignage {
@@ -697,6 +719,17 @@ button {
   height: 45px;
 }
 
+.grobModal {
+  background-color: var(--background-primary);
+  border-radius: var(--modal-radius);
+  border: var(--modal-border-width) solid var(--modal-border-color);
+  padding: var(--size-4-4);
+  box-shadow: 4px 4px 0px 0px black;
+  width: calc(100% - 2 * var(--size-4-4));
+  position: absolute;
+  z-index: 100;
+}
+
 /*
 .SystemSelectorContainer{
 	display:grid;
@@ -909,6 +942,17 @@ button {
 
 .blockBreak {
   height: 45px;
+}
+
+.grobModal {
+  background-color: var(--background-primary);
+  border-radius: var(--modal-radius);
+  border: var(--modal-border-width) solid var(--modal-border-color);
+  padding: var(--size-4-4);
+  box-shadow: 4px 4px 0px 0px black;
+  width: calc(100% - 2 * var(--size-4-4));
+  position: absolute;
+  z-index: 100;
 }
 
 .editableTable {
@@ -1141,6 +1185,17 @@ button {
 
 .blockBreak {
   height: 45px;
+}
+
+.grobModal {
+  background-color: var(--background-primary);
+  border-radius: var(--modal-radius);
+  border: var(--modal-border-width) solid var(--modal-border-color);
+  padding: var(--size-4-4);
+  box-shadow: 4px 4px 0px 0px black;
+  width: calc(100% - 2 * var(--size-4-4));
+  position: absolute;
+  z-index: 100;
 }.MainMenuButton_icon:not([data-disabled=true])[data-selected=true] {
   background-color: wheat;
   color: black;
@@ -1412,6 +1467,17 @@ button {
   height: 45px;
 }
 
+.grobModal {
+  background-color: var(--background-primary);
+  border-radius: var(--modal-radius);
+  border: var(--modal-border-width) solid var(--modal-border-color);
+  padding: var(--size-4-4);
+  box-shadow: 4px 4px 0px 0px black;
+  width: calc(100% - 2 * var(--size-4-4));
+  position: absolute;
+  z-index: 100;
+}
+
 .ItemDesigner_TwoColumnData {
   display: grid;
   grid-template-columns: 1fr 1fr;
@@ -1544,10 +1610,16 @@ button {
   justify-content: center;
   align-items: center;
 }
-.derivedOriginRowInteractionField {
+.derivedOriginRow_3span {
+  grid-column: span 3;
+}
+.derivedOriginRowItem, .derivedOriginRowInteractionField {
   display: flex;
   justify-content: center;
   align-items: center;
+  cursor: pointer;
+}
+.derivedOriginRowInteractionField {
   background-color: var(--background-modifier-form-field);
 }
 .derivedOriginRowInteractionField[data-color=error] {

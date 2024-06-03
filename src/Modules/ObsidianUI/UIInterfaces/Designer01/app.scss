@@ -198,3 +198,15 @@ button{
 .blockBreak{
     height:$standard_BlockHeight;
 }
+
+.grobModal {
+    
+    background-color: $backgroundStandard;
+    border-radius: var(--modal-radius);
+    border:var(--modal-border-width) solid var(--modal-border-color);
+    padding: var(--size-4-4);
+    box-shadow: 4px 4px 0px 0px black;
+    width: calc(100% - 2*var(--size-4-4));
+    position: absolute; 
+    z-index:100;
+}
