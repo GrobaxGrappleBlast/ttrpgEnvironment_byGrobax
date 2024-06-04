@@ -308,7 +308,7 @@
     import { slide } from 'svelte/transition';
     import { flip } from 'svelte/animate'; 
     import { on } from "events";
-    import { onMount } from "svelte";
+    import { createEventDispatcher , onMount } from "svelte";
 
 	export let node : Writable<GrobDerivedNode|null>;
 	export let system : Writable<TTRPGSystem|null>; 
@@ -317,7 +317,8 @@
 	export let badTitle = "Error"
 
 	let messageHandler: StaticMessageHandler; 
-
+	const dispatch = createEventDispatcher(); 
+	
 	let controller : DerivedItemController = new DerivedItemController();
 	$: controller.setControllerDeps($node,$system)
 	$: controller.messageHandler = messageHandler;
@@ -332,6 +333,9 @@
 	let controllerName			: Writable<string>;
 	let controllerCalc			: Writable<string>;
 	let controllerIsValid		: Writable<boolean>;
+
+	// save original Name
+	let origName : string ; 
 
 	function onNameInput ( event : any  ){  
 		messageHandler?.removeError('save');
@@ -364,8 +368,12 @@
 	function onSave(){
 
 		messageHandler?.removeError('save');
-		controller.saveNodeChanges(); 
-		controller.checkIsValid(false);   
+		if (controller.saveNodeChanges()){
+			const oldName = origName;
+			const newName = get(controller.name); 
+			dispatch('save', { oldName: oldName, newName : newName });
+			origName = newName;
+		}
 		 
 	}
 	node.subscribe(p => {  
@@ -389,6 +397,7 @@
 		controllerName			= controller.name;
 		controllerCalc			= controller.calc;
 		controllerIsValid		= controller.isValid;
+		origName = get(controller.name);
 	})
 
 </script>

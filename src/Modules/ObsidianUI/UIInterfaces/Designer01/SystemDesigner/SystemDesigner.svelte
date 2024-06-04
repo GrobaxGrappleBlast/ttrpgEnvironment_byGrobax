@@ -178,7 +178,7 @@
 	}
 	
 
-	function selectCollection ( type: 'derived' | 'fixed' , collection:string ){
+	function selectCollection ( type: 'derived' | 'fixed' , collection:string  ){
 		
 		// deSelectItem
 		deSelectCollectionItem( type );
@@ -207,7 +207,8 @@
 		let mapped = names.map( p => {
 			return nameToIViewItem(p, p == selectedName ) 
 		} )
-
+		
+		 
 	
 
 		// save as correct collection
@@ -267,7 +268,7 @@
 	}	
 
 
-	function selectCollectionItem	( type: 'derived' | 'fixed' , collection:string, item:string ){
+	function selectCollectionItem	( type: 'derived' | 'fixed' , collection:string, item:string   , noDeselect = false ){
 		
 		if (!designer){
 			return false;
@@ -409,7 +410,7 @@
 						bind:this={ listViewFixed_1 }
 						isEditableContainer={ true }
 						collection		= { fixedCollection}
-						onSelect		= { (e) => { return selectCollection('fixed',e);} }
+						onSelect		= { (e) => { return selectCollection('fixed',e,);} }
 						onAdd			= { () => addNewCollection('fixed') }
 						on:onDeSelect	= { (e) => { deSelectCollection('fixed') } }
 					/> 
@@ -432,12 +433,28 @@
 					<div transition:slide|local >
 						<FixedItemDesigner 
 							on:save= { (e) => {
-								let _old = e.detail.old;
-								let _new = e.detail.new;
-								let result = $designer.renameCollection('fixed',_old,_new);
+								
+								let resp = e.detail;
+								const oldName = resp.oldName;
+								const newName = resp.newName; 
+								  
+								// When saving an item, update the name from the old name to the new in the view. ( purely the view here )
+								selectedFixedCollectionData.update(r => {
+									let curr ;
+									for ( let i = 0 ; i < r.length ; i++){
+										curr = r[i];
+										if (curr.value == oldName){
+											curr.value	= newName;
+											curr.key	= newName;
+											curr.isSelected = true;
+										}
+									}
+									return r;
+								}) 
 								noteUpdate();
 							}}
-							node = { selectedFixedNode }
+							node = { selectedFixedNode } 
+							system = { designer }
 						/>
 					</div>
 				{/if}
@@ -458,9 +475,9 @@
 					<button on:click={ () =>{ specialDerivedOpened.update(r => !r) } }>X</button>
 					<DerivedCollectionDesigner 
 						on:save= { (e) => {
-							let _old = e.detail.old;
-							let _new = e.detail.new;
-							let result = $designer.renameCollection('derived',_old,_new);
+							//let _old = e.detail.old;
+							//let _new = e.detail.new;
+							//let result = $designer.renameCollection('derived',_old,_new);
 							noteUpdate();
 						}}
 						goodTitle = "Collection Creator"
@@ -504,9 +521,24 @@
 								{#if $selectedDerivedNode} 
 									<DerivedItemDesigner 
 										on:save= { (e) => {
-											let _old = e.detail.old;
-											let _new = e.detail.new;
-											let result = $designer.renameCollection('derived',_old,_new);
+											
+											let resp = e.detail;
+											const oldName = resp.oldName;
+											const newName = resp.newName; 
+											
+											// When saving an item, update the name from the old name to the new in the view. ( purely the view here )
+											selectedDerivedCollectionData.update(r => {
+												let curr ;
+												for ( let i = 0 ; i < r.length ; i++){
+													curr = r[i];
+													if (curr.value == oldName){
+														curr.value	= newName;
+														curr.key	= newName;
+														curr.isSelected = true;
+													}
+												}
+												return r;
+											}) 
 											noteUpdate();
 										}}
 										node = { selectedDerivedNode }
