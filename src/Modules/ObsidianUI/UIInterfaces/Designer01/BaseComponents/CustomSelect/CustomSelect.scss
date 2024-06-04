@@ -1,0 +1,74 @@
+ 
+@import '../../../SystemStandards.scss';//'../../../../../style_definitions.scss';
+
+.GrobSelectLabel{
+	height: inherit;
+	position: relative;
+	display: flex;
+	justify-content: space-around;
+	align-items: center;
+	color: white; 
+	background-color: $backgroundInput;
+	
+	&::after{
+		background-color:white;
+	}
+	
+	cursor: pointer;
+	&[disabled="true"]{
+		cursor:default;
+	}
+
+}
+ 
+.SelectPopUp {
+	overflow: initial;
+	position:fixed;
+	z-index: 500;
+	width: inherit;
+	background-color: #fff;
+	overflow-y: initial;  
+	border-radius:2px;
+	
+	&::-webkit-scrollbar{width:10px;margin-left:-10px;}
+	&::-webkit-scrollbar-track {}
+	&::-webkit-scrollbar-thumb {
+		//height:20px;width:10px; background: $blue;
+	}
+	&::-webkit-scrollbar-thumb:hover {background: $green;}
+
+	.GrobSelectOption{
+		color:black;
+		display: flex;
+		padding:$standard_padding	;
+		cursor: pointer;
+		&:hover{
+			background-color: $color_verbose;
+		}
+
+		&[data-selected="true"]{
+			background-color: $color_success;
+			&:hover{
+				background-color: StrippedBackground( $color_success,$color_verbose);
+			}
+		}
+	}
+	.GrobSelectInfo{
+		padding-left: 5px;
+		color:rgb(128, 128, 128);
+	}
+}
+
+.SelectPopUp .Arrow{
+	margin-left:50%;
+	margin-right:50%;
+	margin-top:-7px;
+
+	background-color: white;
+	
+	height: 8px;
+	width:16px;   
+	clip-path: polygon(100% 100%, 50% 0%, 0% 100%);
+}
+
+ 

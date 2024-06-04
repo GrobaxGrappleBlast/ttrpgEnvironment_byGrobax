@@ -1,20 +1,21 @@
 import { AGraphItem } from "./Abstractions/AGraphItem"; 
-import { GrobCollection } from "./GrobCollection";
-import { KeyManager } from "./Abstractions/KeyManager";
-import { GrobDerivedNode, GrobFixedNode, GrobNode } from "./GrobNodte";
+import { GrobCollection } from "./GrobCollection"; 
 import type { GrobNodeType } from "./GraphV2/TTRPGSystemsGraphDependencies"; 
 import { JsonMappingRecordInArrayOut } from "../JSONModules/index";
+import type { IGrobGroup } from "./IGrobGroup";
 
 export type GrobGroupType = GrobGroup<GrobNodeType>;
-export class GrobGroup<T extends GrobNodeType> extends AGraphItem {
+export class GrobGroup<T extends GrobNodeType> extends AGraphItem implements IGrobGroup<T>{
 	 
 	constructor(name? , parent? : any ) { 
 		super(name,'G' ) 
 	}
     
-	@JsonMappingRecordInArrayOut({KeyPropertyName:'getName', type :GrobCollection<GrobNodeType> })
 	collections_names: Record<string, GrobCollection<T>> = {};
 	 
+	public getCollectionsNames(){
+		return Object.keys(this.collections_names);
+	}
 	public hasCollection(name) {
 		return this.collections_names[name] ? true : false;
 	}

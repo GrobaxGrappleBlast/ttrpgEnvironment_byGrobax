@@ -225,12 +225,12 @@ test('Test After Deserialization, that everything is ok!', () => {
 
 						// ensure all origins are precent in the dependencies list.
 						const deplist			= Object.values((node as GrobNodeType).dependencies);
-						const findoriginInDep	= deplist.findIndex(p => p._____getKey() == origin.origin?._____getKey()) ;
+						const findoriginInDep	= deplist.findIndex(p => p.getKey() == origin.origin?.getKey()) ;
 						expect(findoriginInDep != -1 ).toBe(true)
 
 						// ensure that this node exists as a dependent on the target node
 						const deptsList = Object.values((origin.origin  as GrobNodeType).dependents);
-						const findOriginInDepts = deptsList.findIndex( p => p._____getKey() == node._____getKey() );
+						const findOriginInDepts = deptsList.findIndex( p => p.getKey() == node.getKey() );
 						expect(findOriginInDepts != -1 ).toBe(true)
 
 					} catch (e) {

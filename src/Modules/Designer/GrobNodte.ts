@@ -1,7 +1,7 @@
 import { GrobCollection } from "./GrobCollection"; 
 import { AGraphItem } from "./Abstractions/AGraphItem"; 
 import type { GrobNodeType } from "./GraphV2/TTRPGSystemsGraphDependencies"; 
-import { JsonArrayClassTyped, JsonClassTyped, JsonNumber, JsonProperty, JsonString } from "../JSONModules/index";
+import { JsonArrayClassTyped, JsonNumber, JsonString } from "../JSONModules/index";
 
 var grobDerivedSymbolRegex =/@[a-zA-Z]/g;
 
@@ -23,6 +23,7 @@ export class GrobDerivedOrigin {
 	//public setStandardValue(){}
 	//public getOrigin(){}
 	//public setOrigin(){}
+
 }
 
 
@@ -45,7 +46,7 @@ export abstract class GrobNode<T extends GrobNode<T>> extends AGraphItem{
 	}
 
 	public addDependent(node: GrobNodeType ) : boolean {
-		const key = node._____getKey();
+		const key = node.getKey();
 
 		if(this.dependents[key]){
 			return false;
@@ -55,8 +56,8 @@ export abstract class GrobNode<T extends GrobNode<T>> extends AGraphItem{
 		return true;
 	} 
 	public removeDependent(node:GrobNodeType) : boolean{
-		delete this.dependents[node._____getKey()];
-		return this.dependents[node._____getKey()] == null;
+		delete this.dependents[node.getKey()];
+		return this.dependents[node.getKey()] == null;
 	}
 	public getDependents(): GrobNodeType[] {
 		//@ts-ignore
@@ -126,7 +127,9 @@ export abstract class GrobNode<T extends GrobNode<T>> extends AGraphItem{
 
 	public updateDependecysLocation( dependency ){}
 
-
+	public isValid(  ){
+		return true;
+	}
 }
   
 export class GrobFixedNode extends GrobNode<GrobFixedNode>{
@@ -159,6 +162,7 @@ export class GrobFixedNode extends GrobNode<GrobFixedNode>{
 	public addDependency(node:GrobNodeType){ return false } 
 	public removeDependency(node:GrobNodeType){ return false  }
 	public nullifyDependency(node:GrobNodeType){return false}
+	
 }
  
 
@@ -190,7 +194,7 @@ export class GrobDerivedNode extends GrobNode<GrobDerivedNode> {
 	}
 
 	public addDependency(node:GrobNodeType){
-		const key = node._____getKey()
+		const key = node.getKey()
 		this.dependencies[key] = node; 
 
 		node.addDependent(this);
@@ -199,7 +203,7 @@ export class GrobDerivedNode extends GrobNode<GrobDerivedNode> {
 	public removeDependency(node:GrobNodeType){
 		 
 		// delete the dependency
-		const key = node._____getKey()
+		const key = node.getKey()
 		if(this.dependencies[key]){
 			delete this.dependencies[key];
 			node.removeDependent(this);
@@ -209,7 +213,7 @@ export class GrobDerivedNode extends GrobNode<GrobDerivedNode> {
 		// we find the origin, with the key value, and remove it.
 		for (let i = 0; i < this.origins.length; i++) {
 			const orig = this.origins[i];
-			if(orig.origin != null && orig.origin._____getKey() == key){
+			if(orig.origin != null && orig.origin.getKey() == key){
 				orig.origin = null;
 			}
 		}  
@@ -218,8 +222,8 @@ export class GrobDerivedNode extends GrobNode<GrobDerivedNode> {
 	}
 	public nullifyDependency(node:GrobNodeType){
 		// first Empty the origin.
-		let key = node._____getKey();
-		let orig = this.origins.find( p => p.origin?._____getKey() == key );
+		let key = node.getKey();
+		let orig = this.origins.find( p => p.origin?.getKey() == key );
 		if(orig){
 			orig.origin = null;	
 			orig.originKey = GrobDerivedOrigin.UnkownLocationKey;
@@ -285,6 +289,7 @@ export class GrobDerivedNode extends GrobNode<GrobDerivedNode> {
 
 	}
 	public updateOrigins(){
+		 
 		let originRes	= this.parseCalculationToOrigins(this.calc);
 		if( originRes ) {
 			let symbolsToRem = originRes.symbolsToRem;
@@ -331,13 +336,12 @@ export class GrobDerivedNode extends GrobNode<GrobDerivedNode> {
 		
 		// reset This' Value;
 		this._value = NaN;
-
+		
 		// test if it is calculateable
 		let testCalc	= this.testCalculate(calc);
 		if( testCalc == null || !testCalc.success ){
 			return false;
 		}
-		
 		this.calc = calc;
 
 		// update origins.
@@ -357,7 +361,7 @@ export class GrobDerivedNode extends GrobNode<GrobDerivedNode> {
 	 * Parses calculation To a Number of Origins.
 	 * @returns  
 	 */
-	public parseCalculationToOrigins( calc:string ) :  {symbolsToRem:string[] , symbolsToAdd:string[] } | null { 
+	public parseCalculationToOrigins( calc:string ) :  {symbolsToRem:string[] , symbolsToAdd:string[] , totalSymbols: string[] } | null { 
 		
 		const calcValue = calc; 
 
@@ -373,7 +377,15 @@ export class GrobDerivedNode extends GrobNode<GrobDerivedNode> {
 		let symbolsToAdd = symbols.filter( p => !existingKeysArray.includes(p) )
 		let symbolsToRem = existingKeysArray.filter( p => !symbols.includes(p) );
 		 
-		return {symbolsToRem:symbolsToRem , symbolsToAdd:symbolsToAdd } ;
+		return {symbolsToRem:symbolsToRem , symbolsToAdd:symbolsToAdd , totalSymbols: symbols} ;
+	}
+	public static staticParseCalculationToOrigins( calc:string ) : string[] { 
+		const calcValue = calc; 
+
+		// get symbols from the calc. and turn it into an array. important, the array is an array of unique keys.
+		let symbols :string[] = calcValue.match( grobDerivedSymbolRegex ) ?? [];
+		symbols = Array.from(new Set(symbols))
+		return symbols;
 	}
 	
 
@@ -389,13 +401,10 @@ export class GrobDerivedNode extends GrobNode<GrobDerivedNode> {
 		this._value = res.value;
 		return res.success;
 	}
-	public testCalculate( statement ){
-		const symbols = statement.match( grobDerivedSymbolRegex );  
-		let rec = symbols ? Object.fromEntries( symbols.map( s => [s,1])) : {};
-		let res = this._recalculate(rec,statement); 
-		return res;
-	}
 	private _recalculate(  rec : Record<string,number> = {} , statement ){
+		return GrobDerivedNode.recalculate(rec,statement);
+	}
+	private static recalculate(  rec : Record<string,number> = {} , statement ){
 		
 		const symbols = statement.match( grobDerivedSymbolRegex );  
 		//let rec = 
@@ -427,6 +436,27 @@ export class GrobDerivedNode extends GrobNode<GrobDerivedNode> {
 		}  
 		return { success:recalcSuccess, value:value};
 	}
+
+	public testCalculate( statement ){
+		const symbols = statement.match( grobDerivedSymbolRegex );  
+		let rec = symbols ? Object.fromEntries( symbols.map( s => [s,1])) : {};
+		let res = this._recalculate(rec,statement); 
+		return res;
+	}
+	public static testCalculate( statement : string  , symbolsToValue : Record<string,number> = {}){
+		const symbols = statement.match( grobDerivedSymbolRegex );  
+		function mapValueToSymbol( s,m ){
+			if (m[s]){
+				return m[s];
+			}
+			return 1;
+		}
+
+		let rec = symbols ? Object.fromEntries( symbols.map( s => [s,mapValueToSymbol(s,symbolsToValue)])) : {};
+		let res = GrobDerivedNode.recalculate(rec,statement); 
+		return res;
+	}
+
 	public update( ){
 
 		if(!this.isValid()){
