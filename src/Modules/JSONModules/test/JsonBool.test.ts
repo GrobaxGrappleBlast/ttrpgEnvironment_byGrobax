@@ -1,5 +1,4 @@
-import exp from "constants";
-import { JSONHandler, JsonArrayBoolean, JsonBoolean, JsonMapping, JsonMappingRecordInArrayOut, JsonProperty } from "../Decorators";
+import { JSONHandler, JsonArrayBoolean, JsonBoolean, JsonMapping, JsonMappingRecordInArrayOut, JsonProperty } from "../index";
 
 interface hasInit{
 	init()

@@ -9,6 +9,9 @@ const prod = (process.argv[2] === 'production');
 
 export default defineConfig(() => {
     return {
+        exclude:[
+            '**/*.test.ts'
+        ],
         plugins: [
             svelte({
                 compilerOptions: { css: true },
@@ -25,7 +28,7 @@ export default defineConfig(() => {
             },
             lib: {
                 //  './modules/mainApp/starterIndex.ts'
-                entry: path.resolve(__dirname, './src/app.ts'),
+                entry: path.resolve(__dirname, './src/Modules/ObsidianUI/app.ts'),
                 formats: ['cjs'],
             },
             rollupOptions: {

@@ -1,7 +1,6 @@
-import exp from "constants";
 import { JSONHandler, JsonArrayNumber, JsonNumber, JsonProperty 
 	
-} from "../Decorators";
+} from  "../index";
 
 interface hasInit{
 	init()

@@ -1,5 +1,4 @@
-import exp from "constants";
-import { JSONHandler, JsonMapping, JsonMappingRecordInArrayOut, JsonProperty } from "../Decorators";
+import { JSONHandler, JsonMapping, JsonMappingRecordInArrayOut, JsonProperty } from '../index'
 
 
 var SecretKeyGen = 0;
@@ -97,7 +96,11 @@ export class House {
 				},
 				in(col: any[] , d ){ 
 					let r = {};
-					col.map( p =>{ r[p.name] = d(p) })  
+					col.map( p =>{
+						let key = p.name;
+						let res = d(p)
+						r[key] = res;
+					})  
 					return r;
 				}
 			}
@@ -156,8 +159,8 @@ test('CheckForMappings.', () => {
 		expect( obj.pieces_withNameChange[key].value	).toBe( h.pieces_withNameChange[key].value	);
 	}
 
-
-
+	/*
+	WE DISALLOW UNTYPED OBJECTS
 	// then we test in the same way the NON class deserialization, instead of class its generic object
 	expect(Object.keys(obj.collections_WithNameChange).length).toBe(Object.keys(h.collections_WithNameChange).length);
 	for( const key in obj.collections_WithNameChange ){  
@@ -175,7 +178,8 @@ test('CheckForMappings.', () => {
 	for( const key in obj.collections_special ){  
 		expect( obj.collections_special[key].number		).toBe( (h.collections_special[key] as any).number	);
 		expect( obj.collections_special[key].name		).toBe( (h.collections_special[key] as any).name	);
-	} 
+	}
+	*/
 })
 
 test('TYPED: automappings @JsonMappingRecordInArrayOut', () => {
@@ -196,7 +200,8 @@ test('TYPED: automappings @JsonMappingRecordInArrayOut', () => {
 	}
 
 })
-
+/*
+WE DISALLOW UNTYPED OBJECTS
 test('UNTYPED: automappings @JsonMappingRecordInArrayOut', () => {
 
 	const adresse = "Gråvej 12, st. ";
@@ -213,7 +218,7 @@ test('UNTYPED: automappings @JsonMappingRecordInArrayOut', () => {
 	} 
 })
 
-
+*/
 
 
 
@@ -234,6 +239,8 @@ test('TYPED: Manual mappings using @JsonProperty', () => {
 	}
  
 })
+/*
+WE DISALLOW UNTYPED OBJECTS
 test('UNTYPED: Manual mappings using @JsonProperty', () => {
 
 	const adresse = "Gråvej 12, st. ";
@@ -249,7 +256,7 @@ test('UNTYPED: Manual mappings using @JsonProperty', () => {
 		expect( obj.collections_WithoutNameChange[key].name		).toBe( (h.collections_WithoutNameChange[key] as any).name	);
 	}
 })
-
+*/
 
 
 
@@ -270,6 +277,9 @@ test('TYPED: Manual mappings using @JsonProperty And Other OutNames', () => {
 	}
 
 })
+
+/*
+WE DISALLOW UNTYPED OBJECTS
 test('UNTYPED: Manual mappings using @JsonProperty And Other OutNames', () => {
 
 	const adresse = "Gråvej 12, st. ";
@@ -286,3 +296,4 @@ test('UNTYPED: Manual mappings using @JsonProperty And Other OutNames', () => {
 		expect( obj.collections_WithNameChange[key].name		).toBe( (h.collections_WithNameChange[key] as any).name	);
 	}
 })
+*/

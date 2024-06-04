@@ -25,6 +25,7 @@
         "style": "sass ./modules/styles.scss styles.css",
         "lint": "eslint . --ext .ts",
         "dev": "vite build --watch",
+        "vite": "vite build --watch",
         "build": "npx svelte-check && vite build",
         "bumpversion": "node version-bump.mjs && git add manifest.json versions.json",
         "test": "jest --coverage"

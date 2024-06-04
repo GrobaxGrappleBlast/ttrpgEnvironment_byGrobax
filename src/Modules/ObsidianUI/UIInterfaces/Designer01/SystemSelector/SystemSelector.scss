@@ -1,0 +1,22 @@
+@import '../../SystemStandards.scss';
+@import '../app.scss';
+
+/*
+.SystemSelectorContainer{
+	display:grid;
+	grid-template-columns: 1fr;
+	grid-template-rows: 1fr;
+}
+  */
+
+.SystemSelectorContainerHeader{
+	display:grid;
+	grid-template-columns: repeat(auto-fit, minmax(200px, 1fr) );
+	grid-template-rows: 1fr;
+}
+
+ .SystemSelectorOptionsContainer{
+	max-height: $standard_LineHeight * 7 ;
+	overflow-y: scroll; 
+ }
+

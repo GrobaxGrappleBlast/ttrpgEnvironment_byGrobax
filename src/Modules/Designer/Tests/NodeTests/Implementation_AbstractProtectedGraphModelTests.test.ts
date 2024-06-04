@@ -1,6 +1,6 @@
 import exp from "constants";
 import type { IOutputHandler } from "../../Abstractions/IOutputHandler";
-import { TTRPGSystemGraphModel } from "../../GraphV2/TTRPGSystemGraphModel";
+import { TTRPGSystem } from "../../index";
 import type { GrobNodeType } from "../../GraphV2/TTRPGSystemsGraphDependencies";
 import type { GrobCollection, GrobCollectionType } from "../../GrobCollection";
 import type { GrobGroup, GrobGroupType } from "../../GrobGroup";
@@ -29,7 +29,8 @@ var out : TestIOutputHandler = {
 }
 
 function startTest(){
-	let sys = new TTRPGSystemGraphModel();
+	let sys = new TTRPGSystem();
+	sys.initAsNew();
 	sys.setOut(out);
 	out.clean(); 
 	return sys;
@@ -37,7 +38,8 @@ function startTest(){
 
 
 function startTest2(){
-	let sys = new TTRPGSystemGraphModel();
+	let sys = new TTRPGSystem();
+	sys.initAsNew();
 	sys.setOut(out);
 	out.clean();
 
@@ -165,15 +167,14 @@ test('Test Deleted Collection', () => {
 		fn1_try =  sys.getNode(fn1keys[0] as any,fn1keys[1],fn1keys[2]);
 		expect(fn1_try==null).toBe(true)
 
-	// Collection DELETE ASSURANCE
-		expect(Object.keys(fc1.nodes_keys).length).toBe(0)
+	// Collection DELETE ASSURANCE 
 		expect(Object.keys(fc1.nodes_names).length).toBe(0)
 		expect(fc1.parent==null).toBe(true)
  
 });
 
 test('Test Group Deletion', () => {
-	let sys : IGraphAbstractModel | TTRPGSystemGraphModel = startTest2();
+	let sys : IGraphAbstractModel | TTRPGSystem = startTest2();
 	let dn1 = sys.getDerivedNode('c1','n1')
 
 	let fn1 = sys.getFixedNode('c1','n1')
@@ -222,13 +223,11 @@ test('Test Group Deletion', () => {
 		fn1_try =  sys.getNode(fn1keys[0] as any,fn1keys[1],fn1keys[2]);
 		expect(fn1_try == null).toBe(true)
 
-	// Collection DELETE ASSURANCE
-		expect(Object.keys(fc1.nodes_keys).length).toBe(0)
+	// Collection DELETE ASSURANCE 
 		expect(Object.keys(fc1.nodes_names).length).toBe(0)
 		expect(fc1.parent == null ).toBe(true)
 
-	// Group Deletion Assurance
-		expect(Object.keys(fg1.collections_keys).length).toBe(0)
+	// Group Deletion Assurance 
 		expect(Object.keys(fg1.collections_names).length).toBe(0)
 
 		// @ts-ignore

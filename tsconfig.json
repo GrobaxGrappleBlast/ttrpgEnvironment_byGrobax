@@ -27,6 +27,9 @@
         "**/globals.d.ts"   ,
         "**/*.js"           ,
         "**/*.svelte"       ,
-        "**/*.ts", "src/Modules/Designer/Tests/GraphTests/CreateAndGetTests.test.ts"            ],
-    "exclude": ["node_modules"]
+        "**/*.ts"],
+    "exclude": [
+        "node_modules",
+        "**/*.test.ts"
+    ]
 }   

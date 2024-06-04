@@ -1,7 +1,4 @@
-import exp from "constants";
-import { JSONHandler, JsonArrayBoolean, JsonArrayClassTyped, JsonArrayNumber, JsonArrayProperty, JsonArrayString, JsonBoolean, JsonClassTyped, JsonMappingRecordInArrayOut, JsonNumber, JsonProperty, JsonString 
-	
-} from "../Decorators";
+import { JSONHandler, JsonArrayBoolean, JsonArrayClassTyped, JsonArrayNumber, JsonArrayProperty, JsonArrayString, JsonBoolean, JsonClassTyped, JsonMappingRecordInArrayOut, JsonNumber, JsonProperty, JsonString } from  "../index";
 
 
 
@@ -50,7 +47,6 @@ test('if a Property is Null', () => {
 	let c = new Piece_NullProperty(); 
 	var [orig, json, des ] = startTest( c , Piece_NullProperty);
 	
-	debugger;
 	compareObject(des,orig);
 })
 

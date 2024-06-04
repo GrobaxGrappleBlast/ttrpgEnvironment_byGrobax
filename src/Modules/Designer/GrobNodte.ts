@@ -1,17 +1,42 @@
 import { GrobCollection } from "./GrobCollection"; 
 import { AGraphItem } from "./Abstractions/AGraphItem"; 
 import type { GrobNodeType } from "./GraphV2/TTRPGSystemsGraphDependencies"; 
-import { TTRPGSystemGraphAbstractModel } from "./GraphV2/TTRPGSystemGraphAbstractModel";
-import { stat } from "fs";
+import { JsonArrayClassTyped, JsonNumber, JsonString } from "../JSONModules/index";
+
+var grobDerivedSymbolRegex =/@[a-zA-Z]/g;
+
+export class GrobDerivedOrigin {
+
+	public static UnkownLocationKey = 'unknown.unknown.unknown'
+
+	@JsonString()
+	public symbol: string;
+	public standardValue:number = 1;
+	public origin: GrobNodeType | null;
+	
+	@JsonString()
+	public originKey: string ;
+
+	//public getSymbol(){}
+	//public setSymbol(){}
+	//public getStandardValue(){}
+	//public setStandardValue(){}
+	//public getOrigin(){}
+	//public setOrigin(){}
+
+}
+
 
 export abstract class GrobNode<T extends GrobNode<T>> extends AGraphItem{
 
-	constructor(name , keystart , controller : TTRPGSystemGraphAbstractModel) {  
-		super(name, keystart,controller) 
+	constructor(name? , keystart? , parent? : GrobCollection<GrobNodeType> ) {  
+		super(name, keystart) 
+		if(parent)
+			this.parent = parent;
 	}
 	
 	// @ts-ignore
- 	parent: GrobCollection<T>;
+ 	parent: GrobCollection<GrobNodeType>;
 
 	public dependencies :Record<any,GrobNodeType> = {};
 	public dependents : Record<any,GrobNodeType> = {};
@@ -42,24 +67,13 @@ export abstract class GrobNode<T extends GrobNode<T>> extends AGraphItem{
 	abstract addDependency( node:GrobNodeType) : boolean 
 	abstract removeDependency( node:GrobNodeType)  : boolean
 	abstract nullifyDependency( node:GrobNodeType ): boolean
-	public nullifyDependent(node:GrobNodeType){
-		let dep = this.dependents[node.getKey()];
-		if(!dep)
-			return false;
 
-		return dep.nullifyDependency(this as any)
-	}
 	public getDependencies(): GrobNodeType[] {
 		//@ts-ignore
 		return Object.values( this.dependencies ) as GrobNodeType[] ?? [];
 	}
 
-	abstract getValue() : number 
-	public setName( name ){
-		const oldname= this.getName();
-		super.setName(name);
-		this.parent.update_node_name(oldname,name);
-	} 
+	abstract getValue() : number  
  
 	public getLocationKey(){
 		let segs = this.getLocationKeySegments();
@@ -68,7 +82,7 @@ export abstract class GrobNode<T extends GrobNode<T>> extends AGraphItem{
 	public getLocationKeySegments() : string [] {
 		let seg : string[] = ['','',''];
 		seg[0] = this.parent?.parent?.getName() ?? 'unknown';
-		seg[1] = this.parent?.getName() ?? 'unknown';
+		seg[1] = this.parent?.getName () ?? 'unknown';
 		seg[2] = this.getName() ?? 'unknown';
 		return seg;
 	}
@@ -82,7 +96,7 @@ export abstract class GrobNode<T extends GrobNode<T>> extends AGraphItem{
 
 		for(const key in this.dependencies){
 			const curr = this.dependencies[key]
-			curr.nullifyDependent(this as any)
+			curr.removeDependent(this as any)
 		}
 		
 		for(const key in this.dependents){
@@ -92,21 +106,41 @@ export abstract class GrobNode<T extends GrobNode<T>> extends AGraphItem{
 
 		//@ts-ignore
 		this.parent = null;
-		this.key = null;
 		//@ts-ignore
 		this.name = null;
 
 	}
 
+	public setName( name ){
+		const oldname= this.getName();
+		super.setName(name);
+		this.parent.update_node_name(oldname,name); 
+		this.updateLocation(this.parent);
+	} 
+	updateLocation( parent ){
+		this.parent = parent;
+		for(const key in this.dependents){
+			const dep = this.dependents [key];
+			dep.updateDependecysLocation(this)
+		}
+	}
+
+	public updateDependecysLocation( dependency ){}
+
+	public isValid(  ){
+		return true;
+	}
 }
   
 export class GrobFixedNode extends GrobNode<GrobFixedNode>{
 	
-	constructor(name , controller : TTRPGSystemGraphAbstractModel) {  
-		super(name ,'NF',controller) 
+	constructor(name ,  parent? : GrobCollection<GrobFixedNode>) {  
+		super(name ,'NF',parent) 
 	}
 
-	private ___value:number= 1;
+	@JsonNumber({name : 'standardValue'})
+	public ___value:number= 1;
+
 	getValue(): number {
 		return this.___value;
 	} 
@@ -128,15 +162,20 @@ export class GrobFixedNode extends GrobNode<GrobFixedNode>{
 	public addDependency(node:GrobNodeType){ return false } 
 	public removeDependency(node:GrobNodeType){ return false  }
 	public nullifyDependency(node:GrobNodeType){return false}
+	
 }
  
-var grobDerivedSymbolRegex =/@[a-zA-Z]/g;
+
 export class GrobDerivedNode extends GrobNode<GrobDerivedNode> {
 	
-	constructor(name , controller : TTRPGSystemGraphAbstractModel) {  
-		super(name  ,'ND' ,controller)  
+	constructor(name? , parent? : GrobCollection<GrobDerivedNode> ) {  
+		super(name  ,'ND', parent)  
 	}
-	private calc:string = '@a';
+
+	@JsonString({name : 'calculationString'})
+	public calc:string = '@a';
+
+	@JsonArrayClassTyped(GrobDerivedOrigin,{name:'calcOrigins'})
 	public origins : GrobDerivedOrigin[] = [];
 	private _value : number = NaN;
 
@@ -187,6 +226,7 @@ export class GrobDerivedNode extends GrobNode<GrobDerivedNode> {
 		let orig = this.origins.find( p => p.origin?.getKey() == key );
 		if(orig){
 			orig.origin = null;	
+			orig.originKey = GrobDerivedOrigin.UnkownLocationKey;
 		}
 		
 		// then nulify the dependency
@@ -217,7 +257,10 @@ export class GrobDerivedNode extends GrobNode<GrobDerivedNode> {
 		}
 
 		origin.origin = node;
-		origin.standardValue = (standardValue ?? origin.standardValue) ?? 1;
+		origin.standardValue = (standardValue ?? origin.standardValue) ?? 1; 
+
+		if(origin.origin)
+			origin.originKey = origin.origin.getLocationKey();
 
 		if (this.isValid()) {
 			this.recalculate(false);
@@ -246,6 +289,7 @@ export class GrobDerivedNode extends GrobNode<GrobDerivedNode> {
 
 	}
 	public updateOrigins(){
+		 
 		let originRes	= this.parseCalculationToOrigins(this.calc);
 		if( originRes ) {
 			let symbolsToRem = originRes.symbolsToRem;
@@ -262,17 +306,18 @@ export class GrobDerivedNode extends GrobNode<GrobDerivedNode> {
 					const orig = new GrobDerivedOrigin();
 					orig.symbol = symbolsToAdd[i];
 					orig.standardValue = 1;
-					orig.origin = null;
+					orig.origin = null; 
+					orig.originKey = GrobDerivedOrigin.UnkownLocationKey;
 					this.origins.push(orig);
 				}
 			}
 
 			// handle Dependencies 
 			let oldDependencies : Record<string,GrobNodeType > = {};
-			this.getDependencies().forEach(p => oldDependencies[p.getKey()] = p );
+			this.getDependencies().forEach(p => oldDependencies[p.getName()] = p );
 
 			let newDependencies : Record<string,GrobNodeType >= {};
-			this.origins.forEach( p => { if(p.origin != null){ newDependencies[ p.origin?.getKey()] = p.origin }});
+			this.origins.forEach( p => { if(p.origin != null){ newDependencies[ p.origin?.getName()] = p.origin }});
 
 			// remove old Dependencies 
 			for(const key in oldDependencies){
@@ -291,13 +336,12 @@ export class GrobDerivedNode extends GrobNode<GrobDerivedNode> {
 		
 		// reset This' Value;
 		this._value = NaN;
-
+		
 		// test if it is calculateable
 		let testCalc	= this.testCalculate(calc);
 		if( testCalc == null || !testCalc.success ){
 			return false;
 		}
-		
 		this.calc = calc;
 
 		// update origins.
@@ -317,7 +361,7 @@ export class GrobDerivedNode extends GrobNode<GrobDerivedNode> {
 	 * Parses calculation To a Number of Origins.
 	 * @returns  
 	 */
-	public parseCalculationToOrigins( calc:string ) :  {symbolsToRem:string[] , symbolsToAdd:string[] } | null { 
+	public parseCalculationToOrigins( calc:string ) :  {symbolsToRem:string[] , symbolsToAdd:string[] , totalSymbols: string[] } | null { 
 		
 		const calcValue = calc; 
 
@@ -333,7 +377,15 @@ export class GrobDerivedNode extends GrobNode<GrobDerivedNode> {
 		let symbolsToAdd = symbols.filter( p => !existingKeysArray.includes(p) )
 		let symbolsToRem = existingKeysArray.filter( p => !symbols.includes(p) );
 		 
-		return {symbolsToRem:symbolsToRem , symbolsToAdd:symbolsToAdd } ;
+		return {symbolsToRem:symbolsToRem , symbolsToAdd:symbolsToAdd , totalSymbols: symbols} ;
+	}
+	public static staticParseCalculationToOrigins( calc:string ) : string[] { 
+		const calcValue = calc; 
+
+		// get symbols from the calc. and turn it into an array. important, the array is an array of unique keys.
+		let symbols :string[] = calcValue.match( grobDerivedSymbolRegex ) ?? [];
+		symbols = Array.from(new Set(symbols))
+		return symbols;
 	}
 	
 
@@ -348,47 +400,11 @@ export class GrobDerivedNode extends GrobNode<GrobDerivedNode> {
 		let res = this._recalculate(rec,statement);
 		this._value = res.value;
 		return res.success;
-
-
-
-
-		/*
-		const symbols = this.calc.match( grobDerivedSymbolRegex );  
-		let rec = 
-			useTempValues ?
-			Object.fromEntries( this.origins.map(p => [ p.symbol, p.standardValue])):	
-			Object.fromEntries( this.origins.map(p => [ p.symbol, p.origin?.getValue() ]));
-		let statement = this.calc;
-
-		symbols?.forEach( key => { 
-			const v =  rec[key] ;
-			statement = statement.replace( key , v + "" );
-		}); 
-
-		var recalcSuccess = false;
-		try{
-			var res = eval(statement);  
-			if(typeof res === 'number'){
-				recalcSuccess = true; 
-				this._value = res;
-			}
-			else{
-				recalcSuccess = false;
-				this._value = 0;
-			}
-		}catch(e){ 
-			recalcSuccess = false;
-		}  
-		return recalcSuccess;
-		*/
-	}
-	public testCalculate( statement ){
-		const symbols = statement.match( grobDerivedSymbolRegex );  
-		let rec = symbols ? Object.fromEntries( symbols.map( s => [s,1])) : {};
-		let res = this._recalculate(rec,statement); 
-		return res;
 	}
 	private _recalculate(  rec : Record<string,number> = {} , statement ){
+		return GrobDerivedNode.recalculate(rec,statement);
+	}
+	private static recalculate(  rec : Record<string,number> = {} , statement ){
 		
 		const symbols = statement.match( grobDerivedSymbolRegex );  
 		//let rec = 
@@ -420,10 +436,31 @@ export class GrobDerivedNode extends GrobNode<GrobDerivedNode> {
 		}  
 		return { success:recalcSuccess, value:value};
 	}
+
+	public testCalculate( statement ){
+		const symbols = statement.match( grobDerivedSymbolRegex );  
+		let rec = symbols ? Object.fromEntries( symbols.map( s => [s,1])) : {};
+		let res = this._recalculate(rec,statement); 
+		return res;
+	}
+	public static testCalculate( statement : string  , symbolsToValue : Record<string,number> = {}){
+		const symbols = statement.match( grobDerivedSymbolRegex );  
+		function mapValueToSymbol( s,m ){
+			if (m[s]){
+				return m[s];
+			}
+			return 1;
+		}
+
+		let rec = symbols ? Object.fromEntries( symbols.map( s => [s,mapValueToSymbol(s,symbolsToValue)])) : {};
+		let res = GrobDerivedNode.recalculate(rec,statement); 
+		return res;
+	}
+
 	public update( ){
 
 		if(!this.isValid()){
-			console.error(`Node isent Valid ${this.getKey()} ${this.getLocationKey()} Stopping update`);
+			console.error(`Node isent Valid ${this.getName()} ${this.getLocationKey()} Stopping update`);
 			return false;
 		}
 
@@ -438,11 +475,13 @@ export class GrobDerivedNode extends GrobNode<GrobDerivedNode> {
 		} 
 		return success;
 	}
-}
 
-export class GrobDerivedOrigin {
-	public symbol: string;
-	public standardValue:number;
-	public origin: GrobNodeType | null;
-}
+	public updateDependecysLocation( dependency ){
+		let orig = this.origins.find( p => p.origin?.getName() == dependency.getName() );
+		if(!orig)
+			return;
 
+		orig.originKey = dependency.getLocationKey();
+	}
+
+}

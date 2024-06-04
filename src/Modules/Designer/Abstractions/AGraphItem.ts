@@ -1,20 +1,21 @@
 
+import { JsonString } from "../../../../src/Modules/JSONModules/Decorators";
+import type { IGraphItem } from "./IGraphItem";
 import { KeyManager } from "./KeyManager";
 
 
 
 var keyManager = new KeyManager();
-export abstract class AGraphItem{
+export abstract class AGraphItem implements IGraphItem{
 	
-	constructor( name , key , controller : any ) {
+	constructor( name = '' , key = '' ) {
 		this.name = name; 
-		this.key = key + keyManager.getNewKey(); 
-		this.controller = controller;
+		this._key = key + keyManager.getNewKey();  
 	} 
-
-	protected controller:any;
-	protected name: string
-	protected key : any;
+ 
+	@JsonString()
+	public name: string
+	public _key : any;
 
 	public getName(){
 		return this.name;
@@ -22,9 +23,9 @@ export abstract class AGraphItem{
 	
 	public setName( name ){
 		this.name = name; 
+	} 
 
-	} 
 	public getKey(){
-		return this.key;
-	} 
+		return this._key
+	}
 }
