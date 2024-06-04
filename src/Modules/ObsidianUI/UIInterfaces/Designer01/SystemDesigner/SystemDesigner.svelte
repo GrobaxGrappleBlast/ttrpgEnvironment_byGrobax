@@ -12,6 +12,7 @@
     import type { IOutputHandler } from "src/Modules/Designer/Abstractions/IOutputHandler";
     import FixedItemDesigner from "./FixedItemDesigner.svelte";
 	import DerivedItemDesigner from "./DerivedItemDesigner.svelte";
+	import DerivedCollectionDesigner from "./DerivedCollectionDesigner.svelte";
     import { slide } from "svelte/transition";
 
 	export let systemPreview : Writable<SystemPreview>;
@@ -449,9 +450,13 @@
 			on:close={ () => { deSelectCollection('derived' )}}
 		>
 			{#if $specialDerivedOpened} 
-				<div  transition:slide|local  > 
+				<div  
+					transition:slide|local  
+					on:introstart={	() => { derivedTransitionLevel0Ended = false;	}} 
+					on:introend={	() => { derivedTransitionLevel0Ended = true;	}} 
+				> 
 					<button on:click={ () =>{ specialDerivedOpened.update(r => !r) } }>X</button>
-					<DerivedItemDesigner 
+					<DerivedCollectionDesigner 
 						on:save= { (e) => {
 							let _old = e.detail.old;
 							let _new = e.detail.new;
@@ -459,8 +464,7 @@
 							noteUpdate();
 						}}
 						goodTitle = "Collection Creator"
-						badTitle = "Collection Creator : Error"
-						node = { selectedDerivedNode }
+						badTitle = "Collection Creator : Error" 
 						system = { designer }
 						secondSlideInReady = { derivedTransitionLevel0Ended }
 					/> 

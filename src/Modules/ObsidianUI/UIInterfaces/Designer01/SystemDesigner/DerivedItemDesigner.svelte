@@ -1,6 +1,6 @@
 <script context="module"  lang="ts">
 
-	type originRowData = {key: string, segments:(string|null)[] , active :boolean , testValue :number, inCalc:boolean, target: GrobNodeType | null };
+	type originRowData = {key: string, segments:(string|null)[] , active :boolean , testValue :number, inCalc:boolean, target: GrobNodeType | null , isSelectAllTarget: boolean };
 	export class DerivedItemController{
 		
 		public node:GrobDerivedNode | null	= null ;
@@ -26,7 +26,7 @@
 			this.resultValue 	.set(0)
 			this.isValid 		.set(true)
 			
-			let m = this.node?.origins.map( p => {return {key:p.symbol, segments:p.originKey.split('.'), active: get(this.calc).contains(p.symbol), testValue: p.standardValue , inCalc: get(this.calc).contains(p.symbol) , target: p.origin }})
+			let m = this.node?.origins.map( p => {return {key:p.symbol, segments:p.originKey.split('.'), active: get(this.calc).contains(p.symbol), testValue: p.standardValue , inCalc: get(this.calc).contains(p.symbol) , target: p.origin , isSelectAllTarget : true }})
 			this.mappedOrigins.set( m ?? []);
 		}
 		  
@@ -291,7 +291,7 @@
 
 				// for each remaining, add it. 
 				symbols.forEach( s => {
-					mappedOrigins.push({key:s , segments:new Array(3).fill(null) , active:false , testValue: 1, inCalc:true, target : null })
+					mappedOrigins.push({key:s , segments:new Array(3).fill(null) , active:false , testValue: 1, inCalc:true, target : null , isSelectAllTarget : true  })
 				})  
 				return mappedOrigins;
 			})

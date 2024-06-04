@@ -1,37 +1,44 @@
 <script context="module"  lang="ts">
+	import ToogleSection from './../BaseComponents/ToogleSection/ToogleSection.svelte';
 
-	type originRowData = {key: string, segments:(string|null)[] , active :boolean , testValue :number, inCalc:boolean, target: GrobNodeType | null };
-	export class DerivedItemController{
-		
-		public node:GrobDerivedNode | null	= null ;
+	type originRowData = {key: string, segments:(string|null)[] , active :boolean , testValue :number, inCalc:boolean, target: GrobNodeType  | null , isSelectAllTarget:boolean };
+	const selAllInCollectionString = '- - Select all - -';
+	export class DerivedCollectionController {
+		 
 		public system:TTRPGSystem | null	= null ;
 		public messageHandler: StaticMessageHandler | null;
 
-		public name 		: Writable<string>	= writable(''); 
-		public tempValue	: Writable<number>	= writable(1); 
-		public calc			: Writable<string>	= writable(''); 
-		public resultValue	: Writable<number>	= writable(0); 
-		public resultSuccess: Writable<boolean>	= writable(true); 
-		public isValid		: Writable<boolean>	= writable(true); 
+		public name 		: Writable<string>			= writable(''); 
+		public nameCalc		: Writable<string>			= writable(''); 
+		public tempValue	: Writable<number>			= writable(1); 
+		public calc			: Writable<string>			= writable(''); 
+		public resultValue	: Writable<number>			= writable(0); 
+		public resultSuccess: Writable<boolean>			= writable(true); 
+		public resultNameValue	: Writable<string>		= writable(''); 
+		public resultNameSuccess: Writable<boolean>		= writable(true); 
+		public isValid		: Writable<boolean>			= writable(true); 
 		public mappedOrigins: Writable<originRowData[]> = writable([]);
+ 
+		public generativeNameListData : Writable<string[]>	= writable([]); 
 
-		public setControllerDeps( node, system, ){
-			this.node = node;
+		public setControllerDeps( system, ){ 
 			this.system = system;
 
-			this.name 			.set(this.node?.name	?? '')
-			this.calc 			.set(this.node?.calc	?? '')
+			this.name 			.set( '')
+			this.nameCalc		.set( '')
+			this.calc 			.set( '') 
 			this.tempValue 		.set(0)
 			this.resultSuccess 	.set(true)
 			this.resultValue 	.set(0)
+			this.resultNameSuccess 	.set(true)
+			this.resultNameValue 	.set('') 
 			this.isValid 		.set(true)
-			
-			let m = this.node?.origins.map( p => {return {key:p.symbol, segments:p.originKey.split('.'), active: get(this.calc).contains(p.symbol), testValue: p.standardValue , inCalc: get(this.calc).contains(p.symbol) , target: p.origin }})
-			this.mappedOrigins.set( m ?? []);
+			 
+			this.mappedOrigins.set( []);
+			  
 		}
 		  
-
-		private validateName( name , node:GrobDerivedNode , messageHandler: StaticMessageHandler | null = null , output:boolean ){
+		private validateName( name , messageHandler: StaticMessageHandler | null = null , output:boolean ){
 			let out = (key,msg,error) => { if(output){ messageHandler?.addMessageManual(key,msg,error) }}
 
 			let isValid = true ; 
@@ -44,12 +51,46 @@
 				isValid = false;
 				out('name','The name cannot contain "."', 'error')
 			}
-			else if ( node.parent.hasNode( name ) && name != node.getName() ){
+			else if ( this.system?.hasCollection('derived',name )  || this.system?.hasCollection('fixed',name )  ){
 				isValid = false;
-				out('name','The name is already in use, in the same collection', 'error')
-			}else{
+				out('name','The Collection name is already in use ', 'error')
+			}
+			else{
 				messageHandler?.removeError('name');
 			}
+			return isValid;
+		} 
+		private validateItemName( nameCalc , calc , originData : originRowData[] ,  messageHandler: StaticMessageHandler | null = null , output:boolean ){
+		 
+			let out = (key,msg,error) => { if(output){ messageHandler?.addMessageManual(key,msg,error) }}
+
+			
+			let symbolsCalc = GrobDerivedNode.staticParseCalculationToOrigins( calc 	); 
+			let symbolsName = GrobDerivedNode.staticParseCalculationToOrigins( nameCalc ) 
+			symbolsName = symbolsName.filter( p => symbolsCalc.includes(p) );
+
+			let symbolsMissing = symbolsCalc.filter( p => !nameCalc.contains(p))
+			let isValid = true;
+
+			if (symbolsMissing.length != 0){
+				symbolsMissing.forEach(s => {
+
+					let isAllSetting = originData.findIndex( p => p.isSelectAllTarget && p.key == s ) != -1;
+					if (isAllSetting){
+						out('NoSymbolName' + s, s + " was missing from name calculation \nAll Select All Settings must be in the name ",'error') 
+						isValid = false;
+					}
+				})
+			}
+			
+			let nameRES = nameCalc;
+			symbolsName.forEach(s => {
+				nameRES = nameRES.replace( s , '['+s+']');
+			});
+
+			this.resultNameSuccess.set(isValid);
+			this.resultNameValue.set(nameRES);
+			 
 			return isValid;
 		} 
 		private validateOrigins(  mappedOrigins:originRowData[], calc:string ,  system:TTRPGSystem , messageHandler: StaticMessageHandler | null = null , output:boolean    ){
@@ -58,7 +99,7 @@
 			// validate that all inCalc are finished
 			let isValid = true ;  
 			mappedOrigins.forEach( obj => {
-				if (obj.inCalc && !(obj.target)){
+				if (obj.inCalc && !(obj.target) && !obj.isSelectAllTarget ){
 					out(obj.key + "1", `Cannot save until all dependencies used in the calc is defined \n ${obj.key} Had no target` , 'error');
 					isValid = false;
 				}else{
@@ -81,21 +122,37 @@
 				}
 				
 				// check that it can create the propper target. AKA target exists in the system. not just empty obj-
-				let dep = system.getNode(o.segments[0] as any,o.segments[1] as any ,o.segments[2] as any) ;
-				if (!dep ){
-					out( o.key, `Target of ${o.key} location ${o.segments[0] +'.'+ o.segments[1] +'.'+ o.segments[2] } was invalid!'`, 'error');
-					isValid = false;
-					return;
+				if( !o.isSelectAllTarget ){
+					let dep = system.getNode(o.segments[0] as any,o.segments[1] as any ,o.segments[2] as any) ;
+					if (!dep ){
+						out( o.key, `Target of ${o.key} location ${o.segments[0] +'.'+ o.segments[1] +'.'+ o.segments[2] } was invalid!'`, 'error');
+						isValid = false;
+						return;
+					}
 				}
-
+			
+			
 				messageHandler?.removeError( o.key );
-
 			}); 
 
 			return isValid;
 		}
 		private validateCalculation( calc:string , mappedOrigins:originRowData[] , messageHandler: StaticMessageHandler | null = null , output :boolean  ){
 			let out = (key,msg,error) => { if(output){ messageHandler?.addMessageManual(key,msg,error) }}
+
+			if(calc.trim() == ''){
+				out( 'calc' , `Calculation cannot be empty`, 'error' );
+				return false;
+			}
+
+
+
+			if(calc.trim() == ''){
+				out( 'calc' , `Calculation cannot be empty`, 'error' );
+				return false;
+			}
+
+
 
 			// first test the calculation.
 			let o = {};
@@ -132,27 +189,29 @@
 			symbols.forEach( s  => {
 				isValid = false;
 				out( s + 'missing' , `symbol ${s} was missing from origins ` , 'error' )
-			});
-
-			return isValid;
-		} 
-		private _checkIsValid(  output = true  ){
-			if(!this.node || !this.system){ 
+			}); 
+			return isValid; 
+		}
+		 
+		private _checkIsValid(  output = true  ){ 
+			if( !this.system){ 
 				return false;
 			}
 
-			let isValid = true;
-
+			let isValid = true; 
 
 			// Check name is valid 
-			isValid = isValid && this.validateName		( get(this.name) ?? '',  this.node , this.messageHandler , output );
+			isValid = isValid && this.validateName		( get(this.name) ?? '' , this.messageHandler , output );
 
 			// check that nothing is individually wrong with the origins. 
 			isValid = isValid && this.validateOrigins	( get(this.mappedOrigins) , get(this.calc) , this.system ,  this.messageHandler ,output  );
-
+ 
+			isValid = isValid && this.validateCalculationOrigins( get(this.calc) , get(this.mappedOrigins) , this.messageHandler , output );
+ 
 			// Check that all calc origins are present.
-			isValid = isValid && this.validateCalculationOrigins( get(this.calc) , get(this.mappedOrigins) , this.messageHandler ,output );
-
+			let d = this.validateItemName( get(this.nameCalc), get(this.calc)  , get(this.mappedOrigins)  , this.messageHandler ,output );
+			isValid = isValid && d;
+ 
 			// check that calculation can be calculated 
 			isValid = isValid && this.validateCalculation( get(this.calc ), get(this.mappedOrigins) ,  this.messageHandler ,output );
  
@@ -160,54 +219,21 @@
 
 		}
 		public checkIsValid( output = true ){  
-			if (output){
-				this.messageHandler?.removeAllMessages();
-			}
+			
+			this.messageHandler?.removeAllMessages();
+			
 			let valid = this._checkIsValid( output ); 
 			this.isValid.set( valid ); 
 			return valid;
 		}  
-
-		public saveNodeChanges( ){
  
-			let success = this.checkIsValid();
+		public saveCollection( ){
+			
+			let success = this.checkIsValid( true );
 			if (!success){
 				return false ;
 			}
-
-			
-
-			// if the controller deps arent existing, return false; 
-			if(!this.node || !this.system){ 
-				return false;
-			}
-
-			try{
-
-				// save Name;
-				this.node.setName(get(this.name))
-				
-				// save Temp Value;
-				this.node.setValue(get(this.tempValue))
-
-				// save calc
-				this.node.setCalc(get(this.calc));
  
-				// save Origins.  ( in calculation ) 
-				let NMap = get(this.mappedOrigins).filter( p => p.inCalc ); 
-				NMap.forEach( o => {
-					// @ts-ignore
-					let dep = this.system.getNode(o.segments[0] as any,o.segments[1] as any ,o.segments[2] as any) ;
-					// @ts-ignore
-					this.node.setOrigin( o.key , dep , o.testValue ?? 0 );
-				});  
-			} catch (e) {
-				success = false;
-				let err =  new Error('Exception while trying to save Node in UI' );
-				err.stack += e.stack;
-				throw err;
-			}
-
 			// User information
 			if (success){
 				this.messageHandler?.addMessageManual('save','Saved Node', 'good');
@@ -215,9 +241,8 @@
 			} else {
 				this.messageHandler?.addMessageManual('save','Exception while trying to save Node in UI', 'error');
 				return false;
-			} 
-			
-		}
+			}  
+		}  
 
 		public onKeyExchange( e ){ 
 
@@ -290,13 +315,74 @@
 				
 
 				// for each remaining, add it. 
-				symbols.forEach( s => {
-					mappedOrigins.push({key:s , segments:new Array(3).fill(null) , active:false , testValue: 1, inCalc:true, target : null })
+				symbols.forEach( s => { 
+					mappedOrigins.push({key:s , segments:new Array(3).fill(null) , active:false , testValue: 1, inCalc:true, target : null , isSelectAllTarget : false })
 				})  
 				return mappedOrigins;
 			})
 		}
-	}
+
+
+		
+		public generateNamePreview(){
+			 
+			if ( !this.system ){
+				this.generativeNameListData.set([])
+				return;
+			}
+
+			if ( !this.checkIsValid() ){
+				this.messageHandler?.addMessageManual('generateNamePreview','Cannot Generate Name preview before the system is valid', 'error');
+				return;
+			} 
+
+
+			let origins = get(this.mappedOrigins);
+			let nameCalc = get(this.nameCalc);			
+			let filtered = origins.filter( p => { return nameCalc.contains(p.key) && p.isSelectAllTarget } )
+
+			type result = { data : Set<string> }
+			let res : result = { data : new Set() };
+			function recursiveNameFinder( self, nameCalc : string, index : number = 0 ,arr : originRowData[] , res : result ){
+				
+				// ge values, and copy nameCalc by value (not reference). 
+				let currentName = nameCalc;
+				let names:string[];
+				let curr = arr[index];
+
+				// if we are done, return result
+				if (!curr){ 
+					if (res.data.has(currentName)){
+						throw new Error('Double Name, in names generated Detected');
+					}
+					res.data.add( currentName );
+					return;
+				}
+
+				// if this is a Select All Segment then get
+				if (curr.segments[2] == selAllInCollectionString){
+					const sys = (self.system as TTRPGSystem);  
+					let n :string[] = sys.getCollection((curr.segments[0] as any),(curr.segments[1] as any))?.getNodeNames() ?? [];
+					names = n;
+				}
+
+				// else just add this name to the arr
+				else {
+					names = [curr.segments[2]] as string[] 
+				}
+
+				/// replace instring Part. 
+				names.forEach( name  => {
+					let currNameCalc = currentName.replace( curr.key , name );
+					console.log( arr );  
+					recursiveNameFinder(self,currNameCalc, index + 1 ,arr,res)
+				});
+
+			}
+			recursiveNameFinder( this , nameCalc ,0, filtered, res );
+			this.generativeNameListData.set(Array.from(res.data));
+		}
+	}  
 
 </script> 
 <script lang="ts"> 
@@ -306,11 +392,11 @@
     import { writable, type Writable, get } from 'svelte/store'; 
 	import OriginRow from "./views/OriginRow.svelte";
     import { slide } from 'svelte/transition';
-    import { flip } from 'svelte/animate'; 
-    import { on } from "events";
+    import { flip } from 'svelte/animate';   
     import { onMount } from "svelte";
-
-	export let node : Writable<GrobDerivedNode|null>;
+    import { DerivedItemController } from "./DerivedItemDesigner.svelte";
+  
+ 
 	export let system : Writable<TTRPGSystem|null>; 
 	export let secondSlideInReady = false;
 	export let goodTitle = "No Error";
@@ -318,20 +404,20 @@
 
 	let messageHandler: StaticMessageHandler; 
 
-	let controller : DerivedItemController = new DerivedItemController();
-	$: controller.setControllerDeps($node,$system)
+	let controller : DerivedCollectionController = new DerivedCollectionController(); 
+	$: controller.setControllerDeps( $system )
 	$: controller.messageHandler = messageHandler;
-	$: availableSymbols = get(controller.mappedOrigins).filter(p => !p.active ).map( p => p.key );
-	let flash = false;	
-	
-	
-
+	$: availableSymbols = get(controller.mappedOrigins).filter(p => !p.active ).map( p => p.key );  
+	 
 	let controllerMappedOrigin	: Writable<originRowData[]>;
 	let controllerResultValue	: Writable<number>;
 	let controllerResultSucces	: Writable<boolean>;
+	let controllerNameResultSucces	: Writable<boolean>;
+	let controllerNameResultValue	: Writable<string> ;  
 	let controllerName			: Writable<string>;
 	let controllerCalc			: Writable<string>;
-	let controllerIsValid		: Writable<boolean>;
+	let controllerIsValid		: Writable<boolean>; 
+	let generativeNameListData 	: Writable<string[]>	;
 
 	function onNameInput ( event : any  ){  
 		messageHandler?.removeError('save');
@@ -339,17 +425,18 @@
 		controller.name.set( name);
 		controller.checkIsValid(false);  
 	}
-	function onCalcInput ( event : any  ){
-
-		
-
+	function onCalcNameInput ( event : any  ){  
+		messageHandler?.removeError('save');
+		let nameCalc = event.target.value;
+		controller.nameCalc.set( nameCalc );
+		controller.checkIsValid(false);  
+	} 
+	function onCalcInput ( event : any  ){ 
 		let calc = event.target.value; 
 		controller.calc.set( calc);
 		messageHandler?.removeError('save');
 		controller.recalculateCalcAndOrigins();  
-		controller.checkIsValid(false);   
-
-		
+		controller.checkIsValid(false);    
 	}
 	function onDeleteClicked(e){
 		messageHandler?.removeError('save');
@@ -361,39 +448,32 @@
 		controller.onKeyExchange(e); 
 		controller.checkIsValid(false);  
 	}
-	function onSave(){
-
+	function onSave(){ 
 		messageHandler?.removeError('save');
-		controller.saveNodeChanges(); 
-		controller.checkIsValid(false);   
+		controller.saveCollection();      
 		 
 	}
-	node.subscribe(p => {  
-
-		if ( p?.getKey() == controller.node?.getKey() )
-			return;
- 
-		controller.setControllerDeps( p , $system );
-		
- 		// flash as update
-		flash = true;
-		setTimeout( () => { flash = false} , 200)  
-	})	
+	function onGenPreviewToogle(){ 
+		controller.generateNamePreview();		
+	}
+	 
 	onMount(() => { 
-		controller.setControllerDeps( $node , $system );
+		controller.setControllerDeps( $system ); 
 		controller.recalculateCalcAndOrigins()
 		controller.checkIsValid(); 
 		controllerMappedOrigin	= controller.mappedOrigins;
 		controllerResultValue	= controller.resultValue;
 		controllerResultSucces	= controller.resultSuccess;
+		controllerNameResultSucces	= controller.resultNameSuccess;
+		controllerNameResultValue	= controller.resultNameValue;
 		controllerName			= controller.name;
 		controllerCalc			= controller.calc;
-		controllerIsValid		= controller.isValid;
+		controllerIsValid		= controller.isValid; 
+		generativeNameListData 	= controller.generativeNameListData ;
 	})
 
-</script>
-{#key $node?.name}
-<div class="GrobsInteractiveColoredBorder" data-state={ flash ? 'flash' : $controllerIsValid ? 'good' : 'error' } data-state-text={ $controllerIsValid ? goodTitle: badTitle}>
+</script> 
+<div class="GrobsInteractiveColoredBorder" data-state={  $controllerIsValid ? 'good' : 'error' } data-state-text={ $controllerIsValid ? goodTitle: badTitle}>
 	<div>
 		<StaticMessageHandler 
 			bind:this={ messageHandler }
@@ -407,29 +487,36 @@
 	</div>
 	<div class="ItemDesigner_TwoColumnData" >
 
-		<div>Node Name</div>
-		<input type="text" class="ItemDesignerInput" on:input={ ( e ) => { onNameInput(e) } } contenteditable bind:value={ $controllerName }/>
- 
-		<div>Node Location</div>
-		<div class="ItemDesignerInput" >{ ($node?.parent?.parent?.name ?? 'unknown collection') + '.' +( $node?.parent?.name ?? 'unknown collection') + '.' + $controllerName }</div>
- 
+		<div>new Collection Name</div>
+		<input type="text" class="ItemDesignerInput" on:input={ ( e ) => { onNameInput(e) } } contenteditable bind:value={ $controllerName }/>  
 	</div>
-	<div>
-		{#if $node && $system }
+	<div> 
+		{#if $system }
 			<div class="OriginEditor">
-				<div class="derivedCalcStatementRow" data-succes={ $controllerResultSucces } >
-					<div>Calc</div>
-					<input type="text" value={ $controllerCalc } 
-						on:input={ onCalcInput }
-						placeholder="insert calcStatement here"
-					/>
-					<div class="derivedCalcStatementResult" data-succes={ $controllerResultSucces } >{ $controllerResultValue }</div>
+				<div class="derivedCollectionCalcStatementMatrix" >
+					 
+						<div data-succes={ $controllerNameResultSucces } >Name</div>
+						<input type="text"  
+							on:input={ onCalcNameInput }
+							placeholder="insert Name Calc Statement here"
+						/>
+						<div class="derivedCalcStatementResult" data-succes={ $controllerNameResultSucces } >{ $controllerNameResultValue }</div>
+					 
+					 
+						<div  data-succes={ $controllerResultSucces } >Calc</div>
+						<input type="text" value={ $controllerCalc } 
+							on:input={ onCalcInput }
+							placeholder="insert calcStatement here"
+						/>
+						<div class="derivedCalcStatementResult" data-succes={ $controllerResultSucces } >{ $controllerResultValue }</div>
+					 
+					 
 				</div>
 				<div class="derivedOriginRowsContainer">
 					{#if $controllerMappedOrigin && secondSlideInReady }
 						<div transition:slide|local >
 							{#each $controllerMappedOrigin as origin (origin.key) }
-								<div animate:flip={{ delay: 20 }} transition:slide|local class="derivedOriginRowContainer"> 
+								<div transition:slide|local class="derivedOriginRowContainer"> 
 									<OriginRow 
 										bind:rowData 	 = { origin }
 										availableSymbols = { availableSymbols }
@@ -437,6 +524,8 @@
 										on:onDelete 		= { onDeleteClicked }
 										on:onSymbolSelected = { onKeyExchange }
 										on:foundTargetNode = { (e) =>{ controller.checkIsValid(false) }}
+										allowSelectAll = { true }
+										SelectAllText = { selAllInCollectionString }
 									/>   
 								</div>
 							{/each}
@@ -449,6 +538,17 @@
 	<br>
 	<div class="ItemDesignerButtonRow">
 		<button on:click={ onSave }  >save changes</button> 
+		<button on:click={ onGenPreviewToogle }  >Generate Name Preview</button> 
 	</div>
-</div>
-{/key}
+	<div>
+		<ToogleSection title="preview Names">
+			{#each $generativeNameListData as name (name) }
+				<div animate:flip transition:slide|local class="derivedOriginRowContainer"> 
+						{name}
+				</div>
+			{/each}
+		</ToogleSection>
+	</div>
+	
+</div> 
+	 

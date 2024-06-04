@@ -7,11 +7,12 @@
     import { createEventDispatcher, onMount } from "svelte";  
     import { slide } from "svelte/transition";
 	
-	export let system:TTRPGSystem;
-	type originRowData = {key: string, segments:(string|null)[] , active :boolean , testValue :number, inCalc:boolean, target: GrobNodeType | null };
+	export let system:TTRPGSystem; 
+	type originRowData = {key: string, segments:(string|null)[] , active :boolean , testValue :number, inCalc:boolean, target: GrobNodeType  | null , isSelectAllTarget:boolean };
 	export let rowData : originRowData;
 	export let availableSymbols : string [] = []; 
-	
+	export let allowSelectAll : boolean = false; 
+	export let SelectAllText = '--Select All--'
 
 	let dispatch = createEventDispatcher();
 
@@ -34,6 +35,7 @@
 	let options_level2 :string[] = [];
 
 	function onSelect( level : number , value : string ){
+		rowData.isSelectAllTarget = false;
 		switch(level){
 			case 0:
 
@@ -49,6 +51,11 @@
 			case 1:
 				//@ts-ignore
 				options_level2 = system.getCollection(rowData.segments[0],value)?.getNodeNames();
+
+				if (allowSelectAll && options_level2.length != 0 ){
+					options_level2 = [ SelectAllText , ...options_level2 ];
+				}
+
 				rowData.segments[2] = null;
 				if (origin){
 					dispatch('deselectTargetNode');
@@ -56,10 +63,19 @@
 				rowData.target = null;
 				break;
 			case 2:
+
+				if (allowSelectAll && value === SelectAllText){  
+					 
+					rowData.isSelectAllTarget = true;
+					dispatch('foundSelectAllTargetNode' ); 
+					return;
+				}
+				
 				//@ts-ignore
 				let targetNode = system.getNode(rowData.segments[0],rowData.segments[1],value);
 				rowData.target =targetNode;
 				dispatch('foundTargetNode',targetNode);
+				
 				break;
 		}
 	}

@@ -1528,6 +1528,33 @@ button {
 
 .derivedOriginRowContainer {
   height: 40px;
+}
+
+.derivedCollectionCalcStatementMatrix {
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+}
+
+.derivedCollectionCalcStatementMatrix > div {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.derivedCollectionCalcStatementMatrix > div:nth-child(1) {
+  border-radius: 5px 0 0 0;
+}
+
+.derivedCollectionCalcStatementMatrix > div:nth-child(3) {
+  border-radius: 0 5px 0 0;
+}
+
+.derivedCollectionCalcStatementMatrix > div:last-child {
+  border-radius: 0 0 5px 0;
+}
+
+.derivedCollectionCalcStatementMatrix > div:nth-last-child(3) {
+  border-radius: 0 0 0 5px;
 }.GrobSelectLabel {
   height: inherit;
   position: relative;
