@@ -9,8 +9,7 @@
 <script lang="ts">
     import { slide } from "svelte/transition";
 	import './StaticMessageHandler.scss'; 
-    import { ok } from "assert";
-    import { slidefade } from "../../Transitions/SlideFly";
+    import { ok } from "assert"; 
     import { writable, type Writable } from "svelte/store";
     import { flip } from "svelte/animate";
 

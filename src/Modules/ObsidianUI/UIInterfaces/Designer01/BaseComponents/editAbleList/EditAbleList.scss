@@ -37,8 +37,11 @@
 
 
 .Editable_row > div {
-	display:flex; 
-	align-items: center;
+	position:relative;
+	& > imageContainer {
+		height:100%;
+		width:100%;
+	}
 }
 
 

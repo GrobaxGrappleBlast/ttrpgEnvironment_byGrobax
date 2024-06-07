@@ -985,8 +985,12 @@ button {
 }
 
 .Editable_row > div {
-  display: flex;
-  align-items: center;
+  position: relative;
+}
+
+.Editable_row > div > imageContainer {
+  height: 100%;
+  width: 100%;
 }
 
 .Editable_rowPlusButton {
@@ -1001,6 +1005,29 @@ button {
   display: flex;
   justify-content: center;
   align-items: center;
+}.tooltipInnerBox {
+  position: absolute;
+  color: #fff;
+  padding: 5px;
+  border-radius: 3px;
+  z-index: 1000;
+  white-space: nowrap;
+}
+
+.tooltipInnerBox {
+  background-color: var(--background-primary);
+}
+
+.tooltipInnerBox[data-type=error] {
+  background-color: var(--background-modifier-error);
+}
+
+.tooltipInnerBox[data-type=verbose] {
+  background-color: var(--color-blue);
+}
+
+.tooltipInnerBox[data-type=good] {
+  background-color: var(--background-modifier-success);
 }div {
   vertical-align: middle;
   line-height: 24px;

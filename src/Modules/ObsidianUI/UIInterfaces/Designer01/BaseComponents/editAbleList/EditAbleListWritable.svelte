@@ -7,9 +7,9 @@
 	import Image_save from "../buttons/download.svelte"; 
     import { fade, slide } from "svelte/transition";
     import { createEventDispatcher, onMount } from "svelte"; 
-    import { writable , type  Writable } from 'svelte/store';
-
+    import { writable , type  Writable } from 'svelte/store'; 
 	import './EditAbleList.scss'; 
+	import { tooltip } from '../Messages/toolTip.js';
 
 	export let isEditableContainer:boolean = true;
     export let collection: Writable<string[] | {key?:string, value:string, isSelected?:boolean }[]>; 
@@ -154,6 +154,9 @@
 
     <div class={ isEditableContainer ? "GrobsInteractiveContainer editableTable" : "editableTable"} >
 			{#each $writableCol as element ( element.key ) }
+				{@const editIsAllowed  =( !disabled && (onUpdateItem != null))}
+				{@const editIsActive   =( editIsAllowed && element.isEdit  )}
+				{@const deleteIsAllowed=(!disabled && (onDeleteItem != null)  )}
 				<div
 					class="Editable_row" 
 					data-selected={ element.isSelected }
@@ -183,34 +186,102 @@
 						>   
 						</div>
 					{/if }
-				 
-					{#if !disabled && ((onUpdateItem != null) || (onDeleteItem != null) ) }  
-						{#if (onUpdateItem != null) } 
-							<div  transition:slide|local
-								on:click={ () => onEditClicked(element) }
-								on:keyup={ () => onEditClicked(element) }
-							> 	
-								{#if element.isEdit }
-									<Image_save color={ 'white'}/>
-								{:else}
-									<Image_edit color={ 'white'}/>
-								{/if}
-							</div>  
-							{#if element.isEdit } 
-								<div  transition:slide|local
-									on:click={ () => onEditCancel(element) }
-									on:keyup={ () => onEditCancel(element) }
+				  
+					<div > 	 
+						{#if editIsAllowed }
+							{#if editIsActive }
+								<imageContainer 
+									on:click={ () => onEditClicked(element) }
+									on:keyup={ () => onEditClicked(element) }
+									transition:slide|local
+									use:tooltip={{ text: 'Save changes', type:'verbose' }} 
 								>
-									<Image_minus color={'white'}/>
-								</div> 
-							{/if} 
-						{/if } 
-						{#if (onDeleteItem != null) && !element.isEdit }
-							<div  transition:slide|local >
-								<Image_trash color={'white'}/>
-							</div>
-						{/if} 
+									<Image_save color={ 'white'} />
+								</imageContainer >
+							{:else}
+								<imageContainer 
+									on:click={ () => onEditClicked(element) }
+									on:keyup={ () => onEditClicked(element) }
+									transition:slide|local
+									use:tooltip={{ text: 'Edit item' , type:'verbose'}}  
+								>
+									<Image_edit color={ 'white'}/>
+								</imageContainer>
+							{/if}
+						{/if}
+					</div>   
+					<div>
+						{#if editIsActive }
+							<imageContainer 
+								on:click={ () => onEditCancel(element) }
+								on:keyup={ () => onEditCancel(element) }
+								transition:slide|local
+								use:tooltip={{ text: 'Discard Changes' , type:'verbose' }}
+							>
+								<Image_minus color={ 'white'}/>
+							</imageContainer> 
+						{:else if deleteIsAllowed } 
+							<imageContainer 
+								on:click={ () => onEditCancel(element) }
+								on:keyup={ () => onEditCancel(element) }
+								transition:slide|local
+								use:tooltip={{ text: 'Delete item', type:'verbose' , }}
+							>
+								<Image_trash color={ 'white'}/>
+							</imageContainer>   
+						{:else}
+							<imageContainer  
+								transition:slide|local 
+							>
+							 
+							</imageContainer> 
+						{/if}
+					</div>
+
+
+
+
+
+
+
+
+				<!--
+				{#if !disabled && (onUpdateItem != null) } 
+					<div  transition:slide|local
+						on:click={ () => onEditClicked(element) }
+						on:keyup={ () => onEditClicked(element) }
+					> 	
+						{#if element.isEdit }
+							<imageContainer use:tooltip={{ text: 'Save changes', type:'verbose' }} >
+								<Image_save color={ 'white'} />
+							</imageContainer>
+						{:else}
+							<imageContainer use:tooltip={{ text: 'Edit item' , type:'verbose'}}  >
+								<Image_edit color={ 'white'}/>
+							</imageContainer>
+						{/if}
+					</div>  
+					{#if element.isEdit } 
+						<div  transition:slide|local
+							on:click={ () => onEditCancel(element) }
+							on:keyup={ () => onEditCancel(element) }
+						>	
+							<imageContainer use:tooltip={{ text: 'Discard Changes' , type:'verbose' }}  >
+								<Image_minus color={ 'white'}/>
+							</imageContainer> 
+						</div> 
 					{/if} 
+				{/if } 
+				{#if (onDeleteItem != null) && !element.isEdit }
+					<div  transition:slide|local >
+						<imageContainer use:tooltip={{ text: 'Delete item', type:'verbose' , }} >
+							<Image_trash color={ 'white'}/>
+						</imageContainer>  
+					</div>
+				{/if}  
+				-->
+
+
 				</div>
 			{/each}
 			{#if (onSpecialAdd != null || onAdd != null ) && !disabled } 
