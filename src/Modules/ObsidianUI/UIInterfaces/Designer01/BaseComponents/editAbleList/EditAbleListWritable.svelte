@@ -30,7 +30,7 @@
 	}
 
 	let writableCol : Writable< IViewElement[]> = writable([]);
-	let selected : IViewElement | null = null; 
+	let selected : IViewElement | null = null;  
 	
 	onMount(()=>{ 
 		Mount();
@@ -142,9 +142,9 @@
 		}  
 		writableCol.update(r => r)
 	 }
-	function onEditCancel( element ){
-		console.log("onEditCancel");
+	function onEditCancel( element : IViewElement ){
 		element.isEdit = !element.isEdit;
+		element.nameEdit = element.name;
 		writableCol.update(r => r)
 	}
 
@@ -153,7 +153,7 @@
 
 
     <div class={ isEditableContainer ? "GrobsInteractiveContainer editableTable" : "editableTable"} >
-			{#each $writableCol as element ( element.key ) }
+			{#each $writableCol as element , i  ( element.key ) }
 				{@const editIsAllowed  =( !disabled && (onUpdateItem != null))}
 				{@const editIsActive   =( editIsAllowed && element.isEdit  )}
 				{@const deleteIsAllowed=(!disabled && (onDeleteItem != null)  )}
@@ -162,7 +162,7 @@
 					data-selected={ element.isSelected }
 					transition:slide 
 					data-can-hover={true}
-					data-isEdit={ element.isEdit }
+					data-isEdit={ element.isEdit && (element.name != element.nameEdit) } 
 				>
 					{#if !element.isEdit } 
 						<div
@@ -181,9 +181,8 @@
 							class="Editable_column"
 							contenteditable="true"
 							bind:textContent={ element.nameEdit } 
-							on:click={ () => { if( disabled ){ return }  _onSelect(element)} }
-							on:keyup={ () => { if( disabled ){ return }  _onSelect(element)} }
-						>   
+							autofocus={true}
+						> 
 						</div>
 					{/if }
 				  
@@ -200,8 +199,8 @@
 								</imageContainer >
 							{:else}
 								<imageContainer 
-									on:click={ () => onEditClicked(element) }
-									on:keyup={ () => onEditClicked(element) }
+									on:click={ () => {onEditClicked(element) }}
+									on:keyup={ () => {onEditClicked(element) }}
 									transition:slide|local
 									use:tooltip={{ text: 'Edit item' , type:'verbose'}}  
 								>

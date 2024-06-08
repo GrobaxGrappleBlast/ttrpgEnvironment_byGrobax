@@ -396,10 +396,53 @@
 		}) 
 	}
 	function _updateItemName( group: 'fixed' |'derived' , collection: string | null , oldName : string , newName: string ){
+		 
+		// if this is an update of a collection, collection ought be null
+		if (collection == null ){
+			let collection = $designer?.getCollection(group,oldName);
+			collection?.setName(newName);
 
+			// deselect collection. 
+			deSelectCollection(group);
+		}
+
+		// if this is an update of a node, then collection is not null. 
+		else{
+			let item = $designer?.getNode(group,collection,oldName);
+			item?.setName(newName);
+
+			// deselct item.
+			deSelectCollectionItem(group)
+		}
+		$designer = $designer;
 	}
 	function _deleteItem(isCollection:boolean, group: 'fixed' |'derived' , collection: string | null , name: string ){
 		
+		// if  collection delete, delete collection
+		if ( isCollection ){
+			$designer?.deleteCollection(group,name);
+
+			// deselct collection.
+			let selectedName = group =='derived' ? selectedDerivedCollectionName : selectedFixedCollectionName;
+			if ( selectedName == name ){
+				deSelectCollection(group)
+			}  
+		}
+
+		// if this is an item delete, delete item
+		else {
+			if(collection == null)
+				throw new Error('Called delete item, on item, without defined collection');
+			
+			$designer?.deleteNode(group,collection,name);
+			
+			// deselct item.
+			let selectedName = group =='derived' ? selectedDerivedNodeName : selectedFixedNodeName;
+			if ( selectedName == name ){
+				deSelectCollectionItem(group)
+			} 
+		}
+		$designer = $designer;
 	}
 
 </script>

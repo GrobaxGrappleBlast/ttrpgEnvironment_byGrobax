@@ -12,8 +12,6 @@
 	let mounted = false;
 	onMount(()=>{
 		setTimeout(() => { mounted = true }, 100 ) 
-		console.log(type);
-
 	})
 </script>
  
