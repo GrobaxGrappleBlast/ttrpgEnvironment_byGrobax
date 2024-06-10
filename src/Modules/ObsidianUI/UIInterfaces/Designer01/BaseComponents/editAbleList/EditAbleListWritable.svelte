@@ -156,15 +156,15 @@
 		writableCol.update(r => r)
 	}
 	function onDelete( element ){ 
-
-		for (let i = 0; i < $writableCol.length; i++) {
-			const e = $writableCol[i];
-			e.nameEdit = e.name;
+		if ( !onDeleteItem) {
+			return;
 		}
 
-		writableCol.update(r => r)
-	}
-
+		writableCol.update(r => {
+			return r.filter( p => p.key != element.key)
+		});
+		onDeleteItem(element.name);
+	} 
 	function onEditFocus( row ){
 		const element = row.target;
 		const range = document.createRange();
