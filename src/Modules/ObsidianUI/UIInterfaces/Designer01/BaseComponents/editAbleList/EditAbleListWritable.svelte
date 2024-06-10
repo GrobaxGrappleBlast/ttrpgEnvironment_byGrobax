@@ -166,21 +166,21 @@
 	}
 
 	function onEditFocus( row ){
+		const element = row.target;
 		const range = document.createRange();
 		const selection = window.getSelection();
-
-		 
-
+  
 		if (!range || !selection){
 			return;
 		}
-
-
-		range.selectNodeContents(row);
+ 
+		range.selectNodeContents(element);
 		range.collapse(false); // Collapse the range to the end
 		selection.removeAllRanges();
 		selection.addRange(range);
 	}
+
+ 
 
 </script>
 
