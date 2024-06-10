@@ -26,11 +26,11 @@
 		name:string;
 		isSelected:boolean; 
 		nameEdit:string;
-		isEdit:boolean; 
 	}
-
+ 
 	let writableCol : Writable< IViewElement[]> = writable([]);
-	let selected : IViewElement | null = null;  
+	let selected : IViewElement | null = null; 
+	let editIsActive = false; 
 	
 	onMount(()=>{ 
 		Mount();
@@ -48,8 +48,7 @@
 					key:e,
 					isSelected : false, 
 					nameEdit :e,
-					name :e,
-					isEdit : false
+					name :e
 				} as IViewElement;
 				arr.push(item);
 			}else{
@@ -57,8 +56,7 @@
 					key:e.key ?? e.value,
 					isSelected : e.isSelected != undefined ? e.isSelected : false, 
 					nameEdit :e.value,
-					name :e.value,
-					isEdit : false
+					name :e.value
 				} as IViewElement;
 				arr.push(item);
 			} 
@@ -128,48 +126,153 @@
 
 
 	// EDIT FUNCTIONALITIES 
-	function onEditClicked( element : IViewElement ){
+	function onEditClicked( ){
+		editIsActive = !editIsActive;
+	}
+	function onEditSaved( ){
 	 	  
 		if (!onUpdateItem){
 			return;
 		}
 
-		element.isEdit = !element.isEdit;
-
-		// if its time to save, save. 
-		if ( !element.isEdit ){
-			onUpdateItem( element.key , element.nameEdit );
-		}  
+		for (let i = 0; i < $writableCol.length; i++) {
+			const e = $writableCol[i];
+			onUpdateItem( e.key , e.nameEdit );
+		}
+  
 		writableCol.update(r => r)
-	 }
-	function onEditCancel( element : IViewElement ){
-		element.isEdit = !element.isEdit;
-		element.nameEdit = element.name;
+	} 
+	function onEditCancel(  ){ 
+
+		for (let i = 0; i < $writableCol.length; i++) {
+			const e = $writableCol[i];
+			e.nameEdit = e.name;
+		}
+		
+		writableCol.update(r => r)
+	}
+	function onEditCancelSingle(  e ){ 
+		e.nameEdit = e.name;
+		writableCol.update(r => r)
+	}
+	function onDelete( element ){ 
+
+		for (let i = 0; i < $writableCol.length; i++) {
+			const e = $writableCol[i];
+			e.nameEdit = e.name;
+		}
+
 		writableCol.update(r => r)
 	}
 
+	function onEditFocus( row ){
+		const range = document.createRange();
+		const selection = window.getSelection();
+
+		 
+
+		if (!range || !selection){
+			return;
+		}
+
+
+		range.selectNodeContents(row);
+		range.collapse(false); // Collapse the range to the end
+		selection.removeAllRanges();
+		selection.addRange(range);
+	}
 
 </script>
 
 
     <div class={ isEditableContainer ? "GrobsInteractiveContainer editableTable" : "editableTable"} >
-			{#each $writableCol as element , i  ( element.key ) }
-				{@const editIsAllowed  =( !disabled && (onUpdateItem != null))}
-				{@const editIsActive   =( editIsAllowed && element.isEdit  )}
-				{@const deleteIsAllowed=(!disabled && (onDeleteItem != null)  )}
+			{#if (!disabled) }
+				<div
+					class="Editable_rowHeader"  
+					transition:slide|local
+					data-can-hover={true} 
+				>
+
+					<!-- edit -->
+					{#if onUpdateItem != null }
+						{#if !editIsActive }
+							<imageContainer 
+								on:click={ onEditClicked }
+								on:keyup={ onEditClicked }
+								transition:slide|local
+								use:tooltip={{ text: 'Turn on Edit mode', type:'verbose' }} 
+							>
+								<Image_edit color={ 'white'} />
+							</imageContainer >
+						{:else}
+							
+							<imageContainer 
+								on:click={ onEditClicked }
+								on:keyup={ onEditClicked }
+								transition:slide|local
+								use:tooltip={{ text: 'Turn off Edit mode', type:'verbose' }} 
+							>
+								<Image_edit color={ 'white'} />
+							</imageContainer >
+							<imageContainer 
+								on:click={ onEditSaved }
+								on:keyup={ onEditSaved }
+								transition:slide|local
+								use:tooltip={{ text: 'Save changes made', type:'verbose' }} 
+							>
+								<Image_save color={ 'white'} />
+							</imageContainer >
+
+							<imageContainer 
+								on:click={ onEditCancel }
+								on:keyup={ onEditCancel }
+								transition:slide|local
+								use:tooltip={{ text: 'Discard Changes', type:'verbose' }} 
+							>
+								<Image_minus color={ 'white'} />
+							</imageContainer >
+						{/if}
+					{/if}
+
+					<!-- Add -->
+					{#if onAdd != null }
+						<imageContainer 
+							on:click={ () => _onAdd() }
+							on:keyup={ () => _onAdd() }
+							transition:slide|local
+							use:tooltip={{ text: 'Add To List', type:'verbose' }} 
+						>
+							<Image_plus color={ 'white'} />
+						</imageContainer >
+					{/if}
+
+					<!-- Add Special -->
+					{#if onSpecialAdd != null }
+						<imageContainer 
+							on:click={ () => onSpecialAdd() }
+							on:keyup={ () => onSpecialAdd() }
+							transition:slide|local
+							use:tooltip={{ text: 'Add Entire collection', type:'verbose' }} 
+						>
+							<Image_plus color={ 'yellow'} />
+						</imageContainer >
+					{/if}
+
+				</div>
+			{/if}
+			{#each $writableCol as element , i  ( element.key ) } 
+				{@const deleteIsAllowed=( !disabled && (onDeleteItem != null)  )  && !editIsActive  }
 				<div
 					class="Editable_row" 
-					data-selected={ element.isSelected }
-					transition:slide 
+					data-selected={ !editIsActive && element.isSelected }
+					transition:slide|local
 					data-can-hover={true}
-					data-isEdit={ element.isEdit && (element.name != element.nameEdit) } 
+					data-isEdit={ editIsActive && (element.name != element.nameEdit) } 
 				>
-					{#if !element.isEdit } 
+					{#if !editIsActive } 
 						<div
-							tabindex="-1"
-							class="Editable_column"
-							contenteditable="false"
-							 
+							tabindex="-1" 
+							contenteditable="false" 
 							on:click={ () => { if( disabled ){ return }  _onSelect(element)} }
 							on:keyup={ () => { if( disabled ){ return }  _onSelect(element)} }
 						>  
@@ -177,144 +280,42 @@
 						</div>
 					{:else}
 						<div
-							tabindex="-1"
-							class="Editable_column"
+							tabindex="1" 
 							contenteditable="true"
+							on:focus={ onEditFocus }
 							bind:textContent={ element.nameEdit } 
 							autofocus={true}
 						> 
 						</div>
 					{/if }
 				  
-					<div > 	 
-						{#if editIsAllowed }
-							{#if editIsActive }
-								<imageContainer 
-									on:click={ () => onEditClicked(element) }
-									on:keyup={ () => onEditClicked(element) }
-									transition:slide|local
-									use:tooltip={{ text: 'Save changes', type:'verbose' }} 
-								>
-									<Image_save color={ 'white'} />
-								</imageContainer >
-							{:else}
-								<imageContainer 
-									on:click={ () => {onEditClicked(element) }}
-									on:keyup={ () => {onEditClicked(element) }}
-									transition:slide|local
-									use:tooltip={{ text: 'Edit item' , type:'verbose'}}  
-								>
-									<Image_edit color={ 'white'}/>
-								</imageContainer>
-							{/if}
-						{/if}
-					</div>   
-					<div>
-						{#if editIsActive }
-							<imageContainer 
-								on:click={ () => onEditCancel(element) }
-								on:keyup={ () => onEditCancel(element) }
-								transition:slide|local
-								use:tooltip={{ text: 'Discard Changes' , type:'verbose' }}
-							>
-								<Image_minus color={ 'white'}/>
-							</imageContainer> 
-						{:else if deleteIsAllowed } 
-							<imageContainer 
-								on:click={ () => onEditCancel(element) }
-								on:keyup={ () => onEditCancel(element) }
+					<div> 
+						{#if deleteIsAllowed } 
+							<imageContainer  
+								on:click={ () => onDelete( element ) }
+								on:keyup={ () => onDelete( element ) }
 								transition:slide|local
 								use:tooltip={{ text: 'Delete item', type:'verbose' , }}
 							>
 								<Image_trash color={ 'white'}/>
 							</imageContainer>   
-						{:else}
+						{:else if editIsActive && element.name != element.nameEdit }
 							<imageContainer  
-								transition:slide|local 
+								on:click={ () => onEditCancelSingle(element) }
+								on:keyup={ () => onEditCancelSingle(element) }
+								transition:slide|local
+								use:tooltip={{ text: 'Delete item', type:'verbose' , }}
 							>
-							 
-							</imageContainer> 
-						{/if}
-					</div>
-
-
-
-
-
-
-
-
-				<!--
-				{#if !disabled && (onUpdateItem != null) } 
-					<div  transition:slide|local
-						on:click={ () => onEditClicked(element) }
-						on:keyup={ () => onEditClicked(element) }
-					> 	
-						{#if element.isEdit }
-							<imageContainer use:tooltip={{ text: 'Save changes', type:'verbose' }} >
-								<Image_save color={ 'white'} />
-							</imageContainer>
-						{:else}
-							<imageContainer use:tooltip={{ text: 'Edit item' , type:'verbose'}}  >
-								<Image_edit color={ 'white'}/>
-							</imageContainer>
-						{/if}
-					</div>  
-					{#if element.isEdit } 
-						<div  transition:slide|local
-							on:click={ () => onEditCancel(element) }
-							on:keyup={ () => onEditCancel(element) }
-						>	
-							<imageContainer use:tooltip={{ text: 'Discard Changes' , type:'verbose' }}  >
 								<Image_minus color={ 'white'}/>
-							</imageContainer> 
-						</div> 
-					{/if} 
-				{/if } 
-				{#if (onDeleteItem != null) && !element.isEdit }
-					<div  transition:slide|local >
-						<imageContainer use:tooltip={{ text: 'Delete item', type:'verbose' , }} >
-							<Image_trash color={ 'white'}/>
-						</imageContainer>  
-					</div>
-				{/if}  
-				-->
-
-
+							</imageContainer>   
+						{:else}
+							<imageContainer > </imageContainer> 
+						{/if}
+						
+					</div> 
 				</div>
 			{/each}
-			{#if (onSpecialAdd != null || onAdd != null ) && !disabled } 
-				<div
-					class="Editable_row Editable_rowPlusButton"
-					data-selected={ false }
-					transition:slide
-					data-can-hover={true}
-					style="display:flex;justify-content: center;" 
-				>
-					{#if onSpecialAdd != null}
-						<div 
-							tabindex="-1"
-							class="Editable_Icon"
-							contenteditable="false" 
-							on:click={ () => onSpecialAdd() }
-							on:keyup={ () => onSpecialAdd() }
-						>  
-							<Image_plus color={'yellow'}/>
-						</div>
-					{/if}
-					{#if onAdd != null }
-						<div 
-							tabindex="-1"
-							class="Editable_Icon"
-							contenteditable="false" 
-							on:click={ () => _onAdd() }
-							on:keyup={ () => _onAdd() }
-						>  
-							<Image_plus color={'#fff'}/>
-						</div> 
-					{/if}
-				</div> 
-			{/if}
+			
 	</div>
 
  
