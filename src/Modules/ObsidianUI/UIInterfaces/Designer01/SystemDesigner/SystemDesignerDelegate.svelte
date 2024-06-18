@@ -20,12 +20,18 @@
 	export let designer : Writable<TTRPGSystem>;
 	export let messageHandler : StaticMessageHandler ;
 	export let type : 'derived' | 'fixed';
+	export let onSpecialAdd : (() => any) | null = null ;
+	let _onSpecialAdd = onSpecialAdd ? () =>{ deSelectCollection(); onSpecialAdd(); } : null;
 
-	onMount(()=>{ 
+	onMount(mount)
+	function mount(){
+		console.log('ASDASdasdsad')
 		let data = $designer; 
 		let colNames = data.getCollectionNames(type);
 		collection.set( colNames.map( p => nameToIViewItem(p, false ) ))
-	})
+	}
+
+ 
 	   
 	// views 
 	let collectionView		: EditAbleListWritable;
@@ -47,7 +53,7 @@
 	function noteUpdate(){}
 
 	// Collection Functions 
-	function selectCollection ( collection:string , allowDeselect = true ){ 
+	export function selectCollection ( collection:string , allowDeselect = true , dispatchEvent = true ){ 
 		// deSelectItem
 		deSelectCollectionItem();
 
@@ -64,20 +70,34 @@
 			return false;
 		} 
 
-		// map the names to IViewItems.  
-		let names = ($designer as TTRPGSystem).getCollection(type,collection)?.getNodeNames() ?? [];
+		// map the names to IViewItems.
+		let collectionInstance = ($designer as TTRPGSystem).getCollection(type,collection);  
+		let names = collectionInstance?.getNodeNames() ?? [];
 		let mapped = names.map( p => {
 			return nameToIViewItem(p, p == selectedCollectionName ) 
 		} )
 
 		selectedCollectionData.set(mapped);
 		selectedCollectionName = collection;
+			
+		if (dispatchEvent){
+			dispatch('selectCollection', collectionInstance );
+		}
 		return true; 
 	}
-	function deSelectCollection (){
+	export function deSelectCollection ( dispatchEvent = true ){
 		deSelectCollectionItem() 
 		selectedCollectionName = null; 
 		selectedCollectionData.set([]); 
+		let prevSelItem = get(collection).find( p => p.isSelected );
+		if(prevSelItem){
+			prevSelItem.isSelected = false;
+		}
+		collection.update(r=>r);
+		
+		if (dispatchEvent){
+			dispatch('selectCollection', null );
+		}
 	}
 	function addNewCollection( ){
 		
@@ -161,7 +181,7 @@
 		selectedNodeName = '';
 
 		if (dispatchEvent){
-			dispatch('deselect');
+			dispatch('selectItem', null );
 		}
 
 		if (prevSelItem){
@@ -208,7 +228,6 @@
 
 	// Model Operations And View Updates
 	function _updateItemName( collection: string | null , dataArr:{ oldName : string , newName: string}[] ){
-		
 		 
 		// if this is an update of a collection, collection ought be null
 		if (collection == null ){
@@ -218,7 +237,7 @@
 				collection?.setName(curr.newName);
 			}
 			
-
+			mount();
 			// deselect collection. 
 			//deSelectCollection(group);
 		}
@@ -271,6 +290,8 @@
 		$designer = $designer;
 	}
 
+
+
 </script>
  
  
@@ -282,7 +303,7 @@
 			collection		= { collection }
 			onSelect		= { (e) => { return selectCollection	(e);} }
 			onAdd			= { () =>	 addNewCollection	()		}
-			onSpecialAdd	= { () =>  { deSelectCollection () }}
+			onSpecialAdd	= { _onSpecialAdd }
 			on:onDeSelect	= { (e) => { deSelectCollection	()}	}
 			onUpdateItem	= { ( array ) => _updateItemName( null, array ) }
 			onDeleteItem	= { ( name ) => _deleteItem(true, null, name ) }
