@@ -396,7 +396,6 @@
     import { onMount } from "svelte";
     import { DerivedItemController } from "./DerivedItemDesigner.svelte";
   
- 
 	export let system : Writable<TTRPGSystem|null>; 
 	export let secondSlideInReady = false;
 	export let goodTitle = "No Error";

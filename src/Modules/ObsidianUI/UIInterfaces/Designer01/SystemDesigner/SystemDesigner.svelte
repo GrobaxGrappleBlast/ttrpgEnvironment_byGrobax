@@ -396,23 +396,25 @@
 		}) 
 	}
 	function _updateItemName( group: 'fixed' |'derived' , collection: string | null , oldName : string , newName: string ){
-		 
+		
 		// if this is an update of a collection, collection ought be null
 		if (collection == null ){
 			let collection = $designer?.getCollection(group,oldName);
 			collection?.setName(newName);
 
 			// deselect collection. 
-			deSelectCollection(group);
+			//deSelectCollection(group);
 		}
 
 		// if this is an update of a node, then collection is not null. 
 		else{
 			let item = $designer?.getNode(group,collection,oldName);
 			item?.setName(newName);
-
+ 
+			//deSelectCollection(group);
+			//selectCollection(group,collection);
 			// deselct item.
-			deSelectCollectionItem(group)
+			//deSelectCollectionItem(group)
 		}
 		$designer = $designer;
 	}

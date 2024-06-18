@@ -306,8 +306,7 @@
     import { writable, type Writable, get } from 'svelte/store'; 
 	import OriginRow from "./views/OriginRow.svelte";
     import { slide } from 'svelte/transition';
-    import { flip } from 'svelte/animate'; 
-    import { on } from "events";
+    import { flip } from 'svelte/animate';  
     import { createEventDispatcher , onMount } from "svelte";
 
 	export let node : Writable<GrobDerivedNode|null>;
@@ -344,16 +343,13 @@
 		controller.checkIsValid(false);  
 	}
 	function onCalcInput ( event : any  ){
-
-		
-
+ 
 		let calc = event.target.value; 
 		controller.calc.set( calc);
 		messageHandler?.removeError('save');
 		controller.recalculateCalcAndOrigins();  
 		controller.checkIsValid(false);   
-
-		
+ 
 	}
 	function onDeleteClicked(e){
 		messageHandler?.removeError('save');

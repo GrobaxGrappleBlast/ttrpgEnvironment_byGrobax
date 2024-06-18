@@ -126,7 +126,7 @@
     import { GrobFixedNode, TTRPGSystem, type GrobNodeType } from "../../../../../../src/Modules/Designer";
     import StaticMessageHandler from "../BaseComponents/Messages/StaticMessageHandler.svelte";
 	import './ItemDesigner.scss'
-    import { beforeUpdate, createEventDispatcher, onMount } from "svelte";
+    import { createEventDispatcher, onMount } from "svelte";
 
 	export let node : Writable<GrobFixedNode|null>;
 	export let system : Writable<TTRPGSystem|null>; 

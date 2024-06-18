@@ -48,7 +48,7 @@ export class TTRPGSystemGraphModel extends TTRPGSystemGraphAbstractModel {
 	public createFixedCollection(name : string) : GrobCollection<GrobFixedNode> {
 		return this.createCollection(fixed, name) as GrobCollection<GrobFixedNode> ;
 	} 
-	public createNode( group : groupKeyType ,col : GrobCollection<GrobNodeType> | string , name : string){
+	public createNode( group : groupKeyType ,col : GrobCollection<GrobNodeType> | string , name : string) : GrobNodeType | null {
 		
 		// ensure that group exists, same way as the others
 		if(!this._hasGroup(group)){
@@ -113,6 +113,7 @@ export class TTRPGSystemGraphModel extends TTRPGSystemGraphAbstractModel {
 
 		const node = new GrobFixedNode(name,col);
 		col.addNode(node); 
+		return node as GrobFixedNode;
 
 	}
 
@@ -164,6 +165,21 @@ export class TTRPGSystemGraphModel extends TTRPGSystemGraphAbstractModel {
 
 
 	// get Statements 
+	public getCollectionNames( group : groupKeyType | GrobGroupType ){
+		let grp : GrobGroupType;
+		if( typeof group == 'string'){
+			grp = this._getGroup(group) as GrobGroupType;
+		}else{
+			grp = group;
+		}
+
+		if(!grp){
+			this.out.outError(`No group existed by name ${group}`)
+			return [];
+		}
+
+		return grp.getCollectionsNames();
+	}
 	public getCollection( group : groupKeyType | GrobGroupType, name : string){
 		
 		let grp : GrobGroupType;

@@ -11,12 +11,13 @@
 	import './EditAbleList.scss'; 
 	import { tooltip } from '../Messages/toolTip.js';
 
+	type updateItem = { oldName : string , newName: string};
 	export let isEditableContainer:boolean = true;
     export let collection: Writable<string[] | {key?:string, value:string, isSelected?:boolean }[]>; 
 	export let onSelect: ( d: any ) => boolean;
 	export let onAdd:(() => any) | null = null; 
 	export let onSpecialAdd:(() => any) | null = null;  
-	export let onUpdateItem:( (oldName:string, newName:string)=>any) | null;
+	export let onUpdateItem:( (dataArr:updateItem[])=>any) | null;
 	export let onDeleteItem:( (name:string)=>any) | null;
 	export let disabled : boolean = false;
 	const dispatch = createEventDispatcher();
@@ -135,12 +136,14 @@
 			return;
 		}
 
+		let updateOBJ :updateItem[] = []
 		for (let i = 0; i < $writableCol.length; i++) {
 			const e = $writableCol[i];
-			onUpdateItem( e.key , e.nameEdit );
+			updateOBJ.push({  oldName : e.name , newName:  e.nameEdit} )
 		}
+		onUpdateItem( updateOBJ );
   
-		writableCol.update(r => r)
+		editIsActive = !editIsActive; 
 	} 
 	function onEditCancel(  ){ 
 
