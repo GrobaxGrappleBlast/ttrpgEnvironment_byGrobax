@@ -187,7 +187,7 @@ button {
   white-space: nowrap;
 }
 
-.lineBreak {
+.lineBreak, .linebreak {
   height: 24px;
 }
 
@@ -433,7 +433,7 @@ button {
   white-space: nowrap;
 }
 
-.lineBreak {
+.lineBreak, .linebreak {
   height: 24px;
 }
 
@@ -711,7 +711,7 @@ button {
   white-space: nowrap;
 }
 
-.lineBreak {
+.lineBreak, .linebreak {
   height: 24px;
 }
 
@@ -936,7 +936,7 @@ button {
   white-space: nowrap;
 }
 
-.lineBreak {
+.lineBreak, .linebreak {
   height: 24px;
 }
 
@@ -1238,7 +1238,7 @@ button {
   white-space: nowrap;
 }
 
-.lineBreak {
+.lineBreak, .linebreak {
   height: 24px;
 }
 
@@ -1324,6 +1324,17 @@ button {
   transition: 1s ease width, 0.3s ease opacity;
 }.toogleSectionHeader {
   cursor: pointer;
+  height: 45px;
+  line-height: 45px;
+  padding-left: 5px;
+}
+
+.toogleSectionHeader[data-toogled=true] {
+  background-color: var(--color-green);
+}
+
+.toogleSectionHeader[data-toogled=false] {
+  background-color: var(--interactive-accent);
 }.SystemDesignerBlockSet {
   height: 200px;
   display: grid;
@@ -1518,7 +1529,7 @@ button {
   white-space: nowrap;
 }
 
-.lineBreak {
+.lineBreak, .linebreak {
   height: 24px;
 }
 

@@ -311,7 +311,7 @@
 
 	export let node : Writable<GrobDerivedNode|null>;
 	export let system : Writable<TTRPGSystem|null>; 
-	export let secondSlideInReady = false;
+	let secondSlideInReady = false;
 	export let goodTitle = "No Error";
 	export let badTitle = "Error"
 
@@ -394,11 +394,17 @@
 		controllerCalc			= controller.calc;
 		controllerIsValid		= controller.isValid;
 		origName = get(controller.name);
+ 
 	})
 
 </script>
-{#key $node?.name}
-<div class="GrobsInteractiveColoredBorder" data-state={ flash ? 'flash' : $controllerIsValid ? 'good' : 'error' } data-state-text={ $controllerIsValid ? goodTitle: badTitle}>
+
+<div 
+	class="GrobsInteractiveColoredBorder" 
+	data-state={ flash ? 'flash' : $controllerIsValid ? 'good' : 'error' } 
+	data-state-text={ $controllerIsValid ? goodTitle: badTitle}
+	
+>
 	<div>
 		<StaticMessageHandler 
 			bind:this={ messageHandler }
@@ -430,19 +436,19 @@
 					/>
 					<div class="derivedCalcStatementResult" data-succes={ $controllerResultSucces } >{ $controllerResultValue }</div>
 				</div>
-				<div class="derivedOriginRowsContainer">
-					{#if $controllerMappedOrigin && secondSlideInReady }
-						<div transition:slide|local >
+				<div class="derivedOriginRowsContainer" >
+					{#if $controllerMappedOrigin }
+						<div transition:slide={{delay:500}}>
 							{#each $controllerMappedOrigin as origin (origin.key) }
-								<div animate:flip={{ delay: 20 }} transition:slide|local class="derivedOriginRowContainer"> 
-									<OriginRow 
+								<div animate:flip transition:slide|local class="derivedOriginRowContainer"> 
+									<OriginRow
 										bind:rowData 	 = { origin }
 										availableSymbols = { availableSymbols }
 										system 			 = { $system }
 										on:onDelete 		= { onDeleteClicked }
 										on:onSymbolSelected = { onKeyExchange }
 										on:foundTargetNode = { (e) =>{ controller.checkIsValid(false) }}
-									/>   
+									/>
 								</div>
 							{/each}
 						</div>
@@ -456,4 +462,4 @@
 		<button on:click={ onSave }  >save changes</button> 
 	</div>
 </div>
-{/key}
+ 

@@ -1,3 +1,15 @@
+@import '../../../SystemStandards.scss';
 .toogleSectionHeader{
 	cursor: pointer;
+	height:$standard_BlockHeight;
+	line-height:$standard_BlockHeight;
+	padding-left:$standard_padding_small;
+}
+
+// color definitions 
+.toogleSectionHeader[data-toogled="true"]{
+	background-color: $green ;
+}
+.toogleSectionHeader[data-toogled="false"]{
+	background-color: $blue;
 }

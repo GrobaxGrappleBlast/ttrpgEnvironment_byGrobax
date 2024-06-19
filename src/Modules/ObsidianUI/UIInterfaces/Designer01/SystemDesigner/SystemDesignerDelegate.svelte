@@ -160,7 +160,8 @@
 
 		// dispatch the update Event
 		if(selItem && dispatchEvent){
-			dispatch('selectItem',item);
+			let actualItem = $designer.getNode(type , selectedCollectionName ?? '', selItem.value )
+			dispatch('selectItem',actualItem);
 		}
 
 		if(selItem){

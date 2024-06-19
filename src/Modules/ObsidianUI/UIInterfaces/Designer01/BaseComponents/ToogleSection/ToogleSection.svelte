@@ -32,7 +32,7 @@
 
 </script>
 <div>
-	<div class="toogleSectionHeader" on:click={ () => toogle() }>
+	<div class="toogleSectionHeader" on:click={ () => toogle() } data-toogled={toogled} >
 		<p>{title}</p>
 	</div>
 	<div class="toogleSectionBody" > 
