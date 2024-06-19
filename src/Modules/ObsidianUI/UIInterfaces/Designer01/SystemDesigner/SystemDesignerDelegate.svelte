@@ -24,14 +24,43 @@
 	let _onSpecialAdd = onSpecialAdd ? () =>{ deSelectCollection(); onSpecialAdd(); } : null;
 
 	onMount(mount)
-	function mount(){
-		console.log('ASDASdasdsad')
+	function mount(){ 
 		let data = $designer; 
 		let colNames = data.getCollectionNames(type);
 		collection.set( colNames.map( p => nameToIViewItem(p, false ) ))
 	}
 
- 
+	export function forceUpdateItems(){
+		
+		let selectedItemKey = $selectedCollectionData.find( p => p.value == selectedNodeName)?.key;
+		if (!selectedCollectionName){
+			return;
+		} 
+		selectCollection( selectedCollectionName , false, false );
+		
+		
+		let selectedItem = $selectedCollectionData.find( p => p.key == selectedItemKey)?.value;
+		debugger
+		if (!selectedItem){
+			return;
+		}
+		selectCollectionItem( selectedCollectionName , selectedItem , false , false )
+
+	}
+
+	export function renameSingleItem( oldKey:string, newKey:string , newValue:string ){
+		selectedCollectionData.update( r => {
+			let item = r.find(p => p.key == oldKey);
+			if (!item)
+				return r;
+
+			item.key = newKey;
+			item.value = newValue;
+
+			return r;
+		})
+	}
+
 	   
 	// views 
 	let collectionView		: EditAbleListWritable;
@@ -50,7 +79,6 @@
 			isSelected:isSelected
 		}
 	}
-	function noteUpdate(){}
 
 	// Collection Functions 
 	export function selectCollection ( collection:string , allowDeselect = true , dispatchEvent = true ){ 
@@ -124,13 +152,13 @@
 			return list
 		}
 		 
-		collection.update( addName )  
-		noteUpdate();
+		collection.update( addName )
+		dispatch('change')   
 	}	
 
 	// Item Functions 
-	export function selectCollectionItem	( collection:string, item:string , dispatchEvent = true ){
-		console.log('selectCollectionItem');
+	export function selectCollectionItem	( collection:string, item:string , allowDeselect = true , dispatchEvent = true ){
+		
 		if (!designer){
 			return false;
 		}
@@ -146,7 +174,7 @@
 
 		// deselect last 
 		let prevSelItem = get(selectedCollectionData).find( p => p.isSelected );
-		if(prevSelItem){
+		if(prevSelItem && allowDeselect){
 			prevSelItem.isSelected = false;
 		}
 
@@ -225,6 +253,7 @@
 				return r
 			});
 		}
+		dispatch('change')
 	}
 
 	// Model Operations And View Updates
@@ -262,6 +291,8 @@
 			// deselct item.
 			//deSelectCollectionItem(group)
 		}
+
+		dispatch('change')
 		$designer = $designer;
 	}
 	function _deleteItem(isCollection:boolean , collection: string | null , name: string ){
@@ -288,6 +319,8 @@
 				deSelectCollectionItem()
 			} 
 		}
+
+		dispatch('change')
 		$designer = $designer;
 	}
 

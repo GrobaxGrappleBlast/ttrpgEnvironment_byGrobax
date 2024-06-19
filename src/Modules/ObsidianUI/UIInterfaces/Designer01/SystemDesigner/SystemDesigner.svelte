@@ -462,7 +462,7 @@
 			>
 				<StaticMessageHandler 
 					bind:this={ savingMessageHandler }
-					overrideClickText={'Click here to go to error'}
+					overrideClickTextError={'Click here to go to error'}
 					overrideClick={ GoToError }
 				/>
 				<button on:click={onSaveClick}>Save Changes To File</button>

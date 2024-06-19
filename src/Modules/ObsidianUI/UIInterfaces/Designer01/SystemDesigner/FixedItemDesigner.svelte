@@ -194,8 +194,7 @@
 		controllerName			= controller.name;
 		origName				= $controllerName;
 		controllerValue			= controller.tempValue;
-		controllerIsValid		= controller.isValid;
- 
+		controllerIsValid		= controller.isValid; 
 	})
 
 </script>

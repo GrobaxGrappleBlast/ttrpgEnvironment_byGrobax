@@ -81,6 +81,7 @@
 			/> 
 		{:else if state == SystemEditorStates.designer }
 			<SystemDesignerContainer 
+				preview={selectedSystemPreview}
 				system={selectedSystem}
 			/> 
 		{/if}

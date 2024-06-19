@@ -393,9 +393,10 @@
 	import OriginRow from "./views/OriginRow.svelte";
     import { slide } from 'svelte/transition';
     import { flip } from 'svelte/animate';   
-    import { onMount } from "svelte";
+    import { createEventDispatcher, onMount } from "svelte";
     import { DerivedItemController } from "./DerivedItemDesigner.svelte";
-  
+	const dispatch = createEventDispatcher();  
+
 	export let system : Writable<TTRPGSystem|null>; 
 	export let secondSlideInReady = false;
 	export let goodTitle = "No Error";
@@ -449,8 +450,8 @@
 	}
 	function onSave(){ 
 		messageHandler?.removeError('save');
-		controller.saveCollection();      
-		 
+		controller.saveCollection();     
+		dispatch('save');
 	}
 	function onGenPreviewToogle(){ 
 		controller.generateNamePreview();		
