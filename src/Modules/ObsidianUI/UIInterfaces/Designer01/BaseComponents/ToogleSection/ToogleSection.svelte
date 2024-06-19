@@ -34,12 +34,13 @@
 <div>
 	<div class="toogleSectionHeader" on:click={ () => toogle() } data-toogled={toogled} >
 		<p>{title}</p>
+		<section class="toogleSectionIcon" >&nbsp;</section>
 	</div>
 	<div class="toogleSectionBody" > 
 		{#if toogled}
 			<div transition:slide >
 				<slot />
 			</div>
-		{/if}
+		{/if} 
 	</div>
 </div>

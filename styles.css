@@ -1326,7 +1326,26 @@ button {
   cursor: pointer;
   height: 45px;
   line-height: 45px;
-  padding-left: 5px;
+  padding-left: 15px;
+  padding-right: 15px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.toogleSectionHeader .toogleSectionIcon {
+  width: 20px;
+  height: 20px;
+  background-color: white;
+  transition: 1s cubic-bezier(0.65, -0.02, 0.38, 0.99);
+}
+
+.toogleSectionHeader[data-toogled=true] .toogleSectionIcon {
+  transform: rotateZ(135deg);
+}
+
+.toogleSectionHeader[data-toogled=false] .toogleSectionIcon {
+  transform: rotateZ(0deg);
 }
 
 .toogleSectionHeader[data-toogled=true] {
@@ -1334,6 +1353,10 @@ button {
 }
 
 .toogleSectionHeader[data-toogled=false] {
+  background-color: var(--nav-item-background-active);
+}
+
+.toogleSectionHeader[data-toogled=false]:hover {
   background-color: var(--interactive-accent);
 }.SystemDesignerBlockSet {
   height: 200px;
