@@ -8,6 +8,8 @@
     import DerivedCollectionDesigner from "./DerivedCollectionDesigner.svelte";
     import DerivedItemDesigner from "./DerivedItemDesigner.svelte";
     import ToogleSection from "../BaseComponents/ToogleSection/ToogleSection.svelte";
+    import { onMount } from "svelte";
+    import FixedItemDesigner from "./FixedItemDesigner.svelte";
     
 
 	export let system : Writable<TTRPGSystem>;  
@@ -16,10 +18,11 @@
 	//status bools
 	let editorOpen_specialDerivedItem	: boolean = false; 
 	let editorOpen_derivedItem			: Writable<GrobDerivedNode|null> = writable(null);
+	let editorOpen_fixedItem			: Writable<GrobFixedNode|null> = writable(null);
 	 
 	// animation Booleans
 	let animationBool_derivedEditor			= false; 
-
+ 
 
 </script>
 <div>
@@ -28,6 +31,7 @@
 	/>
 	<ToogleSection
 		title={'Derived Item Design'}
+		on:close = { () => { editorOpen_specialDerivedItem=false;} }
 	>
 		<div class="linebreak" ></div>
 		<SystemDesignerDelegate 
@@ -54,6 +58,38 @@
 						<div transition:slide|local >
 							<DerivedItemDesigner
 								node = { editorOpen_derivedItem } 
+								system ={ system }  
+								goodTitle = {' Item Designer '}
+								badTitle  = {' Item Designer - Error '}
+							/>  
+						</div>
+					{/key}
+				</div>
+			{:else}
+				<div transition:slide|local ></div>
+			{/if} 
+	</ToogleSection>
+
+
+	<ToogleSection
+		title={'Derived Item Design'}
+		on:close = { () => { editorOpen_specialDerivedItem=false;} }
+	>
+		<div class="linebreak" ></div>
+		<SystemDesignerDelegate 
+			designer = { system }
+			messageHandler= { messageHandler}
+			type		  = {'fixed'}
+			on:selectCollection	= { (e) => { editorOpen_fixedItem.set(null);	} }
+			on:selectItem		= { (e) => { editorOpen_fixedItem.set(e.detail);} } 
+		/> 
+		<div class="linebreak" ></div>
+			{#if $editorOpen_fixedItem } 
+				<div transition:slide|local >
+					{#key $editorOpen_fixedItem?.name}
+						<div transition:slide|local >
+							<FixedItemDesigner
+								node = { editorOpen_fixedItem } 
 								system ={ system }  
 								goodTitle = {' Item Designer '}
 								badTitle  = {' Item Designer - Error '}
