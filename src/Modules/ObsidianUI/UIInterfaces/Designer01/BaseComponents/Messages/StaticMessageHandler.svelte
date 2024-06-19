@@ -9,16 +9,16 @@
 <script lang="ts">
     import { slide } from "svelte/transition";
 	import './StaticMessageHandler.scss'; 
-    import { ok } from "assert";
-    import { slidefade } from "../../Transitions/SlideFly";
+    import { ok } from "assert"; 
     import { writable, type Writable } from "svelte/store";
     import { flip } from "svelte/animate";
 
 	let messages : Writable<Record<any,{msg:string, type : MessageTypeTypes}>> = writable({});
 	let messagesLength =  Object.entries(messages).length;
 	let entries : [any,{msg:string, type : MessageTypeTypes}] [] = [];
-	export let overrideClick : (( key : any ) => any ) | null = null ;
-	export let overrideClickText : string | null = null;
+	export let overrideClick : (( type:string ,key : any ) => any ) | null = null ;
+	export let overrideClickTextError : string | null = null;
+	
 
 	messages.subscribe( p => { 
 		entries =  Object.entries(p);
@@ -60,10 +60,13 @@
 		})
 	}
 
-	function onclick(key){  
-		if (overrideClick){
-			overrideClick( key )
-		}else{
+	function onclick(type,key){ 
+		
+		let a = true;
+		if (overrideClick)
+			a = overrideClick(type, key )
+		
+		if (a){
 			removeError( key );
 		}
 	}
@@ -85,13 +88,13 @@
 					(obj.type == MessageTypes.good) ?  "OKHandlerSign" : 
 					''
 				} 
-				on:keydown={ () =>	{ onclick(key)} }
-				on:click={ () =>	{ onclick(key)} }
+				on:keydown={ () =>	{ onclick(obj.type,key)} }
+				on:click={ () =>	{ onclick(obj.type,key)} }
 				> 
 					
 					<p>{@html msgTransformed }</p>
-					{#if overrideClickText }
-						<i>{overrideClickText}</i>
+					{#if overrideClickTextError && obj.type == MessageTypes.error }
+						<i>{overrideClickTextError}</i>
 					{/if}
 				</div>
 			{/each}

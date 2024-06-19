@@ -53,7 +53,12 @@ export class GrobCollection<T extends GrobNodeType> extends AGraphItem implement
 	}
 
 	public setName( name ){
+		
 		const oldname= this.getName();
+		if(oldname == name){
+			return;
+		}
+		
 		super.setName(name);
 		this.parent.update_collection_name(oldname,name);
 

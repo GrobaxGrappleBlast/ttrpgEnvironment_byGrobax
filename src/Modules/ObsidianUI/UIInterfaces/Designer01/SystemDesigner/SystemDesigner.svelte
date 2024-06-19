@@ -178,7 +178,7 @@
 	}
 	
 
-	function selectCollection ( type: 'derived' | 'fixed' , collection:string ){
+	function selectCollection ( type: 'derived' | 'fixed' , collection:string  ){
 		
 		// deSelectItem
 		deSelectCollectionItem( type );
@@ -207,7 +207,8 @@
 		let mapped = names.map( p => {
 			return nameToIViewItem(p, p == selectedName ) 
 		} )
-
+		
+		 
 	
 
 		// save as correct collection
@@ -257,7 +258,10 @@
 		$designer.createCollection(type, name)
 		
 		// Add name to the propper list
-		let addName = ( list ) => { list.push(nameToIViewItem(name,false)); return list}
+		let addName = ( list ) => { 
+			list.push(nameToIViewItem(name,false)); 
+			return list
+		}
 		if (type == 'derived'){
 			derivedCollection.update( addName )
 		}else{
@@ -267,7 +271,7 @@
 	}	
 
 
-	function selectCollectionItem	( type: 'derived' | 'fixed' , collection:string, item:string ){
+	function selectCollectionItem	( type: 'derived' | 'fixed' , collection:string, item:string   , noDeselect = false ){
 		
 		if (!designer){
 			return false;
@@ -376,6 +380,73 @@
 
 	}
 
+	function _UpdateViewItemName(collection : Writable<viewE[]> ,oldName,newName){
+		// When saving an item, update the name from the old name to the new in the view. ( purely the view here )
+		collection.update(r => {
+			let curr ;
+			for ( let i = 0 ; i < r.length ; i++){
+				curr = r[i];
+				if (curr.value == oldName){
+					curr.value	= newName;
+					curr.key	= newName;
+					curr.isSelected = true;
+				}
+			}
+			return r;
+		}) 
+	}
+	function _updateItemName( group: 'fixed' |'derived' , collection: string | null , oldName : string , newName: string ){
+		
+		// if this is an update of a collection, collection ought be null
+		if (collection == null ){
+			let collection = $designer?.getCollection(group,oldName);
+			collection?.setName(newName);
+
+			// deselect collection. 
+			//deSelectCollection(group);
+		}
+
+		// if this is an update of a node, then collection is not null. 
+		else{
+			let item = $designer?.getNode(group,collection,oldName);
+			item?.setName(newName);
+ 
+			//deSelectCollection(group);
+			//selectCollection(group,collection);
+			// deselct item.
+			//deSelectCollectionItem(group)
+		}
+		$designer = $designer;
+	}
+	function _deleteItem(isCollection:boolean, group: 'fixed' |'derived' , collection: string | null , name: string ){
+		
+		// if  collection delete, delete collection
+		if ( isCollection ){
+			$designer?.deleteCollection(group,name);
+
+			// deselct collection.
+			let selectedName = group =='derived' ? selectedDerivedCollectionName : selectedFixedCollectionName;
+			if ( selectedName == name ){
+				deSelectCollection(group)
+			}  
+		}
+
+		// if this is an item delete, delete item
+		else {
+			if(collection == null)
+				throw new Error('Called delete item, on item, without defined collection');
+			
+			$designer?.deleteNode(group,collection,name);
+			
+			// deselct item.
+			let selectedName = group =='derived' ? selectedDerivedNodeName : selectedFixedNodeName;
+			if ( selectedName == name ){
+				deSelectCollectionItem(group)
+			} 
+		}
+		$designer = $designer;
+	}
+
 </script>
 
 
@@ -391,7 +462,7 @@
 			>
 				<StaticMessageHandler 
 					bind:this={ savingMessageHandler }
-					overrideClickText={'Click here to go to error'}
+					overrideClickTextError={'Click here to go to error'}
 					overrideClick={ GoToError }
 				/>
 				<button on:click={onSaveClick}>Save Changes To File</button>
@@ -409,9 +480,11 @@
 						bind:this={ listViewFixed_1 }
 						isEditableContainer={ true }
 						collection		= { fixedCollection}
-						onSelect		= { (e) => { return selectCollection('fixed',e);} }
+						onSelect		= { (e) => { return selectCollection('fixed',e,);} }
 						onAdd			= { () => addNewCollection('fixed') }
 						on:onDeSelect	= { (e) => { deSelectCollection('fixed') } }
+						onUpdateItem	= { ( oldName, newName ) => _updateItemName('fixed', null, oldName, newName ) }
+						onDeleteItem	= { ( name ) => _deleteItem(true,'fixed', null, name ) }
 					/> 
 				</div>
 				<div class="SystemDesignerListBlock" >
@@ -422,6 +495,9 @@
 						onSelect		= { (e) => { return selectCollectionItem('fixed',selectedFixedCollectionName ?? '',e)} }
 						onAdd			= { () => {addNewCollectionItem			('fixed',selectedFixedCollectionName ?? '', 'FixedItem ')} }
 						on:onDeSelect	= { (e) => { deSelectCollectionItem		('fixed') } }
+						onUpdateItem	= { ( oldName, newName ) => _updateItemName('fixed', selectedFixedCollectionName , oldName, newName ) }
+						onDeleteItem	= { ( name ) => _deleteItem(false ,'fixed', selectedFixedCollectionName, name ) }
+						disabled = { selectedFixedCollectionName == null}
 					/> 
 				</div>
 			</div>
@@ -432,12 +508,11 @@
 					<div transition:slide|local >
 						<FixedItemDesigner 
 							on:save= { (e) => {
-								let _old = e.detail.old;
-								let _new = e.detail.new;
-								let result = $designer.renameCollection('fixed',_old,_new);
+								_UpdateViewItemName ( selectedFixedCollectionData , e.detail.oldName  , e.detail.newName); 
 								noteUpdate();
 							}}
-							node = { selectedFixedNode }
+							node = { selectedFixedNode } 
+							system = { designer }
 						/>
 					</div>
 				{/if}
@@ -458,9 +533,9 @@
 					<button on:click={ () =>{ specialDerivedOpened.update(r => !r) } }>X</button>
 					<DerivedCollectionDesigner 
 						on:save= { (e) => {
-							let _old = e.detail.old;
-							let _new = e.detail.new;
-							let result = $designer.renameCollection('derived',_old,_new);
+							//let _old = e.detail.old;
+							//let _new = e.detail.new;
+							//let result = $designer.renameCollection('derived',_old,_new);
 							noteUpdate();
 						}}
 						goodTitle = "Collection Creator"
@@ -481,6 +556,8 @@
 								onAdd			= { () =>	 addNewCollection	('derived')		}
 								onSpecialAdd	= { () =>  { specialDerivedOpened.update( (r) => { return !r } ) ; deSelectCollection('derived') }}
 								on:onDeSelect	= { (e) => { deSelectCollection	('derived')}	}
+								onUpdateItem	= { ( oldName, newName ) => _updateItemName('derived', null, oldName, newName ) }
+								onDeleteItem	= { ( name ) => _deleteItem(true,'derived', null, name ) }
 							/> 
 						</div>
 						<div class="SystemDesignerListBlock" >
@@ -491,6 +568,9 @@
 								onSelect		= { (e) => { return selectCollectionItem	('derived',selectedDerivedCollectionName ?? '',e)} }
 								onAdd			= { () => {			addNewCollectionItem	('derived',selectedDerivedCollectionName ?? '', 'DerivedItem ')} }
 								on:onDeSelect	= { (e) => { 		deSelectCollectionItem	('derived') } }
+								onUpdateItem	= { ( oldName, newName ) => _updateItemName('derived', selectedDerivedCollectionName , oldName, newName ) }
+								onDeleteItem	= { ( name ) => _deleteItem(false ,'derived', selectedDerivedCollectionName, name ) }
+								disabled = { selectedDerivedCollectionName == null}
 							/> 
 						</div>
 					</div> 
@@ -504,9 +584,7 @@
 								{#if $selectedDerivedNode} 
 									<DerivedItemDesigner 
 										on:save= { (e) => {
-											let _old = e.detail.old;
-											let _new = e.detail.new;
-											let result = $designer.renameCollection('derived',_old,_new);
+											_UpdateViewItemName ( selectedDerivedCollectionData , e.detail.oldName  , e.detail.newName);
 											noteUpdate();
 										}}
 										node = { selectedDerivedNode }

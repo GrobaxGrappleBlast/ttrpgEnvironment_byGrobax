@@ -306,18 +306,18 @@
     import { writable, type Writable, get } from 'svelte/store'; 
 	import OriginRow from "./views/OriginRow.svelte";
     import { slide } from 'svelte/transition';
-    import { flip } from 'svelte/animate'; 
-    import { on } from "events";
-    import { onMount } from "svelte";
+    import { flip } from 'svelte/animate';  
+    import { createEventDispatcher , onMount } from "svelte";
 
 	export let node : Writable<GrobDerivedNode|null>;
 	export let system : Writable<TTRPGSystem|null>; 
-	export let secondSlideInReady = false;
+	let secondSlideInReady = false;
 	export let goodTitle = "No Error";
 	export let badTitle = "Error"
 
 	let messageHandler: StaticMessageHandler; 
-
+	const dispatch = createEventDispatcher(); 
+	
 	let controller : DerivedItemController = new DerivedItemController();
 	$: controller.setControllerDeps($node,$system)
 	$: controller.messageHandler = messageHandler;
@@ -333,6 +333,9 @@
 	let controllerCalc			: Writable<string>;
 	let controllerIsValid		: Writable<boolean>;
 
+	// save original Name
+	let origName : string ; 
+
 	function onNameInput ( event : any  ){  
 		messageHandler?.removeError('save');
 		let name = event.target.value;
@@ -340,16 +343,13 @@
 		controller.checkIsValid(false);  
 	}
 	function onCalcInput ( event : any  ){
-
-		
-
+ 
 		let calc = event.target.value; 
 		controller.calc.set( calc);
 		messageHandler?.removeError('save');
 		controller.recalculateCalcAndOrigins();  
 		controller.checkIsValid(false);   
-
-		
+ 
 	}
 	function onDeleteClicked(e){
 		messageHandler?.removeError('save');
@@ -364,8 +364,12 @@
 	function onSave(){
 
 		messageHandler?.removeError('save');
-		controller.saveNodeChanges(); 
-		controller.checkIsValid(false);   
+		if (controller.saveNodeChanges()){
+			const oldName = origName;
+			const newName = get(controller.name); 
+			dispatch('save', { oldName: oldName, newName : newName });
+			origName = newName;
+		}
 		 
 	}
 	node.subscribe(p => {  
@@ -389,11 +393,18 @@
 		controllerName			= controller.name;
 		controllerCalc			= controller.calc;
 		controllerIsValid		= controller.isValid;
+		origName = get(controller.name);
+ 
 	})
 
 </script>
-{#key $node?.name}
-<div class="GrobsInteractiveColoredBorder" data-state={ flash ? 'flash' : $controllerIsValid ? 'good' : 'error' } data-state-text={ $controllerIsValid ? goodTitle: badTitle}>
+
+<div 
+	class="GrobsInteractiveColoredBorder" 
+	data-state={ flash ? 'flash' : $controllerIsValid ? 'good' : 'error' } 
+	data-state-text={ $controllerIsValid ? goodTitle: badTitle}
+	
+>
 	<div>
 		<StaticMessageHandler 
 			bind:this={ messageHandler }
@@ -425,19 +436,19 @@
 					/>
 					<div class="derivedCalcStatementResult" data-succes={ $controllerResultSucces } >{ $controllerResultValue }</div>
 				</div>
-				<div class="derivedOriginRowsContainer">
-					{#if $controllerMappedOrigin && secondSlideInReady }
-						<div transition:slide|local >
+				<div class="derivedOriginRowsContainer" >
+					{#if $controllerMappedOrigin }
+						<div transition:slide={{delay:500}}>
 							{#each $controllerMappedOrigin as origin (origin.key) }
-								<div animate:flip={{ delay: 20 }} transition:slide|local class="derivedOriginRowContainer"> 
-									<OriginRow 
+								<div animate:flip transition:slide|local class="derivedOriginRowContainer"> 
+									<OriginRow
 										bind:rowData 	 = { origin }
 										availableSymbols = { availableSymbols }
 										system 			 = { $system }
 										on:onDelete 		= { onDeleteClicked }
 										on:onSymbolSelected = { onKeyExchange }
 										on:foundTargetNode = { (e) =>{ controller.checkIsValid(false) }}
-									/>   
+									/>
 								</div>
 							{/each}
 						</div>
@@ -451,4 +462,4 @@
 		<button on:click={ onSave }  >save changes</button> 
 	</div>
 </div>
-{/key}
+ 
