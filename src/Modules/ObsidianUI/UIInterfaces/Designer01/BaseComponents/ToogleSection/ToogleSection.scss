@@ -1,3 +1,46 @@
+@import '../../../SystemStandards.scss';
 .toogleSectionHeader{
 	cursor: pointer;
+	height:$standard_BlockHeight;
+	line-height:$standard_BlockHeight;
+	padding-left:$standard_padding_large;
+	padding-right:$standard_padding_large;
+	display: flex;
+    align-items: center;
+    justify-content: space-between;
 }
+
+.toogleSectionHeader{
+	.toogleSectionIcon {
+		width: 20px;
+		height:20px;
+		background-color: white;
+		transition:1s cubic-bezier(0.65, -0.02, 0.38, 0.99);;
+	}
+	//1s cubic-bezier(0.59, 0.34, 0.53, 0.72)
+
+	&[data-toogled="true"]{
+		.toogleSectionIcon {
+			transform: rotateZ(135deg); 
+		}
+	}	
+	&[data-toogled="false"]{
+		.toogleSectionIcon {
+			transform: rotateZ(0deg); 
+		}
+	}	
+}
+
+// color definitions 
+.toogleSectionHeader{
+	&[data-toogled="true"]{
+		background-color: $green ;
+	}
+	&[data-toogled="false"]{
+		background-color: $gray;
+		&:hover{
+			background-color: $blue ;
+		}
+	}
+}
+ 

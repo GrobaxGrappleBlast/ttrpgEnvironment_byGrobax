@@ -187,7 +187,7 @@ button {
   white-space: nowrap;
 }
 
-.lineBreak {
+.lineBreak, .linebreak {
   height: 24px;
 }
 
@@ -433,7 +433,7 @@ button {
   white-space: nowrap;
 }
 
-.lineBreak {
+.lineBreak, .linebreak {
   height: 24px;
 }
 
@@ -711,7 +711,7 @@ button {
   white-space: nowrap;
 }
 
-.lineBreak {
+.lineBreak, .linebreak {
   height: 24px;
 }
 
@@ -936,7 +936,7 @@ button {
   white-space: nowrap;
 }
 
-.lineBreak {
+.lineBreak, .linebreak {
   height: 24px;
 }
 
@@ -964,32 +964,91 @@ button {
   height: 24px;
   padding-left: 5px;
   cursor: pointer;
+  display: grid;
+  grid-template-columns: auto 30px;
 }
 
-.Editable_row[data-can-hover=true]:hover {
+.Editable_rowHeader {
+  width: inherit;
+  height: 24px;
+  padding-left: 5px;
+  cursor: pointer;
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-end;
+  align-items: center;
+}
+
+.Editable_rowHeader > * {
+  width: 30px;
+}
+
+.Editable_row:not([data-isEdit=true])[data-can-hover=true]:hover {
   background: var(--interactive-accent);
 }
 
-.Editable_row[data-can-hover=true]:hover[data-selected=true] {
+.Editable_row:not([data-isEdit=true])[data-can-hover=true]:hover[data-selected=true] {
   background: repeating-linear-gradient(-45deg, var(--color-green), var(--color-green) 4px, var(--interactive-accent) 4px, var(--interactive-accent) 10px);
 }
 
-.Editable_row[data-selected=true] {
+.Editable_row:not([data-isEdit=true])[data-selected=true] {
   background: var(--color-green);
 }
 
-.Editable_rowPlusButton {
-  background: var(--background-modifier-form-field);
-  position: sticky;
-  width: 100%;
-  top: inherit;
-  bottom: 1px;
+.Editable_row[data-isEdit=true] {
+  background: var(--interactive-accent);
 }
+
+.Editable_row > div {
+  position: relative;
+  height: 24px;
+  display: grid;
+  grid-template-columns: 1fr;
+  grid-template-rows: 1fr;
+}
+
+.Editable_row > div > imageContainer {
+  height: 24px;
+  height: 100%;
+  width: 100%;
+}
+
+/*
+.Editable_rowPlusButton{
+	background: $backgroundInput;
+	position: sticky;
+    width: 100%;
+	top: inherit;
+    bottom: 1px;
+}*/
 
 .Editable_Icon {
   display: flex;
   justify-content: center;
   align-items: center;
+}.tooltipInnerBox {
+  position: absolute;
+  color: #fff;
+  padding: 5px;
+  border-radius: 3px;
+  z-index: 1000;
+  white-space: nowrap;
+}
+
+.tooltipInnerBox {
+  background-color: var(--background-primary);
+}
+
+.tooltipInnerBox[data-type=error] {
+  background-color: var(--background-modifier-error);
+}
+
+.tooltipInnerBox[data-type=verbose] {
+  background-color: var(--color-blue);
+}
+
+.tooltipInnerBox[data-type=good] {
+  background-color: var(--background-modifier-success);
 }div {
   vertical-align: middle;
   line-height: 24px;
@@ -1179,7 +1238,7 @@ button {
   white-space: nowrap;
 }
 
-.lineBreak {
+.lineBreak, .linebreak {
   height: 24px;
 }
 
@@ -1265,6 +1324,40 @@ button {
   transition: 1s ease width, 0.3s ease opacity;
 }.toogleSectionHeader {
   cursor: pointer;
+  height: 45px;
+  line-height: 45px;
+  padding-left: 15px;
+  padding-right: 15px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.toogleSectionHeader .toogleSectionIcon {
+  width: 20px;
+  height: 20px;
+  background-color: white;
+  transition: 1s cubic-bezier(0.65, -0.02, 0.38, 0.99);
+}
+
+.toogleSectionHeader[data-toogled=true] .toogleSectionIcon {
+  transform: rotateZ(135deg);
+}
+
+.toogleSectionHeader[data-toogled=false] .toogleSectionIcon {
+  transform: rotateZ(0deg);
+}
+
+.toogleSectionHeader[data-toogled=true] {
+  background-color: var(--color-green);
+}
+
+.toogleSectionHeader[data-toogled=false] {
+  background-color: var(--nav-item-background-active);
+}
+
+.toogleSectionHeader[data-toogled=false]:hover {
+  background-color: var(--interactive-accent);
 }.SystemDesignerBlockSet {
   height: 200px;
   display: grid;
@@ -1459,7 +1552,7 @@ button {
   white-space: nowrap;
 }
 
-.lineBreak {
+.lineBreak, .linebreak {
   height: 24px;
 }
 

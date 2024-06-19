@@ -22,3 +22,7 @@ data.json
 
 # Exclude macOS Finder (System Explorer) View States
 .DS_Store
+
+#exclude generated files
+styles.css
+main.js
