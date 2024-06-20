@@ -102,8 +102,6 @@
 	}
 </script>
 <div>
-
-	
 	<div
 		class="GrobsInteractiveColoredBorder"
 		data-state={ (!anyChanges) ? 'none' : valid ? 'good' : 'error' }
@@ -219,6 +217,6 @@
 			{/if} 
 	</ToogleSection>
 
-	
+ 
 
 </div>

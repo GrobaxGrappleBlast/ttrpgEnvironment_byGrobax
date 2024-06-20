@@ -1,4 +1,5 @@
 <script lang="ts">
+	import SystemExporter from './SystemExporter/SystemExporter.svelte';
 	
     import { onMount } from "svelte"; 
     
@@ -12,12 +13,14 @@
     import { writable, type Writable } from "svelte/store";
     import SystemDesignerContainer from "./SystemDesigner/SystemDesignerContainer.svelte";
     import { TTRPGSystem } from "../../../../../src/Modules/Designer";
+    import { slide } from 'svelte/transition';
  
 
 	
 	const SystemEditorStates = {
 		selector :"selector",
-		designer :"designer"
+		designer :"designer",
+		exporter :"exporter"
 	}
 	let state = SystemEditorStates.selector;
 
@@ -38,7 +41,7 @@
 		} 
 	}
 	function changeState( nstate ){
-		debugger
+		
 		if(state == nstate)	
 			return;
 		
@@ -62,12 +65,19 @@
 <div class="MainAppContainer" >
 	<div class="AppMainMenu">
 		<MainMenuButton 
+			text = { SystemEditorStates.selector }
 			selected = { state == SystemEditorStates.selector }
 			onClick = { () => { changeState(SystemEditorStates.selector) }  }
 		/>
 		<MainMenuButton 
+			text = { SystemEditorStates.designer }
 			selected = { state == SystemEditorStates.designer }
 			onClick = {  () => { changeState(SystemEditorStates.designer ) }  }
+		/>
+		<MainMenuButton 
+			text = { SystemEditorStates.exporter }
+			selected = { state == SystemEditorStates.exporter }
+			onClick = {  () => { changeState(SystemEditorStates.exporter ) }  }
 		/>
 	</div>
 	<div class="AppMainContent">
@@ -80,7 +90,14 @@
 				}} 
 			/> 
 		{:else if state == SystemEditorStates.designer }
-			<SystemDesignerContainer 
+			<div transition:slide|local >
+				<SystemDesignerContainer 
+					preview={selectedSystemPreview}
+					system={selectedSystem}
+				/> 
+			</div>
+		{:else if state == SystemEditorStates.exporter }
+			<SystemExporter 
 				preview={selectedSystemPreview}
 				system={selectedSystem}
 			/> 
