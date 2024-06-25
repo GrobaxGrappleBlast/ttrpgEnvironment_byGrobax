@@ -14,10 +14,11 @@ class TNode {
 		return this.value ?? this.baseValue;
 	}
 
-	setValue( value:number ) {
+
+	setValue(value: number) {
 		this.value = value;
 		this.update();
-		return 
+		return
 	}
 
 	addDependency(symbol, node) {
@@ -27,7 +28,7 @@ class TNode {
 
 	update() {
 
-		if(this.calc != ''){
+		if (this.calc != '') {
 			let calcStr = this.calc;
 			let symbols = Object.keys(this.dependencies);
 			for (let i = 0; i < symbols.length; i++) {
@@ -45,7 +46,26 @@ class TNode {
 		}
 	}
 }
-class system {
+
+interface ITTPRGSystem{
+	fixed : {
+		NewCollection0: {
+			B: TNode, Aad: TNode
+		}, NewCollection1: {
+			NewItem0:  TNode 
+		}
+	}
+	derived : {
+		stats: {
+			I1:  TNode , I2:  TNode , I3:  TNode , I4:  TNode , I5:  TNode 
+		}, C: {
+		}, A: {
+		}, BB: {
+		}, IOL: {
+		}
+	}
+}
+class TTRPGSystem implements ITTPRGSystem{
 	public constructor() { this.init() }
 
 	fixed = {
@@ -76,9 +96,9 @@ class system {
 
 		if (!dep || !parent) {
 			console.error(`
-		Error at declareDependency
-		${Parentgroup}, ${Parentcollection}, ${Parentitem}, ${symbol}, ${Depgroup}, ${depcollection}, ${depitem}
-		`
+					Error at declareDependency
+					${Parentgroup}, ${Parentcollection}, ${Parentitem}, ${symbol}, ${Depgroup}, ${depcollection}, ${depitem}
+					`
 			)
 			return;
 		}
@@ -92,5 +112,4 @@ class system {
 		this.declareDependency('derived', 'stats', 'I4', '@v', 'derived', 'stats', 'I4')
 		this.declareDependency('derived', 'stats', 'I5', '@a', 'fixed', 'NewCollection0', 'B')
 	}
-}
-new system();
+} 
