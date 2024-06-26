@@ -1,5 +1,5 @@
 
-class TNode {
+export class TNode {
 	baseValue: number = 0;
 	value: number | null = null;
 	dependencies: Record<string, TNode> = {};
@@ -48,7 +48,7 @@ class TNode {
 	}
 }
 
-interface ITTPRGSystem{
+export interface ITTPRGSystem{
 	fixed : {
 		NewCollection0: {
 			B: TNode, Aad: TNode
@@ -67,7 +67,7 @@ interface ITTPRGSystem{
 	}
 }
 
-class TTRPGSystem implements ITTPRGSystem{
+export class TTRPGSystem implements ITTPRGSystem{
 	public constructor() { this.init() }
 
 	fixed = {

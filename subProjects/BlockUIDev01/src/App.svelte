@@ -1,6 +1,12 @@
 <script lang="ts">
-	export let system:ITTPRGSystem;
-</script>
+    import type { ITTPRGSystem } from "./exported";
+
+ 
+ 
+	export let system :ITTPRGSystem;
+	let a = system ? 'A' : 'B' ;
+</script> 
 <div>
+	{a};
 	HEJ HANS ;
 </div>

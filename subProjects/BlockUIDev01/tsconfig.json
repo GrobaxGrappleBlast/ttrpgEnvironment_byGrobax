@@ -1,21 +1,36 @@
 {
-    "extends": "@tsconfig/svelte/tsconfig.json",
-    "compilerOptions": {
-      "target": "ESNext",
-      "useDefineForClassFields": true,
+  "compilerOptions": {
+      "emitDecoratorMetadata": true,
+      "experimentalDecorators": true,
+      "baseUrl": "./",   
+      "inlineSources": true,
       "module": "ESNext",
-      "resolveJsonModule": true,
-      /**
-       * Typecheck JS in `.svelte` and `.js` files by default.
-       * Disable checkJs if you'd like to use dynamic types in JS.
-       * Note that setting allowJs false does not prevent the use
-       * of JS in `.svelte` files.
-       */
+      "target": "ES6",
       "allowJs": true,
-      "checkJs": true,
-      "isolatedModules": true
-    },
-    "include": ["src/**/*.d.ts", "src/**/*.ts", "src/**/*.js", "src/**/*.svelte"],
-    "references": [{ "path": "./tsconfig.node.json" }]
-  }
-  
+      "noImplicitAny": false,
+      "moduleResolution": "node",
+      "importHelpers": true,
+      "isolatedModules": true,
+      "strictNullChecks": true,
+      "importsNotUsedAsValues":"remove", 
+      "types": ["svelte", "jest","node"],
+      
+      "lib": [
+          "DOM",
+          "ES5",
+          "ES6",
+          "ES7"
+      ]
+  },
+  "extends": "@tsconfig/svelte/tsconfig.json",
+  "include": [
+      "**/globals.d.ts"   ,
+      "**/*.js"           ,
+      "**/*.svelte"       ,
+      "**/*.ts"],
+  "exclude": [
+      "node_modules",
+      "**/*.test.ts",
+      "subProjects"
+  ]
+}   
