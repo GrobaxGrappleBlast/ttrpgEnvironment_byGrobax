@@ -231,8 +231,43 @@
 			
 			let success = this.checkIsValid( true );
 			if (!success){
+				this.messageHandler?.addMessageManual('save','Was Not valid, so could not save', 'error');
 				return false ;
 			}
+			else {
+				try {
+					// type declaration
+					type resDataPoint = {name:string, deps:Record<string,GrobNodeType> }
+
+					// Attempt Save
+					let colName = get(this.name);
+					this.system?.createDerivedCollection(colName);
+					
+					// Generate Nodes To Save and Save them.
+					let nodesToCreate : resDataPoint[] = this.generateNamePreview() ?? [];
+					nodesToCreate.forEach( node => {
+
+						// Create
+						let createdNode = this.system?.createDerivedNode( colName , node.name );
+						let calc = get(this.calc);
+						createdNode?.setCalc(calc);
+
+						// Add Dependency
+						if (createdNode) {
+							Object.keys(node.deps).forEach( key => { 
+								let dep = node.deps[key];
+								createdNode.setOrigin(key,dep,0)
+							});
+						}
+					});
+				} catch (e){
+					success = false;
+				}
+			}
+
+
+
+
  
 			// User information
 			if (success){
@@ -321,66 +356,71 @@
 				return mappedOrigins;
 			})
 		}
-
-
-		
+ 
 		public generateNamePreview(){
-			 
+			  
 			if ( !this.system ){
 				this.generativeNameListData.set([])
 				return;
 			}
+			try {
 
-			if ( !this.checkIsValid() ){
-				this.messageHandler?.addMessageManual('generateNamePreview','Cannot Generate Name preview before the system is valid', 'error');
-				return;
-			} 
+				let origins = get(this.mappedOrigins);
+				let nameCalc = get(this.nameCalc);			
+				let filtered = origins.filter( p => { return nameCalc.contains(p.key) && p.isSelectAllTarget } )
 
+				type resDataPoint = {name:string, deps: Record<string,GrobNodeType>  }
+				type result = { data : resDataPoint[] }
+				let res : result = { data : [] };
+				function recursiveNameFinder( self, nameCalc : string, index : number = 0 ,arr : originRowData[] , res : result , deps : Record<string,GrobNodeType> ){
+					 
+					// ge values, and copy nameCalc by value (not reference). 
+					let currentName = nameCalc;
+					let nodes:GrobNodeType[];
+					let curr = arr[index];
 
-			let origins = get(this.mappedOrigins);
-			let nameCalc = get(this.nameCalc);			
-			let filtered = origins.filter( p => { return nameCalc.contains(p.key) && p.isSelectAllTarget } )
-
-			type result = { data : Set<string> }
-			let res : result = { data : new Set() };
-			function recursiveNameFinder( self, nameCalc : string, index : number = 0 ,arr : originRowData[] , res : result ){
-				
-				// ge values, and copy nameCalc by value (not reference). 
-				let currentName = nameCalc;
-				let names:string[];
-				let curr = arr[index];
-
-				// if we are done, return result
-				if (!curr){ 
-					if (res.data.has(currentName)){
-						throw new Error('Double Name, in names generated Detected');
+					// if we are done, return result
+					if (!curr){ 
+						if ( res.data.findIndex( p => p.name == currentName ) != -1 ){ 
+							throw new Error('Double Name, in names generated Detected');
+						}
+						//todo: fix this
+						res.data.push( {name:currentName, deps:deps } );
+						return;
 					}
-					res.data.add( currentName );
-					return;
+
+					// if this is a Select All Segment then get
+					if (curr.segments[2] == selAllInCollectionString){
+						const sys = (self.system as TTRPGSystem);  
+						let collection = sys.getCollection((curr.segments[0] as any),(curr.segments[1] as any));
+						let n : GrobNodeType[] = collection?.getNodes() ?? [];
+						nodes = n;
+					}
+
+					// else just add this name to the arr
+					else {
+						const sys = (self.system as TTRPGSystem);  
+						let collection = sys.getCollection((curr.segments[0] as any),(curr.segments[1] as any));
+						let n : GrobNodeType | undefined = collection?.getNode(curr.segments[2]);
+						nodes = n ? [ n ] : [];
+					}
+					
+					/// replace instring Part. 
+					nodes.forEach( node  => {
+						let currNameCalc = currentName.replace( curr.key , node.getName() ); 
+						let _deps = Object.assign({}, deps );
+						_deps[ curr.key ] = node;
+						recursiveNameFinder(self,currNameCalc, index + 1 ,arr,res, _deps)
+					});
+					
 				}
-
-				// if this is a Select All Segment then get
-				if (curr.segments[2] == selAllInCollectionString){
-					const sys = (self.system as TTRPGSystem);  
-					let n :string[] = sys.getCollection((curr.segments[0] as any),(curr.segments[1] as any))?.getNodeNames() ?? [];
-					names = n;
-				}
-
-				// else just add this name to the arr
-				else {
-					names = [curr.segments[2]] as string[] 
-				}
-
-				/// replace instring Part. 
-				names.forEach( name  => {
-					let currNameCalc = currentName.replace( curr.key , name );
-					console.log( arr );  
-					recursiveNameFinder(self,currNameCalc, index + 1 ,arr,res)
-				});
-
+				recursiveNameFinder( this , nameCalc ,0, filtered, res , {} );  
+				this.generativeNameListData.set( res.data.map( p => p.name ) );	
+				return res.data;
 			}
-			recursiveNameFinder( this , nameCalc ,0, filtered, res );
-			this.generativeNameListData.set(Array.from(res.data));
+			catch(e){
+				return null;
+			}
 		}
 	}  
 
@@ -506,7 +546,7 @@
 						<div  data-succes={ $controllerResultSucces } >Calc</div>
 						<input type="text" value={ $controllerCalc } 
 							on:input={ onCalcInput }
-							placeholder="insert calcStatement here"
+			 				placeholder="insert calcStatement here"
 						/>
 						<div class="derivedCalcStatementResult" data-succes={ $controllerResultSucces } >{ $controllerResultValue }</div>
 					 

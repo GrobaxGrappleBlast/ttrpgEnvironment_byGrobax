@@ -49,7 +49,7 @@ export abstract class GrobNode<T extends GrobNode<T>> extends AGraphItem{
 		const key = node.getKey();
 
 		if(this.dependents[key]){
-			return false;
+			return true;
 		}
 
 		this.dependents[key] = node;

@@ -19,6 +19,10 @@ export class GrobCollection<T extends GrobNodeType> extends AGraphItem implement
 	public getNodeNames(){
 		return Object.keys( this.nodes_names );
 	}
+	public getNodes(){
+		return Object.values( this.nodes_names );
+	}
+
 	public hasNode(name) {
 		return this.nodes_names[name] ? true : false;
 	}

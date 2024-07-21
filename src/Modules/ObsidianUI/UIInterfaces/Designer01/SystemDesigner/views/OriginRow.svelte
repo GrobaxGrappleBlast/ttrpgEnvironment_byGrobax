@@ -16,7 +16,7 @@
 
 	let dispatch = createEventDispatcher();
 
-	onMount(()=>{  
+	onMount(()=>{   
 		if (origin && rowData.segments ){ 
 			if(!(rowData.segments[0])){
 				return

@@ -112,7 +112,6 @@ export abstract class TTRPGSystemGraphAbstractModel {
 
 
 	protected _addNodeDependency( node: GrobDerivedNode, dep : GrobNodeType ){
-		
 		let o1 = node.addDependency(dep);
 		let o2 = dep.addDependent(node);
 		if ( !(o1 && o2) ){
