@@ -367,7 +367,6 @@
 
 				let origins = get(this.mappedOrigins);
 				let nameCalc = get(this.nameCalc);			
-				let filtered = origins.filter( p => { return nameCalc.contains(p.key) && p.isSelectAllTarget } )
 
 				type resDataPoint = {name:string, deps: Record<string,GrobNodeType>  }
 				type result = { data : resDataPoint[] }
@@ -384,7 +383,6 @@
 						if ( res.data.findIndex( p => p.name == currentName ) != -1 ){ 
 							throw new Error('Double Name, in names generated Detected');
 						}
-						//todo: fix this
 						res.data.push( {name:currentName, deps:deps } );
 						return;
 					}
@@ -414,7 +412,9 @@
 					});
 					
 				}
-				recursiveNameFinder( this , nameCalc ,0, filtered, res , {} );  
+				recursiveNameFinder( this , nameCalc ,0, origins, res , {} );  
+
+				debugger;
 				this.generativeNameListData.set( res.data.map( p => p.name ) );	
 				return res.data;
 			}
