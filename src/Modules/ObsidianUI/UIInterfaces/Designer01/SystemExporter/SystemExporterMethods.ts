@@ -10,6 +10,7 @@ export class SystemExporterMethods {
 				dependencies: Record<string,TNode> = {};
 				dependents:TNode[];
 				calc:string;
+				updateListeners = {};
 
 				constructor(basevalue: number, calc:string | null ) {
 					this.baseValue = basevalue;
@@ -45,11 +46,24 @@ export class SystemExporterMethods {
 						}
 						this.value = eval(calcStr);
 					}
-			
+			 
+					( Object.keys(this.updateListeners) ).forEach( key => {
+						this.updateListeners[key]();
+					})
+						
 					for (let i = 0; i < this.dependents.length; i++) {
 						const dep = this.dependents[i];
 						dep.update();
 					}
+				}
+				addUpdateListener( key , listener : () => any ){
+					this.updateListeners[key] = listener;
+				}
+				removeUpdateListener( key ){
+					delete this.updateListeners[key];
+				}
+				removeAllUpdateListeners(){
+					this.updateListeners = {}
 				}
 			}`
 		;
