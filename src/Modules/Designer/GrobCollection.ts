@@ -37,6 +37,12 @@ export class GrobCollection<T extends GrobNodeType> extends AGraphItem implement
 	}  
 	public removeNode(node : T){
 
+		if(!node)
+		{
+			console.error('attempted to delete node "Null" ');
+			return false
+		}
+
 		const name = node.getName(); 
 		let n = this.nodes_names[name];
 		if(!n)
