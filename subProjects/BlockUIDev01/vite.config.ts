@@ -7,6 +7,45 @@ import builtins from 'builtin-modules';
 
 const prod = (process.argv[2] === 'production');
 
+export default defineConfig({
+	plugins: [
+		svelte({
+		  compilerOptions: { css: true },
+		  preprocess: autoPreprocess()
+		})
+	],
+	build: {
+		sourcemap: prod ? false : 'inline',
+		minify: prod,
+		target: 'esnext',
+		// Use Vite lib mode for a single entry point
+		lib: {
+		  entry: path.resolve(__dirname, './src/main.ts'),
+		  formats: ['cjs'],  // Use 'cjs' for CommonJS
+		  name: 'MyObsidianPlugin',  // Change this to your plugin's name
+		  fileName:`main.js`,
+		},
+		rollupOptions: {
+		  output: {
+			format: 'cjs',  // Ensure the format is 'cjs' for CommonJS
+			entryFileNames: '[name].js',
+			assetFileNames: '[name].[ext]',
+		  },
+		  external: [
+			'obsidian',
+			'electron',
+			"codemirror",
+			"@codemirror/*",
+			"@lezer/*",
+			...builtins,
+		  ],
+		},
+		emptyOutDir: false,
+		outDir: 'dist',  // Define a clear output directory
+	  }
+})
+
+/*
 // https://vitejs.dev/config/
 export default defineConfig({
 	plugins: [svelte({
@@ -16,6 +55,7 @@ export default defineConfig({
 	build: {
 		sourcemap: prod ? false : 'inline',
 		minify: prod,
+		target: 'esnext',
 		// Use Vite lib mode https://vitejs.dev/guide/build.html#library-mode
 		commonjsOptions: {
 			ignoreTryCatch: false,
@@ -27,6 +67,7 @@ export default defineConfig({
 		},
 		rollupOptions: {
 			output: {
+				format: 'esm',
 				// Overwrite default Vite output fileName
 				entryFileNames: 'main.js',
 				assetFileNames: 'styles.css',
@@ -64,5 +105,8 @@ export default defineConfig({
 		// Use root as the output dir
 		emptyOutDir: false,
 		outDir: '.',
+		
 	},
 })
+
+*/ 

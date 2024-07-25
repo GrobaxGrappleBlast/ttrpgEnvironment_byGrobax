@@ -1337,6 +1337,11 @@ button {
 
 .MainMenuButton .MainMenuButton_desc {
   transition: 1s ease width, 0.3s ease opacity;
+}.SystemDesignerBlockSet {
+  height: 200px;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 5px;
 }.toogleSectionHeader {
   cursor: pointer;
   height: 45px;
@@ -1373,11 +1378,6 @@ button {
 
 .toogleSectionHeader[data-toogled=false]:hover {
   background-color: var(--interactive-accent);
-}.SystemDesignerBlockSet {
-  height: 200px;
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 5px;
 }div {
   vertical-align: middle;
   line-height: 24px;

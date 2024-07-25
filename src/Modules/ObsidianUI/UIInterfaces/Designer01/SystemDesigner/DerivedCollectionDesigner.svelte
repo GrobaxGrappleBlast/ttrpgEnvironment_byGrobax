@@ -264,11 +264,7 @@
 					success = false;
 				}
 			}
-
-
-
-
- 
+  
 			// User information
 			if (success){
 				this.messageHandler?.addMessageManual('save','Saved Node', 'good');
@@ -413,8 +409,6 @@
 					
 				}
 				recursiveNameFinder( this , nameCalc ,0, origins, res , {} );  
-
-				debugger;
 				this.generativeNameListData.set( res.data.map( p => p.name ) );	
 				return res.data;
 			}
@@ -489,6 +483,7 @@
 		controller.checkIsValid(false);  
 	}
 	function onSave(){ 
+		debugger
 		messageHandler?.removeError('save');
 		controller.saveCollection();     
 		dispatch('save');

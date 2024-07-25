@@ -8,8 +8,7 @@
     import { ObsidianUICoreAPI } from "../../../../../src/Modules/ObsidianUICore/API";
     import StaticMessageHandler from "./BaseComponents/Messages/StaticMessageHandler.svelte";
     import { SystemPreview } from "../../../../../src/Modules/ObsidianUICore/model/systemPreview"; 
-    import MainMenuButton from "./Menu/MainMenuButton.svelte";
-    import SystemDesigner from "./SystemDesigner/SystemDesigner.svelte";
+    import MainMenuButton from "./Menu/MainMenuButton.svelte"; 
     import { writable, type Writable } from "svelte/store";
     import SystemDesignerContainer from "./SystemDesigner/SystemDesignerContainer.svelte";
     import { TTRPGSystem } from "../../../../../src/Modules/Designer";
