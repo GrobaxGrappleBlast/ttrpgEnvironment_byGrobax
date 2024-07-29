@@ -89,7 +89,7 @@ export abstract class GrobNode<T extends GrobNode<T>> extends AGraphItem{
 		return seg;
 	}
 	public update( ){
-		this.update();
+		this._update();
 		( Object.keys(this.updateListeners) ).forEach( key => {
 			this.updateListeners[key]();
 		})
