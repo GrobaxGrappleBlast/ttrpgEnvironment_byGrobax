@@ -31,6 +31,10 @@ export function setMetadata( metaTag , value , target , propertyKey , scheme : s
 	// define the metaData;
 	Reflect.defineMetadata( metaTag, data, target, propertyKey);
 }
+export function getMetaDataKeys( target, propertyKey ){
+	return Reflect.getMetadataKeys( target , propertyKey )
+}
+
 
 export function getOwnMetaData( metaTag , target , scheme : string = BASE_SCHEME  ){
 	// first we need the right target -> target
