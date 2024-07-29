@@ -190,13 +190,13 @@
 		<div class="linebreak" ></div>
 			{#if editorOpen_specialDerivedItem }
 				<div transition:slide|local>
-					<!--DerivedCollectionDesigner 
+					<DerivedCollectionDesigner 
 						system ={ system }
 						secondSlideInReady={ true }
 						goodTitle = {'Create New Collection'}
 						badTitle  = {'Create New Collection - Error'}
 						on:save={validateForSave}
-					/-->
+					/>
 				</div> 
 			{:else if $editorOpen_derivedItem } 
 				<div transition:slide|local >
