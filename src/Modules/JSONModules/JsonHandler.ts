@@ -7,9 +7,9 @@ import { BASE_SCHEME, JSON_BASETYPES, JSON_TAGS, NoOutput, type Constructor } fr
 export class JSONHandler{
  
 	public static serialize(obj: any  , scheme : string = BASE_SCHEME ): string {
-		return JSON.stringify(JSONHandler.serializeRaw(obj, scheme ));
+		return JSON.stringify(JSONHandler.serializeRaw(obj, scheme , "first"));
 	} 
-	private static serializeRaw( obj:any  , scheme : string = BASE_SCHEME ): object{
+	private static serializeRaw( obj:any  , scheme : string = BASE_SCHEME , parentProperty : string = "none" ): object{
 
 		if(!obj){
 			return obj;
@@ -59,31 +59,36 @@ export class JSONHandler{
 				PropertyName = getMetadata( JSON_TAGS.JSON_PROPERTY_NAME_MAP_OUT , obj , key  , scheme ); 
 			}
 
+			// Handle Parameter before Serialization Force Type. 
+			if ( meta.includes(JSON_TAGS.JSON_PARAMETER_ON_BEFORE_SERIALIZATION_CONVERSION )  && meta.includes(JSON_TAGS.JSON_PROPERTY_TYPED )  ){ 
+				let type = getMetadata(JSON_TAGS.JSON_PROPERTY_TYPED, obj , PropertyName );
+				let prototype = Reflect.getPrototypeOf( type ); 
+				Reflect.setPrototypeOf(obj[PropertyName],(prototype as any).prototype) 
+			} 
+
 			// if there is a mapping function
 			let out : any = null;
 			if ( meta.includes(JSON_TAGS.JSON_PROPERTY_FUNC_MAP_OUT )){
 				let outFunction = getMetadata( JSON_TAGS.JSON_PROPERTY_FUNC_MAP_OUT , obj , key  , scheme  ); 
-				out = outFunction(obj[key], (o)=>JSONHandler.serializeRaw( o, scheme ) );
+				out = outFunction(obj[key], (o)=>JSONHandler.serializeRaw( o, scheme , PropertyName) );
 			} 
 			else if( meta.includes(JSON_TAGS.JSON_PROPERTY_FORCE_ARRAY ) ){
 				out = [];
 				if(obj[key]){
 					if(Array.isArray(obj[key])){
 						for (let j = 0; j < obj[key].length; j++) {
-							const e = JSONHandler.serializeRaw(obj[key][j] , scheme );
+							const e = JSONHandler.serializeRaw(obj[key][j] , scheme, PropertyName );
 							out.push(e)
 						}
 					}else{
 						out.push(
-							JSONHandler.serializeRaw(obj[key] , scheme )
+							JSONHandler.serializeRaw(obj[key] , scheme , PropertyName)
 						)
 					}
 				}
 			}
-			else {
-				 
-				out = JSONHandler.serializeRaw(obj[key] , scheme );
-				 
+			else { 
+				out = JSONHandler.serializeRaw(obj[key] , scheme , PropertyName); 
 			}
 
 			// HANDLE Force Typing
@@ -105,6 +110,9 @@ export class JSONHandler{
 
 			result[PropertyName] = out;
 		}
+
+		// use the parentProperty so compilerknows it is used;
+		parentProperty = parentProperty;
 
 		return result;
 	}

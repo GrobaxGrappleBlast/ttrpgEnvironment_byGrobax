@@ -5,6 +5,7 @@ import { GrobDerivedNode, GrobDerivedOrigin, GrobFixedNode } from "../GrobNodte"
 import { JsonObject, JsonMappingRecordInArrayOut, JsonClassTyped, JsonString } from "../../JSONModules/index"; 
 import { TTRPGSystemGraphModel } from "../GraphV2/TTRPGSystemGraphModel";
 import { BASE_SCHEME } from "../../../../src/Modules/JSONModules/JsonModuleConstants";
+import { getMetadata, getMetaDataKeys, getOwnMetaData, getOwnMetaDataKeys } from "../../../../src/Modules/JSONModules/JsonModuleBaseFunction";
  
 class GrobCollectionDerived extends GrobCollection<GrobDerivedNode>{
 	
@@ -43,11 +44,46 @@ export class TTRPG_SCHEMES {
  * Ensures that data is maintained, as well as graphlinks
 */
 @JsonObject({
-	onBeforeSerialization:(self:TTRPGSystemJSONFormatting) => {
-		self.fixed		= self._getGroup('fixed')	as GrobGroup<GrobFixedNode>;
-		self.derived	= self._getGroup('derived')	as GrobGroup<GrobDerivedNode>;
+	onBeforeSerialization:(self:TTRPGSystemJSONFormatting) => { 
+		
+		self.initAsNew();
+		let col_keys;
+		
+		let a = new TTRPGSystemJSONFormatting();
+		let b = Reflect.getPrototypeOf(a);
+		let b_metaKeys	= getOwnMetaDataKeys(b);
+		let b_metaData0 = getOwnMetaData	(b_metaKeys[1],a);
+
+		// Should this ensure that sub classes are of the correct type? 
+		let propkeys = Object.keys( a );
+		let prop_meta_keys = getMetaDataKeys(a,propkeys[7])
+		let prop_meta_data = getMetadata('JSON_PROPERTY_TYPED', a , propkeys[7] );
+		
+
+		// Fixed
+		col_keys =  Object.keys(self.fixed.collections_names);
+		for (let g = 0; g < col_keys.length; g++) {
+			const col_key = col_keys[g];
+			const col = self.fixed.collections_names[col_key];
+
+			console.log(col);
+
+		}
+ 
+		// Derived
+		col_keys =  Object.keys(self.derived.collections_names);
+		for (let g = 0; g < col_keys.length; g++) {
+			const col_key = col_keys[g];
+			const col = self.derived.collections_names[col_key];
+
+			console.log(col);
+
+		}
 	},
 	onAfterDeSerialization:(self:TTRPGSystemJSONFormatting, ...args ) => {
+		
+		self.initAsNew();
+
 		// add derived and fixed to groups 
 		self.data[self.fixed	.getName()] = self.fixed; 
 		self.data[self.derived	.getName()] = self.derived; 
@@ -83,11 +119,11 @@ export class TTRPG_SCHEMES {
 })
 export class TTRPGSystemJSONFormatting extends TTRPGSystemGraphModel {
 	  
-	@JsonClassTyped ( GrobGroupFixed )
-	public fixed 	: GrobGroupFixed
+	@JsonClassTyped ( GrobGroupFixed , {preSerializationConversion : true})
+	public fixed 	: GrobGroupFixed	;
 
-	@JsonClassTyped ( GrobGroupDerived )
-	public derived 	: GrobGroupDerived
+	@JsonClassTyped ( GrobGroupDerived , {preSerializationConversion : true})
+	public derived 	: GrobGroupDerived	;
 
 	@JsonString()
 	@JsonString({scheme:TTRPG_SCHEMES.PREVIEW})
@@ -105,14 +141,20 @@ export class TTRPGSystemJSONFormatting extends TTRPGSystemGraphModel {
 	@JsonString({scheme:TTRPG_SCHEMES.PREVIEW})
 	public systemName:string = "";
 	
-
 	public constructor(){
 		super();
+		this.initAsNew();
 	}
 
 	public initEmpty(){
 		this.fixed = new GrobGroupFixed();
 		this.derived = new GrobGroupDerived();
+	}
+
+	public initAsNew(){
+		super.initAsNew();
+		this.fixed		= this._getGroup('fixed')	as GrobGroup<GrobFixedNode>;
+		this.derived	= this._getGroup('derived')	as GrobGroup<GrobDerivedNode>;
 	}
 }
 
