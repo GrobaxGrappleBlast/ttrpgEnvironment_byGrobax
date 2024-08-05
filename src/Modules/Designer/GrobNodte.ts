@@ -17,13 +17,6 @@ export class GrobDerivedOrigin {
 	@JsonString()
 	public originKey: string ;
 
-	//public getSymbol(){}
-	//public setSymbol(){}
-	//public getStandardValue(){}
-	//public setStandardValue(){}
-	//public getOrigin(){}
-	//public setOrigin(){}
-
 }
 
 
