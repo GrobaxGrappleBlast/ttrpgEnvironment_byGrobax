@@ -1,6 +1,6 @@
 <script context="module"  lang="ts">
 	import ToogleSection from './../BaseComponents/ToogleSection/ToogleSection.svelte';
-	import {DerivedCollectionController , selAllInCollectionString , originRowData} from './DerivedCollectionDesigner';
+	import {DerivedCollectionController , selAllInCollectionString , originRowData} from './DerivedCollectionDesignerController';
 </script> 
 <script lang="ts"> 
     import { GrobDerivedNode, TTRPGSystem, type GrobNodeType } from "../../../../Designer";

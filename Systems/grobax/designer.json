@@ -1,1 +1,49 @@
-{"fixed":{"name":"fixed","collections_names":[{"name":"New Collection 1"},{"name":"New Collection 2"},{"name":"New Collection 3"}]},"derived":{"name":"derived","collections_names":[{"name":"New Collection 0","data":[{"name":"New Item 0","calculationString":"@a + @b","calcOrigins":[{"symbol":"@a","originKey":"derived.New Collection 0.New Item 0"},{"symbol":"@b","originKey":"fixed.New Collection 1.New Item 0"}]},{"name":"New Item 1","calculationString":"@a","calcOrigins":[]}]}]},"author":"","version":"","systemCodeName":"","systemName":""}
+{
+	"fixed": {
+		"name": "fixed",
+		"collections_names": [
+			{
+				"name": "New Collection 1"
+			},
+			{
+				"name": "New Collection 2"
+			},
+			{
+				"name": "New Collection 3"
+			}
+		]
+	},
+	"derived": {
+		"name": "derived",
+		"collections_names": [
+			{
+				"name": "New Collection 0",
+				"data": [
+					{
+						"name": "New Item 0",
+						"calculationString": "@a + @b",
+						"calcOrigins": [
+							{
+								"symbol": "@a",
+								"originKey": "derived.New Collection 0.New Item 0"
+							},
+							{
+								"symbol": "@b",
+								"originKey": "fixed.New Collection 1.New Item 0"
+							}
+						]
+					},
+					{
+						"name": "New Item 1",
+						"calculationString": "@a",
+						"calcOrigins": []
+					}
+				]
+			}
+		]
+	},
+	"author": "",
+	"version": "",
+	"systemCodeName": "",
+	"systemName": ""
+}

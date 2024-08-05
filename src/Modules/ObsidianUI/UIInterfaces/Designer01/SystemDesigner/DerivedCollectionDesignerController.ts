@@ -1,9 +1,7 @@
-import { GrobDerivedNode, TTRPGSystem, type GrobNodeType } from "../../../../Designer";
-import StaticMessageHandler from "../BaseComponents/Messages/StaticMessageHandler.svelte";
-import './ItemDesigner.scss' 
+import { GrobDerivedNode, TTRPGSystem, type GrobNodeType } from "../../../../Designer"; 
 import { writable, type Writable, get } from 'svelte/store';  
  
-
+type StaticMessageHandler = any
 export type originRowData = {key: string, segments:(string|null)[] , active :boolean , testValue :number, inCalc:boolean, target: GrobNodeType  | null , isSelectAllTarget:boolean };
 export const selAllInCollectionString = '- - Select all - -';
 export class DerivedCollectionController {
@@ -45,12 +43,14 @@ export class DerivedCollectionController {
 		let out = (key,msg,error) => { if(output){ messageHandler?.addMessageManual(key,msg,error) }}
 
 		let isValid = true ; 
+		console.log(name);
+
 		// check the name
 		if (name== ''){
 			isValid = false;
 			out('name','The name cannot be empty', 'error')
 		}
-		else if (name.contains('.')){
+		else if (name.includes('.')){
 			isValid = false;
 			out('name','The name cannot contain "."', 'error')
 		}
@@ -72,7 +72,7 @@ export class DerivedCollectionController {
 		let symbolsName = GrobDerivedNode.staticParseCalculationToOrigins( nameCalc ) 
 		symbolsName = symbolsName.filter( p => symbolsCalc.includes(p) );
 
-		let symbolsMissing = symbolsCalc.filter( p => !nameCalc.contains(p))
+		let symbolsMissing = symbolsCalc.filter( p => !nameCalc.includes(p))
 		let isValid = true;
 
 		if (symbolsMissing.length != 0){
@@ -114,7 +114,7 @@ export class DerivedCollectionController {
 		}
 		  
 		// Set Calc and dependencies 
-		let NMap = mappedOrigins.filter( p => calc.contains(p.key) ); 
+		let NMap = mappedOrigins.filter( p => calc.includes(p.key) ); 
 		NMap.forEach( o => {	
 			
 			// check if it has segments
@@ -183,8 +183,11 @@ export class DerivedCollectionController {
 		let out = (key,msg,error) => { if(output){ messageHandler?.addMessageManual(key,msg,error) }}
 
 		let symbols = GrobDerivedNode.staticParseCalculationToOrigins(calc);
-		mappedOrigins.forEach( o  => {
-			symbols.remove( o.key ); 
+		mappedOrigins.forEach( o  => {  
+			const index = symbols.indexOf( o.key );
+			if (index !== -1) {
+				symbols.splice(index, 1);
+			} 
 			messageHandler?.removeError( o.key + 'missing' )
 		});
 
@@ -251,7 +254,7 @@ export class DerivedCollectionController {
 				nodesToCreate.forEach( node => {
 
 					// Create
-					let createdNode = this.system?.createDerivedNode( colName , node.name );
+					let createdNode = this.system?.createDerivedNode( colName , node.name ) as GrobDerivedNode;
 					let calc = get(this.calc);
 					createdNode?.setCalc(calc);
 
@@ -293,9 +296,9 @@ export class DerivedCollectionController {
 
 			// we eval if s0 is in the calc. then we need to exchange then delete. 
 			t0.key = s1;
-			t0.inCalc = get(this.calc).contains(s1);
+			t0.inCalc = get(this.calc).includes(s1);
 			t1.key = s0;
-			t1.inCalc = get(this.calc).contains(s0);
+			t1.inCalc = get(this.calc).includes(s0);
 			return mappedOrigins;
 		})
 		return 
