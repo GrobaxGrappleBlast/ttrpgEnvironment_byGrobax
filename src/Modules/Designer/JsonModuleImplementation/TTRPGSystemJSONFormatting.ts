@@ -15,20 +15,20 @@ export class GrobCollectionDerived extends GrobCollection<GrobDerivedNode>{
 
 export class GrobCollectionFixed extends GrobCollection<GrobFixedNode>{
 
-	@JsonMappingRecordInArrayOut({KeyPropertyName:'getName',type:GrobFixedNode , preSerializationConversion : true})
+	@JsonMappingRecordInArrayOut({KeyPropertyName:'getName', name:'data',type:GrobFixedNode , preSerializationConversion : true})
 	nodes_names: Record<string, GrobFixedNode> = {}
 }
 
 export class GrobGroupDerived extends GrobGroup<GrobDerivedNode>{
 	
-	@JsonMappingRecordInArrayOut({KeyPropertyName:'getName', type :GrobCollectionDerived , preSerializationConversion : true})
+	@JsonMappingRecordInArrayOut({KeyPropertyName:'getName',type :GrobCollectionDerived , preSerializationConversion : true})
 	collections_names: Record<string, GrobCollectionDerived > = {};
 
 }
  
 export class GrobGroupFixed extends GrobGroup<GrobFixedNode>{
 	
-	@JsonMappingRecordInArrayOut({KeyPropertyName:'getName', type :GrobCollectionFixed , preSerializationConversion : true })
+	@JsonMappingRecordInArrayOut({KeyPropertyName:'getName', name:'data', type :GrobCollectionFixed , preSerializationConversion : true })
 	collections_names: Record<string,GrobCollectionFixed> = {};
 
 }

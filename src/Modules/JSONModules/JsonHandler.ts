@@ -60,11 +60,12 @@ export class JSONHandler{
 			}
 
 			// Handle Parameter before Serialization Force Type. 
+			var handleForcePrototype : (target:object, obj:object, key:any ) => any = (a,b,c) => null ;
 			if ( meta.includes(JSON_TAGS.JSON_PARAMETER_ON_BEFORE_SERIALIZATION_CONVERSION )  && meta.includes(JSON_TAGS.JSON_PROPERTY_TYPED )  ){ 
-				let type = getMetadata(JSON_TAGS.JSON_PROPERTY_TYPED, obj , key );
-				//const instance = new type();
-				//.setPrototypeOf(obj[key], Object.getPrototypeOf(instance) )
-				setPrototype(obj[key], type.prototype )
+				handleForcePrototype = (target, obj, key) => {
+					let type = getMetadata(JSON_TAGS.JSON_PROPERTY_TYPED, obj , key );
+					setPrototype(target, type.prototype )
+				}
 			} 
 
 			// if there is a mapping function
@@ -72,10 +73,8 @@ export class JSONHandler{
 			if ( meta.includes(JSON_TAGS.JSON_PROPERTY_FUNC_MAP_OUT )){
 				let outFunction = getMetadata( JSON_TAGS.JSON_PROPERTY_FUNC_MAP_OUT , obj , key  , scheme  ); 
 			 
-					out = outFunction(obj[key], (o)=>JSONHandler.serializeRaw( o, scheme , PropertyName) );
-					console.log("out");
+					out = outFunction(obj[key], (o)=>{ handleForcePrototype(o, obj, key) ;return JSONHandler.serializeRaw( o, scheme , PropertyName)} );
 				 
-					console.log("out");
 				
 			} 
 			else if( meta.includes(JSON_TAGS.JSON_PROPERTY_FORCE_ARRAY ) ){
@@ -83,6 +82,8 @@ export class JSONHandler{
 				if(obj[key]){
 					if(Array.isArray(obj[key])){
 						for (let j = 0; j < obj[key].length; j++) {
+
+							handleForcePrototype(obj[key][j], obj, key)
 							const e = JSONHandler.serializeRaw(obj[key][j] , scheme, PropertyName );
 							out.push(e)
 						}
@@ -94,6 +95,7 @@ export class JSONHandler{
 				}
 			}
 			else { 
+				handleForcePrototype(obj[key], obj, key)
 				out = JSONHandler.serializeRaw(obj[key] , scheme , PropertyName); 
 			}
 
