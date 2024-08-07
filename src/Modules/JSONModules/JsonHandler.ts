@@ -1,5 +1,5 @@
 import type { IOutputHandler } from "../Designer/Abstractions/IOutputHandler";
-import { getMetadata, getOwnMetaData, getOwnMetaDataKeys, hasMetaDataInScheme } from "./JsonModuleBaseFunction";
+import { getMetadata, getMetaDataKeys, getOwnMetaData, getOwnMetaDataKeys, hasMetaDataInScheme, setPrototype } from "./JsonModuleBaseFunction";
 import { BASE_SCHEME, JSON_BASETYPES, JSON_TAGS, NoOutput, type Constructor } from "./JsonModuleConstants";
 
 
@@ -46,7 +46,7 @@ export class JSONHandler{
 			
 			// get basic properties
 			const key = propertyNames[i];
-			let meta = Reflect.getMetadataKeys( obj , key );	
+			let meta = getMetaDataKeys( obj , key );	
 			
 			// check if the scheme we are about to export have The Property in it
 			if( !hasMetaDataInScheme(JSON_TAGS.JSON_PROPERTY,obj,key,scheme) ){
@@ -61,16 +61,22 @@ export class JSONHandler{
 
 			// Handle Parameter before Serialization Force Type. 
 			if ( meta.includes(JSON_TAGS.JSON_PARAMETER_ON_BEFORE_SERIALIZATION_CONVERSION )  && meta.includes(JSON_TAGS.JSON_PROPERTY_TYPED )  ){ 
-				let type = getMetadata(JSON_TAGS.JSON_PROPERTY_TYPED, obj , PropertyName );
-				let prototype = Reflect.getPrototypeOf( type ); 
-				Reflect.setPrototypeOf(obj[PropertyName],(prototype as any).prototype) 
+				let type = getMetadata(JSON_TAGS.JSON_PROPERTY_TYPED, obj , key );
+				//const instance = new type();
+				//.setPrototypeOf(obj[key], Object.getPrototypeOf(instance) )
+				setPrototype(obj[key], type.prototype )
 			} 
 
 			// if there is a mapping function
 			let out : any = null;
 			if ( meta.includes(JSON_TAGS.JSON_PROPERTY_FUNC_MAP_OUT )){
 				let outFunction = getMetadata( JSON_TAGS.JSON_PROPERTY_FUNC_MAP_OUT , obj , key  , scheme  ); 
-				out = outFunction(obj[key], (o)=>JSONHandler.serializeRaw( o, scheme , PropertyName) );
+			 
+					out = outFunction(obj[key], (o)=>JSONHandler.serializeRaw( o, scheme , PropertyName) );
+					console.log("out");
+				 
+					console.log("out");
+				
 			} 
 			else if( meta.includes(JSON_TAGS.JSON_PROPERTY_FORCE_ARRAY ) ){
 				out = [];
@@ -144,7 +150,7 @@ export class JSONHandler{
 		let out : any = obj ;
 		// HANDLE Force Typing
 		//if( meta.includes(JSON_TAGS.JSON_PROPERTY_FORCE_BASE_TYPE)){
-		//let typekey = Reflect.getMetadata( JSON_TAGS.JSON_PROPERTY_FORCE_BASE_TYPE , obj , key )
+		//let typekey = .getMetadata( JSON_TAGS.JSON_PROPERTY_FORCE_BASE_TYPE , obj , key )
 		
 		let convFunc: (e:any) => any = (e) => e; 
 		switch(typekey){
@@ -203,14 +209,14 @@ export class JSONHandler{
 			// get basic properties
 			let key = propertyNames[i];
 			let inKey = key;
-			let meta = Reflect.getMetadataKeys( prototype , key );	
+			let meta = getMetaDataKeys( prototype , key );	
 			let PropertyName = key;
 
 			// if this is an Out key, convert it to an IN Key, so we can get the right meta data. 
 			if ( meta.includes(JSON_TAGS.JSON_PROPERTY_NAME_MAP_IN ) ){
 				// get out key from the in Key
 				key = getMetadata( JSON_TAGS.JSON_PROPERTY_NAME_MAP_IN , prototype , key  , scheme ); 
-				meta = Reflect.getMetadataKeys( prototype , key );
+				meta = getMetaDataKeys( prototype , key );
 				PropertyName = key;
 			} 
  

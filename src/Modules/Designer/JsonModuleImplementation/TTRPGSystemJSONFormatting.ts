@@ -7,28 +7,28 @@ import { TTRPGSystemGraphModel } from "../GraphV2/TTRPGSystemGraphModel";
 import { BASE_SCHEME } from "../../../../src/Modules/JSONModules/JsonModuleConstants";
 import { getMetadata, getMetaDataKeys, getOwnMetaData, getOwnMetaDataKeys } from "../../../../src/Modules/JSONModules/JsonModuleBaseFunction";
  
-class GrobCollectionDerived extends GrobCollection<GrobDerivedNode>{
+export class GrobCollectionDerived extends GrobCollection<GrobDerivedNode>{
 	
-	@JsonMappingRecordInArrayOut({KeyPropertyName:'getName',name:'data',type:GrobDerivedNode})
+	@JsonMappingRecordInArrayOut({KeyPropertyName:'getName',type:GrobDerivedNode , preSerializationConversion : true})
 	nodes_names: Record<string, GrobDerivedNode> = {}
 }
 
-class GrobCollectionFixed extends GrobCollection<GrobFixedNode>{
+export class GrobCollectionFixed extends GrobCollection<GrobFixedNode>{
 
-	@JsonMappingRecordInArrayOut({KeyPropertyName:'getName',name:'data',type:GrobFixedNode})
+	@JsonMappingRecordInArrayOut({KeyPropertyName:'getName',type:GrobFixedNode , preSerializationConversion : true})
 	nodes_names: Record<string, GrobFixedNode> = {}
 }
 
-class GrobGroupDerived extends GrobGroup<GrobDerivedNode>{
+export class GrobGroupDerived extends GrobGroup<GrobDerivedNode>{
 	
-	@JsonMappingRecordInArrayOut({KeyPropertyName:'getName', type :GrobCollectionDerived })
+	@JsonMappingRecordInArrayOut({KeyPropertyName:'getName', type :GrobCollectionDerived , preSerializationConversion : true})
 	collections_names: Record<string, GrobCollectionDerived > = {};
 
 }
  
-class GrobGroupFixed extends GrobGroup<GrobFixedNode>{
+export class GrobGroupFixed extends GrobGroup<GrobFixedNode>{
 	
-	@JsonMappingRecordInArrayOut({KeyPropertyName:'getName', type :GrobCollectionFixed })
+	@JsonMappingRecordInArrayOut({KeyPropertyName:'getName', type :GrobCollectionFixed , preSerializationConversion : true })
 	collections_names: Record<string,GrobCollectionFixed> = {};
 
 }
@@ -45,40 +45,7 @@ export class TTRPG_SCHEMES {
 */
 @JsonObject({
 	onBeforeSerialization:(self:TTRPGSystemJSONFormatting) => { 
-		
 		self.initAsNew();
-		let col_keys;
-		
-		let a = new TTRPGSystemJSONFormatting();
-		let b = Reflect.getPrototypeOf(a);
-		let b_metaKeys	= getOwnMetaDataKeys(b);
-		let b_metaData0 = getOwnMetaData	(b_metaKeys[1],a);
-
-		// Should this ensure that sub classes are of the correct type? 
-		let propkeys = Object.keys( a );
-		let prop_meta_keys = getMetaDataKeys(a,propkeys[7])
-		let prop_meta_data = getMetadata('JSON_PROPERTY_TYPED', a , propkeys[7] );
-		
-
-		// Fixed
-		col_keys =  Object.keys(self.fixed.collections_names);
-		for (let g = 0; g < col_keys.length; g++) {
-			const col_key = col_keys[g];
-			const col = self.fixed.collections_names[col_key];
-
-			console.log(col);
-
-		}
- 
-		// Derived
-		col_keys =  Object.keys(self.derived.collections_names);
-		for (let g = 0; g < col_keys.length; g++) {
-			const col_key = col_keys[g];
-			const col = self.derived.collections_names[col_key];
-
-			console.log(col);
-
-		}
 	},
 	onAfterDeSerialization:(self:TTRPGSystemJSONFormatting, ...args ) => {
 		
@@ -146,15 +113,10 @@ export class TTRPGSystemJSONFormatting extends TTRPGSystemGraphModel {
 		this.initAsNew();
 	}
 
-	public initEmpty(){
-		this.fixed = new GrobGroupFixed();
-		this.derived = new GrobGroupDerived();
-	}
-
 	public initAsNew(){
 		super.initAsNew();
-		this.fixed		= this._getGroup('fixed')	as GrobGroup<GrobFixedNode>;
-		this.derived	= this._getGroup('derived')	as GrobGroup<GrobDerivedNode>;
+		this.fixed		= this._getGroup('fixed')	as GrobGroupFixed;
+		this.derived	= this._getGroup('derived')	as GrobGroupDerived;
 	}
 }
 

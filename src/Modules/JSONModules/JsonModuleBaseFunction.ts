@@ -69,3 +69,6 @@ export function getOwnMetaDataKeys(target ){
 	return data;
 }
 
+export function setPrototype( target , prototype ){
+	return Reflect.setPrototypeOf(target, prototype )
+}
