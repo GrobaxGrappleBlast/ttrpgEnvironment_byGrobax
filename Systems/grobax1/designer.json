@@ -1,7 +1,11 @@
 {
+	"author": "",
+	"version": "",
+	"systemCodeName": "",
+	"systemName": "",
 	"fixed": {
 		"name": "fixed",
-		"collections_names": [
+		"data": [
 			{
 				"name": "stats",
 				"data": [
@@ -121,15 +125,72 @@
 	},
 	"derived": {
 		"name": "derived",
-		"collections_names": [
+		"data": [
 			{
-				"name": "modifiers",
-				"data": []
+				"name": "testCollection",
+				"data": [
+					{
+						"name": "strength",
+						"calculationString": "@a",
+						"calcOrigins": [
+							{
+								"symbol": "@a",
+								"originKey": "fixed.stats.strength"
+							}
+						]
+					},
+					{
+						"name": "dexterity",
+						"calculationString": "@a",
+						"calcOrigins": [
+							{
+								"symbol": "@a",
+								"originKey": "fixed.stats.dexterity"
+							}
+						]
+					},
+					{
+						"name": "constitution",
+						"calculationString": "@a",
+						"calcOrigins": [
+							{
+								"symbol": "@a",
+								"originKey": "fixed.stats.constitution"
+							}
+						]
+					},
+					{
+						"name": "wisdom",
+						"calculationString": "@a",
+						"calcOrigins": [
+							{
+								"symbol": "@a",
+								"originKey": "fixed.stats.wisdom"
+							}
+						]
+					},
+					{
+						"name": "intelligense",
+						"calculationString": "@a",
+						"calcOrigins": [
+							{
+								"symbol": "@a",
+								"originKey": "fixed.stats.intelligense"
+							}
+						]
+					},
+					{
+						"name": "charisma",
+						"calculationString": "@a",
+						"calcOrigins": [
+							{
+								"symbol": "@a",
+								"originKey": "fixed.stats.charisma"
+							}
+						]
+					}
+				]
 			}
 		]
-	},
-	"author": "",
-	"version": "",
-	"systemCodeName": "",
-	"systemName": ""
+	}
 }
