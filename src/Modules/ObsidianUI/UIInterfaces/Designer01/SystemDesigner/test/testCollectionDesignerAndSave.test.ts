@@ -2,43 +2,37 @@
 
 
 import { JSONHandler } from '../../../../../JSONModules/index';//"../../JSONModules/index"; 
-import { GrobFixedNode, TTRPGSystem } from '../../../../../../Modules/Designer/index'
+import { GrobFixedNode, type GrobNodeType, TTRPGSystem } from '../../../../../../Modules/Designer/index'
 import { DerivedCollectionController} from '../DerivedCollectionDesignerController';  
 import { GrobCollectionFixed, GrobGroupFixed } from '../../../../../Designer/JsonModuleImplementation/TTRPGSystemJSONFormatting';
 import { getMetadata, getMetaDataKeys, getOwnMetaData, getOwnMetaDataKeys, hasMetaDataInScheme } from "../../../../../JSONModules/JsonModuleBaseFunction";
+import exp from 'constants';
 const selAllInCollectionString = '- - Select all - -';
 
 const loadedSystemJSON = `{"fixed": {"name": "fixed","collections_names": [{"name": "stats","data": [{"name": "strength","standardValue": 1},{"name": "dexterity","standardValue": 1},{"name": "constitution","standardValue": 1},{"name": "wisdom","standardValue": 1},{"name": "intelligense","standardValue": 1},{"name": "charisma","standardValue": 1}]},{"name": "SkillProficiencies","data": [{"name": "Athletics","standardValue": 0},{"name": "Acrobatics","standardValue": 0},{"name": "Sleight of Hand","standardValue": 0},{"name": "Arcana","standardValue": 0},{"name": "History","standardValue": 0},{"name": "Investigation","standardValue": 0},{"name": "Nature","standardValue": 0},{"name": "Religion","standardValue": 0},{"name": "Animal Handling","standardValue": 0},{"name": "Insight","standardValue": 0},{"name": "Medicine","standardValue": 0},{"name": "Perception","standardValue": 0},{"name": "Survival","standardValue": 0},{"name": "Deception","standardValue": 0},{"name": "Intimidation","standardValue": 0},{"name": "Performance","standardValue": 0},{"name": "Persuasion","standardValue": 0}]},{"name": "generic","data": [{"name": "Proficiency Bonus","standardValue": 1},{"name": "Hit Points","standardValue": 1}]}]},"author": "","version": "","systemCodeName": "","systemName": ""}`;
+ 
 
-
-test('test that RecordInArrayOut Stil Works ', ()=>{
-	let g = new GrobGroupFixed();
-	let c = new GrobCollectionFixed();
-	c.name = 'Collection1';
-	g.addCollection(c);
-
-	let n = new GrobFixedNode('Node01',c);
-	c.addNode(n);
-
-	let sys = new TTRPGSystem();
-	sys.createFixedCollection('FixedCol');
-	sys.createFixedNode('FixedCol','FixedNode');
-	
-
-	//let json1 = JSONHandler.serialize(g);
-	let json2 = JSONHandler.serialize(sys);
-
-	console.log(json2);
-	
-});
+function checkDependentHasNodeInDependencies (node:GrobNodeType, dependent:GrobNodeType ){
+	const v = Object.values(dependent.dependencies).find( p => p._key == node._key);
+	return v != null;
+}
+function checkDependencyHasNodeInDependents (node:GrobNodeType, dependency:GrobNodeType ){
+	const v = Object.values(dependency.dependents).find( p => p._key == node._key);
+	return v != null;
+}
 test('Test Collection Designer Derived Elements', () => {
-
-	var a = 12
  
 	// create the start requirements
-	let system = JSONHandler.deserialize( TTRPGSystem , loadedSystemJSON );
+	let system : TTRPGSystem = JSONHandler.deserialize( TTRPGSystem , loadedSystemJSON );
 	let origins = JSON.parse('[{"key":"@a","segments":["fixed","stats","- - Select all - -"],"active":true,"testValue":1,"inCalc":true,"target":null,"isSelectAllTarget":true}]')
- 
+	system.createFixedCollection('stats');
+	system.createFixedNode('stats','strength');
+	system.createFixedNode('stats','dexterity');
+	system.createFixedNode('stats','constitution');
+	system.createFixedNode('stats','wisdom');
+	system.createFixedNode('stats','charisma');
+	system.createFixedNode('stats','intelligense');
+
 	// creating the Creation view settings
 	let controller = new DerivedCollectionController();
 	controller.setControllerDeps( system ); 
@@ -57,20 +51,66 @@ test('Test Collection Designer Derived Elements', () => {
 	let system2 = JSONHandler.deserialize( TTRPGSystem , json );
 	console.log(json,system2);
 
-	/*
-	let json2 = JSONHandler.serialize(system.derived);
-	let system2 = JSONHandler.deserialize( TTRPGSystem , json );
+	let _1 = Object.keys(system.data);
+	let _2 = Object.keys(system2.data);
+	expect(_1).toEqual(_2);
 
-	var a = 12 + 1;
+	var keys = Object.keys(system.data);
+	for (let g = 0; g < keys.length; g++) {
+		const group_key = keys[g];
+		const group_a = system .data[group_key];
+		const group_b = system2.data[group_key];
+		
+		const col_keys = Object.keys(group_a.collections_names); 
+		
+		// WE should be checking the same group
+		expect(group_a.name).toEqual(group_b.name)
+		expect(col_keys).toEqual(Object.keys(group_b.collections_names))
 
-	console.log(json2);
-	// quick exspect lengths to be the same
-	expect(Object.keys(system2.derived.collections_names).length)			.toEqual( Object.keys(system.derived.collections_names).length); 
-	
-	// slower exspect names to be the same, and order to be the same. 
-	expect(JSON.stringify(Object.keys(system2.derived.collections_names)))	.toEqual(JSON.stringify(Object.keys(system.derived.collections_names)))
-	*/
-	// Coverage Gutters 
-	// Jest - ligner en clovne sko
+		for (let c = 0; c < col_keys.length; c++) {
+			const col_key = col_keys[c];
+			const col_a = group_a.collections_names[col_key];
+			const col_b = group_b.collections_names[col_key];
+
+			const node_keys = Object.keys(col_a.nodes_names); 
+
+			// WE should be checking the same collection
+			expect(col_a.name).toEqual(col_b.name)
+			expect(node_keys).toEqual(Object.keys(col_b.nodes_names))
+
+			for (let n = 0; n < node_keys.length; n++) {
+				const node_key = node_keys[n];
+				const node_a = col_a.nodes_names[node_key] as GrobNodeType;
+				const node_b = col_b.nodes_names[node_key] as GrobNodeType;
+ 
+				// WE should be checking the same collection
+				expect(node_a.name).toEqual(node_b.name)  
+
+				const dependents_a = Object.values(node_a.dependents).map(p => p.name);
+				const dependents_b = Object.values(node_b.dependents).map(p => p.name);
+
+				const dependents_a_valid = Object.values(node_a.dependents).map(p => checkDependentHasNodeInDependencies(node_a, p ));
+				const dependents_b_valid = Object.values(node_b.dependents).map(p => checkDependentHasNodeInDependencies(node_b, p ));
+
+				// ensure that dependents are stil correct. 
+				expect(dependents_a).toEqual(dependents_b);
+				dependents_a_valid.forEach( p=> {expect(p).toBe(true)})
+				dependents_b_valid.forEach( p=> {expect(p).toBe(true)})
+				
+				const dependencies_a = Object.values(node_a.dependencies).map(p => p.name);
+				const dependencies_b = Object.values(node_b.dependencies).map(p => p.name);
+
+				const dependencies_a_valid = Object.values(node_a.dependencies).map(p => checkDependencyHasNodeInDependents(node_a, p ));
+				const dependencies_b_valid = Object.values(node_b.dependencies).map(p => checkDependencyHasNodeInDependents(node_b, p ));
+				
+				// ensure that dependents are stil correct. 
+				expect(dependencies_a).toEqual(dependencies_b);
+				dependencies_a_valid.forEach( p=> {expect(p).toBe(true)})
+				dependencies_b_valid.forEach( p=> {expect(p).toBe(true)})
+				
+			}
+		}
+	}
+
 	 
 })

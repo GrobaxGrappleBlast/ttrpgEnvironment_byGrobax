@@ -188,7 +188,7 @@ export class JSONHandler{
 		out = convFunc(out);
 		return out;				
 	}
-	private static deserializeRaw<T extends object>(target : Constructor<T>, obj : any  , scheme : string = BASE_SCHEME){
+	private static deserializeRaw<T extends object>(target : Constructor<T>, obj : any  , scheme : string = BASE_SCHEME, parentProperty = "first"){
 		
 		if(!obj){
 			return obj;
@@ -197,12 +197,6 @@ export class JSONHandler{
 		// serializedObject is a new object, without non Jsonproperties
 		let result = new target();
 		let prototype = target.prototype;
-
-		// EVENT ON BEFORE DESERIALIZE
-		// todo implement;
-		
-
-
 
 		// get propertynames and loop through 
 		let propertyNames = Object.getOwnPropertyNames( obj );
@@ -229,10 +223,12 @@ export class JSONHandler{
 			if ( meta.includes(JSON_TAGS.JSON_PROPERTY_FUNC_MAP_IN )) {
 				let inFunction = getMetadata( JSON_TAGS.JSON_PROPERTY_FUNC_MAP_IN , prototype , key  , scheme ); 
 				if (constr) {
+					let res;
 					out = inFunction(obj[inKey], (obj) => {
-						let res = JSONHandler.deserializeRaw(constr, obj  , scheme )
+						res = JSONHandler.deserializeRaw(constr, obj  , scheme , PropertyName);
 						return res;
-					} );
+					});
+					console.log( res , out );
 				} 
 				else {
 					out = inFunction(obj[inKey], (obj) => obj );
@@ -243,7 +239,7 @@ export class JSONHandler{
 				// if it needs deserializing
 				let convert = ( e ) => e;
 				if(constr){
-					convert = ( e ) => JSONHandler.deserializeRaw(constr, e , scheme );
+					convert = ( e ) => JSONHandler.deserializeRaw(constr, e , scheme , PropertyName);
 				}else{
 					// as stated above
 				}
@@ -268,7 +264,7 @@ export class JSONHandler{
 			}
 			else {
 				if (constr) {
-					out = JSONHandler.deserializeRaw(constr, obj[inKey]  , scheme );
+					out = JSONHandler.deserializeRaw(constr, obj[inKey]  , scheme , PropertyName );
 				} 
 				else{
 					out = obj[inKey];
