@@ -4,12 +4,12 @@ export class SystemExporterMethods {
 	public convertToTTRPGSystemToGUIBuilderPreview( system : TTRPGSystem ){
 		
 		let result = 
-			`class TNode {  
-				baseValue:number = 0;
-				value:number|null=null;
-				dependencies: Record<string,TNode> = {};
-				dependents:TNode[];
-				calc:string;
+			`export class TNode {  
+				baseValue: number = 0;
+				value: number | null = 0;
+				dependencies: Record<string, TNode> = {};
+				dependents: TNode[] = [];
+				calc: string;
 				updateListeners = {};
 
 				constructor(basevalue: number, calc:string | null ) {
@@ -70,7 +70,7 @@ export class SystemExporterMethods {
 
 		let groups : groupKeyType[] = ['fixed','derived']
 		result +=`
-			class system {
+			export class system {
 				public constructor(){this.init()}
 				`;
 
@@ -97,7 +97,7 @@ export class SystemExporterMethods {
 							continue;
 						}
 
-						result+= `${ j != 0 ? ',':''} ${currItemName} : new TNode(${currItem?.getValue()}, '${currItem['calc'] ?? ''}')`;
+						result+= `${ j != 0 ? ',':''} '${currItemName}' : new TNode(${currItem?.getValue()}, '${currItem['calc'] ?? ''}')`;
 					}
 
 					result += `
@@ -129,7 +129,7 @@ export class SystemExporterMethods {
 				)
 				return ;
 			}
-			parent.addDependency( dep , symbol );
+			parent.addDependency(symbol,dep);
 		}`
 
 		// Create The Graph Setup, using Dependents
@@ -170,9 +170,7 @@ export class SystemExporterMethods {
 		}`
 
 		result += `
-			}`;
-
-		result += '\nnew system();'
+			}`; 
 		
 		return result;
 	} 

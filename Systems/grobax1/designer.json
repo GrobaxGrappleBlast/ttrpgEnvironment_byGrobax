@@ -1,8 +1,4 @@
 {
-	"author": "",
-	"version": "",
-	"systemCodeName": "",
-	"systemName": "",
 	"fixed": {
 		"name": "fixed",
 		"data": [
@@ -127,11 +123,11 @@
 		"name": "derived",
 		"data": [
 			{
-				"name": "testCollection",
+				"name": "modifiers",
 				"data": [
 					{
 						"name": "strength",
-						"calculationString": "@a",
+						"calculationString": "Math.floor((@a-10)/2)",
 						"calcOrigins": [
 							{
 								"symbol": "@a",
@@ -141,7 +137,7 @@
 					},
 					{
 						"name": "dexterity",
-						"calculationString": "@a",
+						"calculationString": "Math.floor((@a-10)/2)",
 						"calcOrigins": [
 							{
 								"symbol": "@a",
@@ -151,7 +147,7 @@
 					},
 					{
 						"name": "constitution",
-						"calculationString": "@a",
+						"calculationString": "Math.floor((@a-10)/2)",
 						"calcOrigins": [
 							{
 								"symbol": "@a",
@@ -161,7 +157,7 @@
 					},
 					{
 						"name": "wisdom",
-						"calculationString": "@a",
+						"calculationString": "Math.floor((@a-10)/2)",
 						"calcOrigins": [
 							{
 								"symbol": "@a",
@@ -171,7 +167,7 @@
 					},
 					{
 						"name": "intelligense",
-						"calculationString": "@a",
+						"calculationString": "Math.floor((@a-10)/2)",
 						"calcOrigins": [
 							{
 								"symbol": "@a",
@@ -181,7 +177,7 @@
 					},
 					{
 						"name": "charisma",
-						"calculationString": "@a",
+						"calculationString": "Math.floor((@a-10)/2)",
 						"calcOrigins": [
 							{
 								"symbol": "@a",
@@ -190,7 +186,322 @@
 						]
 					}
 				]
+			},
+			{
+				"name": "skillproficiencyBonus",
+				"data": [
+					{
+						"name": "Athletics",
+						"calculationString": "@a * @c + @d",
+						"calcOrigins": [
+							{
+								"symbol": "@a",
+								"originKey": "fixed.SkillProficiencies.Athletics"
+							},
+							{
+								"symbol": "@c",
+								"originKey": "fixed.generic.Proficiency Bonus"
+							},
+							{
+								"symbol": "@d",
+								"originKey": "derived.modifiers.strength"
+							}
+						]
+					},
+					{
+						"name": "Acrobatics",
+						"calculationString": "@a * @c + @d",
+						"calcOrigins": [
+							{
+								"symbol": "@a",
+								"originKey": "fixed.SkillProficiencies.Acrobatics"
+							},
+							{
+								"symbol": "@c",
+								"originKey": "fixed.generic.Proficiency Bonus"
+							},
+							{
+								"symbol": "@d",
+								"originKey": "derived.modifiers.strength"
+							}
+						]
+					},
+					{
+						"name": "Sleight of Hand",
+						"calculationString": "@a * @c + @d",
+						"calcOrigins": [
+							{
+								"symbol": "@a",
+								"originKey": "fixed.SkillProficiencies.Sleight of Hand"
+							},
+							{
+								"symbol": "@c",
+								"originKey": "fixed.generic.Proficiency Bonus"
+							},
+							{
+								"symbol": "@d",
+								"originKey": "derived.modifiers.strength"
+							}
+						]
+					},
+					{
+						"name": "Arcana",
+						"calculationString": "@a * @c + @d",
+						"calcOrigins": [
+							{
+								"symbol": "@a",
+								"originKey": "fixed.SkillProficiencies.Arcana"
+							},
+							{
+								"symbol": "@c",
+								"originKey": "fixed.generic.Proficiency Bonus"
+							},
+							{
+								"symbol": "@d",
+								"originKey": "derived.modifiers.strength"
+							}
+						]
+					},
+					{
+						"name": "History",
+						"calculationString": "@a * @c + @d",
+						"calcOrigins": [
+							{
+								"symbol": "@a",
+								"originKey": "fixed.SkillProficiencies.History"
+							},
+							{
+								"symbol": "@c",
+								"originKey": "fixed.generic.Proficiency Bonus"
+							},
+							{
+								"symbol": "@d",
+								"originKey": "derived.modifiers.strength"
+							}
+						]
+					},
+					{
+						"name": "Investigation",
+						"calculationString": "@a * @c + @d",
+						"calcOrigins": [
+							{
+								"symbol": "@a",
+								"originKey": "fixed.SkillProficiencies.Investigation"
+							},
+							{
+								"symbol": "@c",
+								"originKey": "fixed.generic.Proficiency Bonus"
+							},
+							{
+								"symbol": "@d",
+								"originKey": "derived.modifiers.strength"
+							}
+						]
+					},
+					{
+						"name": "Nature",
+						"calculationString": "@a * @c + @d",
+						"calcOrigins": [
+							{
+								"symbol": "@a",
+								"originKey": "fixed.SkillProficiencies.Nature"
+							},
+							{
+								"symbol": "@c",
+								"originKey": "fixed.generic.Proficiency Bonus"
+							},
+							{
+								"symbol": "@d",
+								"originKey": "derived.modifiers.strength"
+							}
+						]
+					},
+					{
+						"name": "Religion",
+						"calculationString": "@a * @c + @d",
+						"calcOrigins": [
+							{
+								"symbol": "@a",
+								"originKey": "fixed.SkillProficiencies.Religion"
+							},
+							{
+								"symbol": "@c",
+								"originKey": "fixed.generic.Proficiency Bonus"
+							},
+							{
+								"symbol": "@d",
+								"originKey": "derived.modifiers.strength"
+							}
+						]
+					},
+					{
+						"name": "Animal Handling",
+						"calculationString": "@a * @c + @d",
+						"calcOrigins": [
+							{
+								"symbol": "@a",
+								"originKey": "fixed.SkillProficiencies.Animal Handling"
+							},
+							{
+								"symbol": "@c",
+								"originKey": "fixed.generic.Proficiency Bonus"
+							},
+							{
+								"symbol": "@d",
+								"originKey": "derived.modifiers.strength"
+							}
+						]
+					},
+					{
+						"name": "Insight",
+						"calculationString": "@a * @c + @d",
+						"calcOrigins": [
+							{
+								"symbol": "@a",
+								"originKey": "fixed.SkillProficiencies.Insight"
+							},
+							{
+								"symbol": "@c",
+								"originKey": "fixed.generic.Proficiency Bonus"
+							},
+							{
+								"symbol": "@d",
+								"originKey": "derived.modifiers.strength"
+							}
+						]
+					},
+					{
+						"name": "Medicine",
+						"calculationString": "@a * @c + @d",
+						"calcOrigins": [
+							{
+								"symbol": "@a",
+								"originKey": "fixed.SkillProficiencies.Medicine"
+							},
+							{
+								"symbol": "@c",
+								"originKey": "fixed.generic.Proficiency Bonus"
+							},
+							{
+								"symbol": "@d",
+								"originKey": "derived.modifiers.strength"
+							}
+						]
+					},
+					{
+						"name": "Perception",
+						"calculationString": "@a * @c + @d",
+						"calcOrigins": [
+							{
+								"symbol": "@a",
+								"originKey": "fixed.SkillProficiencies.Perception"
+							},
+							{
+								"symbol": "@c",
+								"originKey": "fixed.generic.Proficiency Bonus"
+							},
+							{
+								"symbol": "@d",
+								"originKey": "derived.modifiers.strength"
+							}
+						]
+					},
+					{
+						"name": "Survival",
+						"calculationString": "@a * @c + @d",
+						"calcOrigins": [
+							{
+								"symbol": "@a",
+								"originKey": "fixed.SkillProficiencies.Survival"
+							},
+							{
+								"symbol": "@c",
+								"originKey": "fixed.generic.Proficiency Bonus"
+							},
+							{
+								"symbol": "@d",
+								"originKey": "derived.modifiers.strength"
+							}
+						]
+					},
+					{
+						"name": "Deception",
+						"calculationString": "@a * @c + @d",
+						"calcOrigins": [
+							{
+								"symbol": "@a",
+								"originKey": "fixed.SkillProficiencies.Deception"
+							},
+							{
+								"symbol": "@c",
+								"originKey": "fixed.generic.Proficiency Bonus"
+							},
+							{
+								"symbol": "@d",
+								"originKey": "derived.modifiers.strength"
+							}
+						]
+					},
+					{
+						"name": "Intimidation",
+						"calculationString": "@a * @c + @d",
+						"calcOrigins": [
+							{
+								"symbol": "@a",
+								"originKey": "fixed.SkillProficiencies.Intimidation"
+							},
+							{
+								"symbol": "@c",
+								"originKey": "fixed.generic.Proficiency Bonus"
+							},
+							{
+								"symbol": "@d",
+								"originKey": "derived.modifiers.strength"
+							}
+						]
+					},
+					{
+						"name": "Performance",
+						"calculationString": "@a * @c + @d",
+						"calcOrigins": [
+							{
+								"symbol": "@a",
+								"originKey": "fixed.SkillProficiencies.Performance"
+							},
+							{
+								"symbol": "@c",
+								"originKey": "fixed.generic.Proficiency Bonus"
+							},
+							{
+								"symbol": "@d",
+								"originKey": "derived.modifiers.strength"
+							}
+						]
+					},
+					{
+						"name": "Persuasion",
+						"calculationString": "@a * @c + @d",
+						"calcOrigins": [
+							{
+								"symbol": "@a",
+								"originKey": "fixed.SkillProficiencies.Persuasion"
+							},
+							{
+								"symbol": "@c",
+								"originKey": "fixed.generic.Proficiency Bonus"
+							},
+							{
+								"symbol": "@d",
+								"originKey": "derived.modifiers.strength"
+							}
+						]
+					}
+				]
 			}
 		]
-	}
+	},
+	"author": "",
+	"version": "",
+	"systemCodeName": "",
+	"systemName": ""
 }
