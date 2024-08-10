@@ -228,7 +228,6 @@ export class JSONHandler{
 						res = JSONHandler.deserializeRaw(constr, obj  , scheme , PropertyName);
 						return res;
 					});
-					console.log( res , out );
 				} 
 				else {
 					out = inFunction(obj[inKey], (obj) => obj );

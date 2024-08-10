@@ -1,0 +1,46 @@
+.skillproficiencyMarkParent{
+	width	:40px;
+	height	:40px;
+	display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.skillproficiencyMark{
+	
+	width:20px;
+	height:20px;
+	border:1px solid black;
+	transform: rotate(45deg);
+	transition:1s ease;
+	cursor: pointer;
+
+
+	&[data-level="0"]{
+		
+	}
+	&[data-level="1"]{
+		background-color: gray;
+	}
+	&[data-level="2"]{
+		background-color: black;
+	}
+}	
+.skillproficiencyContainer{
+	display: flex;
+    align-items: center;
+}
+
+
+.skillproficiencyContainer[data-edit="false"]{
+	.skillproficiencyMark{
+		
+	}	
+}
+
+.skillproficiencyContainer[data-edit="true"]{
+	.skillproficiencyMark{
+		&:hover{
+			padding:5px;
+		}
+	}	
+}

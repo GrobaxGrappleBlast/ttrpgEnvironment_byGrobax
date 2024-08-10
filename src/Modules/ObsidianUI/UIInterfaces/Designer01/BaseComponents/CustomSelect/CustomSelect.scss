@@ -22,20 +22,34 @@
 }
  
 .SelectPopUp {
-	overflow: initial;
+	
 	position:fixed;
 	z-index: 500;
 	width: inherit;
 	background-color: #fff;
-	overflow-y: initial;  
+	overflow-y: scroll;  
+	overflow-x: hidden;
 	border-radius:2px;
 	
-	&::-webkit-scrollbar{width:10px;margin-left:-10px;}
-	&::-webkit-scrollbar-track {}
-	&::-webkit-scrollbar-thumb {
-		//height:20px;width:10px; background: $blue;
+	&::-webkit-scrollbar { 
+		width:5px !important;   
+		margin-left:-5px !important;
+		
 	}
-	&::-webkit-scrollbar-thumb:hover {background: $green;}
+	&::-webkit-scrollbar-track { 
+		width:0px !important;   
+	}	
+	&::-webkit-scrollbar-thumb {
+		height:20px !important;
+		width:5px !important; 
+		background: $blue !important;
+		cursor: pointer !important;
+	}
+	&::-webkit-scrollbar-thumb:hover {
+		background: $green !important;
+		cursor: pointer !important;
+		
+	}
 
 	.GrobSelectOption{
 		color:black;
@@ -59,10 +73,14 @@
 	}
 }
 
+
+.SelectPopUp .ArrowContainer{
+	position: fixed;
+}
 .SelectPopUp .Arrow{
-	margin-left:50%;
-	margin-right:50%;
-	margin-top:-7px;
+	 
+	top:-7px;
+	position: absolute;
 
 	background-color: white;
 	

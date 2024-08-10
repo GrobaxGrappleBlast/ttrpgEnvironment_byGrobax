@@ -1338,10 +1338,14 @@ button {
 .MainMenuButton .MainMenuButton_desc {
   transition: 1s ease width, 0.3s ease opacity;
 }.SystemDesignerBlockSet {
-  height: 200px;
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: 5px;
+}
+
+.SystemDesignerListBlock {
+  height: 200px;
+  overflow-y: scroll;
 }.toogleSectionHeader {
   cursor: pointer;
   height: 45px;
@@ -1680,20 +1684,30 @@ button {
   cursor: default;
 }
 .SelectPopUp {
-  overflow: initial;
   position: fixed;
   z-index: 500;
   width: inherit;
   background-color: #fff;
-  overflow-y: initial;
+  overflow-y: scroll;
+  overflow-x: hidden;
   border-radius: 2px;
 }
 .SelectPopUp::-webkit-scrollbar {
-  width: 10px;
-  margin-left: -10px;
+  width: 5px !important;
+  margin-left: -5px !important;
+}
+.SelectPopUp::-webkit-scrollbar-track {
+  width: 0px !important;
+}
+.SelectPopUp::-webkit-scrollbar-thumb {
+  height: 20px !important;
+  width: 5px !important;
+  background: var(--interactive-accent) !important;
+  cursor: pointer !important;
 }
 .SelectPopUp::-webkit-scrollbar-thumb:hover {
-  background: var(--color-green);
+  background: var(--color-green) !important;
+  cursor: pointer !important;
 }
 .SelectPopUp .GrobSelectOption {
   color: black;
@@ -1714,10 +1728,12 @@ button {
   padding-left: 5px;
   color: rgb(128, 128, 128);
 }
+.SelectPopUp .ArrowContainer {
+  position: fixed;
+}
 .SelectPopUp .Arrow {
-  margin-left: 50%;
-  margin-right: 50%;
-  margin-top: -7px;
+  top: -7px;
+  position: absolute;
   background-color: white;
   height: 8px;
   width: 16px;
