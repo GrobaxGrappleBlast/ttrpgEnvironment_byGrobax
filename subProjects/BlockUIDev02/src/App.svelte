@@ -11,10 +11,6 @@
 
 	let editMode = false;
 
-	onMount(()=>{
-		debugger
-	})
-
 	function toogleEditMode(save = false) {
 		editMode = !editMode;
 	}

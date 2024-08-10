@@ -66,7 +66,6 @@
 		controller.checkIsValid(false);  
 	}
 	function onSave(){ 
-		debugger
 		messageHandler?.removeError('save');
 		controller.saveCollection();     
 		dispatch('save');

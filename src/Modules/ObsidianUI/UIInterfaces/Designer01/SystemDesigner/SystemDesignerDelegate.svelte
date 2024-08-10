@@ -10,8 +10,7 @@
 	import StaticMessageHandler from "../BaseComponents/Messages/StaticMessageHandler.svelte";
 	import "./SystemDesigner.scss";
 	import EditAbleListWritable from "../BaseComponents/editAbleList/EditAbleListWritable.svelte";
-    import { debug } from "console";
-    import { waitForDebugger } from "inspector";
+
 	const dispatch = createEventDispatcher();   
 	type viewE = {
 		key:string;
