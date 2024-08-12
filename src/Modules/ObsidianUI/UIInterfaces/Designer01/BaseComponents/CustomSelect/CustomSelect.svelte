@@ -73,7 +73,7 @@
 	}
 
 	function recalculateWidth(){
-		let width = endTracker.getBoundingClientRect().width //- 16;
+		let width = label.getBoundingClientRect().width //- 16;
 		arrowOffsetLeft = width/2;
 	}
 

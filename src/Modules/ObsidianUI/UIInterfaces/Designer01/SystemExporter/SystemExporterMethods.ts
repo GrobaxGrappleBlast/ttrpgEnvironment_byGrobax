@@ -85,9 +85,15 @@ export class SystemExporterMethods {
 					const currColName = GroupNames[i];
 					const currCol = system.getCollection(currGroup,currColName);
 					if (!currCol){continue;}
+
 					const currColNames = currCol.getNodeNames();
 					
-					result += `${ i != 0 ? ',':''} ${currColName} : {`
+					let parsedColName = currColName;
+					if ( currColName.includes(' ')){
+						parsedColName = `'${parsedColName}'`;
+					}
+
+					result += `${ i != 0 ? ',':''} ${parsedColName} : {`
 
 					for (let j = 0; j < currColNames.length; j++) {
 						const currItemName = currColNames[j];
@@ -97,7 +103,12 @@ export class SystemExporterMethods {
 							continue;
 						}
 
-						result+= `${ j != 0 ? ',':''} '${currItemName}' : new TNode(${currItem?.getValue()}, '${currItem['calc'] ?? ''}')`;
+						let parsedItemName = currItemName;
+						if ( currItemName.includes(' ')){
+							parsedItemName = `'${parsedItemName}'`;
+						}
+
+						result+= `${ j != 0 ? ',':''} ${parsedItemName} : new TNode(${currItem?.getValue()}, '${currItem['calc'] ?? ''}')`;
 					}
 
 					result += `

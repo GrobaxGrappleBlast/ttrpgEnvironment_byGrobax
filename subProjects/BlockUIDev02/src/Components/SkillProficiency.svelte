@@ -27,6 +27,11 @@
 	})
 
 	function iterateValue(){ 
+
+		if (!edit){
+			return;
+		}
+
 		let value = node_skill.getValue();
 		value = (value + 1 ) % 3;
 		node_skill.setValue(value);
@@ -45,10 +50,10 @@
 			on:click={ iterateValue }>
 		</div>
 	</div>
-	<div>
+	<div class="skillproficiencyMarkName" >
 		<p>{name}</p>
 	</div>
-	<div>
+	<div class="skillproficiencyMarkValue" > 
 		<p>{bonus}</p>
 	</div>
   </div>
