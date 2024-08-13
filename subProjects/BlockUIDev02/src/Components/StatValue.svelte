@@ -8,14 +8,16 @@
 	export let modNode:TNode;
 	export let editmode = false;  
 
-
+	let nodeValue = statNode.getValue();
 	let modNodeValue = modNode.getValue();
 	onMount( () => {
-		modNode.addUpdateListener('onDerivedNodeUpdate', onDerivedNodeUpdate )
+		statNode.addUpdateListener('onDerivedNodeUpdate', onDerivedOrFixedNodeUpdate )
+		modNode.addUpdateListener('onDerivedNodeUpdate' , onDerivedOrFixedNodeUpdate )
 	})
 
-	function onDerivedNodeUpdate(){  
-		modNodeValue = (modNode.getValue());
+	function onDerivedOrFixedNodeUpdate(){  
+		nodeValue	 = statNode.getValue();
+		modNodeValue = modNode.getValue();
 	}
 
 	function onChange(){
@@ -40,7 +42,7 @@
 			disabled={!editmode} 
 			on:change={ onChange } 
 			bind:this={ statValueDiv }
-			value={ statNode.getValue() }
+			value={ nodeValue }
 			type="number"
 			min="0"
 			max="100"

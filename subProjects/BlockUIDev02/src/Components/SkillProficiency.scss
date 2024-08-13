@@ -9,9 +9,7 @@
 	
 	width:20px;
 	height:20px;
-	border:1px solid black;
-	transform: rotate(45deg);
-	transition:1s ease;
+	@extend .standardInfoSquare;
 	cursor: pointer;
 
 

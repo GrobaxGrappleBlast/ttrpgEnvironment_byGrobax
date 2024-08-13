@@ -85,8 +85,16 @@ button:focus-visible {
   }
 }
 
-@import './Components/StatValue.scss';
+.standardInfoSquare{
+  border:1px solid black;
+	transform: rotate(45deg);
+	transition:1s ease;
+}
 
+@import './Components/StatValue.scss';
+@import './Components/SpellInfo.scss';
+@import './Components/SkillProficiency.scss'; 
+@import './Components/ProficiencyBonus.scss'; 
 
 .HeaderMenu{
   float:right;
@@ -110,7 +118,20 @@ button:focus-visible {
   padding:10px;
 }
 .Row{
-  display: grid;
-  grid-template-columns: repeat(6, 100px);
+  display: flex;
+  justify-content:space-between;
   gap:20px;
+}
+
+.DndPersonSetupGrid{
+  display:grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  grid-template-areas: 
+  "stat	stat stat	stat"
+  "prof	hp	 profB	spell"
+  "prof	o	 o		o"
+  "prof	o	 o		o";
+  gap:10px;
+  background-color: lightcoral;
+  border:15px solid lightseagreen;
 }

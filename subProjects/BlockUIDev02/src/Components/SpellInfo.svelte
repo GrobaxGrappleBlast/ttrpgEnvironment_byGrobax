@@ -18,12 +18,13 @@
 
 	function changeSort(){
 		let value = sortSelect.value;
-		showStat		= value;
+		showStat		= value; 
 		chosen_DC		= SpellDC	[showStat].getValue();
 		chosen_BONUS	= SpellBonus[showStat].getValue();
 	}
 	function update(){
-
+		chosen_DC		= SpellDC	[showStat].getValue();
+		chosen_BONUS	= SpellBonus[showStat].getValue();
 	} 
 	onMount(()=>{ 
 		DCs.forEach(node => {
@@ -36,7 +37,7 @@
 				update()
 			})
 		});
-		
+		changeSort();
 	})
 	onDestroy(()=>{
 		DCs.forEach(node => {
@@ -46,6 +47,7 @@
 			node.removeUpdateListener( name+'SpellInfoView' )
 		});
 	}) 
+	
 </script>
 <div>
 	{#if editMode }
@@ -60,11 +62,14 @@
 		<div> 
 		</div>
 	{/if}
-	<div>
+
+	<div class="spellDCContainer">
+		<div>{showStat}</div>
 		<div>
 			<div>Spell DC</div>
 			<div>{chosen_DC}</div>
 		</div>
+
 		<div>
 			<div>Spell Bonus</div>
 			<div>{chosen_BONUS}</div>

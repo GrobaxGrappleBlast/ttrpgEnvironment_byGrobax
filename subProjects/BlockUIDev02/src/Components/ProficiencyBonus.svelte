@@ -22,7 +22,7 @@
 	}
 
 </script>
-<div>
+<div class="ProficiencyBonus" >
 	<div>Proficiency Bonus</div>
 	<input type="number" disabled={!editMode} bind:value={v} on:change={iterateValue}>
 </div>

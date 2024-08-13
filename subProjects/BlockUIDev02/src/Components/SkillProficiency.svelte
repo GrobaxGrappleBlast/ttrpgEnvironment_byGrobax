@@ -1,7 +1,6 @@
 
 <script lang="ts">
-	import StaticValue from "../Components/StatValue.svelte";
-	import './SkillProficiency.scss' 
+	import StaticValue from "../Components/StatValue.svelte"; 
 	import { system, TNode } from "../devDependency/declaration";
 	import { tooltip } from '../importedComponents/tooltip/toolTip.js';
     import { onDestroy, onMount } from "svelte";

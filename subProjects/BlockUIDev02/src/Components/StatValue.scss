@@ -1,5 +1,7 @@
 $padding : 10px;
-
+.StatValue{
+	width:100%;
+}
 .BoxValue{
 	border-radius: 5px;
 	border:1px solid black;
@@ -21,7 +23,7 @@ $padding : 10px;
 
 .LargeValue{
 	height	:50px;
-	width: 100px; 
+	width: calc(100% - $padding); 
 }
 
 .SmallValue{
