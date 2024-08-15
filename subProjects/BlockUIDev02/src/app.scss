@@ -39,14 +39,6 @@
   min-height: 100px; 
   display: grid; 
 
-  &[data-dragging='true']{
-    opacity: 0.5;
-    border-color:lightblue;
-    &:hover{
-      border-color:lightblue;
-    }
-  }
-
   &[data-edit="true"]{
     @extend .standardBorderClassDef;
     margin-top:20px;
@@ -55,10 +47,23 @@
       cursor: pointer;
     }
   }
+
+  
+  &[data-dragging='true']{ 
+    opacity: 0.2;
+    border-color:rgb(0, 191, 255);
+	border-style:dashed;
+    &:hover{
+		border-color:rgb(0, 191, 255);
+      	border-color:lightblue;
+    }
+  }
+
+
 }
 .itemSlot{
   margin:10px;
-  height:calc(100% - 10px * 2);
+  height:calc(100px - 10px * 2);
 
   &[data-edit="true"]{
     @extend .standardBorderClassDef;
@@ -79,6 +84,17 @@
       }
     }
   }
+
+  &[data-dragging='true']{
+	opacity: 0.2;
+    border-color:rgb(0, 191, 255);
+	border-style:dashed;
+    &:hover{
+		border-color:rgb(0, 191, 255);
+      	border-color:lightblue;
+    }
+  }
+
 }
  
 .addButton{
