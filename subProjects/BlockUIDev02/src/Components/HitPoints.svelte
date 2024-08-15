@@ -1,11 +1,15 @@
 <script lang="ts">
     import { onDestroy, onMount } from "svelte";
-    import { TNode } from "../devDependency/declaration";
+    import { system, TNode } from "../devDependency/declaration";
 
 	
-	export let node: TNode;
+	//	export let node: TNode;
+	export let sys : system; 
 	export let editMode:boolean;
 	export let playMode:boolean;
+	export let data:object;
+	
+	let node=sys.fixed.generic["Hit Points"];
 	let v = node.getValue();
 
 	onMount(()=>{ 

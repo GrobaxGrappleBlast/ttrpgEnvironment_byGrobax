@@ -7,16 +7,16 @@ export class KeyManager {
 	}
 }
 
-var keyManager = new KeyManager();
+export var keyManager = new KeyManager();
 export class CNode {
-	public constructor( type:string, data:string ){
+	public constructor( type:string = 'NONE', data:string = '{}' ){
 		this.id = keyManager.getNewKey();
-		this.type = this.type;
-		this.data = this.data;
+		this.type = type;
+		this.data = JSON.parse(data);
 	}
 	id:string;
 	type:string;
-	data:string;
+	data:any;
 }
 
 export class SheetRow{
@@ -28,12 +28,16 @@ export class SheetRow{
 				this.data.push( new CNode( d.type ,d.data ))
 			}
 			else{
-				this.data.push(null)
+				this.data.push(new CNode( ))
 			}
 		});
 	}
 	id : string; 
 	data : (CNode|null)[] = [];
+	public addItem(){
+		this.data.push(new CNode())
+	}
+
 }
 
 export class SheetData {
@@ -47,8 +51,7 @@ export class SheetData {
 		});
 	}
 	id : string;
-	data : SheetRow[] = [];	
-
+	data : SheetRow[] = [];	 
 	public addRow(){
 		this.data.push(new SheetRow())
 	}

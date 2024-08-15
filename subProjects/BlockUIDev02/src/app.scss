@@ -1,113 +1,161 @@
 :root {
-  font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
-  line-height: 1.5;
-  font-weight: 400;
+	font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
+	line-height: 1.5;
+	font-weight: 400;
 
-  color-scheme: light dark;
-  color: rgba(255, 255, 255, 0.87);
-  background-color: #242424;
+	color-scheme: light dark;
+	color: rgba(255, 255, 255, 0.87);
+	background-color: #242424;
 
-  font-synthesis: none;
-  text-rendering: optimizeLegibility;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  -webkit-text-size-adjust: 100%;
+	font-synthesis: none;
+	text-rendering: optimizeLegibility;
+	-webkit-font-smoothing: antialiased;
+	-moz-osx-font-smoothing: grayscale;
+	-webkit-text-size-adjust: 100%;
 }
 
 
 .standardBorderClassDef{
-  border-radius: 5px;
-  border:2px solid white;
+	border-radius: 5px;
+	border:2px solid white;
 }
 .standard10Button{
-  width :30px;
-  height:30px;
-  background-color:gray;
-  border-radius: 5px;
-  color:white;
-  text-align: center
+	width :30px;
+	height:30px;
+	background-color:gray;
+	border-radius: 5px;
+	color:white;
+	text-align: center
 }
 
 
 .Sheet{
-  min-width:800px;
-  min-height:400px;
-  background-color: rgba(211, 211, 211, 0.077);
+	min-width:800px;
+	min-height:400px;
+	background-color: rgba(211, 211, 211, 0.077);
 }
 .Row{
-  width: 100%;
-  min-height: 100px; 
-  display: grid; 
-
-  &[data-edit="true"]{
-    @extend .standardBorderClassDef;
-    margin-top:20px;
-    &:hover{
-      border-color:lightgreen;
-      cursor: pointer;
-    }
-  }
-
-  
-  &[data-dragging='true']{ 
-    opacity: 0.2;
-    border-color:rgb(0, 191, 255);
-	border-style:dashed;
-    &:hover{
+	width: 100%;
+	min-height: 100px; 
+	display: grid; 
+	&[data-edit="true"]{
+		@extend .standardBorderClassDef;
+		margin-top:20px;
+		&:hover{
+			border-color:lightgreen;
+			cursor: pointer;
+		}
+	}
+	&[data-dragging='true']{ 
+		opacity: 0.2;
 		border-color:rgb(0, 191, 255);
-      	border-color:lightblue;
-    }
-  }
-
-
+		border-style:dashed;
+		&:hover{
+			border-color:rgb(0, 191, 255);
+			border-color:lightblue;
+		}
+	}
 }
 .itemSlot{
-  margin:10px;
-  height:calc(100px - 10px * 2);
+	margin:10px;
+	min-height:calc(100px - 10px * 2);
+	width:auto;
 
-  &[data-edit="true"]{
-    @extend .standardBorderClassDef;
-    
-    &:hover{
-      border-color:lightgreen;
-      
-      cursor: pointer;
-      &::after{
-        @extend .standard10Button;
-        background-color:lightgreen;
-        content:'+';
-        color:white;
-        position:relative;
-        left:50%;
-        top:35%;
-        display: block;
-      }
-    }
-  }
+	&[data-edit="true"]{
+		@extend .standardBorderClassDef;
+		
+		&:hover{
+			border-color:lightgreen;
+			
+			cursor: pointer;
+			&::after{
+				@extend .standard10Button;
+				background-color:lightgreen;
+				content:'+';
+				color:white;
+				position:relative;
+				left:50%;
+				top:35%;
+				display: block;
+			}
+		}
+	}
 
-  &[data-dragging='true']{
-	opacity: 0.2;
-    border-color:rgb(0, 191, 255);
-	border-style:dashed;
-    &:hover{
-		border-color:rgb(0, 191, 255);
-      	border-color:lightblue;
-    }
-  }
-
+	&[data-dragging='true']{
+		opacity: 0.2;
+		border:3px dashed rgb(0, 191, 255);
+		&:hover{
+			border-color:rgb(0, 191, 255);
+		}
+	} 
 }
- 
+
 .addButton{
 
-  @extend .standard10Button;
-  &:hover{
-    background-color:lightgreen;
-    border-color:lightgreen;
-    cursor: pointer;
-  }
+	@extend .standard10Button;
+	&:hover{
+		background-color:lightgreen;
+		border-color:lightgreen;
+		cursor: pointer;
+	}
 }
 
 .CornerItem{
-  position:absolute;
-  right:0;
+	position:absolute;
+	right:0;
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+     
+  
+  .standardInfoSquare{
+	border:1px solid black;
+	  transform: rotate(45deg);
+	  transition:1s ease;
+  }
+
+  
+  .HeaderMenu{
+	float:right;
+	overflow: hidden;
+	width:10px;
+	background-color: green;
+	display: flex;
+	gap:10px; 
+	color:transparent;
+	padding:10px;
+	transition:0.5s ease;
+	cursor: pointer;
+  }
+  .HeaderMenu:hover{
+	cursor: pointer;
+	width:200px;
+	background-color: green;
+	display: flex;
+	gap:10px; 
+	color:white;
+	padding:10px;
+  }
+ 
+
+
+    
+  @import './Components/StatValue.scss';
+  @import './Components/SpellInfo.scss';
+  @import './Components/SkillProficiency.scss'; 
+  @import './Components/ProficiencyBonus.scss'; 

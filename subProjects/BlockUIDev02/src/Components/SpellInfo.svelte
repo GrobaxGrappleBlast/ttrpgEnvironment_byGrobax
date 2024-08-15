@@ -1,59 +1,61 @@
+<script context="module" lang="ts">
+	class SpellInfoData{
+		public showStat : string ;
+	}
+</script>
 <script lang="ts">
     import { onDestroy, onMount } from "svelte";
-    import { TNode } from "../devDependency/declaration";
+    import { system, TNode } from "../devDependency/declaration";
 
+	export let sys:system;
+	export let edit:boolean; 
+	export let data: any | SpellInfoData;
 
-	export let SpellDC		: Record<string,TNode>;
-	export let SpellBonus	: Record<string,TNode>;
-	let DCs		= Object.values(SpellDC);
-	let Bonus	= Object.values(SpellBonus);
-	let keys    = Object.keys(SpellDC);
+	if( JSON.stringify(data) === JSON.stringify({})  ){
+		data.showStat = Object.keys(sys.derived["Spell Bonus"])[0];
+	}
 
+	let showStat:string = data.showStat;
+	let nodeDC		: TNode = sys.derived["Spell Bonus"][showStat];
+	let nodeBonus	: TNode = sys.derived["Spell DC"][showStat];
+
+	let chosen_DC		= nodeDC.getValue();
+	let chosen_BONUS	= nodeBonus.getValue();
 	let sortSelect : HTMLSelectElement;
-
-	export let editMode:boolean; 
-	export let showStat:string = keys[0]; 
-	let chosen_DC		= SpellDC	[showStat].getValue();
-	let chosen_BONUS	= SpellBonus[showStat].getValue();
-
 	function changeSort(){
 		let value = sortSelect.value;
 		showStat		= value; 
-		chosen_DC		= SpellDC	[showStat].getValue();
-		chosen_BONUS	= SpellBonus[showStat].getValue();
+		chosen_DC		= nodeDC.getValue();
+		chosen_BONUS	= nodeBonus.getValue();
 	}
+
 	function update(){
-		chosen_DC		= SpellDC	[showStat].getValue();
-		chosen_BONUS	= SpellBonus[showStat].getValue();
+		chosen_DC		= nodeDC	.getValue();
+		chosen_BONUS	= nodeBonus	.getValue();
 	} 
+
+	function addListeners(){
+		nodeDC.addUpdateListener( name+'SpellInfoView'		, ()=>{	update()	}) 
+		nodeBonus.addUpdateListener( name+'SpellInfoView'	, ()=>{ 	update()	})
+	}
 	onMount(()=>{ 
-		DCs.forEach(node => {
-			node.addUpdateListener( name+'SpellInfoView' , ()=>{
-				update()
-			})
-		});
-		Bonus.forEach(node => {
-			node.addUpdateListener( name+'SpellInfoView' , ()=>{
-				update()
-			})
-		});
+		addListeners();
 		changeSort();
 	})
+	function removeListener(){
+		nodeDC.removeUpdateListener( name+'SpellInfoView' )
+		nodeBonus.removeUpdateListener( name+'SpellInfoView' )
+	}
 	onDestroy(()=>{
-		DCs.forEach(node => {
-			node.removeUpdateListener( name+'SpellInfoView' )
-		});
-		Bonus.forEach(node => {
-			node.removeUpdateListener( name+'SpellInfoView' )
-		});
+		removeListener();
 	}) 
 	
 </script>
 <div>
-	{#if editMode }
+	{#if edit }
 		<div>
 			<select bind:this={sortSelect} on:change={ changeSort }>
-				{#each keys as key }
+				{#each Object.keys( sys.derived["Spell Bonus"]) as key }
 					<option value={key} selected={ key == showStat}> {key} </option>
 				{/each}
 			</select>

@@ -1,10 +1,12 @@
 <script lang="ts">
     import { onDestroy, onMount } from "svelte";
-    import { TNode } from "../devDependency/declaration";
+    import { system, TNode } from "../devDependency/declaration";
 
-	
-	export let node: TNode;
+	export let sys : system;	
 	export let editMode:boolean;
+	export let data:object;
+
+	let node: TNode = sys.fixed.generic["Proficiency Bonus"];
 	let v = node.getValue();
 
 	onMount(()=>{ 

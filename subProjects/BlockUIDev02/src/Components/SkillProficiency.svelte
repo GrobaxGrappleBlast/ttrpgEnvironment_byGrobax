@@ -1,14 +1,14 @@
 
 <script lang="ts">
-	import StaticValue from "../Components/StatValue.svelte"; 
 	import { system, TNode } from "../devDependency/declaration";
-	import { tooltip } from '../importedComponents/tooltip/toolTip.js';
     import { onDestroy, onMount } from "svelte";
 	
 	export let edit:boolean;
 	export let name:string;
-	export let node_skill:TNode;
-	export let node_bonus:TNode;
+	export let sys:system;
+
+	let node_skill:TNode = sys.fixed.SkillProficiencies[name];
+	let node_bonus:TNode = sys.derived.skillproficiencyBonus[name];
 	
 	let value = node_skill.getValue();
 	let bonus = node_bonus.getValue();
