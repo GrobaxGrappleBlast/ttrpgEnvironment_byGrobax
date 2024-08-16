@@ -46,15 +46,17 @@
 			cursor: pointer;
 		}
 	}
-	&[data-dragging='true']{ 
-		opacity: 0.2;
-		border-color:rgb(0, 191, 255);
-		border-style:dashed;
-		&:hover{
+	/*
+		&[data-dragging='true']{ 
+			opacity: 0.2;
 			border-color:rgb(0, 191, 255);
-			border-color:lightblue;
+			border-style:dashed;
+			&:hover{
+				border-color:rgb(0, 191, 255);
+				border-color:lightblue;
+			}
 		}
-	}
+	*/
 }
 .itemSlot{
 	margin:10px;
@@ -81,13 +83,15 @@
 		}
 	}
 
-	&[data-dragging='true']{
-		opacity: 0.2;
-		border:3px dashed rgb(0, 191, 255);
-		&:hover{
-			border-color:rgb(0, 191, 255);
-		}
-	} 
+	/*
+		&[data-dragging='true']{
+			opacity: 0.2;
+			border:3px dashed rgb(0, 191, 255);
+			&:hover{
+				border-color:rgb(0, 191, 255);
+			}
+		} 
+	*/
 }
 
 .addButton{

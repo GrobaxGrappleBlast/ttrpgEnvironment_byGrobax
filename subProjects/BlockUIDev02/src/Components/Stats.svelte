@@ -9,7 +9,7 @@
 
 	let stats = sys.fixed.stats;
 </script>
-<div style="grid-area:stat" class="Row" >
+<div class="StatsRow" >
 	{#each Object.keys(stats) as key}
 		{@const node = stats[key]}
 		{@const modNode = sys.derived.modifiers[key]}

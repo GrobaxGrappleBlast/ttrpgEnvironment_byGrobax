@@ -1,4 +1,11 @@
 $padding : 10px;
+
+.StatsRow{
+
+	display:flex;
+	justify-content: space-between;
+	gap:20px;
+}
 .StatValue{
 	width:100%;
 }
