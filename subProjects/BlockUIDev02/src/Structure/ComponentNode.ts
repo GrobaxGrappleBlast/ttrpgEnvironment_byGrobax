@@ -19,7 +19,7 @@ export class CNode {
 	data:any;
 }
 
-export class SheetRow{
+export class SheetColumn{
 	public constructor( data:any[] = [] ){
 		this.id = keyManager.getNewKey();
 		this.data = [];
@@ -36,6 +36,22 @@ export class SheetRow{
 	data : (CNode|null)[] = [];
 	public addItem(){
 		this.data.push(new CNode())
+	}
+
+}
+
+export class SheetRow{
+	public constructor( data:any[] = [] ){
+		this.id = keyManager.getNewKey();
+		this.data = [];
+		data.forEach( d  => {
+			this.data.push( new SheetColumn(d.data) );
+		});
+	}
+	id : string; 
+	data : (SheetColumn|null)[] = [];
+	public addItem(){
+		this.data.push(new SheetColumn())
 	}
 
 }

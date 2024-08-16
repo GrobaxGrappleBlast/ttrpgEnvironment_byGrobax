@@ -58,7 +58,7 @@
 		}
 	*/
 }
-.itemSlot{
+.Column{
 	margin:10px;
 	min-height:calc(100px - 10px * 2);
 	width:auto;
@@ -67,12 +67,47 @@
 		@extend .standardBorderClassDef;
 		
 		&:hover{
-			border-color:lightgreen;
+			border-color:rgb(0, 191, 255);
 			
 			cursor: pointer;
 			&::after{
 				@extend .standard10Button;
-				background-color:lightgreen;
+				background-color:rgb(0, 191, 255);
+				content:'+';
+				color:white;
+				position:relative;
+				left:50%;
+				top:35%;
+				display: block;
+			}
+		}
+	}
+
+	/*
+		&[data-dragging='true']{
+			opacity: 0.2;
+			border:3px dashed rgb(0, 191, 255);
+			&:hover{
+				border-color:rgb(0, 191, 255);
+			}
+		} 
+	*/
+}
+.Item{
+	margin:10px;
+	min-height:50px;
+	width:auto;
+
+	&[data-edit="true"]{
+		@extend .standardBorderClassDef;
+		
+		&:hover{
+			border-color:palegoldenrod;
+			
+			cursor: pointer;
+			&::after{
+				@extend .standard10Button;
+				background-color:palegoldenrod;
 				content:'+';
 				color:white;
 				position:relative;
