@@ -23,7 +23,7 @@
 	let chosen_BONUS	= nodeBonus.getValue();
 	let sortSelect : HTMLSelectElement;
 	function changeSort(){
-		let value = sortSelect.value;
+		let value = 	sortSelect.value;
 		showStat		= value; 
 		chosen_DC		= nodeDC.getValue();
 		chosen_BONUS	= nodeBonus.getValue();
@@ -39,8 +39,7 @@
 		nodeBonus.addUpdateListener( name+'SpellInfoView'	, ()=>{ 	update()	})
 	}
 	onMount(()=>{ 
-		addListeners();
-		changeSort();
+		addListeners(); 
 	})
 	function removeListener(){
 		nodeDC.removeUpdateListener( name+'SpellInfoView' )

@@ -1,9 +1,16 @@
 <script  context="module"  lang="ts">
+
+	export const ANIMATION_DELAY = 120;
+	export const ANIMATION_TIME = 100;
 	class DragHandlerController {
 		
 		public data : Writable<SheetData>;
-		public constructor( data : Writable<SheetData>){
+		public state : State;
+		public layerActive : Writable<boolean>;
+		public constructor( data : Writable<SheetData> ,  state : State){
 			this.data = data;
+			this.state = state;
+			this.layerActive = state.editLayout_01;
 		}
 
 		public isDragging = false;
@@ -28,7 +35,7 @@
 
 				const temp = list.data[a];
 				this.pauseDragg=true;
-				setTimeout( () => { this.pauseDragg = false ; }, 100)
+				setTimeout( () => { this.pauseDragg = false ; }, ANIMATION_DELAY)
 				list.data[a] = list.data[b];
 				list.data[b] = temp;
 	
@@ -37,7 +44,13 @@
 			})  
 		}
 
+		
 		onDragStart( e , id){  
+
+			if ( !get(this.layerActive) ){
+				//
+				return;
+			}
 
 			const target = e.target;
 			if (!target.classList.contains('Row')){
@@ -49,6 +62,12 @@
 			target.setAttribute('data-dragging','true') 
 		}
 		onDragOver( e , id){  
+
+			if ( !get(this.layerActive) ){
+				//
+				return;
+			}
+
 			if (!this.isDragging || this.pauseDragg ){
 				return;
 			}
@@ -56,6 +75,11 @@
 			this.moveRow( ); 
 		}
 		onDragEnd( e , id){  
+			if ( !get(this.layerActive) ){
+				//
+				return;
+			}
+
 			this.isDragging = false;
 			this.dragID = null;
 			this.targetID = null;
@@ -71,8 +95,12 @@
 	class DragItemHandlerController2 {
 		
 		public data : Writable<SheetData>;
-		public constructor( data : Writable<SheetData>){
+		public state : State;
+		public layerActive : Writable<boolean>;
+		public constructor( data : Writable<SheetData> ,  state : State ){
 			this.data = data;
+			this.state = state;
+			this.layerActive = state.editLayout_02;
 		}
 
 		public isDragging = false;
@@ -130,13 +158,19 @@
 				this.lastDragId=this.dragID;
 				this.lasttargId=this.targetID;
 				this.pauseDragg=true;
-				setTimeout( () => { this.pauseDragg = false ; }, 100)
+				setTimeout( () => { this.pauseDragg = false ; }, ANIMATION_DELAY)
 				return list;
 			})  
 		}
 		
 
 		onDragStart( e , id){  
+			
+			if ( !get(this.layerActive) ){
+				
+				return;
+			}
+
 			const target = e.target;
 			if (!target.classList.contains('Column')){
 				return;
@@ -150,6 +184,12 @@
 			
 		}
 		onDragOver( e , id){  
+			
+			if ( !get(this.layerActive) ){
+				
+				return;
+			}
+			
 			if (!this.isDragging || this.pauseDragg ){
 				return;
 			}
@@ -158,6 +198,11 @@
 			this.dragTargetElement	?.setAttribute('data-dragging','true')  
 		}
 		onDragEnd( e, id){    
+			if ( !get(this.layerActive) ){
+				
+				return;
+			}
+
 			this.isDragging = false; 
 			this.dragID			= null;
 			this.targetID		= null; 
@@ -194,8 +239,12 @@
 	class DragItemHandlerController3 {
 		
 		public data : Writable<SheetData>;
-		public constructor( data : Writable<SheetData>){
+		public state : State;
+		public layerActive : Writable<boolean>;
+		public constructor( data : Writable<SheetData>,  state : State){
 			this.data = data;
+			this.state = state;
+			this.layerActive = state.editLayout_03;
 		}
 
 		public isDragging = false;
@@ -204,11 +253,13 @@
 
 		public dragID : string;
 		public targetID: string;
+		public targetRowId:string;
 
 		public lastDragId : string;
 		public lasttargId : string;
+		public lasttargRowId : string;
 
-		public innerMoveItem_Switch( list , fromId , toID ){
+		public innerSwitchItem( list , fromId , toID ){
 
 				let row_a; let col_a; let a;
 				let row_b; let col_b; let b;
@@ -232,29 +283,34 @@
 		public innerMoveItem( list , fromId , toID ){
 
 			let row_a; let col_a; let a;
-			let row_b; let col_b; let b;
+			let row_b; let col_b;
 			[row_a, col_a, a] = this.findIndexsOfID(fromId);
-			[row_b, col_b, b] = this.findColumnIndexsOfID(toID); 
-
-			if( col_a == col_b ){
-				return;
-			}
+			[row_b, col_b	] = this.findColumnIndexsOfID(toID); 
 
 			if
 			(
 				(row_a == -1	|| row_b == -1 ) 	||
 				(col_a == -1	|| col_b == -1 )	||
-				(a == -1		|| b == -1 )			
+				(a == -1		)			
 			)
 			{
 				return;
 			}
-			//const oa = list.data[row_a].data[col_a].data[a];
-			//const ob = list.data[row_b].data[col_b].data[b];
-			//list.data[row_a].data[col_a].data[a] = ob;
-			//list.data[row_b].data[col_b].data[b] = oa;
+			if (row_a == row_b && col_a == col_b ){
+				return;
+			}
+
+			
+			// get item from original column. AND REMOVE
+			let item = list.data[row_a].data[col_a].data.splice(a, 1)[0];
+
+			// add to new Column
+			list.data[row_b].data[col_b].data.push(item); 
+
 		}
 		public moveRowItem(){
+			
+			
 			
 			if (!this.isDragging){
 				return;
@@ -263,34 +319,68 @@
 			if (!this.dragID || this.targetID == this.dragID ){
 				return;
 			}
-		
-			this.data.update( list => {
+			
+			// Switch with another Item ( if it is in the Same Column)
+			if ( this.targetID ){
+				this.data.update( list => {
+					
+					// in case we try to place it back into the original space
+					if ( this.dragID == this.lastDragId && this.targetID == this.lasttargId ){
+						this.innerSwitchItem( list , this.lasttargId, this.lastDragId	 );
+						return list;
+					}
 
-				// in case we try to place it back into the original space
-				if ( this.dragID == this.lastDragId && this.targetID == this.lasttargId ){
-					this.innerMoveItem( list , this.lasttargId, this.lastDragId	 );
+					// move last items back
+					if (this.lastDragId	&& this.lasttargId){
+						this.innerSwitchItem( list , this.lastDragId	, this.lasttargId );
+					}
+					// move next item set forward
+					if ( this.targetID ){
+						this.innerSwitchItem( list , this.dragID		, this.targetID );
+					}
+					
+
+					this.lastDragId=this.dragID;
+					this.lasttargId=this.targetID;
+					this.lasttargRowId = null;
+					this.pauseDragg=true;
+					setTimeout( () => { this.pauseDragg = false ; }, ANIMATION_DELAY)
 					return list;
-				}
+				})  
+			}
+			// add item to another Column
+			else if ( this.targetRowId ){
+				this.data.update( list => {
+					
+					// move next item set forward
+					if ( this.targetRowId ){
+						this.innerMoveItem( list , this.dragID , this.targetRowId  );
+					}
+					
 
-				// move last items back
-				if (this.lastDragId	&& this.lasttargId){
-					this.innerMoveItem( list , this.lastDragId	, this.lasttargId );
-				}
-				// move next item set forward
-				if ( this.targetID ){
-					this.innerMoveItem( list , this.dragID		, this.targetID );
-				}
-				 
-				this.lastDragId=this.dragID;
-				this.lasttargId=this.targetID;
-				this.pauseDragg=true;
-				setTimeout( () => { this.pauseDragg = false ; }, 100)
-				return list;
-			})  
+					this.lastDragId=this.dragID;
+					this.lasttargId=this.targetID;
+					this.lasttargRowId = null;
+					
+					this.pauseDragg=true;
+					setTimeout( () => { this.pauseDragg = false ; }, ANIMATION_DELAY)
+
+					return list;
+				})  
+			}
+
+
+			
 		}
 		
 
 		onDragStart( e , id){  
+			
+			if ( !get(this.layerActive) ){
+				
+				return;
+			}
+
 			const target = e.target;
 			if (!target.classList.contains('Item')){
 				return;
@@ -303,16 +393,40 @@
 			target.setAttribute('data-dragging','true') 
 			
 		}
-		onDragOver( e , id){  
+		onDragOverItem( e , id){  
+			if ( !get(this.layerActive) ){
+				
+				return;
+			}
+
 			if (!this.isDragging || this.pauseDragg ){
 				return;
 			}
 			this.targetID = id; 
+			this.targetRowId =null;
 			this.moveRowItem( ); 
 			this.dragTargetElement	?.setAttribute('data-dragging','true')  
 		}
-		
-		onDragEnd( e, id){    
+		onDragOverColumn( e , id){  
+			 
+			if ( !get(this.layerActive) ){
+				return;
+			}
+
+			if (!this.isDragging || this.pauseDragg ){
+				return;
+			}
+			this.targetID = null;
+			this.targetRowId =id;
+			this.moveRowItem( ); 
+			this.dragTargetElement	?.setAttribute('data-dragging','true')  
+		}
+		onDragEnd( e, id){ 
+			if ( !get(this.layerActive) ){
+				
+				return;
+			}
+
 			this.isDragging = false; 
 			this.dragID			= null;
 			this.targetID		= null;  
@@ -328,18 +442,42 @@
 			let itemId = -1;
 			let columnId = -1; 
 			let rowId = -1;
-			rowId = get(this.data).data.findIndex( p => {
-				columnId = p.data.findIndex( q => {
-					itemId = q.data.findIndex(j => j.id == id)
+
+			let obj = get(this.data);
+
+			rowId = obj.data.findIndex( p => {
+				let resb = p.data.findIndex( q => {
+					let resc = q.data.findIndex(j => j.id == id)
+					if (resc != -1){
+						itemId = resc;
+						return true
+					}
+					return false;
 				})
+				if (resb != -1){
+					columnId = resb;
+					return true;
+				}
+				return false;
 			})
+
 			return [rowId, columnId, itemId];
 		} 
 		findColumnIndexsOfID( id ){
 			let columnId = -1; 
 			let rowId = -1;
-			rowId = get(this.data).data.findIndex( p => {
-				columnId = p.data.findIndex( q => q.id == id );
+
+
+			let obj = get(this.data);
+			
+			 
+			rowId = obj.data.findIndex( p => {
+				let resb = p.data.findIndex( q => q.id == id )
+				if (resb != -1){
+					columnId = resb;
+					return true;
+				}
+				return false;
 			})
 			return [rowId, columnId];
 		} 
@@ -348,6 +486,34 @@
 			return this.dragID == id ;
 		}
 	} 
+
+	class State {
+		editMode 		: Writable<boolean> = writable(false);
+		editLayout_01 	: Writable<boolean> = writable(false);
+		editLayout_02 	: Writable<boolean> = writable(false);
+		editLayout_03 	: Writable<boolean> = writable(false);
+
+		constructor(){
+			this.editLayout_01.subscribe( p => {
+				if (p){
+					this.editLayout_02.set(false);
+					this.editLayout_03.set(false);
+				}
+			})
+			this.editLayout_02.subscribe( p => {
+				if (p){
+					this.editLayout_01.set(false);
+					this.editLayout_03.set(false);
+				}
+			})
+			this.editLayout_03.subscribe( p => {
+				if (p){
+					this.editLayout_01.set(false);
+					this.editLayout_02.set(false);
+				}
+			})
+		}
+	}
 </script> 
 <script lang="ts">  
 	import "./app.scss";
@@ -360,9 +526,16 @@
 	import { flip } from 'svelte/animate'; 
     import ItemDestributor from "./Structure/ItemDestributor.svelte";
     import { system } from "./devDependency/declaration";
+    import { customFlip } from "./Svelte/CustomFlip";
 	
  
-	let editMode : boolean = true;
+	let state : State = new State();
+	let editMode		: Writable<boolean> = state.editMode		;	
+	let editLayout_01	: Writable<boolean> = state.editLayout_01;
+	let editLayout_02	: Writable<boolean> = state.editLayout_02;
+	let editLayout_03	: Writable<boolean> = state.editLayout_03;
+
+
 	let _JSON = `{
 			"data": [
 				{
@@ -414,6 +587,9 @@
 	`; 
 	
 	let sys = new system();
+
+
+
 	let OBJ : Writable<SheetData> = writable(new SheetData(JSON.parse(_JSON).data));  
 	function testSetUp(){
 		sys.fixed.stats.charisma	.setValue(10 )	;
@@ -436,11 +612,7 @@
 	onMount(()=>{
 		testSetUp();  
 	})
-
-	function toogleEditMode() {
-		editMode = !editMode; 
-	}
-	function repeat( x , str , sep = ' '){
+ 	function repeat( x , str , sep = ' '){
 		let _ = str;
 		for (let i = 0; i < (x-1); i++) {
 			_ += sep;
@@ -459,27 +631,37 @@
 	function allowDrop(ev) {
 		ev.preventDefault();
 	}
-	let DragRowHandler 		= new DragHandlerController(OBJ);
-	let DragColumnHandler 	= new DragItemHandlerController2(OBJ);
-	let DragItemHandler 	= new DragItemHandlerController3(OBJ);
+
+
+	let DragRowHandler 		= new DragHandlerController		(OBJ, state);
+	let DragColumnHandler 	= new DragItemHandlerController2(OBJ, state);
+	let DragItemHandler 	= new DragItemHandlerController3(OBJ, state);
 </script>
 <div class="Sheet">
 	<div>
-		<button on:click={toogleEditMode}>{ editMode ? 'Stop Edit' : 'Edit'}</button>
+		<button on:click={ () => editMode.set(!$editMode)		}>{ $editMode			? 'Stop Edit' : 'Edit'}</button>
+		{#if $editMode}
+			<button on:click={ () => editLayout_01	.set(!get( editLayout_01))}>{ $editLayout_01	? 'Layout Row	_ STOP' : 'Layout Row	_ START'}</button>
+			<button on:click={ () => editLayout_02	.set(!get( editLayout_02))}>{ $editLayout_02	? 'Layout Col	_ STOP' : 'Layout Col	_ START'}</button>
+			<button on:click={ () => editLayout_03	.set(!get( editLayout_03))}>{ $editLayout_03	? 'Layout Items _ STOP' : 'Layout Items _ START'}</button>
+		{/if}
 	</div>    
 	{#each $OBJ.data as row , i (row.id)}
 		<div 
 			class='Row' 
-			data-edit={editMode}
+			data-edit={$editMode}
+			data-edit-active={$editLayout_01}
+
 			style={`grid-template-columns:${repeat(row.data.length, '1fr')}`}  
 			data-rowId={row.id}
+
 			on:dragstart={(e)=>DragRowHandler.onDragStart	(e, row.id)}
 			on:dragenter={(e)=>DragRowHandler.onDragOver	(e, row.id)}
 			on:dragend	={(e)=>DragRowHandler.onDragEnd	(e, row.id)}
 			on:dragover	={allowDrop}
 			
-			transition:fly={{duration:100, y:100}}
-			animate:flip={{duration:100}}
+			transition:fly={{duration:ANIMATION_TIME, y:100}}
+			animate:customFlip={{duration:ANIMATION_TIME}}
 			draggable="true"
 			> 
 			<div class="CornerItem" > 
@@ -488,16 +670,17 @@
 			{#each row.data as column , j (column.id) }
 				<div 
 					class='Column' 
-					data-edit={editMode} 
-					data-rowId={row.id}
+					data-edit={$editMode}  
 					data-itemId={column.id} 
+					data-edit-active={$editLayout_02}
+
 					data-dragging={DragColumnHandler.isBeingDragged(column.id)}
-					transition:fade={{duration:100}}
-					animate:flip={{ duration:100  }} 
+					transition:fade={{duration:ANIMATION_TIME}}
+					animate:customFlip={{ duration:ANIMATION_TIME  }} 
 					on:dragstart={(e)=>{DragColumnHandler.onDragStart	(e,column.id)}}
 					on:dragenter={(e)=>{
 						DragColumnHandler.onDragOver	(e,column.id)
-						DragItemHandler.onDragOver		(e,column.id)
+						DragItemHandler.onDragOverColumn(e,column.id)
 					}}
 					on:dragend	={(e)=>{DragColumnHandler.onDragEnd	(e,column.id)}}
 					on:drop		={(e)=>{DragColumnHandler.onDragEnd	(e,column.id)}}  
@@ -510,38 +693,40 @@
 
 						<div 
 							class='Item' 
-							data-edit={editMode} 
+							data-edit={$editMode} 
 							data-itemId={item.id} 
+							data-edit-active={$editLayout_03}
 							data-dragging={DragItemHandler.isBeingDragged(item.id)}
-							transition:fade={{duration:100}}
-							animate:flip={{ duration:100  }} 
+							transition:fade={{duration:ANIMATION_TIME}}
+							animate:customFlip={{ duration:ANIMATION_TIME  }} 
 							on:dragstart={(e)=>{DragItemHandler.onDragStart	(e,item.id)}} 
 							on:dragend	={(e)=>{DragItemHandler.onDragEnd	(e,item.id)}}
 							on:drop		={(e)=>{DragItemHandler.onDragEnd	(e,item.id)}}  
 							on:dragleave={(e)=>{DragItemHandler.onLeave		(e,item.id)}}   
-							
+							on:dragenter={(e)=>{DragItemHandler.onDragOverItem(e,item.id)}}
 							on:dragover	={allowDrop}
 							draggable="true"
 						>
+							{item.id}
 						<!--on:dragenter={(e)=>{DragItemHandler.onDragOver	(e,item.id)}}-->
-					<!--
-					{#if item.type != 'NONE'}
+				 
+							{#if item.type != 'NONE'}
 
-						<ItemDestributor 
-							data={item}
-							editMode={editMode}
-							sys={sys}
-						/>
-						
-					{:else if editMode}
-						<div style="width:50px;height:50px;">
-							{item.type}
-						</div>
-					{:else}
-						<div >
+								<ItemDestributor 
+									data={item}
+									editMode={get(state.editMode)}
+									sys={sys}
+								/>
+								
+							{:else if editMode}
+								<div style="width:50px;height:50px;">
+									{item.type}
+								</div>
+							{:else}
+								<div >
 
-						</div>
-					{/if} -->
+								</div>
+							{/if}  
 						</div>
 					{/each}
 				</div>
