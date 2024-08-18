@@ -1,6 +1,7 @@
 <script lang="ts">
-    import { onMount } from "svelte";
+    import { onDestroy, onMount } from "svelte";
 	import { TNode } from '../devDependency/declaration'; 
+    import { keyManager } from "../Structure/ComponentNode";
  
 
 	export let name:string;
@@ -11,9 +12,14 @@
 
 	let nodeValue = statNode.getValue();
 	let modNodeValue = modNode.getValue();
+	const KEY = keyManager.getNewKey();
 	onMount( () => {
-		statNode.addUpdateListener('onDerivedNodeUpdate', onDerivedOrFixedNodeUpdate )
-		modNode.addUpdateListener('onDerivedNodeUpdate' , onDerivedOrFixedNodeUpdate )
+		statNode.addUpdateListener('onDerivedNodeUpdate' + KEY, onDerivedOrFixedNodeUpdate )
+		modNode.addUpdateListener('onDerivedNodeUpdate' + KEY, onDerivedOrFixedNodeUpdate )
+	})
+	onDestroy(()=>{
+		statNode.removeUpdateListener('onDerivedNodeUpdate' + KEY )
+		modNode.removeUpdateListener('onDerivedNodeUpdate' + KEY  )
 	})
 
 	function onDerivedOrFixedNodeUpdate(){  

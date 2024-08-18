@@ -2,7 +2,7 @@
 <script lang="ts">
 	import { system, TNode } from "../devDependency/declaration";
     import { onDestroy, onMount } from "svelte";
-    import { CNode } from "../Structure/ComponentNode";
+    import { CNode, keyManager } from "../Structure/ComponentNode";
 	
 	export let edit:boolean;
 	export let name:string; 
@@ -13,11 +13,13 @@
 	
 	let value = node_skill.getValue();
 	let bonus = node_bonus.getValue();
+	const KEY = keyManager.getNewKey();
+
 	onMount(()=>{ 
-		node_skill.addUpdateListener( name+'SvelteView' , ()=>{
+		node_skill.addUpdateListener( name+KEY+'SvelteView' , ()=>{
 			value = node_skill.getValue();
 		})
-		node_bonus.addUpdateListener( name+'SvelteView' , ()=>{
+		node_bonus.addUpdateListener( name+KEY+'SvelteView' , ()=>{
 			bonus = node_bonus.getValue();
 		})
 	})

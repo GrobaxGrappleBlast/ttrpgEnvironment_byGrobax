@@ -6,12 +6,14 @@
 <script lang="ts">
     import { onDestroy, onMount } from "svelte";
     import { system, TNode } from "../devDependency/declaration";
-    import { CNode } from "../Structure/ComponentNode";
+    import { CNode, keyManager } from "../Structure/ComponentNode";
     import ItemOptions from "../Structure/ItemOptions.svelte";
 
 	export let sys:system;
 	export let edit:boolean; 
-	export let data :CNode; 
+	export let data :CNode;
+	const KEY = keyManager.getNewKey();
+
 
 	let dataData: SpellInfoData = data.data;
 	
@@ -40,15 +42,15 @@
 	} 
 
 	function addListeners(){
-		nodeDC.addUpdateListener( name+'SpellInfoView'		, ()=>{	update()	}) 
-		nodeBonus.addUpdateListener( name+'SpellInfoView'	, ()=>{ 	update()	})
+		nodeDC.addUpdateListener	( name+'SpellInfoView'+KEY		, ()=>{	update()	}) 
+		nodeBonus.addUpdateListener	( name+'SpellInfoView'+KEY	, ()=>{ 	update()	})
 	}
 	onMount(()=>{ 
 		addListeners(); 
 	})
 	function removeListener(){
-		nodeDC.removeUpdateListener( name+'SpellInfoView' )
-		nodeBonus.removeUpdateListener( name+'SpellInfoView' )
+		nodeDC.removeUpdateListener		( name+'SpellInfoView'+KEY )
+		nodeBonus.removeUpdateListener	( name+'SpellInfoView'+KEY )
 	}
 	onDestroy(()=>{
 		removeListener();

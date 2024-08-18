@@ -1,7 +1,7 @@
 <script lang="ts">
     import { onDestroy, onMount } from "svelte";
     import { system, TNode } from "../devDependency/declaration";
-    import { CNode } from "../Structure/ComponentNode";
+    import { CNode, keyManager } from "../Structure/ComponentNode";
     import ItemOptions from "../Structure/ItemOptions.svelte";
 
 	export let sys : system;	
@@ -10,14 +10,15 @@
 
 	let node: TNode = sys.fixed.generic["Proficiency Bonus"];
 	let v = node.getValue();
+	const KEY = keyManager.getNewKey();
 
 	onMount(()=>{ 
-		node.addUpdateListener( name+'SvelteView' , ()=>{
+		node.addUpdateListener( name+KEY+'SvelteView' , ()=>{
 			v = node.getValue();
 		})
 	})
 	onDestroy(()=>{
-		node.removeUpdateListener( name+'SvelteView');
+		node.removeUpdateListener( name+KEY+'SvelteView');
 	})
 
 	function iterateValue(){ 
