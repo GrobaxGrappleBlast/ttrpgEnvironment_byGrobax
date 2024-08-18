@@ -627,19 +627,21 @@
 	let DragColumnHandler 	= new DragItemHandlerController2(OBJ, state);
 	let DragItemHandler 	= new DragItemHandlerController3(OBJ, state);
 </script>
-<div class="theme-light" >
-<div class="Sheet  obsidianBody">
-	<div class="SheetEditorMenu" >
-		<button data-active={$editMode		} on:click={ () => editMode.set(!$editMode)		}				>{ 'Stop Edit	'	}</button>
-		<button data-active={$editLayout_01	} on:click={ () => editLayout_01	.set(!get( editLayout_01))}	>{ 'Layout Row	' 	}</button>
-		<button data-active={$editLayout_02	} on:click={ () => editLayout_02	.set(!get( editLayout_02))}	>{ 'Layout Col	' 	}</button>
-		<button data-active={$editLayout_03	} on:click={ () => editLayout_03	.set(!get( editLayout_03))}	>{ 'Layout Items' 	}</button>
-	</div>    
+<div class="theme-light obsidianBody" >
+	<div class="Sheet  ">
+		<div class="SheetEditorMenuContainer" >
+			<div class="SheetEditorMenu" data-isOpen={ $editMode || $editLayout_01 || $editLayout_02 || $editLayout_03 }>
+				<button data-active={$editMode		} on:click={ () => editMode.set(!$editMode)		}				>{ 'Stop Edit	'	}</button>
+				<button data-active={$editLayout_01	} on:click={ () => editLayout_01	.set(!get( editLayout_01))}	>{ 'Layout Row	' 	}</button>
+				<button data-active={$editLayout_02	} on:click={ () => editLayout_02	.set(!get( editLayout_02))}	>{ 'Layout Col	' 	}</button>
+				<button data-active={$editLayout_03	} on:click={ () => editLayout_03	.set(!get( editLayout_03))}	>{ 'Layout Items' 	}</button>
+			</div>    
+		</div>
 
 	{#each $OBJ.data as row , i (row.id)}
 		<div 
 			class='Row' 
-			data-edit={$editMode || $editLayout_01}
+			data-edit={$editLayout_01}
 			data-edit-active={$editLayout_01}
 			data-editpreview={$editLayout_02}
 
@@ -683,7 +685,7 @@
 			{#each row.data as column , j (column.id) }
 				<div 
 					class='Column' 
-					data-edit={$editMode || $editLayout_02} 
+					data-edit={$editLayout_02 || $editLayout_01 } 
 					data-editpreview={$editLayout_03} 
 					data-itemId={column.id} 
 					data-edit-active={$editLayout_02}
@@ -744,7 +746,7 @@
 
 						<div 
 							class='Item' 
-							data-edit={$editMode || $editLayout_03} 
+							data-edit={$editMode || $editLayout_03 || $editLayout_02} 
 							data-itemId={item.id} 
 							data-edit-active={$editLayout_03}
 							data-dragging={DragItemHandler.isBeingDragged(item.id)}

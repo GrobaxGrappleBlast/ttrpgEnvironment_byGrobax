@@ -102,24 +102,53 @@ $opacWhite : #fff1;
 
 
 
-
+.SheetEditorMenuContainer{
+	width: inherit; 
+	height:$standard_padding_large * 2 + 30px;
+	position: relative;
+}
 
 .SheetEditorMenu{
-	padding:$standard_padding_small;
+	
+	cursor: pointer;
+	width:0px;
+	padding:$standard_padding_large;
 	background-color: $blue;
-	button{
-		cursor: pointer;
-		padding:10px;
-		border-radius: 5px;
-		background-color: white;
-		transition:background-color ease 0.2s;
+	overflow: hidden;
+	transition: ease 0.5s;
+	
+	height:30px;
+	width:30px;
+	float:right;
+	
+	display: flex;
+    justify-content: flex-end;
+    align-items: center;
 
-		&:hover{
-			background-color: $yellow;
-		}
+	button {
+		width:125px;
+		float:right;
+		opacity: 0; 
+		transition: ease 0.5s;
+	}
+	&:hover , &[data-isOpen='true'] {
+		
+		width:100%;
+		button{
+			opacity: 1; 
+			cursor: pointer;
+			padding:10px;
+			border-radius: 5px;
+			background-color: white;
+			transition:background-color ease 0.2s;
 
-		&[data-active='true']{
-			background-color: $green;
+			&:hover{
+				background-color: $yellow;
+			}
+
+			&[data-active='true']{
+				background-color: $green;
+			}
 		}
 	}
 }
