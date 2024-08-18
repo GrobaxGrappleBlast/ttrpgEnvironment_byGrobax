@@ -13,7 +13,7 @@
 	-moz-osx-font-smoothing: grayscale;
 	-webkit-text-size-adjust: 100%;
 }
-
+  
 
 .standardBorderClassDef{
 	border-radius: 5px;
@@ -42,12 +42,16 @@
 		margin: 10px;
 		width: auto;
 
+		&[draggable="true"]{
+			cursor: pointer;
+		}
+
 		&[data-edit="true"] {
 			min-height: 50px;
 			border-radius: 5px;
 			border:2px solid;
 			border-color: $standardColor;
-			cursor: pointer;
+			
 			&:hover {
 				border-color:  $standardColor;
 			}
@@ -61,15 +65,16 @@
 		}
 	
 }
+$opacWhite : #fff1;
 .Item{ 
-	@include createItemClass(white,palegoldenrod,orange);	
+	@include createItemClass($opacWhite,palegoldenrod,orange);	
 }
 .Row{ 
 	display: grid; 
-	@include createItemClass( white,Skyblue,royalBlue);	
+	@include createItemClass( $opacWhite,Skyblue,royalBlue);	
 }
 .Column{
-	@include  createItemClass( white,palegreen,green);	
+	@include  createItemClass( $opacWhite,palegreen,green);	
 }
 
 
@@ -143,3 +148,4 @@
   @import './Components/SpellInfo.scss';
   @import './Components/SkillProficiency.scss'; 
   @import './Components/ProficiencyBonus.scss'; 
+  @import './Structure/ItemOptions.scss';

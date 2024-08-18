@@ -5,8 +5,9 @@
 
 	export let name:string;
 	export let statNode:TNode; 
-	export let modNode:TNode;
+	export let modNode:TNode; 
 	export let editmode = false;  
+	
 
 	let nodeValue = statNode.getValue();
 	let modNodeValue = modNode.getValue();

@@ -1,13 +1,15 @@
 <script lang="ts">
     import { onDestroy, onMount } from "svelte";
     import { system, TNode } from "../devDependency/declaration";
-
+    import ItemOptions from "../Structure/ItemOptions.svelte";
+    import { CNode } from "../Structure/ComponentNode";
+ 
 	
 	//	export let node: TNode;
 	export let sys : system; 
 	export let editMode:boolean;
 	export let playMode:boolean;
-	export let data:object;
+	export let data :CNode;
 	
 	let node=sys.fixed.generic["Hit Points"];
 	let v = node.getValue();
@@ -28,6 +30,11 @@
 
 </script>
 <div>
+	<ItemOptions 
+		on:optionSelected
+		data={data}	
+		editMode={editMode}
+	/>
 	<div>Hit Points</div>
 	<input type="number" disabled={!editMode} bind:value={v} on:change={iterateValue}>
 

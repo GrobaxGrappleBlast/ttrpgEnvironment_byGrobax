@@ -1,13 +1,5 @@
-<script context="module" lang="ts">
-	export enum viewNameIndex {
-		HitPoints		 = "HitPoints"		,
-		ProficiencyBonus = "ProficiencyBonus",
-		SkillProficiencies = "SkillProficiencies",
-		SpellInfo		 = "SpellInfo"		,
-		Stats		 = "Stats"		
-	}
-</script>
 <script lang="ts">
+	import { fly, slide } from 'svelte/transition';
     import HitPoints from "../Components/HitPoints.svelte";
     import ProficiencyBonus from "../Components/ProficiencyBonus.svelte";
     import SkillProficiencyCollection from "../Components/SkillProficiencyCollection.svelte";
@@ -15,44 +7,78 @@
     import Stats from "../Components/Stats.svelte";
     import { system } from "../devDependency/declaration";
 	import { CNode } from "./ComponentNode";
+    import ItemOptions from "./ItemOptions.svelte";
+    import { viewNameIndex } from "./ViewNameIndex";
 	
 	export let data :CNode;
 	export let editMode : boolean;
 	export let sys : system;
 
+	function updateData(){ 
+		data = data; 
+	}
+
 </script>
 <div>
-	{#if 		data.type == viewNameIndex.HitPoints		}
-		<HitPoints 
-			sys={sys}
-			editMode={editMode}
-			playMode={false}
-			data={data.data}
-		/>
+	<ItemOptions 
+		bind:data={data}
+		editMode={editMode}
+		on:optionSelected={updateData}
+	/>
+	{#if !(data) ||data.type == 'NONE'		}
+		<div>
+			<ItemOptions 
+				bind:data={data}
+				editMode={editMode}
+				on:optionSelected={updateData}
+			/>
+		</div>
+	{:else if 	data.type == viewNameIndex.HitPoints		}
+		<div transition:slide  >
+			<HitPoints 
+				sys={sys}
+				editMode={editMode}
+				playMode={false}
+				bind:data={data} 
+				on:optionSelected={updateData}
+			/>
+		</div>
 	{:else if	data.type == viewNameIndex.ProficiencyBonus	}
-		<ProficiencyBonus 
-			sys={sys}
-			editMode={editMode} 
-			data={data.data}
-		/>
+		<div transition:slide  >
+			<ProficiencyBonus 
+				sys={sys}
+				editMode={editMode} 
+				bind:data={data} 
+				on:optionSelected={updateData}
+			/>
+		</div>
 	{:else if	data.type == viewNameIndex.SkillProficiencies	}
-		<SkillProficiencyCollection 
-			edit={editMode} 
-			sys={sys}
-			data={data.data}
-		/>
+		<div transition:slide  >
+			<SkillProficiencyCollection 
+				edit={editMode} 
+				sys={sys}
+				bind:data={data} 
+				on:optionSelected={updateData}
+			/>
+		</div>
 	{:else if	data.type == viewNameIndex.SpellInfo		}
-		<SpellInfo 
-			edit={editMode} 
-			sys={sys}
-			data={data.data}
-		/>
+		<div transition:slide  >
+			<SpellInfo 
+				edit={editMode} 
+				sys={sys}
+				bind:data={data}
+				on:optionSelected={updateData} 
+			/>
+		</div>
 	{:else if	data.type == viewNameIndex.Stats		}
-		<Stats
-			edit={editMode} 
-			sys={sys}
-			data={data.data}
-		/>
+		<div transition:slide  >
+			<Stats
+				edit={editMode} 
+				sys={sys}
+				bind:data={data} 
+				on:optionSelected={updateData}
+			/>
+		</div>
 	{/if}
 	
 </div>

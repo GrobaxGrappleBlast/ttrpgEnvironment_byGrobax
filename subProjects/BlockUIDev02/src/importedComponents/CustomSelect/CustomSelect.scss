@@ -1,0 +1,92 @@
+ 
+@import '../../SystemStandards.scss';
+
+.GrobSelectLabel{
+	height: inherit;
+	position: relative;
+	display: flex;
+	justify-content: space-around;
+	align-items: center;
+	color: white; 
+	
+	
+	&::after{
+		background-color:white;
+	}
+	
+	cursor: pointer;
+	&[disabled="true"]{
+		cursor:default;
+	}
+
+}
+ 
+.SelectPopUp {
+	
+	position:fixed;
+	z-index: 500;
+	width: inherit;
+	background-color: #fff;
+	overflow-y: scroll;  
+	overflow-x: hidden;
+	border-radius:2px;
+	
+	&::-webkit-scrollbar { 
+		width:5px !important;   
+		margin-left:-5px !important;
+		
+	}
+	&::-webkit-scrollbar-track { 
+		width:0px !important;   
+	}	
+	&::-webkit-scrollbar-thumb {
+		height:20px !important;
+		width:5px !important; 
+		background: $blue !important;
+		cursor: pointer !important;
+	}
+	&::-webkit-scrollbar-thumb:hover {
+		background: $green !important;
+		cursor: pointer !important;
+		
+	}
+
+	.GrobSelectOption{
+		color:black;
+		display: flex;
+		padding:$standard_padding	;
+		cursor: pointer;
+		&:hover{
+			background-color: $color_verbose;
+		}
+
+		&[data-selected="true"]{
+			background-color: $color_success;
+			&:hover{
+				background-color: StrippedBackground( $color_success,$color_verbose);
+			}
+		}
+	}
+	.GrobSelectInfo{
+		padding-left: 5px;
+		color:rgb(128, 128, 128);
+	}
+}
+
+
+.SelectPopUp .ArrowContainer{
+	position: fixed;
+}
+.SelectPopUp .Arrow{
+	 
+	top:-7px;
+	position: absolute;
+
+	background-color: white;
+	
+	height: 8px;
+	width:16px;   
+	clip-path: polygon(100% 100%, 50% 0%, 0% 100%);
+}
+
+ 

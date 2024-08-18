@@ -82,7 +82,7 @@
 
 			this.isDragging = false;
 			this.dragID = null;
-			this.targetID = null;
+			this.targetID = null; 
 			const target = e.target;
 			target.setAttribute('data-dragging','false') 
 		}
@@ -322,6 +322,7 @@
 			
 			// Switch with another Item ( if it is in the Same Column)
 			if ( this.targetID ){
+				/*
 				this.data.update( list => {
 					
 					// in case we try to place it back into the original space
@@ -346,7 +347,7 @@
 					this.pauseDragg=true;
 					setTimeout( () => { this.pauseDragg = false ; }, ANIMATION_DELAY)
 					return list;
-				})  
+				})  */
 			}
 			// add item to another Column
 			else if ( this.targetRowId ){
@@ -637,7 +638,7 @@
 	let DragColumnHandler 	= new DragItemHandlerController2(OBJ, state);
 	let DragItemHandler 	= new DragItemHandlerController3(OBJ, state);
 </script>
-<div class="Sheet">
+<div class="Sheet theme-light obsidianBody">
 	<div>
 		<button on:click={ () => editMode.set(!$editMode)		}>{ $editMode			? 'Stop Edit' : 'Edit'}</button>
 		{#if $editMode}
@@ -662,7 +663,7 @@
 			
 			transition:fly={{duration:ANIMATION_TIME, y:100}}
 			animate:customFlip={{duration:ANIMATION_TIME}}
-			draggable="true"
+			draggable={$editLayout_01}
 			> 
 			<div class="CornerItem" > 
 				<button class="addButton"  on:click={() => addRowItem(i)}>+</button>
@@ -687,7 +688,7 @@
 					on:dragleave={(e)=>{DragColumnHandler.onLeave		(e,column.id)}}   
 					
 					on:dragover	={allowDrop}
-					draggable="true"
+					draggable={$editLayout_02}
 				>
 					{#each column.data as item , k (item.id) }
 
@@ -705,28 +706,20 @@
 							on:dragleave={(e)=>{DragItemHandler.onLeave		(e,item.id)}}   
 							on:dragenter={(e)=>{DragItemHandler.onDragOverItem(e,item.id)}}
 							on:dragover	={allowDrop}
-							draggable="true"
+							draggable={$editLayout_03}
 						>
 							{item.id}
 						<!--on:dragenter={(e)=>{DragItemHandler.onDragOver	(e,item.id)}}-->
 				 
-							{#if item.type != 'NONE'}
+							
 
 								<ItemDestributor 
 									data={item}
-									editMode={get(state.editMode)}
-									sys={sys}
+									editMode={$editMode}
+									sys={sys} 
 								/>
 								
-							{:else if editMode}
-								<div style="width:50px;height:50px;">
-									{item.type}
-								</div>
-							{:else}
-								<div >
-
-								</div>
-							{/if}  
+							 
 						</div>
 					{/each}
 				</div>

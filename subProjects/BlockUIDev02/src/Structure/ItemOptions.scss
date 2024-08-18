@@ -1,0 +1,45 @@
+@import './../SystemStandards.scss';
+.ItemOptionsContainer{
+	position:relative;
+	top:0;
+	right:0;
+	width: 0;
+	height:0;
+}
+.ItemOptions{ 
+	position:absolute;
+	top:0;
+	left:0;
+	padding:10px;
+	border-radius: 5px;
+	background-color: blue;
+	display: flex;
+	flex-direction: row;
+	overflow:hidden;
+	max-width: 25px;
+	max-height: 25px;
+	transition:ease 0.5s; 
+
+	& > div {
+		opacity: 0;
+	}
+	&:hover{
+		transition:ease 0.5s;
+		max-width: 500px;
+		max-height: 100px;
+
+		
+		& > div {
+			opacity: 1;
+		}
+	}
+	.btnDelete{
+		background-color: $red;
+	}
+}
+.ItemOptionBtn{
+	border: 1px solid black;
+	padding:10px;
+	width:250px;
+}
+

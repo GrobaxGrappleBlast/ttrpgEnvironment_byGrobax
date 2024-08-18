@@ -6,16 +6,21 @@
 <script lang="ts">
     import { onDestroy, onMount } from "svelte";
     import { system, TNode } from "../devDependency/declaration";
+    import { CNode } from "../Structure/ComponentNode";
+    import ItemOptions from "../Structure/ItemOptions.svelte";
 
 	export let sys:system;
 	export let edit:boolean; 
-	export let data: any | SpellInfoData;
+	export let data :CNode; 
 
-	if( JSON.stringify(data) === JSON.stringify({})  ){
-		data.showStat = Object.keys(sys.derived["Spell Bonus"])[0];
+	let dataData: SpellInfoData = data.data;
+	
+
+	if( JSON.stringify(dataData) === JSON.stringify({})  ){
+		dataData.showStat = Object.keys(sys.derived["Spell Bonus"])[0];
 	}
 
-	let showStat:string = data.showStat;
+	let showStat:string = dataData.showStat;
 	let nodeDC		: TNode = sys.derived["Spell Bonus"][showStat];
 	let nodeBonus	: TNode = sys.derived["Spell DC"][showStat];
 
@@ -51,6 +56,11 @@
 	
 </script>
 <div>
+	<ItemOptions 
+		data={data}	
+		editMode={edit}
+		on:optionSelected
+	/>
 	{#if edit }
 		<div>
 			<select bind:this={sortSelect} on:change={ changeSort }>

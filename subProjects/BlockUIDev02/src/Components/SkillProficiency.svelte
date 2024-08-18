@@ -2,10 +2,11 @@
 <script lang="ts">
 	import { system, TNode } from "../devDependency/declaration";
     import { onDestroy, onMount } from "svelte";
+    import { CNode } from "../Structure/ComponentNode";
 	
 	export let edit:boolean;
-	export let name:string;
-	export let sys:system;
+	export let name:string; 
+	export let sys:system; 
 
 	let node_skill:TNode = sys.fixed.SkillProficiencies[name];
 	let node_bonus:TNode = sys.derived.skillproficiencyBonus[name];
