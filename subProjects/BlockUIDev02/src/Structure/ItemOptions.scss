@@ -68,12 +68,13 @@
 
 
 .RowColumnOptions{
-	position:absolute;
-	pointer-events: none; 
+	position:absolute; 
 	display: flex;
 	z-index: 100;
 
 	.itemOption{
+		pointer-events: unset;
+		cursor: pointer; 
 		height:30px;
 		min-width: 30px;
 		background-color: $blue;

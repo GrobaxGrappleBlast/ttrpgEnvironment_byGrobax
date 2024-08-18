@@ -37,7 +37,16 @@ export class SheetColumn{
 	public addItem(){
 		this.data.push(new CNode())
 	}
+	public remItem( id ){
 
+		let i = this.data.findIndex( p=> p.id == id);
+		if (i==-1){
+			console.error('cant remove column, since id is not present in data');
+			return;
+		}
+
+		this.data.splice(i,1);
+	}
 }
 
 export class SheetRow{
@@ -50,8 +59,18 @@ export class SheetRow{
 	}
 	id : string; 
 	data : (SheetColumn|null)[] = [];
-	public addItem(){
+	public addColumn(){
 		this.data.push(new SheetColumn())
+	}
+	public remColumn( id ){
+
+		let i = this.data.findIndex( p=> p.id == id);
+		if (i==-1){
+			console.error('cant remove column, since id is not present in data');
+			return;
+		}
+
+		this.data.splice(i,1);
 	}
 
 }
@@ -70,5 +89,15 @@ export class SheetData {
 	data : SheetRow[] = [];	 
 	public addRow(){
 		this.data.push(new SheetRow())
+	}
+	public remRow( id ){
+
+		let i = this.data.findIndex( p=> p.id == id);
+		if (i==-1){
+			console.error('cant remove Row, since id is not present in data');
+			return;
+		}
+
+		this.data.splice(i,1);
 	}
 }

@@ -617,14 +617,6 @@
 		}
 		return _;
 	}
-	function addItem(){
-		$OBJ.addRow();
-		OBJ.update(r=>r);
-	}
-	function addRowItem( row  ){ 
-		$OBJ.data[row].addItem();
-		OBJ.update( r => r); 
-	}
 	function itemRequestMove( direction , id ){ 
 		console.log(direction , id )
 		DragItemHandler.requestMoveItemUpDown(direction,id); 
@@ -669,29 +661,25 @@
 			<!-- LINE LEVEL EDITOR -->
 			<RowColumnOptions
 				active={$editLayout_02}
-				onAdd={()=>{}}
+				onAdd={()=>{
+					row.addColumn();
+					OBJ.update( obj=>{ 
+						return obj;
+					})
+				}}
 				addText={`add Column`}
 			/>
 			<RowColumnOptions
 				active={$editLayout_01}
-				onRemove={()=>{}}
+				onRemove={()=>{
+					OBJ.update(o=>{
+						o.remRow(row.id)
+						return o;
+					})
+					
+				}}
 				remText={`remove this line`}
 			/>
-		 
-			
-			<!--div class="CornerItem" > 
-				<button class="addButton"  on:click={() => addRowItem(i)}>+</button>
-			</div-->
-
-			<!-- Move up and down  -->
-			<!--ItemManouver
-				bind:data={row}
-				editMode={$editLayout_01} 
-				hasDown	={ i != $OBJ.data.length -1 }
-				hasUp	={ i != 0 }
-				on:moveUp	={(e)=>{console.log('MOVE UP')}}
-				on:moveDown	={(e)=>{console.log('MOVE DN')}}
-			/-->
 			
 			{#each row.data as column , j (column.id) }
 				<div 
@@ -725,17 +713,25 @@
 				>
 					
 					<!-- EDIT FOR COLUMN LEVEL -->
-					<RowColumnOptions
-						offset={15}
-						active={$editLayout_02}
-						remText={'remove this column'}
-						onRemove={()=>{}} 
-					/>
+					{#if row.data.length > 1 }
+						<RowColumnOptions
+							offset={15}
+							active={$editLayout_02}
+							remText={'remove this column'}
+							onRemove={()=>{
+								row.remColumn(column.id);
+								OBJ.update( o => o );
+							}} 
+						/>
+					{/if}
 					<RowColumnOptions
 						offset={15}
 						active={$editLayout_03}
 						addText={'add a new Item'}
-						onAdd={()=>{}} 
+						onAdd={()=>{
+							column.addItem();
+							OBJ.update(o=>o);
+						}} 
 					/>
 					{#if $editLayout_03 || $editLayout_02}
 						<div style="height:50px" >
@@ -762,7 +758,15 @@
 							on:dragover	={(e)=>{e.preventDefault();}}
 							draggable={$editLayout_03}
 						> 
-							
+							<RowColumnOptions
+								offset={15}
+								active={$editLayout_03}
+								addText={'remove'}
+								onRemove={()=>{
+									column.remItem(item.id);
+									OBJ.update(o=>o);
+								}}
+							/>
 							<ItemDestributor 
 								data={item}
 								editMode={$editMode}
@@ -784,7 +788,13 @@
 		<div class='Row' style="height:100px" >
 			<RowColumnOptions
 				active={$editLayout_01}
-				onAdd={()=>{}}
+				onAdd={()=>{ 
+					OBJ.update( obj =>{
+						obj.addRow();
+						obj.data[$OBJ.data.length -1].addColumn();
+						return obj;
+					})
+				}}
 				offset={15}
 				addText={`add Line`}
 			/>

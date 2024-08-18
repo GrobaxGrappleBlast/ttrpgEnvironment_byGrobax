@@ -18,7 +18,7 @@
 
 {#if active} 
 	<div transition:slide class="RowColumnOptions" style={cssStyle} >
-		{#if onAdd		}<div class="itemOption" 		on:keyup on:click={onAdd		} >{ addText }</div>{/if}
-		{#if onRemove	}<div class="itemOption rem"	on:keyup on:click={onRemove	} >{ remText }</div>{/if}
+		{#if onAdd		}<div class="itemOption" 		on:keyup on:click={ ()=>onAdd()		} >{ addText }</div>{/if}
+		{#if onRemove	}<div class="itemOption rem"	on:keyup on:click={ ()=>onRemove()	} >{ remText }</div>{/if}
 	</div>
 {/if}
