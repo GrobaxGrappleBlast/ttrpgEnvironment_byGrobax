@@ -8,41 +8,18 @@
 	bottom:0; 
 }
 .ItemOptions{ 
-	position:absolute;
-	top:0;
-	left:0;
 	padding:10px;
-	border-radius: 5px;
-	background-color: blue;
 	display: flex;
 	flex-direction: row;
 	overflow:hidden;
-	max-width: 25px;
-	max-height: 25px;
 	transition:ease 0.5s; 
 	z-index: 100;
-	& > div {
-		opacity: 0;
-	}
-	&:hover{
-		z-index: 110;
-		transition:ease 0.5s;
-		max-width: 500px;
-		max-height: 100px;
-
-		
-		& > div {
-			opacity: 1;
-		}
-	}
-	.btnDelete{
-		background-color: $red;
-	}
 }
 .ItemOptionBtn{
-	border: 1px solid black;
 	padding:10px;
-	width:250px;
+	width:100%;
+	border-radius: 5px;
+	background-color: $blue;
 }
 
 
@@ -57,7 +34,7 @@
 		z-index: 100;
 
 		.ItemManouverOption{
-			background-color: $red;
+			background-color: $blue;
 			width: 40px;
 			height:40px;
 			border-radius: 5px;
@@ -79,7 +56,9 @@
 		min-width: 30px;
 		background-color: $blue;
 		padding:10px;
-	} 
+
+		
+	}  
 	.rem{
 		background-color: $red;
 	}

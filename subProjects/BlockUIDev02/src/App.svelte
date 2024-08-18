@@ -629,12 +629,11 @@
 </script>
 <div class="theme-light" >
 <div class="Sheet  obsidianBody">
-	<div>
-		<button on:click={ () => editMode.set(!$editMode)		}>{ $editMode			? 'Stop Edit' : 'Edit'}</button>
-		<button on:click={ () => editLayout_01	.set(!get( editLayout_01))}>{ $editLayout_01	? 'Layout Row	_ STOP' : 'Layout Row	_ START'}</button>
-		<button on:click={ () => editLayout_02	.set(!get( editLayout_02))}>{ $editLayout_02	? 'Layout Col	_ STOP' : 'Layout Col	_ START'}</button>
-		<button on:click={ () => editLayout_03	.set(!get( editLayout_03))}>{ $editLayout_03	? 'Layout Items _ STOP' : 'Layout Items _ START'}</button>
-	
+	<div class="SheetEditorMenu" >
+		<button data-active={$editMode		} on:click={ () => editMode.set(!$editMode)		}				>{ 'Stop Edit	'	}</button>
+		<button data-active={$editLayout_01	} on:click={ () => editLayout_01	.set(!get( editLayout_01))}	>{ 'Layout Row	' 	}</button>
+		<button data-active={$editLayout_02	} on:click={ () => editLayout_02	.set(!get( editLayout_02))}	>{ 'Layout Col	' 	}</button>
+		<button data-active={$editLayout_03	} on:click={ () => editLayout_03	.set(!get( editLayout_03))}	>{ 'Layout Items' 	}</button>
 	</div>    
 
 	{#each $OBJ.data as row , i (row.id)}

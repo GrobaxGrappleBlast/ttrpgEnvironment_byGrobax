@@ -104,7 +104,25 @@ $opacWhite : #fff1;
 
 
 
+.SheetEditorMenu{
+	padding:$standard_padding_small;
+	background-color: $blue;
+	button{
+		cursor: pointer;
+		padding:10px;
+		border-radius: 5px;
+		background-color: white;
+		transition:background-color ease 0.2s;
 
+		&:hover{
+			background-color: $yellow;
+		}
+
+		&[data-active='true']{
+			background-color: $green;
+		}
+	}
+}
 
 
 

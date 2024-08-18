@@ -22,18 +22,14 @@
 	}
 </script>
 <div  class="ItemOptionsContainer" >
-	{#if editMode}
-		<div class="ItemOptions" >
-			<div class="ItemOptionBtn "> 
-				<CustomSelect 
-					options={options}
-					selected={selected}
-					on:onSelect={  selectOption }
-					unSelectedplaceholder={(!data.type || data.type == 'NONE') ? 'Select View Type' : 'Select a new Type '} 
-				/>
-			</div>
-			<div class="ItemOptionBtn " >Edit </div>
-			<div class="ItemOptionBtn btnDelete" >Delete View</div>
+	<div class="ItemOptions" >
+		<div class="ItemOptionBtn "> 
+			<CustomSelect 
+				options={options}
+				selected={selected}
+				on:onSelect={  selectOption }
+				unSelectedplaceholder={(!data.type || data.type == 'NONE') ? 'Select View Type' : 'Select a new Type '} 
+			/>
 		</div>
-	{/if}
+	</div>
 </div>

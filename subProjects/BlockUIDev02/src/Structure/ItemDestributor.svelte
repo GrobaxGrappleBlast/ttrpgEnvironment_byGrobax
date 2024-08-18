@@ -25,11 +25,14 @@
 
 </script>
 <div>
-	<ItemOptions 
-		bind:data={data}
-		editMode={editMode}
-		on:optionSelected={updateData}
-	/>
+	
+	{#if editMode}
+		<ItemOptions 
+			bind:data={data}
+			editMode={true}
+			on:optionSelected={updateData}
+		/>
+	{/if}
 	{#if length != 1}
 		<ItemManouver
 			bind:data={data}
