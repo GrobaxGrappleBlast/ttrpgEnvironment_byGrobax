@@ -27,11 +27,6 @@
 
 </script>
 <div class="ProficiencyBonus" >
-	<ItemOptions 
-		data={data}	
-		editMode={editMode}
-		on:optionSelected
-	/>
 	<div>Proficiency Bonus</div>
 	<input type="number" disabled={!editMode} bind:value={v} on:change={iterateValue}>
 </div>

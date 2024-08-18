@@ -20,20 +20,13 @@
 
 </script>
 <div>
+	
 	<ItemOptions 
 		bind:data={data}
 		editMode={editMode}
 		on:optionSelected={updateData}
 	/>
-	{#if !(data) ||data.type == 'NONE'		}
-		<div>
-			<ItemOptions 
-				bind:data={data}
-				editMode={editMode}
-				on:optionSelected={updateData}
-			/>
-		</div>
-	{:else if 	data.type == viewNameIndex.HitPoints		}
+	{#if data.type == viewNameIndex.HitPoints		}
 		<div transition:slide  >
 			<HitPoints 
 				sys={sys}

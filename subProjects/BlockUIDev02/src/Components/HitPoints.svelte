@@ -30,11 +30,6 @@
 
 </script>
 <div>
-	<ItemOptions 
-		on:optionSelected
-		data={data}	
-		editMode={editMode}
-	/>
 	<div>Hit Points</div>
 	<input type="number" disabled={!editMode} bind:value={v} on:change={iterateValue}>
 

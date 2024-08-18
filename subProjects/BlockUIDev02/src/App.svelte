@@ -659,7 +659,8 @@
 			on:dragstart={(e)=>DragRowHandler.onDragStart	(e, row.id)}
 			on:dragenter={(e)=>DragRowHandler.onDragOver	(e, row.id)}
 			on:dragend	={(e)=>DragRowHandler.onDragEnd	(e, row.id)}
-			on:dragover	={allowDrop}
+			on:dragover={(e)=>{DragRowHandler.onDragOver	(e, row.id); e.preventDefault()}}
+			
 			
 			transition:fly={{duration:ANIMATION_TIME, y:100}}
 			animate:customFlip={{duration:ANIMATION_TIME}}
@@ -687,7 +688,12 @@
 					on:drop		={(e)=>{DragColumnHandler.onDragEnd	(e,column.id)}}  
 					on:dragleave={(e)=>{DragColumnHandler.onLeave		(e,column.id)}}   
 					
-					on:dragover	={allowDrop}
+					on:dragover	={(e)=>{
+						DragColumnHandler.onDragOver	(e,column.id)
+						DragItemHandler.onDragOverColumn(e,column.id)
+						e.preventDefault();
+					}}
+					
 					draggable={$editLayout_02}
 				>
 					{#each column.data as item , k (item.id) }
@@ -705,7 +711,7 @@
 							on:drop		={(e)=>{DragItemHandler.onDragEnd	(e,item.id)}}  
 							on:dragleave={(e)=>{DragItemHandler.onLeave		(e,item.id)}}   
 							on:dragenter={(e)=>{DragItemHandler.onDragOverItem(e,item.id)}}
-							on:dragover	={allowDrop}
+							on:dragover	={(e)=>{DragItemHandler.onDragOverItem(e,item.id); e.preventDefault();}}
 							draggable={$editLayout_03}
 						>
 							{item.id}

@@ -12,11 +12,6 @@
 	let stats = sys.fixed.stats;
 </script>
 <div class="StatsRow" > 
-	<ItemOptions 
-		data={data}	
-		editMode={edit}
-		on:optionSelected
-	/>
 	{#each Object.keys(stats) as key}
 		{@const node = stats[key]}
 		{@const modNode = sys.derived.modifiers[key]}

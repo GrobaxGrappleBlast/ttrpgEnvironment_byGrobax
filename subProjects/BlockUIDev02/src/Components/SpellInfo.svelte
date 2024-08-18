@@ -56,11 +56,7 @@
 	
 </script>
 <div>
-	<ItemOptions 
-		data={data}	
-		editMode={edit}
-		on:optionSelected
-	/>
+
 	{#if edit }
 		<div>
 			<select bind:this={sortSelect} on:change={ changeSort }>

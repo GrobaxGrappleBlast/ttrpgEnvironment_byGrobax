@@ -15,11 +15,6 @@
 
 
 <div class="skillproficiencyCollection" data-edit={edit}>
-	<ItemOptions 
-		data={data}	
-		editMode={edit}
-		on:optionSelected
-	/>
 	{#each names as name }
 		<SkillProficiency 
 			edit={edit}
