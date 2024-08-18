@@ -9,10 +9,15 @@
 	import { CNode } from "./ComponentNode";
     import ItemOptions from "./ItemOptions.svelte";
     import { viewNameIndex } from "./ViewNameIndex";
+    import ItemManouver from './ItemManouver.svelte';
+    import { createEventDispatcher } from 'svelte';
 	
 	export let data :CNode;
 	export let editMode : boolean;
-	export let sys : system;
+	export let sys : system; 
+	export let length : number; 
+	export let index : number;
+	export let layoutMode:boolean = false;
 
 	function updateData(){ 
 		data = data; 
@@ -20,12 +25,21 @@
 
 </script>
 <div>
-	
 	<ItemOptions 
 		bind:data={data}
 		editMode={editMode}
 		on:optionSelected={updateData}
 	/>
+	{#if length != 1}
+		<ItemManouver
+			bind:data={data}
+			editMode={layoutMode} 
+			hasDown	={ index != length-1 }
+			hasUp	={ index != 0 }
+			on:moveUp		
+			on:moveDown	
+		/>
+	{/if}
 	{#if data.type == viewNameIndex.HitPoints		}
 		<div transition:slide  >
 			<HitPoints 
@@ -73,5 +87,5 @@
 			/>
 		</div>
 	{/if}
-	
+ 
 </div>

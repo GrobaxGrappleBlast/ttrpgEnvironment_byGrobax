@@ -1,6 +1,6 @@
 <script  context="module"  lang="ts">
 
-	export const ANIMATION_DELAY = 120;
+	export const ANIMATION_DELAY = 220;
 	export const ANIMATION_TIME = 100;
 	class DragHandlerController {
 		
@@ -310,8 +310,6 @@
 		}
 		public moveRowItem(){
 			
-			
-			
 			if (!this.isDragging){
 				return;
 			}
@@ -320,37 +318,8 @@
 				return;
 			}
 			
-			// Switch with another Item ( if it is in the Same Column)
-			if ( this.targetID ){
-				/*
-				this.data.update( list => {
-					
-					// in case we try to place it back into the original space
-					if ( this.dragID == this.lastDragId && this.targetID == this.lasttargId ){
-						this.innerSwitchItem( list , this.lasttargId, this.lastDragId	 );
-						return list;
-					}
-
-					// move last items back
-					if (this.lastDragId	&& this.lasttargId){
-						this.innerSwitchItem( list , this.lastDragId	, this.lasttargId );
-					}
-					// move next item set forward
-					if ( this.targetID ){
-						this.innerSwitchItem( list , this.dragID		, this.targetID );
-					}
-					
-
-					this.lastDragId=this.dragID;
-					this.lasttargId=this.targetID;
-					this.lasttargRowId = null;
-					this.pauseDragg=true;
-					setTimeout( () => { this.pauseDragg = false ; }, ANIMATION_DELAY)
-					return list;
-				})  */
-			}
 			// add item to another Column
-			else if ( this.targetRowId ){
+			if ( this.targetRowId ){
 				this.data.update( list => {
 					
 					// move next item set forward
@@ -374,6 +343,34 @@
 			
 		}
 		
+		public requestMoveItemUpDown( direction , id ){
+			 
+			this.data.update( list => {
+ 
+				let row;let col; let a;
+				[row, col, a] = this.findIndexsOfID(id);
+				
+				let newID= a + direction ;
+				if (newID < 0 ){
+					return;
+				}
+
+				// out of Bounds
+				if ( list.data[row].data[col].data.length -1 < newID ){
+					console.error('Out of Bounds move, so did not attempt')
+					return list ;
+				}
+
+				const item = list.data[row].data[col].data.splice(a,1)[0];
+				list.data[row].data[col].data.splice(newID,0,item)
+				
+
+				this.pauseDragg=true;
+				setTimeout( () => { this.pauseDragg = false ; }, ANIMATION_DELAY);
+				return list;
+			});
+ 
+		}
 
 		onDragStart( e , id){  
 			
@@ -394,20 +391,7 @@
 			target.setAttribute('data-dragging','true') 
 			
 		}
-		onDragOverItem( e , id){  
-			if ( !get(this.layerActive) ){
-				
-				return;
-			}
 
-			if (!this.isDragging || this.pauseDragg ){
-				return;
-			}
-			this.targetID = id; 
-			this.targetRowId =null;
-			this.moveRowItem( ); 
-			this.dragTargetElement	?.setAttribute('data-dragging','true')  
-		}
 		onDragOverColumn( e , id){  
 			 
 			if ( !get(this.layerActive) ){
@@ -495,22 +479,32 @@
 		editLayout_03 	: Writable<boolean> = writable(false);
 
 		constructor(){
+			this.editMode.subscribe( p => {
+				if (p){
+					this.editLayout_01.set(false);
+					this.editLayout_02.set(false);
+					this.editLayout_03.set(false);
+				}
+			})
 			this.editLayout_01.subscribe( p => {
 				if (p){
 					this.editLayout_02.set(false);
 					this.editLayout_03.set(false);
+					this.editMode.set(false)
 				}
 			})
 			this.editLayout_02.subscribe( p => {
 				if (p){
 					this.editLayout_01.set(false);
 					this.editLayout_03.set(false);
+					this.editMode.set(false)
 				}
 			})
 			this.editLayout_03.subscribe( p => {
 				if (p){
 					this.editLayout_01.set(false);
 					this.editLayout_02.set(false);
+					this.editMode.set(false)
 				}
 			})
 		}
@@ -528,6 +522,8 @@
     import ItemDestributor from "./Structure/ItemDestributor.svelte";
     import { system } from "./devDependency/declaration";
     import { customFlip } from "./Svelte/CustomFlip";
+    import ItemManouver from "./Structure/ItemManouver.svelte";
+    import RowColumnOptions from "./Structure/RowColumnOptions.svelte";
 	
  
 	let state : State = new State();
@@ -629,8 +625,9 @@
 		$OBJ.data[row].addItem();
 		OBJ.update( r => r); 
 	}
-	function allowDrop(ev) {
-		ev.preventDefault();
+	function itemRequestMove( direction , id ){ 
+		console.log(direction , id )
+		DragItemHandler.requestMoveItemUpDown(direction,id); 
 	}
 
 
@@ -638,20 +635,22 @@
 	let DragColumnHandler 	= new DragItemHandlerController2(OBJ, state);
 	let DragItemHandler 	= new DragItemHandlerController3(OBJ, state);
 </script>
-<div class="Sheet theme-light obsidianBody">
+<div class="theme-light" >
+<div class="Sheet  obsidianBody">
 	<div>
 		<button on:click={ () => editMode.set(!$editMode)		}>{ $editMode			? 'Stop Edit' : 'Edit'}</button>
-		{#if $editMode}
-			<button on:click={ () => editLayout_01	.set(!get( editLayout_01))}>{ $editLayout_01	? 'Layout Row	_ STOP' : 'Layout Row	_ START'}</button>
-			<button on:click={ () => editLayout_02	.set(!get( editLayout_02))}>{ $editLayout_02	? 'Layout Col	_ STOP' : 'Layout Col	_ START'}</button>
-			<button on:click={ () => editLayout_03	.set(!get( editLayout_03))}>{ $editLayout_03	? 'Layout Items _ STOP' : 'Layout Items _ START'}</button>
-		{/if}
+		<button on:click={ () => editLayout_01	.set(!get( editLayout_01))}>{ $editLayout_01	? 'Layout Row	_ STOP' : 'Layout Row	_ START'}</button>
+		<button on:click={ () => editLayout_02	.set(!get( editLayout_02))}>{ $editLayout_02	? 'Layout Col	_ STOP' : 'Layout Col	_ START'}</button>
+		<button on:click={ () => editLayout_03	.set(!get( editLayout_03))}>{ $editLayout_03	? 'Layout Items _ STOP' : 'Layout Items _ START'}</button>
+	
 	</div>    
+
 	{#each $OBJ.data as row , i (row.id)}
 		<div 
 			class='Row' 
-			data-edit={$editMode}
+			data-edit={$editMode || $editLayout_01}
 			data-edit-active={$editLayout_01}
+			data-editpreview={$editLayout_02}
 
 			style={`grid-template-columns:${repeat(row.data.length, '1fr')}`}  
 			data-rowId={row.id}
@@ -666,17 +665,45 @@
 			animate:customFlip={{duration:ANIMATION_TIME}}
 			draggable={$editLayout_01}
 			> 
-			<div class="CornerItem" > 
+
+			<!-- LINE LEVEL EDITOR -->
+			<RowColumnOptions
+				active={$editLayout_02}
+				onAdd={()=>{}}
+				addText={`add Column`}
+			/>
+			<RowColumnOptions
+				active={$editLayout_01}
+				onRemove={()=>{}}
+				remText={`remove this line`}
+			/>
+		 
+			
+			<!--div class="CornerItem" > 
 				<button class="addButton"  on:click={() => addRowItem(i)}>+</button>
-			</div>
+			</div-->
+
+			<!-- Move up and down  -->
+			<!--ItemManouver
+				bind:data={row}
+				editMode={$editLayout_01} 
+				hasDown	={ i != $OBJ.data.length -1 }
+				hasUp	={ i != 0 }
+				on:moveUp	={(e)=>{console.log('MOVE UP')}}
+				on:moveDown	={(e)=>{console.log('MOVE DN')}}
+			/-->
+			
 			{#each row.data as column , j (column.id) }
 				<div 
 					class='Column' 
-					data-edit={$editMode}  
+					data-edit={$editMode || $editLayout_02} 
+					data-editpreview={$editLayout_03} 
 					data-itemId={column.id} 
 					data-edit-active={$editLayout_02}
-
 					data-dragging={DragColumnHandler.isBeingDragged(column.id)}
+					style={`
+						${ ($editLayout_02 || $editLayout_01) ? 'margin-bottom:60px':'' }
+					`}
 					transition:fade={{duration:ANIMATION_TIME}}
 					animate:customFlip={{ duration:ANIMATION_TIME  }} 
 					on:dragstart={(e)=>{DragColumnHandler.onDragStart	(e,column.id)}}
@@ -696,11 +723,33 @@
 					
 					draggable={$editLayout_02}
 				>
+					
+					<!-- EDIT FOR COLUMN LEVEL -->
+					<RowColumnOptions
+						offset={15}
+						active={$editLayout_02}
+						remText={'remove this column'}
+						onRemove={()=>{}} 
+					/>
+					<RowColumnOptions
+						offset={15}
+						active={$editLayout_03}
+						addText={'add a new Item'}
+						onAdd={()=>{}} 
+					/>
+					{#if $editLayout_03 || $editLayout_02}
+						<div style="height:50px" >
+
+						</div>
+					{/if}
+
+
+
 					{#each column.data as item , k (item.id) }
 
 						<div 
 							class='Item' 
-							data-edit={$editMode} 
+							data-edit={$editMode || $editLayout_03} 
 							data-itemId={item.id} 
 							data-edit-active={$editLayout_03}
 							data-dragging={DragItemHandler.isBeingDragged(item.id)}
@@ -710,34 +759,40 @@
 							on:dragend	={(e)=>{DragItemHandler.onDragEnd	(e,item.id)}}
 							on:drop		={(e)=>{DragItemHandler.onDragEnd	(e,item.id)}}  
 							on:dragleave={(e)=>{DragItemHandler.onLeave		(e,item.id)}}   
-							on:dragenter={(e)=>{DragItemHandler.onDragOverItem(e,item.id)}}
-							on:dragover	={(e)=>{DragItemHandler.onDragOverItem(e,item.id); e.preventDefault();}}
+							on:dragover	={(e)=>{e.preventDefault();}}
 							draggable={$editLayout_03}
-						>
-							{item.id}
-						<!--on:dragenter={(e)=>{DragItemHandler.onDragOver	(e,item.id)}}-->
-				 
+						> 
 							
-
-								<ItemDestributor 
-									data={item}
-									editMode={$editMode}
-									sys={sys} 
-								/>
-								
-							 
+							<ItemDestributor 
+								data={item}
+								editMode={$editMode}
+								layoutMode={$editLayout_03}
+								sys={sys}  
+								length={column.data.length}
+								index={k}
+								on:moveUp	={ (e)=>{itemRequestMove(-1  , e.detail )}}
+								on:moveDown	={ (e)=>{itemRequestMove( 1 , e.detail )}}
+							/>
 						</div>
 					{/each}
 				</div>
 			{/each}
 		</div>
 	{/each} 
-	<div>
-		<button class="addButton"  on:click={addItem}>+</button>
-	</div> 
+
+	{#if $editLayout_01}
+		<div class='Row' style="height:100px" >
+			<RowColumnOptions
+				active={$editLayout_01}
+				onAdd={()=>{}}
+				offset={15}
+				addText={`add Line`}
+			/>
+		</div>
+	{/if}
 	
 </div>
-
+</div>
 	
 <!--
 	<div class="CornerItem" > 

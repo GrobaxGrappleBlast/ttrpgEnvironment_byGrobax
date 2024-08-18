@@ -24,7 +24,7 @@
 <div  class="ItemOptionsContainer" >
 	{#if editMode}
 		<div class="ItemOptions" >
-			<div class="ItemOptionBtn ItemOptionSel"> 
+			<div class="ItemOptionBtn "> 
 				<CustomSelect 
 					options={options}
 					selected={selected}
@@ -37,8 +37,3 @@
 		</div>
 	{/if}
 </div>
-<style>
-	.ItemOptionSel{
-		width:250px;
-	}
-</style>

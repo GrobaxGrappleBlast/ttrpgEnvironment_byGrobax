@@ -7,38 +7,24 @@
     import CustomSelect from "../importedComponents/CustomSelect/CustomSelect.svelte";
 	let dispatch = createEventDispatcher();
 	
-	export let data:CNode;
-	export let editMode:boolean;
-	let options = Object.keys(viewNameIndex)
-	let selected = data.type;
+	export let data: {id:string };
+	export let editMode:boolean; 
+	export let hasUp 	: boolean;
+	export let hasDown	: boolean;
 
- 	function selectOption(a){
-		let option = a.detail;
-		
-		data.type = option;
-		dispatch('optionSelected');
-		console.log('optionSelected' + option)
-		 
+	function moveUp(){
+		dispatch('moveUp'	,data.id );
+	}
+	function moveDown(){
+		dispatch('moveDown' ,data.id);
 	}
 </script>
-<div  class="ItemOptionsContainer" >
-	{#if editMode}
-		<div class="ItemOptions" >
-			<div class="ItemOptionBtn ItemOptionSel"> 
-				<CustomSelect 
-					options={options}
-					selected={selected}
-					on:onSelect={  selectOption }
-					unSelectedplaceholder={(!data.type || data.type == 'NONE') ? 'Select View Type' : 'Select a new Type '} 
-				/>
-			</div>
-			<div class="ItemOptionBtn " >Edit </div>
-			<div class="ItemOptionBtn btnDelete" >Delete View</div>
+<div  class="ItemManouverContainer" >
+	{#if editMode }
+		<div class="ItemManouverOptions" >
+			{#if hasUp	}<div class="ItemManouverOption" on:keyup on:click={moveUp}	>Up</div>{/if}
+			{#if hasDown}<div class="ItemManouverOption" on:keyup on:click={moveDown}>Down</div>{/if}
 		</div>
 	{/if}
 </div>
-<style>
-	.ItemOptionSel{
-		width:250px;
-	}
-</style>
+ 

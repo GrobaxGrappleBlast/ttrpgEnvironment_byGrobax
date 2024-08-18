@@ -1,10 +1,11 @@
 @import './../SystemStandards.scss';
+
 .ItemOptionsContainer{
 	position:relative;
 	top:0;
 	right:0;
-	width: 0;
-	height:0;
+	left:0;
+	bottom:0; 
 }
 .ItemOptions{ 
 	position:absolute;
@@ -19,11 +20,12 @@
 	max-width: 25px;
 	max-height: 25px;
 	transition:ease 0.5s; 
-
+	z-index: 100;
 	& > div {
 		opacity: 0;
 	}
 	&:hover{
+		z-index: 110;
 		transition:ease 0.5s;
 		max-width: 500px;
 		max-height: 100px;
@@ -43,3 +45,41 @@
 	width:250px;
 }
 
+
+
+.ItemManouverContainer{
+	@extend .ItemOptionsContainer;
+
+	.ItemManouverOptions{
+		position:absolute;
+		top:0;
+		right:0;
+		z-index: 100;
+
+		.ItemManouverOption{
+			background-color: $red;
+			width: 40px;
+			height:40px;
+			border-radius: 5px;
+			cursor: pointer;
+		}
+	}
+}
+
+
+.RowColumnOptions{
+	position:absolute;
+	pointer-events: none; 
+	display: flex;
+	z-index: 100;
+
+	.itemOption{
+		height:30px;
+		min-width: 30px;
+		background-color: $blue;
+		padding:10px;
+	} 
+	.rem{
+		background-color: $red;
+	}
+}
