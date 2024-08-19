@@ -237,8 +237,7 @@ export class FileContext {
 	private async loadFolderAndFilesRecursice(folderPath): Promise<command[]>{
 		
 		// first create this folder
-		let c : command[] = [];
-		c.push( {command:'folder', path:folderPath, content:folderPath.split('/').last()} )
+		let c : command[] = []; 
 
 		// load all files in the Folder
 		const content = await FileHandler.lsdir(folderPath);
@@ -272,8 +271,7 @@ export class FileContext {
 	}
 	public async loadBlockUITemplate( ){
 		
-		const path =  GrobaxTTRPGSystemHandler.PLUGIN_ROOT + '/' + GrobaxTTRPGSystemHandler.BUILTIN_UIS_FOLDER_NAME + '/';
-		
+		const path =  GrobaxTTRPGSystemHandler.PLUGIN_ROOT + '/' + GrobaxTTRPGSystemHandler.BUILTIN_UIS_FOLDER_NAME + '/'; 
 		let commands :command[] = [];
 
 		// first we get the upper files in the folder 
@@ -281,21 +279,12 @@ export class FileContext {
 		if( !exists ){
 			throw new Error('File for BlockUI have been deleted. this feature longer works as a result')
 		}
-		
-		// make the first command;
-		commands.push(
-			{ 
-				command:'folder',
-				path:'src',
-				content:'src'
-			}
-		)
-		
+		  
+		// FILES ADD TO COMMANDS 
 		const content = await FileHandler.lsdir(path);
 		let map = await Promise.all( content.files.map(async ( f ) => {
 			return await this.loadFileAndCreateCommand(f);
-		})) 	
-	 
+		})) 	 
 		map.forEach( p => {
 			if(!p.path.endsWith("/declaration.ts")){
 				let n : string = (p.path.split('BlockUIDev/').last() )?? '';
@@ -303,22 +292,18 @@ export class FileContext {
 				commands.push(p);
 			}
 		}) 
-
-		// then we load specifik Folders.
+		
+		// then we load specifik Folders. 
 		let pathsrc = path + '/' + 'src/';
 		let map2 = await this.loadFolderAndFilesRecursice(pathsrc);
-		map2.forEach(p=>{
-			commands.push(p);
-		})
-
-
-		// now we sort out the folder path parts that are unesesary;
-		commands.forEach( p=>{
-			let n : string = (p.path.split('BlockUIDev/').last() )?? '';
+		map2.forEach(p=>{ 
+			let n = p.path.split('BlockUIDev/').last() ?? '';
 			p.path = n;
-		})
-		
-
+			if(n != "/src/"){
+				commands.push(p);
+			}
+		}) 
+		 
 		return commands;
 	}
  

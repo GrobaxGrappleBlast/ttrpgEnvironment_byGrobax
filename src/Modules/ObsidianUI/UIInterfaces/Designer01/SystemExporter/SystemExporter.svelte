@@ -5,8 +5,7 @@
 	import { writable, type Writable } from "svelte/store"; 
 	import { GrobCollection, GrobDerivedNode, GrobDerivedOrigin, GrobFixedNode, TTRPGSystem, type GrobNodeType } from "../../../../../../src/Modules/Designer";
 	import StaticMessageHandler from "../BaseComponents/Messages/StaticMessageHandler.svelte";
-	import './SystemExporter.scss';
-    import { ObsidianUICoreAPI } from "../../../../../../src/Modules/ObsidianUICore/API";
+	import './SystemExporter.scss'; 
     import { SystemPreview } from "../../../../../../src/Modules/ObsidianUICore/model/systemPreview";
     
 
@@ -17,26 +16,39 @@
 	let messageHandler : StaticMessageHandler ;
 
 	let text = '';
+	let content:Blob;
+	let content_URL:string;
+
 
 	async function onclick(){
-		let content = await exporter.createBlockUITemplatefile($system);
+		
+		let _content : Blob = await exporter.createBlockUITemplatefile($system) as Blob; 
+		if(!_content)
+			return;
+		 
+		content_URL = URL.createObjectURL(_content);
+		content = _content;
+		 
+		// Create a temporary anchor element
+		const a = document.createElement('a');
+		a.href = content_URL; 
+		let sysName = ($system.systemName);
+		sysName = sysName.replace(' ','').replace('\t','');
+		a.download = sysName + "_UIExportDefaultTemplate";
 
-		let a = await content?.text();
-		let b = await content?.stream();
-
-		debugger
-		console.log(content,a,b)
-		//text = exporter.convertToTTRPGSystemToGUIBuilderPreview($system);
+		
+		// Attach Click and Detach and Delete.
+		document.body.appendChild(a);
+		a.click();
+		document.body.removeChild(a);
+    	URL.revokeObjectURL(content_URL); 
 	}
 
 	
 </script>
 <div>
 	<div class="SystemExporterbuttonRow">
-		<div class="ExecutionButton" on:click={onclick} > Export Base System as File </div>
+		<div class="ExecutionButton" on:click={onclick} > Export UI Template </div>
 		<div class="ExecutionText" > Export the base system as a file that can be used to program a JS userinterface </div>
-	</div>
-	<pre contenteditable="true">
-		{text}
-	</pre>
+	</div> 
 </div>

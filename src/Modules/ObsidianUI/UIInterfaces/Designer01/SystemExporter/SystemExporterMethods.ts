@@ -200,75 +200,41 @@ export class SystemExporterMethods {
 	//		} 
 	//	}
 
-	public async createBlockUITemplatefile( system:TTRPGSystem ){
+	public async createBlockUITemplatefile( system:TTRPGSystem ): Promise<Blob | null > {
 		
-		let resp =  await ( ObsidianUICoreAPI.getInstance()).export.loadBlockUIForExport(); 
-		let dictionary : Record<string,JSZip> = {};
-		 
-
+		let resp =  await ( ObsidianUICoreAPI.getInstance()).export.loadBlockUIForExport();  
 		if (resp.responseCode != 200){
-			return 
+			return null;
 		}
 
 		const zip	= new JSZip();
-		
-		// insert files and folders
+		var f = zip.folder( "src") as JSZip ;
+
+		// insert files and folders 
 		resp.response.forEach(p => {
 			let segs = p.path.split('/');
 			if(!segs ||segs.length == 0){
 				return;
 			}
-			
-			if ( p.command == 'folder'){
-				
-					// if it has folder parent
-					let lastIndex = p.path.lastIndexOf('.');
-					let parentFolder = p.path.substr(0, lastIndex)
-					let f : JSZip;
+			   
+			// if it has folder parent
+			let lastIndex = p.path.lastIndexOf('/');
+			let filename = p.path.substring(lastIndex+1,p.path.length);
+			let parentName = p.path.substring(0,lastIndex);
+			let parentFolder = f; ;
 
-					if(dictionary[parentFolder]){
-						// @ts-ignore;
-						f = dictionary[parentFolder].folder(segs.last());
-					}else{
-						// @ts-ignore;
-						f = zip.folder(  segs.last() );
-
-					}
-					// @ts-ignore;
-					dictionary[p.path] = f; 
-				
-			}else{
-				
-				// if it has folder parent
-				let lastIndex = p.path.lastIndexOf('/');
-				let filename = p.path.substring(lastIndex+1,p.path.length);
-				let parentFolder = dictionary[p.path];
-				
-				if(parentFolder){
-					// @ts-ignore;
-					parentFolder.file(filename,p.content)
-				} 
-			}
+			parentFolder.file(p.path,p.content)  
 		})
 
 		 
 		// attach a File to a declaration.ts
-		dictionary['src'].file('declaration.ts',await this.convertToTTRPGSystemToGUIBuilderPreview(system));
- 
+		//dictionary['src'].file('declaration.ts',await this.convertToTTRPGSystemToGUIBuilderPreview(system));
+		f.file('src/declaration.ts',await this.convertToTTRPGSystemToGUIBuilderPreview(system));
+		 
+
 		const content = await zip.generateAsync({ type: 'blob' });
 		return content;		 
-
-		//	const zip	= new JSZip();
-		//	let src		= zip.folder('myFolder');
-		//	src?.file('declaration.ts', this.convertToTTRPGSystemToGUIBuilderPreview(system) );
-		//	src?.file('index.html'			, 'Content');
-		//	src?.file('package.json'		, 'Content');
-		//	src?.file('package-lock.json'	, 'Content');
-		//	src?.file('README.md'			, 'Content');
-		//	src?.file('svelte.config.js'	, 'Content');
-		//	src?.file('tsconfig.json'		, 'Content');
-		//	src?.file('tsconfig.node.json'	, 'Content');
-		//	src?.file('vite.config.ts'		, 'Content');
+ 
 
 		
 	}

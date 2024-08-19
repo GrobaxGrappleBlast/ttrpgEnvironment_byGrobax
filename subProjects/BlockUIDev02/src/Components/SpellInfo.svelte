@@ -29,10 +29,13 @@
 	let chosen_DC		= nodeDC.getValue();
 	let chosen_BONUS	= nodeBonus.getValue();
 	let sortSelect : HTMLSelectElement;
+	
 	function changeSort(){
 		let value = 	sortSelect.value;
 		showStat		= value; 
-		chosen_DC		= nodeDC.getValue();
+		nodeDC		= sys.derived["Spell Bonus"][showStat];
+		nodeBonus	= sys.derived["Spell DC"][showStat];
+		chosen_DC		= nodeDC	.getValue();
 		chosen_BONUS	= nodeBonus.getValue();
 	}
 
