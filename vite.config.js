@@ -10,7 +10,8 @@ const prod = (process.argv[2] === 'production');
 export default defineConfig(() => {
     return {
         exclude:[
-            '**/*.test.ts'
+            '**/*.test.ts',
+            'subProjects'
         ],
         plugins: [
             svelte({

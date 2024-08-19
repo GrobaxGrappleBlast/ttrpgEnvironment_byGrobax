@@ -1,6 +1,6 @@
-import { promises } from "dns";
+
 import { MessageTypes, type MessageTypeTypes } from "../ObsidianUI/UIInterfaces/Designer01/BaseComponents/Messages/StaticMessageHandler.svelte";
-import type { Message, messageList } from "../ObsidianUI/UIInterfaces/Designer01/BaseComponents/Messages/message";
+import type { messageList } from "../ObsidianUI/UIInterfaces/Designer01/BaseComponents/Messages/message";
 import { StringFunctions } from "../ObsidianUI/UIInterfaces/Designer01/BaseFunctions/stringfunctions";
 import type { APIReturnModel } from "./APIReturnModel"; 
 import { SystemPreview } from "./model/systemPreview";
@@ -36,7 +36,11 @@ export class ObsidianUICoreAPI {
 
 	public systemDefinition = new SystemDefinitionManagement();
 	public systemFactory	= new SystemFactory();
+	public export 			= new Expoter();
 }
+
+
+
 
 class SystemDefinitionManagement{
 
@@ -240,4 +244,22 @@ class SystemFactory{
 	}
 
 	public async deleteSystemFactory(){}
+}
+
+
+
+class Expoter{
+	public async loadBlockUIForExport(){
+
+		let messages : messageList = {};
+		try{  
+			let blockUIFilesResponse = await FileContext.getInstance().loadBlockUITemplate();;
+			return createResponse(200,blockUIFilesResponse, {} );
+		}
+		catch (e){
+			messages['Error']=({msg:e.message , type:'error'});
+			return createResponse(300,[],messages );
+		} 
+	}
+
 }

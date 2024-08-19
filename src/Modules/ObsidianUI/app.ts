@@ -18,6 +18,7 @@ export default class GrobaxTTRPGSystemHandler extends Plugin {
 	public static ROOT		  	: string;	
 	public static PLUGIN_ROOT	: string;
 	public static SYSTEMS_FOLDER_NAME	: string;
+	public static BUILTIN_UIS_FOLDER_NAME	: string;
 	public static self			: GrobaxTTRPGSystemHandler;  
 	settings: MyPluginSettings;  
 
@@ -30,6 +31,7 @@ export default class GrobaxTTRPGSystemHandler extends Plugin {
 		GrobaxTTRPGSystemHandler.ROOT = GrobaxTTRPGSystemHandler.App.vault.configDir; 
 		GrobaxTTRPGSystemHandler.PLUGIN_ROOT = this.manifest.dir as string; 
 		GrobaxTTRPGSystemHandler.SYSTEMS_FOLDER_NAME = "Systems"
+		GrobaxTTRPGSystemHandler.BUILTIN_UIS_FOLDER_NAME = "subProjects/BlockUIDev";
 		
 		
  

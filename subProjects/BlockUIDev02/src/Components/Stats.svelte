@@ -1,0 +1,25 @@
+<script lang="ts">
+    import { onMount } from "svelte";
+	import { system, TNode } from '../../declaration'; 
+	import StaticValue from "./StatValue.svelte";
+    import { CNode } from "../Structure/ComponentNode";
+    import ItemOptions from "../Structure/ItemOptions.svelte";
+
+	export let sys:system;
+	export let data :CNode;
+	export let edit = false; 
+
+	let stats = sys.fixed.stats;
+</script>
+<div class="StatsRow" > 
+	{#each Object.keys(stats) as key}
+		{@const node = stats[key]}
+		{@const modNode = sys.derived.modifiers[key]}
+		<StaticValue
+			name={key}
+			statNode={node}
+			{modNode}
+			editmode={edit}
+		/>
+	{/each}
+</div>

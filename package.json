@@ -6,7 +6,12 @@
     "type": "module",
     "jest": {
         "collectCoverage": true,
-        "coverageReporters": ["json", "lcov", "text", "html"],
+        "coverageReporters": [
+            "json",
+            "lcov",
+            "text",
+            "html"
+        ],
         "testEnvironment": "node",
         "moduleFileExtensions": [
             "js",
@@ -19,7 +24,6 @@
             "**/*.test.ts",
             "**/*.test.js"
         ]
-        
     },
     "scripts": {
         "style": "sass ./modules/styles.scss styles.css",
@@ -56,6 +60,7 @@
     "dependencies": {
         "async-mutex": "^0.4.0",
         "handlebars": "^4.7.8",
+        "jszip": "^3.10.1",
         "reflect-metadata": "^0.1.13",
         "yaml": "^2.3.2"
     }

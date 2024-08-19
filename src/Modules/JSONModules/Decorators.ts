@@ -20,7 +20,8 @@ function cleanNonAccesibleSettings( option?:JSONPropertyOptions ){
 export interface JSONPropertyOptions {
 	scheme?:string,
 	name?: string ,
-	isArray?:boolean
+	isArray?:boolean,
+	preSerializationConversion?:boolean
 }
 interface JSONInnerPropertyOptions<IN extends object,OUT extends object> extends JSONPropertyOptions{
 	scheme?:string,
@@ -64,6 +65,10 @@ export function JsonProperty( option?:JSONInnerPropertyOptions<any,any> ) {
  
 		if(option.type){
 			setMetadata( JSON_TAGS.JSON_PROPERTY_TYPED		, option.type	, target, propertyKey , scheme);
+		}
+
+		if (option.preSerializationConversion){
+			setMetadata( JSON_TAGS.JSON_PARAMETER_ON_BEFORE_SERIALIZATION_CONVERSION , true , target, propertyKey , scheme);
 		}
 		
 	};

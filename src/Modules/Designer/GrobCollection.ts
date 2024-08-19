@@ -19,6 +19,10 @@ export class GrobCollection<T extends GrobNodeType> extends AGraphItem implement
 	public getNodeNames(){
 		return Object.keys( this.nodes_names );
 	}
+	public getNodes(){
+		return Object.values( this.nodes_names );
+	}
+
 	public hasNode(name) {
 		return this.nodes_names[name] ? true : false;
 	}
@@ -32,6 +36,12 @@ export class GrobCollection<T extends GrobNodeType> extends AGraphItem implement
 		return true;
 	}  
 	public removeNode(node : T){
+
+		if(!node)
+		{
+			console.error('attempted to delete node "Null" ');
+			return false
+		}
 
 		const name = node.getName(); 
 		let n = this.nodes_names[name];

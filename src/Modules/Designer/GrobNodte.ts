@@ -17,13 +17,6 @@ export class GrobDerivedOrigin {
 	@JsonString()
 	public originKey: string ;
 
-	//public getSymbol(){}
-	//public setSymbol(){}
-	//public getStandardValue(){}
-	//public setStandardValue(){}
-	//public getOrigin(){}
-	//public setOrigin(){}
-
 }
 
 
@@ -41,6 +34,8 @@ export abstract class GrobNode<T extends GrobNode<T>> extends AGraphItem{
 	public dependencies :Record<any,GrobNodeType> = {};
 	public dependents : Record<any,GrobNodeType> = {};
 
+	public updateListeners = {};
+
 	public static getTypeString(): string{
 		return 'Nodte<T extends Nodte<T>>';
 	}
@@ -49,7 +44,7 @@ export abstract class GrobNode<T extends GrobNode<T>> extends AGraphItem{
 		const key = node.getKey();
 
 		if(this.dependents[key]){
-			return false;
+			return true;
 		}
 
 		this.dependents[key] = node;
@@ -87,8 +82,13 @@ export abstract class GrobNode<T extends GrobNode<T>> extends AGraphItem{
 		return seg;
 	}
 	public update( ){
+		this._update();
+		( Object.keys(this.updateListeners) ).forEach( key => {
+			this.updateListeners[key]();
+		})
 		return true;
 	}
+	abstract _update();
 
 	dispose () {
 		// delete references all
@@ -130,6 +130,22 @@ export abstract class GrobNode<T extends GrobNode<T>> extends AGraphItem{
 	public isValid(  ){
 		return true;
 	}
+
+	addUpdateListener( key , listener : () => any ){
+		if (this.updateListeners[key] != undefined){
+			console.error('tried to add updatelistener to node with key:' + key + '. but there was already a listener using that key');
+			return false;
+		}
+
+		this.updateListeners[key] = listener;
+
+	}
+	removeUpdateListener( key ){
+		delete this.updateListeners[key];
+	}
+	removeAllUpdateListeners(){
+		this.updateListeners = {}
+	}
 }
   
 export class GrobFixedNode extends GrobNode<GrobFixedNode>{
@@ -163,6 +179,7 @@ export class GrobFixedNode extends GrobNode<GrobFixedNode>{
 	public removeDependency(node:GrobNodeType){ return false  }
 	public nullifyDependency(node:GrobNodeType){return false}
 	
+	_update(){}
 }
  
 
@@ -457,7 +474,7 @@ export class GrobDerivedNode extends GrobNode<GrobDerivedNode> {
 		return res;
 	}
 
-	public update( ){
+	_update( ){
 
 		if(!this.isValid()){
 			console.error(`Node isent Valid ${this.getName()} ${this.getLocationKey()} Stopping update`);

@@ -1,0 +1,1 @@
+export const svelteStandardAnimTime = 400 ; // milliseconds

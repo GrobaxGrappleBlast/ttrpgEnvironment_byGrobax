@@ -16,7 +16,7 @@
 
 	let dispatch = createEventDispatcher();
 
-	onMount(()=>{  
+	onMount(()=>{   
 		if (origin && rowData.segments ){ 
 			if(!(rowData.segments[0])){
 				return
@@ -153,7 +153,7 @@
 				options={options_level2}	
 				disabled={!(options_level1)}	
 				on:onSelect={(e) => onSelect(2,e.detail)}
-				on:onDeselect={()=>onDeselect(0)} 
+				on:onDeselect={()=>onDeselect(0)}
 			
 			/>
 

@@ -1,0 +1,28 @@
+
+$backgroundStandard : var(--background-primary);
+$color_error    : tomato ;//var(--background-modifier-error);
+$color_success  : green ;//var(--background-modifier-success) ;
+$color_verbose	: blue ;//var(--color-blue);
+ 
+.tooltipInnerBox {
+	position: absolute; 
+	color: #fff;
+	padding: 5px;
+	border-radius: 3px;
+	z-index: 1000;
+	white-space: nowrap; 
+}
+
+.tooltipInnerBox {
+	background-color: $backgroundStandard ;
+	&[data-type="error"]{
+		background-color: $color_error;
+	}
+	&[data-type="verbose"]{
+		background-color: $color_verbose;
+	}
+	&[data-type="good"]{
+		background-color: $color_success;
+	} 
+}
+ 

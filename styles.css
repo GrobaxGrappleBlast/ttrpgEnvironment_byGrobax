@@ -144,6 +144,299 @@ button {
   background-color: var(--background-primary);
 }
 
+.GrobsButton {
+  height: 24px;
+  padding: 24px;
+  border-radius: 2px;
+  background: var(--interactive-normal);
+  box-shadow: var(--input-shadow);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--text-normal);
+  font-size: var(--font-ui-small);
+  border-radius: var(--button-radius);
+  border: 0;
+  padding: var(--size-4-1) var(--size-4-3);
+  height: var(--input-height);
+  font-weight: var(--input-font-weight);
+  cursor: var(--cursor);
+  font-family: inherit;
+  outline: none;
+  user-select: none;
+  white-space: nowrap;
+  cursor: pointer;
+}
+
+.GrobsButton:hover {
+  background-color: var(--interactive-accent);
+  color: var(--text-on-accent);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--text-normal);
+  font-size: var(--font-ui-small);
+  border-radius: var(--button-radius);
+  border: 0;
+  padding: var(--size-4-1) var(--size-4-3);
+  height: var(--input-height);
+  font-weight: var(--input-font-weight);
+  font-family: inherit;
+  outline: none;
+  user-select: none;
+  white-space: nowrap;
+}
+
+.lineBreak, .linebreak {
+  height: 24px;
+}
+
+.blockBreak {
+  height: 45px;
+}
+
+.grobModal {
+  background-color: var(--background-primary);
+  border-radius: var(--modal-radius);
+  border: var(--modal-border-width) solid var(--modal-border-color);
+  padding: var(--size-4-4);
+  box-shadow: 4px 4px 0px 0px black;
+  width: calc(100% - 2 * var(--size-4-4));
+  position: absolute;
+  z-index: 100;
+}
+
+.ErrorHandlerSignage {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+
+.signage, .OKHandlerSign, .VerboseHandlerSign, .ErrorHandlerSign {
+  cursor: pointer;
+  border-radius: 2px;
+  padding: 5px 15px 5px 15px;
+  display: grid;
+  grid-template-columns: 20px 1fr;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.signage:hover, .OKHandlerSign:hover, .VerboseHandlerSign:hover, .ErrorHandlerSign:hover {
+  margin-left: -5px;
+  transition: ease 0.4s;
+  margin-right: 5px;
+}
+
+.signage p, .OKHandlerSign p, .VerboseHandlerSign p, .ErrorHandlerSign p {
+  grid-column: 2;
+  text-align: right;
+  line-height: 12px;
+}
+
+.signage i, .OKHandlerSign i, .VerboseHandlerSign i, .ErrorHandlerSign i {
+  margin-top: -10px;
+  grid-column: 2;
+  text-align: right;
+  line-height: 12px;
+  opacity: 0.5;
+}
+
+.signage::before, .OKHandlerSign::before, .VerboseHandlerSign::before, .ErrorHandlerSign::before {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid white;
+  content: "!";
+  width: 15px;
+  height: 15px;
+  border-radius: 100%;
+}
+
+.ErrorHandlerSign {
+  background-color: var(--color-red);
+}
+
+.ErrorHandlerSign::before {
+  content: "!";
+}
+
+.VerboseHandlerSign {
+  background-color: var(--interactive-accent);
+}
+
+.VerboseHandlerSign::before {
+  content: "!";
+}
+
+.OKHandlerSign {
+  background-color: var(--color-green);
+}
+
+.OKHandlerSign::before {
+  content: "!";
+}.SystemExporterbuttonRow {
+  display: flex;
+  width: 100%;
+  flex-direction: row;
+  justify-content: space-evenly;
+}
+.SystemExporterbuttonRow > * {
+  padding: 10px;
+}
+.SystemExporterbuttonRow .ExecutionButton {
+  width: 150px;
+  height: 100px;
+  border: gray 1px solid;
+  border-radius: 5px;
+  cursor: pointer;
+}div {
+  vertical-align: middle;
+  line-height: 24px;
+  font-size: 12px;
+}
+
+button {
+  cursor: pointer;
+}
+
+.GrobsBordered_section {
+  padding: 10px;
+  border: 1px solid;
+  border-color: var(--text-normal);
+  border-radius: 5px;
+  position: relative;
+  margin-top: 10px;
+}
+
+.GrobsBordered_section[data-edgeColor=green] {
+  border-color: var(--color-green);
+}
+
+.GrobsBordered_section[data-edgeColor=green]::before {
+  color: var(--color-green);
+}
+
+.GrobsBordered_section[data-edgeColor=blue] {
+  border-color: var(--interactive-accent);
+}
+
+.GrobsBordered_section[data-edgeColor=blue]::before {
+  color: var(--interactive-accent);
+}
+
+.GrobsBordered_section[data-edgeColor=red] {
+  border-color: var(--color-red) !important;
+}
+
+.GrobsBordered_section[data-edgeColor=red]::before {
+  color: var(--color-red) !important;
+}
+
+.GrobsBordered_section::before {
+  content: attr(data-label);
+  position: absolute;
+  top: -10px;
+  left: 10px;
+  padding-left: 5px;
+  padding-right: 5px;
+  color: var(--text-normal);
+  background-color: var(--background-primary);
+}
+
+*[data-color=green] {
+  background-color: var(--color-green);
+}
+
+*[data-color=blue] {
+  background-color: var(--interactive-accent);
+}
+
+*[data-color=red] {
+  background-color: var(--color-red);
+}
+
+.GrobsInteractiveContainer {
+  overflow-y: auto;
+  overflow-x: hidden;
+  border: solid var(--border-width) var(--interactive-accent);
+  background: var(--background-modifier-form-field);
+  border: var(--input-border-width) solid var(--background-modifier-border);
+  color: var(--text-normal);
+  font-family: inherit;
+  font-size: var(--font-ui-small);
+  border-radius: var(--input-radius);
+  outline: none;
+  transition: 0.3s ease;
+}
+
+.GrobsInteractiveContainer[data-disabled=true] {
+  border: solid var(--border-width) var(--interactive-accent);
+  background: transparent;
+  border: var(--input-border-width) solid var(--background-modifier-border);
+  color: var(--text-normal);
+  font-family: inherit;
+  font-size: var(--font-ui-small);
+  border-radius: var(--input-radius);
+  outline: none;
+  transition: 0.3s ease;
+}
+
+.GrobsInteractiveColoredBorder {
+  border: 1px solid;
+  padding: 10px;
+  border-radius: 2px;
+}
+
+.GrobsInteractiveColoredBorder {
+  transition: border-color 0.3s ease;
+}
+
+.GrobsInteractiveColoredBorder[data-state=good] {
+  border-color: var(--background-modifier-success);
+}
+
+.GrobsInteractiveColoredBorder[data-state=error] {
+  border-color: var(--background-modifier-error);
+}
+
+.GrobsInteractiveColoredBorder[data-state=verbose] {
+  border-color: var(--color-blue);
+}
+
+.GrobsInteractiveColoredBorder[data-state=flash] {
+  border-color: var(--color-yellow-light);
+}
+
+.GrobsInteractiveColoredBorder[data-state-text][data-state=good]::before {
+  color: var(--background-modifier-success);
+}
+
+.GrobsInteractiveColoredBorder[data-state-text][data-state=error]::before {
+  color: var(--background-modifier-error);
+}
+
+.GrobsInteractiveColoredBorder[data-state-text][data-state=verbose]::before {
+  color: var(--color-blue);
+}
+
+.GrobsInteractiveColoredBorder[data-state-text][data-state=flash]::before {
+  color: var(--color-yellow-light);
+}
+
+.GrobsInteractiveColoredBorder[data-state-text]::before {
+  transition: color 0.3s ease;
+  display: block;
+  width: fit-content;
+  padding-left: 15px;
+  padding-right: 15px;
+  height: 24px;
+  margin-top: -16.8px;
+  content: attr(data-state-text);
+  background-color: var(--background-primary);
+}
+
 .GrobsButton, .SystemDescriptorButton {
   height: 24px;
   padding: 24px;
@@ -187,7 +480,7 @@ button {
   white-space: nowrap;
 }
 
-.lineBreak {
+.lineBreak, .linebreak {
   height: 24px;
 }
 
@@ -433,285 +726,7 @@ button {
   white-space: nowrap;
 }
 
-.lineBreak {
-  height: 24px;
-}
-
-.blockBreak {
-  height: 45px;
-}
-
-.grobModal {
-  background-color: var(--background-primary);
-  border-radius: var(--modal-radius);
-  border: var(--modal-border-width) solid var(--modal-border-color);
-  padding: var(--size-4-4);
-  box-shadow: 4px 4px 0px 0px black;
-  width: calc(100% - 2 * var(--size-4-4));
-  position: absolute;
-  z-index: 100;
-}
-
-.ErrorHandlerSignage {
-  display: flex;
-  flex-direction: column;
-  gap: 5px;
-}
-
-.signage, .OKHandlerSign, .VerboseHandlerSign, .ErrorHandlerSign {
-  cursor: pointer;
-  border-radius: 2px;
-  padding: 5px 15px 5px 15px;
-  display: grid;
-  grid-template-columns: 20px 1fr;
-  align-items: center;
-  justify-content: space-between;
-}
-
-.signage:hover, .OKHandlerSign:hover, .VerboseHandlerSign:hover, .ErrorHandlerSign:hover {
-  margin-left: -5px;
-  transition: ease 0.4s;
-  margin-right: 5px;
-}
-
-.signage p, .OKHandlerSign p, .VerboseHandlerSign p, .ErrorHandlerSign p {
-  grid-column: 2;
-  text-align: right;
-  line-height: 12px;
-}
-
-.signage i, .OKHandlerSign i, .VerboseHandlerSign i, .ErrorHandlerSign i {
-  margin-top: -10px;
-  grid-column: 2;
-  text-align: right;
-  line-height: 12px;
-  opacity: 0.5;
-}
-
-.signage::before, .OKHandlerSign::before, .VerboseHandlerSign::before, .ErrorHandlerSign::before {
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  justify-content: center;
-  border: 1px solid white;
-  content: "!";
-  width: 15px;
-  height: 15px;
-  border-radius: 100%;
-}
-
-.ErrorHandlerSign {
-  background-color: var(--color-red);
-}
-
-.ErrorHandlerSign::before {
-  content: "!";
-}
-
-.VerboseHandlerSign {
-  background-color: var(--interactive-accent);
-}
-
-.VerboseHandlerSign::before {
-  content: "!";
-}
-
-.OKHandlerSign {
-  background-color: var(--color-green);
-}
-
-.OKHandlerSign::before {
-  content: "!";
-}div {
-  vertical-align: middle;
-  line-height: 24px;
-  font-size: 12px;
-}
-
-button {
-  cursor: pointer;
-}
-
-.GrobsBordered_section {
-  padding: 10px;
-  border: 1px solid;
-  border-color: var(--text-normal);
-  border-radius: 5px;
-  position: relative;
-  margin-top: 10px;
-}
-
-.GrobsBordered_section[data-edgeColor=green] {
-  border-color: var(--color-green);
-}
-
-.GrobsBordered_section[data-edgeColor=green]::before {
-  color: var(--color-green);
-}
-
-.GrobsBordered_section[data-edgeColor=blue] {
-  border-color: var(--interactive-accent);
-}
-
-.GrobsBordered_section[data-edgeColor=blue]::before {
-  color: var(--interactive-accent);
-}
-
-.GrobsBordered_section[data-edgeColor=red] {
-  border-color: var(--color-red) !important;
-}
-
-.GrobsBordered_section[data-edgeColor=red]::before {
-  color: var(--color-red) !important;
-}
-
-.GrobsBordered_section::before {
-  content: attr(data-label);
-  position: absolute;
-  top: -10px;
-  left: 10px;
-  padding-left: 5px;
-  padding-right: 5px;
-  color: var(--text-normal);
-  background-color: var(--background-primary);
-}
-
-*[data-color=green] {
-  background-color: var(--color-green);
-}
-
-*[data-color=blue] {
-  background-color: var(--interactive-accent);
-}
-
-*[data-color=red] {
-  background-color: var(--color-red);
-}
-
-.GrobsInteractiveContainer {
-  overflow-y: auto;
-  overflow-x: hidden;
-  border: solid var(--border-width) var(--interactive-accent);
-  background: var(--background-modifier-form-field);
-  border: var(--input-border-width) solid var(--background-modifier-border);
-  color: var(--text-normal);
-  font-family: inherit;
-  font-size: var(--font-ui-small);
-  border-radius: var(--input-radius);
-  outline: none;
-  transition: 0.3s ease;
-}
-
-.GrobsInteractiveContainer[data-disabled=true] {
-  border: solid var(--border-width) var(--interactive-accent);
-  background: transparent;
-  border: var(--input-border-width) solid var(--background-modifier-border);
-  color: var(--text-normal);
-  font-family: inherit;
-  font-size: var(--font-ui-small);
-  border-radius: var(--input-radius);
-  outline: none;
-  transition: 0.3s ease;
-}
-
-.GrobsInteractiveColoredBorder {
-  border: 1px solid;
-  padding: 10px;
-  border-radius: 2px;
-}
-
-.GrobsInteractiveColoredBorder {
-  transition: border-color 0.3s ease;
-}
-
-.GrobsInteractiveColoredBorder[data-state=good] {
-  border-color: var(--background-modifier-success);
-}
-
-.GrobsInteractiveColoredBorder[data-state=error] {
-  border-color: var(--background-modifier-error);
-}
-
-.GrobsInteractiveColoredBorder[data-state=verbose] {
-  border-color: var(--color-blue);
-}
-
-.GrobsInteractiveColoredBorder[data-state=flash] {
-  border-color: var(--color-yellow-light);
-}
-
-.GrobsInteractiveColoredBorder[data-state-text][data-state=good]::before {
-  color: var(--background-modifier-success);
-}
-
-.GrobsInteractiveColoredBorder[data-state-text][data-state=error]::before {
-  color: var(--background-modifier-error);
-}
-
-.GrobsInteractiveColoredBorder[data-state-text][data-state=verbose]::before {
-  color: var(--color-blue);
-}
-
-.GrobsInteractiveColoredBorder[data-state-text][data-state=flash]::before {
-  color: var(--color-yellow-light);
-}
-
-.GrobsInteractiveColoredBorder[data-state-text]::before {
-  transition: color 0.3s ease;
-  display: block;
-  width: fit-content;
-  padding-left: 15px;
-  padding-right: 15px;
-  height: 24px;
-  margin-top: -16.8px;
-  content: attr(data-state-text);
-  background-color: var(--background-primary);
-}
-
-.GrobsButton {
-  height: 24px;
-  padding: 24px;
-  border-radius: 2px;
-  background: var(--interactive-normal);
-  box-shadow: var(--input-shadow);
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  color: var(--text-normal);
-  font-size: var(--font-ui-small);
-  border-radius: var(--button-radius);
-  border: 0;
-  padding: var(--size-4-1) var(--size-4-3);
-  height: var(--input-height);
-  font-weight: var(--input-font-weight);
-  cursor: var(--cursor);
-  font-family: inherit;
-  outline: none;
-  user-select: none;
-  white-space: nowrap;
-  cursor: pointer;
-}
-
-.GrobsButton:hover {
-  background-color: var(--interactive-accent);
-  color: var(--text-on-accent);
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  color: var(--text-normal);
-  font-size: var(--font-ui-small);
-  border-radius: var(--button-radius);
-  border: 0;
-  padding: var(--size-4-1) var(--size-4-3);
-  height: var(--input-height);
-  font-weight: var(--input-font-weight);
-  font-family: inherit;
-  outline: none;
-  user-select: none;
-  white-space: nowrap;
-}
-
-.lineBreak {
+.lineBreak, .linebreak {
   height: 24px;
 }
 
@@ -936,7 +951,7 @@ button {
   white-space: nowrap;
 }
 
-.lineBreak {
+.lineBreak, .linebreak {
   height: 24px;
 }
 
@@ -1238,7 +1253,7 @@ button {
   white-space: nowrap;
 }
 
-.lineBreak {
+.lineBreak, .linebreak {
   height: 24px;
 }
 
@@ -1322,13 +1337,51 @@ button {
 
 .MainMenuButton .MainMenuButton_desc {
   transition: 1s ease width, 0.3s ease opacity;
-}.toogleSectionHeader {
-  cursor: pointer;
 }.SystemDesignerBlockSet {
-  height: 200px;
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: 5px;
+}
+
+.SystemDesignerListBlock {
+  height: 200px;
+  overflow-y: scroll;
+}.toogleSectionHeader {
+  cursor: pointer;
+  height: 45px;
+  line-height: 45px;
+  padding-left: 15px;
+  padding-right: 15px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.toogleSectionHeader .toogleSectionIcon {
+  width: 20px;
+  height: 20px;
+  background-color: white;
+  transition: 1s cubic-bezier(0.65, -0.02, 0.38, 0.99);
+}
+
+.toogleSectionHeader[data-toogled=true] .toogleSectionIcon {
+  transform: rotateZ(135deg);
+}
+
+.toogleSectionHeader[data-toogled=false] .toogleSectionIcon {
+  transform: rotateZ(0deg);
+}
+
+.toogleSectionHeader[data-toogled=true] {
+  background-color: var(--color-green);
+}
+
+.toogleSectionHeader[data-toogled=false] {
+  background-color: var(--nav-item-background-active);
+}
+
+.toogleSectionHeader[data-toogled=false]:hover {
+  background-color: var(--interactive-accent);
 }div {
   vertical-align: middle;
   line-height: 24px;
@@ -1518,7 +1571,7 @@ button {
   white-space: nowrap;
 }
 
-.lineBreak {
+.lineBreak, .linebreak {
   height: 24px;
 }
 
@@ -1631,20 +1684,30 @@ button {
   cursor: default;
 }
 .SelectPopUp {
-  overflow: initial;
   position: fixed;
   z-index: 500;
   width: inherit;
   background-color: #fff;
-  overflow-y: initial;
+  overflow-y: scroll;
+  overflow-x: hidden;
   border-radius: 2px;
 }
 .SelectPopUp::-webkit-scrollbar {
-  width: 10px;
-  margin-left: -10px;
+  width: 5px !important;
+  margin-left: -5px !important;
+}
+.SelectPopUp::-webkit-scrollbar-track {
+  width: 0px !important;
+}
+.SelectPopUp::-webkit-scrollbar-thumb {
+  height: 20px !important;
+  width: 5px !important;
+  background: var(--interactive-accent) !important;
+  cursor: pointer !important;
 }
 .SelectPopUp::-webkit-scrollbar-thumb:hover {
-  background: var(--color-green);
+  background: var(--color-green) !important;
+  cursor: pointer !important;
 }
 .SelectPopUp .GrobSelectOption {
   color: black;
@@ -1665,10 +1728,12 @@ button {
   padding-left: 5px;
   color: rgb(128, 128, 128);
 }
+.SelectPopUp .ArrowContainer {
+  position: fixed;
+}
 .SelectPopUp .Arrow {
-  margin-left: 50%;
-  margin-right: 50%;
-  margin-top: -7px;
+  top: -7px;
+  position: absolute;
   background-color: white;
   height: 8px;
   width: 16px;

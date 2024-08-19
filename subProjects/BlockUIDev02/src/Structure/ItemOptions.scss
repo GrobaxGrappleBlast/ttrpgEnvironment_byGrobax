@@ -1,0 +1,65 @@
+@import './../SystemStandards.scss';
+
+.ItemOptionsContainer{
+	position:relative;
+	top:0;
+	right:0;
+	left:0;
+	bottom:0; 
+}
+.ItemOptions{ 
+	padding:10px;
+	display: flex;
+	flex-direction: row;
+	overflow:hidden;
+	transition:ease 0.5s; 
+	z-index: 100;
+}
+.ItemOptionBtn{
+	padding:10px;
+	width:100%;
+	border-radius: 5px;
+	background-color: $blue;
+}
+
+
+
+.ItemManouverContainer{
+	@extend .ItemOptionsContainer;
+
+	.ItemManouverOptions{
+		position:absolute;
+		top:0;
+		right:0;
+		z-index: 100;
+
+		.ItemManouverOption{
+			background-color: $blue;
+			width: 40px;
+			height:40px;
+			border-radius: 5px;
+			cursor: pointer;
+		}
+	}
+}
+
+
+.RowColumnOptions{
+	position:absolute; 
+	display: flex;
+	z-index: 100;
+
+	.itemOption{
+		pointer-events: unset;
+		cursor: pointer; 
+		height:30px;
+		min-width: 30px;
+		background-color: $blue;
+		padding:10px;
+
+		
+	}  
+	.rem{
+		background-color: $red;
+	}
+}

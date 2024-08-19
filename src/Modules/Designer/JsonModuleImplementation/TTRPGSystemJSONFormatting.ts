@@ -5,29 +5,30 @@ import { GrobDerivedNode, GrobDerivedOrigin, GrobFixedNode } from "../GrobNodte"
 import { JsonObject, JsonMappingRecordInArrayOut, JsonClassTyped, JsonString } from "../../JSONModules/index"; 
 import { TTRPGSystemGraphModel } from "../GraphV2/TTRPGSystemGraphModel";
 import { BASE_SCHEME } from "../../../../src/Modules/JSONModules/JsonModuleConstants";
+import { getMetadata, getMetaDataKeys, getOwnMetaData, getOwnMetaDataKeys } from "../../../../src/Modules/JSONModules/JsonModuleBaseFunction";
  
-class GrobCollectionDerived extends GrobCollection<GrobDerivedNode>{
+export class GrobCollectionDerived extends GrobCollection<GrobDerivedNode>{
 	
-	@JsonMappingRecordInArrayOut({KeyPropertyName:'getName',name:'data',type:GrobDerivedNode})
+	@JsonMappingRecordInArrayOut({KeyPropertyName:'getName', name:'data',type:GrobDerivedNode , preSerializationConversion : true})
 	nodes_names: Record<string, GrobDerivedNode> = {}
 }
 
-class GrobCollectionFixed extends GrobCollection<GrobFixedNode>{
+export class GrobCollectionFixed extends GrobCollection<GrobFixedNode>{
 
-	@JsonMappingRecordInArrayOut({KeyPropertyName:'getName',name:'data',type:GrobFixedNode})
+	@JsonMappingRecordInArrayOut({KeyPropertyName:'getName', name:'data',type:GrobFixedNode , preSerializationConversion : true})
 	nodes_names: Record<string, GrobFixedNode> = {}
 }
 
-class GrobGroupDerived extends GrobGroup<GrobDerivedNode>{
+export class GrobGroupDerived extends GrobGroup<GrobDerivedNode>{
 	
-	@JsonMappingRecordInArrayOut({KeyPropertyName:'getName', type :GrobCollectionDerived })
+	@JsonMappingRecordInArrayOut({KeyPropertyName:'getName', name:'data',type :GrobCollectionDerived , preSerializationConversion : true})
 	collections_names: Record<string, GrobCollectionDerived > = {};
 
 }
  
-class GrobGroupFixed extends GrobGroup<GrobFixedNode>{
+export class GrobGroupFixed extends GrobGroup<GrobFixedNode>{
 	
-	@JsonMappingRecordInArrayOut({KeyPropertyName:'getName', type :GrobCollectionFixed })
+	@JsonMappingRecordInArrayOut({KeyPropertyName:'getName', name:'data', type :GrobCollectionFixed , preSerializationConversion : true })
 	collections_names: Record<string,GrobCollectionFixed> = {};
 
 }
@@ -43,14 +44,22 @@ export class TTRPG_SCHEMES {
  * Ensures that data is maintained, as well as graphlinks
 */
 @JsonObject({
-	onBeforeSerialization:(self:TTRPGSystemJSONFormatting) => {
-		self.fixed		= self._getGroup('fixed')	as GrobGroup<GrobFixedNode>;
-		self.derived	= self._getGroup('derived')	as GrobGroup<GrobDerivedNode>;
-	},
+	onBeforeSerialization:(self:TTRPGSystemJSONFormatting) => {},
 	onAfterDeSerialization:(self:TTRPGSystemJSONFormatting, ...args ) => {
+		
 		// add derived and fixed to groups 
-		self.data[self.fixed	.getName()] = self.fixed; 
-		self.data[self.derived	.getName()] = self.derived; 
+		if ( !self.fixed	 ){
+			self._createGroup('fixed');
+			self.fixed	 = self._getGroup('fixed')	 as GrobGroupFixed	;
+		}else{
+			self.data['fixed'] = self.fixed;
+		}
+		if ( !self.derived ){
+			self._createGroup('derived');
+			self.derived = self._getGroup('derived') as GrobGroupDerived;	
+		}else{
+			self.data['derived'] = self.derived;
+		}
 
 		// For all groups 
 		for(const group_key in (self as any).data ){
@@ -83,11 +92,11 @@ export class TTRPG_SCHEMES {
 })
 export class TTRPGSystemJSONFormatting extends TTRPGSystemGraphModel {
 	  
-	@JsonClassTyped ( GrobGroupFixed )
-	public fixed 	: GrobGroupFixed
+	@JsonClassTyped ( GrobGroupFixed , {preSerializationConversion : true})
+	public fixed 	: GrobGroupFixed	;
 
-	@JsonClassTyped ( GrobGroupDerived )
-	public derived 	: GrobGroupDerived
+	@JsonClassTyped ( GrobGroupDerived , {preSerializationConversion : true})
+	public derived 	: GrobGroupDerived	;
 
 	@JsonString()
 	@JsonString({scheme:TTRPG_SCHEMES.PREVIEW})
@@ -105,15 +114,10 @@ export class TTRPGSystemJSONFormatting extends TTRPGSystemGraphModel {
 	@JsonString({scheme:TTRPG_SCHEMES.PREVIEW})
 	public systemName:string = "";
 	
-
 	public constructor(){
-		super();
+		super(); 
 	}
 
-	public initEmpty(){
-		this.fixed = new GrobGroupFixed();
-		this.derived = new GrobGroupDerived();
-	}
 }
 
 

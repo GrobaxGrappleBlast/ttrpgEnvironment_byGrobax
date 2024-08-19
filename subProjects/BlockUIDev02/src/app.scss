@@ -1,0 +1,204 @@
+@import './SystemStandards.scss';
+
+:root {
+	font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
+	line-height: 1.5;
+	font-weight: 400;
+
+	color-scheme: light dark;
+	color: rgba(255, 255, 255, 0.87);
+	background-color: #242424;
+
+	font-synthesis: none;
+	text-rendering: optimizeLegibility;
+	-webkit-font-smoothing: antialiased;
+	-moz-osx-font-smoothing: grayscale;
+	-webkit-text-size-adjust: 100%;
+}
+  
+
+.standardBorderClassDef{
+	border-radius: 5px;
+	border:2px solid white;
+}
+.standard10Button{
+	width :30px;
+	height:30px;
+	background-color:gray;
+	border-radius: 5px;
+	color:white;
+	text-align: center
+}
+
+
+
+
+.Sheet{
+	min-width:800px;
+	min-height:400px;
+	background-color: rgba(211, 211, 211, 0.077);
+}
+
+@mixin createItemClass($standardColor, $editColor, $editColorHover , $previewColor ) {
+	
+		position:relative;
+		margin:$standard_padding_large;
+		width: auto;
+		//min-height: 100px;
+
+		&[data-editpreview='true']{
+			border-radius: 5px;
+			border:4px dashed;
+			border-color: $previewColor;
+			min-height: 100px;
+		}
+
+		&[draggable="true"]{
+			cursor: pointer;
+		}
+
+		&[data-edit="true"] {
+			min-height: 100px;
+			border-radius: 5px;
+			border:2px solid;
+			border-color: $standardColor;
+			
+			&:hover {
+				border-color:  $standardColor;
+			}
+
+			&[data-edit-active="true"]{
+				border-color: $editColor;
+				&:hover {
+					border-color:  $editColorHover;
+				}
+			}
+		}
+	
+}
+$opacWhite : #fff1;
+.Item{ 
+	@include createItemClass($opacWhite,palegoldenrod,orange, white);
+}
+.Row{ 
+	display: grid;
+	@include createItemClass( $opacWhite,Skyblue,royalBlue, rgba(89, 191, 255, 0.468));	
+}
+.Column{
+	@include  createItemClass( $opacWhite,palegreen,green, rgba(89, 191, 255, 0.468));	
+}
+
+
+
+.addButton{
+
+	@extend .standard10Button;
+	&:hover{
+		background-color:lightgreen;
+		border-color:lightgreen;
+		cursor: pointer;
+	}
+}
+
+
+
+.SheetEditorMenuContainer{
+	width: inherit; 
+	height:$standard_padding_large * 2 + 30px;
+	position: relative;
+}
+
+.SheetEditorMenu{
+	
+	cursor: pointer;
+	width:0px;
+	padding:$standard_padding_large;
+	background-color: $blue;
+	overflow: hidden;
+	transition: ease 0.5s;
+	
+	height:30px;
+	width:30px;
+	float:right;
+	
+	display: flex;
+    justify-content: flex-end;
+    align-items: center;
+
+	button {
+		width:125px;
+		float:right;
+		opacity: 0; 
+		transition: ease 0.5s;
+	}
+	&:hover , &[data-isOpen='true'] {
+		
+		width:100%;
+		button{
+			opacity: 1; 
+			cursor: pointer;
+			padding:10px;
+			border-radius: 5px;
+			background-color: white;
+			transition:background-color ease 0.2s;
+
+			&:hover{
+				background-color: $yellow;
+			}
+
+			&[data-active='true']{
+				background-color: $green;
+			}
+		}
+	}
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+     
+  
+  .standardInfoSquare{
+	border:1px solid black;
+	transform: rotate(45deg);
+	z-index: 20;
+	transition:1s ease;
+  }
+
+  
+  .HeaderMenu{
+	float:right;
+	overflow: hidden;
+	width:10px;
+	background-color: green;
+	display: flex;
+	gap:10px; 
+	color:transparent;
+	padding:10px;
+	transition:0.5s ease;
+	cursor: pointer;
+  }
+  .HeaderMenu:hover{
+	cursor: pointer;
+	width:200px;
+	background-color: green;
+	display: flex;
+	gap:10px; 
+	color:white;
+	padding:10px;
+  }
+     
+  @import './Components/StatValue.scss';
+  @import './Components/SpellInfo.scss';
+  @import './Components/SkillProficiency.scss'; 
+  @import './Components/ProficiencyBonus.scss'; 
+  @import './Structure/ItemOptions.scss';
