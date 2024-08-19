@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" /> 
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Vite + Svelte + TS</title>
+  </head>
+  <body>
+    <div id="app"></div>
+    <script type="module" lang="ts">
+         
+        import App from './src/App.svelte'
+        import {system} from './declaration.ts'
+        let _JSON = `{
+                      "data": [
+                        {
+                          "data": [
+                            {
+                              "data":[
+                                {
+                                  "type":"MyView",
+                                  "data":"{}"
+                                },
+                                {
+                                  "type":"MyView",
+                                  "data":"{}"	
+                                },
+                                {
+                                  "type":"MyView",
+                                  "data":"{}"
+                                }
+                              ]
+                            },
+                            {
+                              "data":[
+                                {
+                                  "type":"MyView",
+                                  "data":"{}"
+                                }
+                              ]
+                            }
+                          ]
+                        },
+                        {
+                          "data": [
+                            {
+                              "data":[
+                                {
+                                  "type":"MyView",
+                                  "data":"{}"
+                                }
+                              ]
+                            }
+                          ]
+                        }
+                      ]
+                    }
+                  `; 
+	
+        const sys = new system();
+        const app = new App({
+          target: document.getElementById('app'),
+          props: {
+            textData:_JSON,
+            sys:sys
+          }
+        })
+        
+        export default app
+
+    </script>
+  </body>
+</html>

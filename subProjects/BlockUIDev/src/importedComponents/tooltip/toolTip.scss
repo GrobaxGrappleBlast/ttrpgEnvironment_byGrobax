@@ -1,0 +1,24 @@
+
+ 
+.tooltipInnerBox {
+	position: absolute; 
+	color: #fff;
+	padding: 5px;
+	border-radius: 3px;
+	z-index: 1000;
+	white-space: nowrap; 
+}
+
+.tooltipInnerBox {
+	background-color: gray ;
+	&[data-type="error"]{
+		background-color: $red;
+	}
+	&[data-type="verbose"]{
+		background-color: $blue;
+	}
+	&[data-type="good"]{
+		background-color: $green;
+	} 
+}
+ 

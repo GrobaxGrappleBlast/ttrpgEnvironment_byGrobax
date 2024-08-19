@@ -18,8 +18,15 @@
 
 	let text = '';
 
-	function onclick(){
-		text = exporter.convertToTTRPGSystemToGUIBuilderPreview($system);
+	async function onclick(){
+		let content = await exporter.createBlockUITemplatefile($system);
+
+		let a = await content?.text();
+		let b = await content?.stream();
+
+		debugger
+		console.log(content,a,b)
+		//text = exporter.convertToTTRPGSystemToGUIBuilderPreview($system);
 	}
 
 	

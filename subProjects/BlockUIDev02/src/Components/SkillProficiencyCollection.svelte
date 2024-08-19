@@ -1,7 +1,7 @@
 
 <script lang="ts">
 	import SkillProficiency from './SkillProficiency.svelte'; 
-	import { system, TNode } from "../devDependency/declaration"; 
+	import { system, TNode } from "../../declaration"; 
     import { CNode } from '../Structure/ComponentNode';
     import ItemOptions from '../Structure/ItemOptions.svelte';
 	

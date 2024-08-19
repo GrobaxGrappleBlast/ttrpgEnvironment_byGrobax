@@ -1,6 +1,6 @@
 <script lang="ts">
     import { onDestroy, onMount } from "svelte";
-	import { TNode } from '../devDependency/declaration'; 
+	import { TNode } from '../../declaration'; 
     import { keyManager } from "../Structure/ComponentNode";
  
 

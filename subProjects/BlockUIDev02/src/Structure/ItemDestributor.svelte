@@ -5,7 +5,7 @@
     import SkillProficiencyCollection from "../Components/SkillProficiencyCollection.svelte";
     import SpellInfo from "../Components/SpellInfo.svelte";
     import Stats from "../Components/Stats.svelte";
-    import { system } from "../devDependency/declaration";
+    import { system } from "../../declaration";
 	import { CNode } from "./ComponentNode";
     import ItemOptions from "./ItemOptions.svelte";
     import { viewNameIndex } from "./ViewNameIndex";

@@ -36,7 +36,11 @@ export class ObsidianUICoreAPI {
 
 	public systemDefinition = new SystemDefinitionManagement();
 	public systemFactory	= new SystemFactory();
+	public export 			= new Expoter();
 }
+
+
+
 
 class SystemDefinitionManagement{
 
@@ -240,4 +244,22 @@ class SystemFactory{
 	}
 
 	public async deleteSystemFactory(){}
+}
+
+
+
+class Expoter{
+	public async loadBlockUIForExport(){
+
+		let messages : messageList = {};
+		try{  
+			let blockUIFilesResponse = await FileContext.getInstance().loadBlockUITemplate();;
+			return createResponse(200,blockUIFilesResponse, {} );
+		}
+		catch (e){
+			messages['Error']=({msg:e.message , type:'error'});
+			return createResponse(300,[],messages );
+		} 
+	}
+
 }

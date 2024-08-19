@@ -525,20 +525,16 @@
     import ItemManouver from "./Structure/ItemManouver.svelte";
     import RowColumnOptions from "./Structure/RowColumnOptions.svelte";
 	
- 
+	
 	let state : State = new State();
 	let editMode		: Writable<boolean> = state.editMode		;	
 	let editLayout_01	: Writable<boolean> = state.editLayout_01;
 	let editLayout_02	: Writable<boolean> = state.editLayout_02;
 	let editLayout_03	: Writable<boolean> = state.editLayout_03;
 
-
-	 
-	export let textData : string;
+	// TEST DATA FOR LOADING in Browser
+	export let textData:string;
 	export let sys : system;
-
-
-
 	let OBJ : Writable<SheetData> = writable(new SheetData(JSON.parse(textData).data));  
  	function repeat( x , str , sep = ' '){
 		let _ = str;
@@ -548,15 +544,17 @@
 		}
 		return _;
 	}
-	function itemRequestMove( direction , id ){  
+	function itemRequestMove( direction , id ){ 
+		console.log(direction , id )
 		DragItemHandler.requestMoveItemUpDown(direction,id); 
 	}
-
-
+ 
 	let DragRowHandler 		= new DragHandlerController		(OBJ, state);
 	let DragColumnHandler 	= new DragItemHandlerController2(OBJ, state);
 	let DragItemHandler 	= new DragItemHandlerController3(OBJ, state);
 </script>
+
+<!-- TODO: BEFORE LAUNCH DELETE THEME CLAASS AND OBSIDIAN BODY CLASS -->
 <div class="theme-light obsidianBody" >
 	<div class="Sheet  ">
 		<div class="SheetEditorMenuContainer" >
@@ -734,10 +732,4 @@
 	
 </div>
 </div>
-	
-<!--
-	<div class="CornerItem" > 
-		<button class="addButton"  on:click={() => addRowItem(i)}>+</button>
-	</div>
-	
--->
+	 

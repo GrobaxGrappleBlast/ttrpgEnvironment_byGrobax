@@ -1,6 +1,6 @@
 <script lang="ts">
     import { onMount } from "svelte";
-	import { system, TNode } from '../devDependency/declaration'; 
+	import { system, TNode } from '../../declaration'; 
 	import StaticValue from "./StatValue.svelte";
     import { CNode } from "../Structure/ComponentNode";
     import ItemOptions from "../Structure/ItemOptions.svelte";

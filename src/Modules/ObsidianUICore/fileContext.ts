@@ -5,7 +5,9 @@ import { TTRPGSystem, TTRPG_SCHEMES } from "../Designer/index";
 import { SystemPreview } from "./model/systemPreview";
 import type { Message, messageList } from "../ObsidianUI/UIInterfaces/Designer01/BaseComponents/Messages/message";
 import GrobaxTTRPGSystemHandler from "../ObsidianUI/app";
+import { folder } from "jszip";
 
+type command = { command:'file'|'folder' , path:string, content:string }
 export class FileContext {
 
 	private static mutex:Mutex = new Mutex();
@@ -230,8 +232,96 @@ export class FileContext {
 		return true;
 	}
 
+	
+
+	private async loadFolderAndFilesRecursice(folderPath): Promise<command[]>{
+		
+		// first create this folder
+		let c : command[] = [];
+		c.push( {command:'folder', path:folderPath, content:folderPath.split('/').last()} )
+
+		// load all files in the Folder
+		const content = await FileHandler.lsdir(folderPath);
+		let map = await Promise.all( content.files.map(async ( f ) => {
+			return await this.loadFileAndCreateCommand(f);
+		})) 	
+		map.forEach( p => {
+			c.push(p);
+		})
+
+		// load all folders in the folder 
+		let map2 = await Promise.all( content.folders.map(async ( f ) => {
+			return await this.loadFolderAndFilesRecursice(f);
+		})) 	
+		map2.forEach( p => {
+			p.forEach(q => {
+				c.push(q);
+			});
+		})
+		
+
+		return c;
+	}
+	private async loadFileAndCreateCommand( filepath ) : Promise<command>{
+		let data = await FileHandler.readFile(filepath);
+		return { 
+			command:'file',
+			path:filepath,
+			content:data
+		}
+	}
+	public async loadBlockUITemplate( ){
+		
+		const path =  GrobaxTTRPGSystemHandler.PLUGIN_ROOT + '/' + GrobaxTTRPGSystemHandler.BUILTIN_UIS_FOLDER_NAME + '/';
+		
+		let commands :command[] = [];
+
+		// first we get the upper files in the folder 
+		let exists = await FileHandler.exists(path)
+		if( !exists ){
+			throw new Error('File for BlockUI have been deleted. this feature longer works as a result')
+		}
+		
+		// make the first command;
+		commands.push(
+			{ 
+				command:'folder',
+				path:'src',
+				content:'src'
+			}
+		)
+		
+		const content = await FileHandler.lsdir(path);
+		let map = await Promise.all( content.files.map(async ( f ) => {
+			return await this.loadFileAndCreateCommand(f);
+		})) 	
+	 
+		map.forEach( p => {
+			if(!p.path.endsWith("/declaration.ts")){
+				let n : string = (p.path.split('BlockUIDev/').last() )?? '';
+				p.path = "src/" + n; 
+				commands.push(p);
+			}
+		}) 
+
+		// then we load specifik Folders.
+		let pathsrc = path + '/' + 'src/';
+		let map2 = await this.loadFolderAndFilesRecursice(pathsrc);
+		map2.forEach(p=>{
+			commands.push(p);
+		})
 
 
+		// now we sort out the folder path parts that are unesesary;
+		commands.forEach( p=>{
+			let n : string = (p.path.split('BlockUIDev/').last() )?? '';
+			p.path = n;
+		})
+		
+
+		return commands;
+	}
+ 
 
 	
 }
