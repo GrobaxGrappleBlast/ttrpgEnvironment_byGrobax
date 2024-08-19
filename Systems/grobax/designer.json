@@ -1,0 +1,25 @@
+{
+	"fixed": {
+		"name": "fixed",
+		"collections_names": []
+	},
+	"derived": {
+		"name": "derived",
+		"collections_names": [
+			{
+				"name": "New Collection 0",
+				"data": [
+					{
+						"name": "New Item 0",
+						"calculationString": "@a",
+						"calcOrigins": []
+					}
+				]
+			}
+		]
+	},
+	"author": "",
+	"version": "",
+	"systemCodeName": "",
+	"systemName": ""
+}

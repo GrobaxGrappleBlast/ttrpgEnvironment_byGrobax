@@ -1,0 +1,88 @@
+@import '../app.scss' ;
+@import '../../SystemStandards.scss' ;
+
+.ItemDesigner_TwoColumnData{
+	display: grid;
+	grid-template-columns: 1fr 1fr;
+	//gap:10px;
+}
+
+.ItemDesignerInput{
+	@extend .GrobsInteractiveContainer;
+	padding-left:10px;
+}
+
+.ItemDesignerButtonRow{
+	height:30px;
+	display:flex;
+	flex-direction: row;
+
+}
+
+.OriginEditor{
+	padding-top: 20px;
+
+	*[data-succes="true"]{
+		background-color: $color_success;
+	}
+	*[data-succes="false"]{
+		background-color: $color_error;
+	}
+	*[data-succes=NaN]{
+		background-color: $color_verbose;
+	}
+}
+
+.derivedCalcStatementRow{
+	display:grid;
+	grid-template-columns: auto 1fr auto;
+	gap:10px;
+	padding-left:10px;
+	padding-right:10px;
+	border-radius: 5px; 
+
+	& > input {
+		border-radius: 0;
+	}
+}
+
+.derivedCalcStatementResult{
+
+}
+
+
+.derivedOriginRowsContainer{
+	padding-top:5px;
+}
+
+.derivedOriginRowContainer{
+	height:40px;
+}
+
+.derivedCollectionCalcStatementMatrix{
+	display:grid;
+	grid-template-columns: auto 1fr auto; 
+	& > div { 
+
+		display:flex;
+		justify-content: center;
+    	align-items: center;
+		
+		// top left top right borders 
+		&:nth-child(1){
+			border-radius: 5px 0 0 0 ;
+		}
+		&:nth-child(3){
+			border-radius: 0 5px 0 0 ;
+		}
+
+
+		// bottom left and bottom right 
+		&:last-child{
+			border-radius: 0 0 5px 0 ;
+		}
+		&:nth-last-child(3){
+			border-radius: 0 0 0 5px ;
+		}
+	}
+}

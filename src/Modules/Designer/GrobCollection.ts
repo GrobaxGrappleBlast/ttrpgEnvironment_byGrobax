@@ -1,23 +1,24 @@
-import { GrobGroup } from "./GrobGroup";
 import { AGraphItem } from "./Abstractions/AGraphItem"; 
 import type { GrobNodeType } from "./GraphV2/TTRPGSystemsGraphDependencies"; 
-import { TTRPGSystemGraphAbstractModel } from "./GraphV2/TTRPGSystemGraphAbstractModel";
-import { JsonMapping, JsonMappingRecordInArrayOut } from "../JSONModules/index";
-import { GrobDerivedNode, GrobFixedNode } from "./GrobNodte";
-  
-export type GrobCollectionType = GrobCollection<GrobNodeType>;
+import { JsonMappingRecordInArrayOut } from "../JSONModules/index";
+import type { IGrobCollection } from "./IGrobCollection";
+import type { IGrobGroup } from "./IGrobGroup";
 
 
-export class GrobCollection<T extends GrobNodeType> extends AGraphItem {
+
+export class GrobCollection<T extends GrobNodeType> extends AGraphItem implements IGrobCollection<T> {
 	
-	constructor(name? ,parent? : GrobGroup<T>) {
+	constructor(name? ,parent? : IGrobGroup<T> ) {
 		super(name, 'C')
 	} 
 	
-	@JsonMappingRecordInArrayOut({KeyPropertyName:'getName',name:'data'})
 	nodes_names: Record<string, T> = {}
-	parent: GrobGroup<T>; 
+	parent: IGrobGroup<T>; 
 
+
+	public getNodeNames(){
+		return Object.keys( this.nodes_names );
+	}
 	public hasNode(name) {
 		return this.nodes_names[name] ? true : false;
 	}
@@ -43,12 +44,21 @@ export class GrobCollection<T extends GrobNodeType> extends AGraphItem {
 		return this.nodes_names[name] == null;
 	}
 	public update_node_name(oldName,newName){
+
+		if (oldName == newName)
+			return;
+
 		this.nodes_names[newName] = this.nodes_names[oldName] ;
 		delete this.nodes_names[oldName] ;
 	}
 
 	public setName( name ){
+		
 		const oldname= this.getName();
+		if(oldname == name){
+			return;
+		}
+		
 		super.setName(name);
 		this.parent.update_collection_name(oldname,name);
 
@@ -76,4 +86,7 @@ export class GrobCollection<T extends GrobNodeType> extends AGraphItem {
 		
 	} 
 }
+
+  
+export type GrobCollectionType = GrobCollection<GrobNodeType>;
 

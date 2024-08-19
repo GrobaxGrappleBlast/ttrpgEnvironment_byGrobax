@@ -34,6 +34,7 @@ export class JSONHandler{
 		if(ObjectMeta.includes(JSON_TAGS.JSON_OBJECT_ON_BEFORE_SERIALIZATION)){
 			// get meta data function and run it on the resulting object
 			let f = getOwnMetaData(JSON_TAGS.JSON_OBJECT_ON_BEFORE_SERIALIZATION,obj,scheme);
+			
 			if(f)
 				f(obj);
 		}
@@ -267,7 +268,7 @@ export class JSONHandler{
 		// if there is an After serialize function get it and run it. 
 		if(ObjectMeta.includes(JSON_TAGS.JSON_OBJECT_ON_AFTER_DE_SERIALIZATION)){
 			// get meta data function and run it on the resulting object
-			let f = getOwnMetaData(JSON_TAGS.JSON_OBJECT_ON_AFTER_DE_SERIALIZATION,result,scheme);
+			let f = getOwnMetaData(JSON_TAGS.JSON_OBJECT_ON_AFTER_DE_SERIALIZATION,result,scheme); 
 			if(f)
 				f(result);
 		}

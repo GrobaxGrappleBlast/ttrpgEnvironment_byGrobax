@@ -177,7 +177,7 @@ test('MANUEL TEST: check that the PREVIEW json is stil korrekt', () => {
 	let sys = setUpTests();
 	let regular = (JSONHandler.serialize(sys,TTRPG_SCHEMES.GRAPH	)); 
 	let preview = (JSONHandler.serialize(sys,TTRPG_SCHEMES.PREVIEW	)); 
-	debugger;
+	
 	console.log(regular)
 	console.log(preview)
 	//des = JSONHandler.deserialize(GrobCollection,ser)

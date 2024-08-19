@@ -1,10 +1,8 @@
-import { GrobCollection, type GrobCollectionType } from "../GrobCollection";
-import { GrobGroup, type GrobGroupType } from "../GrobGroup";
-import { newOutputHandler, type IOutputHandler } from "../Abstractions/IOutputHandler"; 
+import { GrobCollection } from "../GrobCollection";
+import { GrobGroup } from "../GrobGroup";
 import type { GrobNodeType } from "../GraphV2/TTRPGSystemsGraphDependencies";
 import { GrobDerivedNode, GrobDerivedOrigin, GrobFixedNode } from "../GrobNodte";
-import { TTRPGSystemGraphAbstractModel } from "../GraphV2/TTRPGSystemGraphAbstractModel"; 
-import { JsonProperty,JsonObject, JsonMappingRecordInArrayOut, JsonClassTyped, JsonString } from "../../JSONModules/index"; 
+import { JsonObject, JsonMappingRecordInArrayOut, JsonClassTyped, JsonString } from "../../JSONModules/index"; 
 import { TTRPGSystemGraphModel } from "../GraphV2/TTRPGSystemGraphModel";
 import { BASE_SCHEME } from "../../../../src/Modules/JSONModules/JsonModuleConstants";
  
@@ -49,8 +47,8 @@ export class TTRPG_SCHEMES {
 		self.fixed		= self._getGroup('fixed')	as GrobGroup<GrobFixedNode>;
 		self.derived	= self._getGroup('derived')	as GrobGroup<GrobDerivedNode>;
 	},
-	onAfterDeSerialization:(self:TTRPGSystemJSONFormatting) => {
-		// add derived and fixed to groups
+	onAfterDeSerialization:(self:TTRPGSystemJSONFormatting, ...args ) => {
+		// add derived and fixed to groups 
 		self.data[self.fixed	.getName()] = self.fixed; 
 		self.data[self.derived	.getName()] = self.derived; 
 
@@ -110,6 +108,11 @@ export class TTRPGSystemJSONFormatting extends TTRPGSystemGraphModel {
 
 	public constructor(){
 		super();
+	}
+
+	public initEmpty(){
+		this.fixed = new GrobGroupFixed();
+		this.derived = new GrobGroupDerived();
 	}
 }
 

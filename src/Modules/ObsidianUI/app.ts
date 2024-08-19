@@ -1,5 +1,6 @@
 import { App, ItemView, Modal, Platform, Plugin, PluginSettingTab, Setting, TFile, WorkspaceLeaf, parseYaml } from 'obsidian';
-import  SvelteSystemDesigner01 from './UIInterfaces/Designer01/SvelteSystemDesigner01.svelte';//' /UIInterfaces/Designer01/SvelteSystemDesigner01.svelte' 
+import  SvelteApp from './UIInterfaces/Designer01/app.svelte';
+
 
 const VIEW_TYPE = "svelte-view";    
 interface MyPluginSettings {
@@ -13,22 +14,25 @@ const DEFAULT_SETTINGS: MyPluginSettings = {
 
 export default class GrobaxTTRPGSystemHandler extends Plugin { 
 
-	public static App : App;
-	public static PATH_PLUGIN_SETTINGS_FOLDER 	: string;
-	public static ROOT		  					: string;	
-	public static PATH_PLUGIN_FOLDER			: string;
-	public static self							: GrobaxTTRPGSystemHandler;  
+	public static App : App; 
+	public static ROOT		  	: string;	
+	public static PLUGIN_ROOT	: string;
+	public static SYSTEMS_FOLDER_NAME	: string;
+	public static self			: GrobaxTTRPGSystemHandler;  
 	settings: MyPluginSettings;  
 
 
 	async onload() {
 
-		await this.loadSettings();
+		await this.loadSettings(); 
 		GrobaxTTRPGSystemHandler.self = this;
 		GrobaxTTRPGSystemHandler.App  = this.app;  
 		GrobaxTTRPGSystemHandler.ROOT = GrobaxTTRPGSystemHandler.App.vault.configDir; 
-		GrobaxTTRPGSystemHandler.PATH_PLUGIN_FOLDER = "plugins"
-		GrobaxTTRPGSystemHandler.PATH_PLUGIN_SETTINGS_FOLDER = "settings"
+		GrobaxTTRPGSystemHandler.PLUGIN_ROOT = this.manifest.dir as string; 
+		GrobaxTTRPGSystemHandler.SYSTEMS_FOLDER_NAME = "Systems"
+		
+		
+ 
 
 		// add Ribbon Icons, these are the icons in the left bar of the window
 		this.addRibbonIcon('dice', 'Hanss\' Plugin', (evt: MouseEvent) => {
@@ -66,6 +70,13 @@ class SampleSettingTab extends PluginSettingTab {
 	display(): void {
 		const { containerEl } = this; 
 		containerEl.empty();    
+		new SvelteApp({
+			target:this.containerEl,
+			props:{
+				//@ts-ignore
+				plugin: this.plugin
+			}
+		});
 	}
 
 }
@@ -78,7 +89,7 @@ class ModalMount extends Modal {
 	} 
 
 	onOpen() {
-		new SvelteSystemDesigner01({
+		new SvelteApp({
 			target:this.contentEl,
 			props:{
 				//@ts-ignore
