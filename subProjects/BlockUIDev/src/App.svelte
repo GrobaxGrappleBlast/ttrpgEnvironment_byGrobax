@@ -564,8 +564,7 @@
 				<button data-active={$editLayout_02	} on:click={ () => editLayout_02	.set(!get( editLayout_02))}	>{ 'Layout Col	' 	}</button>
 				<button data-active={$editLayout_03	} on:click={ () => editLayout_03	.set(!get( editLayout_03))}	>{ 'Layout Items' 	}</button>
 			</div>    
-		</div>
-
+		</div> 
 	{#each $OBJ.data as row , i (row.id)}
 		<div 
 			class='Row' 

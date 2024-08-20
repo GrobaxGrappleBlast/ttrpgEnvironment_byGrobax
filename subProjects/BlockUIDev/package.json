@@ -1,25 +1,23 @@
 {
-  "name": "blockuidev02",
+  "name": "ttprpg-ui-dev",
   "private": true,
-  "version": "0.0.0",
+  "version": "1.0.0",
   "type": "module",
   "scripts": {
-    "dev": "vite",
-    "build": "vite build",
+    "dev": "vite --mode dev ",
+    "build": "vite build --mode prod && npm run compile-ts",
     "preview": "vite preview",
-    "check": "svelte-check --tsconfig ./tsconfig.json"
+    "check": "svelte-check --tsconfig ./tsconfig.json",
+    "compile-ts":"tsc declaration.ts --target esnext --module esnext --moduleResolution node --esModuleInterop --skipLibCheck"
   },
   "devDependencies": {
-    "@sveltejs/vite-plugin-svelte": "^2.0.2",
-    "@tsconfig/svelte": "^3.0.0",
-    "svelte": "^3.55.1",
-    "svelte-check": "^2.10.3",
-    "tslib": "^2.5.0",
-    "typescript": "^4.9.3",
-    "vite": "^4.1.0",
-    "sass": "^1.77.8"
-  },
-  "dependencies": {
-   
+    "@sveltejs/vite-plugin-svelte": "^3.1.1",
+    "@tsconfig/svelte": "^5.0.4",
+    "sass": "^1.77.8",
+    "svelte": "^4.2.18",
+    "svelte-check": "^3.8.5",
+    "tslib": "^2.6.3",
+    "typescript": "^5.5.4",
+    "vite": "^5.4.2"
   }
 }
