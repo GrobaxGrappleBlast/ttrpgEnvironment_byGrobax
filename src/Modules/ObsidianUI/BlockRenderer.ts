@@ -1,5 +1,6 @@
 import { TTRPGSystem } from "../Designer";
 import { JSONHandler, JsonProperty } from "../JSONModules";
+import BlockStarter from "./UIInterfaces/BlockStarter/BlockStarter.svelte";
 
 export class BlockData{
 
@@ -43,10 +44,17 @@ export class BlockRenderer{
 
 		let blockData = isValidBlockText(this);
 		if ( blockData ){
-			this.element.innerHTML="HEJ! Det virkede jo fint";
+			this.element.innerHTML=`
+				<link src="" />
+				<
+			`;
 		}else{
-			this.element.innerHTML="HEJ! er et nyt element";
-		}
-		debugger
+			new BlockStarter({
+				target:this.element,
+				props:{
+					WriteDown( txt ){} 
+				}
+			});
+		} 
 	}
 }

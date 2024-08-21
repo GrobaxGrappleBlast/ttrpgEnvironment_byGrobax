@@ -49,46 +49,6 @@ export default class GrobaxTTRPGSystemHandler extends Plugin {
 			const renderer = new BlockRenderer(source,el,ctx);
 			renderer.render();
 			console.log(renderer);
-
-			/*
-			let method = async () => {
-				
-				let data = await FileHandler.readFile('.obsidian/plugins/ttrpg-dnd-statblocks-grobax/settings/DnD Test/character2.bar.html');
-				const pluginPath = AFile.getPath();
-				const pathhelpter = pluginPath + 'DnD Test/';
-		 
-				//first we are going to fix the CSS path to files 
-				let regex = /url\(['|"]([a-zA-Z\.:/ ]+)['|"]\)/g;
-				data = data.replace( regex, (match, capture) => {
-					// check if its an online line
-					if(capture.startsWith('https:'))
-						return match;
-
-					const test = pathhelpter + capture;
-					const path = app.vault.adapter.getResourcePath(test);
-					
-					return `url('${path}')`;
-				});
-
-				regex = /src=['|"]([a-zA-Z\.:/ ]+)['|"]/g;
-				data = data.replace( regex, (match, capture) => {
-					
-					// check if its an online line
-					if(capture.startsWith('https:'))
-						return match;
-
-					const path = app.vault.adapter.getResourcePath(pathhelpter + capture);
-					return `src="${path}"`;
-				});
-				  
-				
-				const SkillContainer = el.createEl('div');
-				const bar = Handlebars.compile(data);
-				SkillContainer.innerHTML = bar( null );
-			}
-
-			method();
-			*/
 		});
 		
 	} 

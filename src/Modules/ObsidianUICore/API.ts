@@ -37,6 +37,7 @@ export class ObsidianUICoreAPI {
 	public systemDefinition = new SystemDefinitionManagement();
 	public systemFactory	= new SystemFactory();
 	public export 			= new Expoter();
+	public tests 			= new Test();
 }
 
 
@@ -262,4 +263,18 @@ class Expoter{
 		} 
 	}
 
+}
+
+class Test{
+
+	public async CallTestError( errorCode = 300  ){
+		
+		let messages : messageList = {};
+		messages['Error0']=({msg:'Test Message 1', type:'error'});
+		messages['Error1']=({msg:'Test Message 2', type:'verbose'});
+		messages['Error2']=({msg:'Test Message 3', type:'good'});
+
+
+		return createResponse(errorCode,[],messages );
+	}
 }
