@@ -1776,4 +1776,77 @@ button {
 .derivedOriginRowInteractionField[data-color=error] {
   background-color: var(--background-modifier-error);
   cursor: pointer;
-}.AppMainMenu.svelte-1ul43qu{display:grid;grid-template-columns:60px 60px 60px}.BODYSTRUCTURE.svelte-1uh7yfo{width:100%;min-height:200px;border-radius:5px;background-color:gray;padding:10px}
+}.AppMainMenu.svelte-1ul43qu{display:grid;grid-template-columns:60px 60px 60px}.BlockStarter {
+  width: 100%;
+  min-height: 200px;
+  background-color: var(--background-modifier-form-field);
+  cursor: default;
+}
+
+.SystemTable {
+  display: table;
+  width: 100%;
+  font-size: 12px;
+}
+
+.SystemTable .SystemTableRow {
+  display: table-row;
+}
+
+.SystemTable .SystemTableRow > div {
+  display: table-cell;
+  padding-left: 10px;
+}
+
+.BlocksStarterInteractiveContainer {
+  overflow-y: auto;
+  overflow-x: hidden;
+  border: solid var(--border-width) var(--interactive-accent);
+  background: var(--background-primary);
+  border: var(--input-border-width) solid var(--background-modifier-border);
+  color: var(--text-normal);
+  font-family: inherit;
+  font-size: var(--font-ui-small);
+  border-radius: var(--input-radius);
+  outline: none;
+  transition: 0.3s ease;
+}
+
+.BlocksStarterInteractiveContainer[data-disabled=true] {
+  border: solid var(--border-width) var(--interactive-accent);
+  background: transparent;
+  border: var(--input-border-width) solid var(--background-modifier-border);
+  color: var(--text-normal);
+  font-family: inherit;
+  font-size: var(--font-ui-small);
+  border-radius: var(--input-radius);
+  outline: none;
+  transition: 0.3s ease;
+}
+
+.selectableRow {
+  cursor: pointer;
+}
+
+.selectableRow[data-selected=true] {
+  background-color: var(--color-green);
+}
+
+.selectableRow[data-selected=true]:hover {
+  background: repeating-linear-gradient(-45deg, var(--color-green), var(--color-green) 4px, var(--interactive-accent) 4px, var(--interactive-accent) 10px);
+}
+
+.selectableRow:hover {
+  background-color: var(--interactive-accent);
+}
+
+.tableHeader {
+  border-radius: var(--input-radius) var(--input-radius) 0 0;
+  background-color: var(--color-base-40);
+}
+
+.SystemeSelectertable {
+  margin-left: 25px;
+  margin-right: 25px;
+  width: calc(100% - 25px - 25px);
+}

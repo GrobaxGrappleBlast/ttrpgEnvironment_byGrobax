@@ -36,7 +36,7 @@ export class ObsidianUICoreAPI {
 
 	public systemDefinition = new SystemDefinitionManagement();
 	public systemFactory	= new SystemFactory();
-	public export 			= new Expoter();
+	public UIImportExport 	= new UIImporterExpoter();
 	public tests 			= new Test();
 }
 
@@ -249,7 +249,7 @@ class SystemFactory{
 
 
 
-class Expoter{
+class UIImporterExpoter{
 	public async loadBlockUIForExport(){
 
 		let messages : messageList = {};
@@ -262,8 +262,24 @@ class Expoter{
 			return createResponse(300,[],messages );
 		} 
 	}
+	
+	public async getAllAvailableUIsForSystem( sys : SystemPreview ){
+		let messages : messageList = {};
+		try{
+			let fileContext = FileContext.getInstance();
+			let layouts = await fileContext.getAllBlockUIAvailablePreview( sys );
+			return createResponse(200,layouts,messages );
+		}
+		catch (e){
+			messages['exception'] = {msg:e.message , type:'error'};
+			return createResponse(500,null,messages );
+		} 
+	}
+
 
 }
+
+
 
 class Test{
 

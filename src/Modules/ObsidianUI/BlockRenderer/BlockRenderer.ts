@@ -1,18 +1,9 @@
-import { TTRPGSystem } from "../Designer";
-import { JSONHandler, JsonProperty } from "../JSONModules";
-import BlockStarter from "./UIInterfaces/BlockStarter/BlockStarter.svelte";
 
-export class BlockData{
+import { JSONHandler } from "../../../../src/Modules/JSONModules";
+import BlockStarter from "../UIInterfaces/BlockStarter/BlockStarter.svelte";
+import { BlockData } from "./BlockData";
 
-	@JsonProperty()
-	public systemIndex  : string;
 
-	@JsonProperty({type:TTRPGSystem})
-	public systemData	: TTRPGSystem;
-	
-	@JsonProperty()
-	public layout: any;
-}
 export class BlockRenderer{
 
 	public text:string;
@@ -24,7 +15,6 @@ export class BlockRenderer{
 		this.context	= context;
 	}
 	public render(){
-
 		function isValidBlockText( self :BlockRenderer ){
 			let t = self.text;
 			t.trim();
@@ -43,10 +33,22 @@ export class BlockRenderer{
 		}
 
 		let blockData = isValidBlockText(this);
+		
+
 		if ( blockData ){
 			this.element.innerHTML=`
-				<link src="" />
-				<
+				<link rel="stylesheet" href="style.css">
+				<div id="MyElementInnerContaienr_GrobaTTPRPGVIEW" ></div>
+				<script type="module"> 
+					import App from 'components.js';
+					const app = new App({
+						target: document.getElementById('MyElementInnerContaienr_GrobaTTPRPGVIEW'),
+						props: {
+							textData:_JSON,
+							sys:sys
+						}
+					});
+				</script>
 			`;
 		}else{
 			new BlockStarter({

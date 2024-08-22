@@ -1,6 +1,6 @@
 import { App, ItemView, Modal, Platform, Plugin, PluginSettingTab, Setting, TFile, WorkspaceLeaf, parseYaml } from 'obsidian';
 import  SvelteApp from './UIInterfaces/Designer01/app.svelte';
-import { BlockRenderer } from './BlockRenderer';
+import { BlockRenderer } from './BlockRenderer/BlockRenderer';
 
 
 const VIEW_TYPE = "svelte-view";    
@@ -20,6 +20,9 @@ export default class GrobaxTTRPGSystemHandler extends Plugin {
 	public static PLUGIN_ROOT	: string;
 	public static SYSTEMS_FOLDER_NAME	: string;
 	public static BUILTIN_UIS_FOLDER_NAME	: string;
+	public static SYSTEM_UI_CONTAINER_FOLDER_NAME	: string;
+	public static SYSTEM_UI_LAYOUTFILENAME	: string;
+
 	public static self			: GrobaxTTRPGSystemHandler;  
 	settings: MyPluginSettings;  
 
@@ -33,7 +36,8 @@ export default class GrobaxTTRPGSystemHandler extends Plugin {
 		GrobaxTTRPGSystemHandler.PLUGIN_ROOT = this.manifest.dir as string; 
 		GrobaxTTRPGSystemHandler.SYSTEMS_FOLDER_NAME = "Systems"
 		GrobaxTTRPGSystemHandler.BUILTIN_UIS_FOLDER_NAME = "subProjects/BlockUIDev";
-		
+		GrobaxTTRPGSystemHandler.SYSTEM_UI_CONTAINER_FOLDER_NAME = 'UILayouts';
+		GrobaxTTRPGSystemHandler.SYSTEM_UI_LAYOUTFILENAME = "UIPreview.json"
 		 
 		// add Ribbon Icons, these are the icons in the left bar of the window
 		this.addRibbonIcon('dice', 'Hanss\' Plugin', (evt: MouseEvent) => {

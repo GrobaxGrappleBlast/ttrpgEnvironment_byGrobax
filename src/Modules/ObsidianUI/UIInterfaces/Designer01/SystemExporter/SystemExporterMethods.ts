@@ -202,7 +202,7 @@ export class SystemExporterMethods {
 
 	public async createBlockUITemplatefile( system:TTRPGSystem ): Promise<Blob | null > {
 		
-		let resp =  await ( ObsidianUICoreAPI.getInstance()).export.loadBlockUIForExport();  
+		let resp =  await ( ObsidianUICoreAPI.getInstance()).UIImportExport.loadBlockUIForExport();  
 		if (resp.responseCode != 200){
 			return null;
 		}

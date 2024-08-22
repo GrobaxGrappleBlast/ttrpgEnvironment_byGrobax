@@ -6,6 +6,7 @@ import { SystemPreview } from "./model/systemPreview";
 import type { Message, messageList } from "../ObsidianUI/UIInterfaces/Designer01/BaseComponents/Messages/message";
 import GrobaxTTRPGSystemHandler from "../ObsidianUI/app";
 import { folder } from "jszip";
+import { UILayoutModel } from "./model/UILayoutModel";
 
 type command = { command:'file'|'folder' , path:string, content:string }
 export class FileContext {
@@ -231,9 +232,7 @@ export class FileContext {
 		await FileHandler.saveFile( filepath , JSONHandler.serialize(designer) ); 
 		return true;
 	}
-
-	
-
+ 
 	private async loadFolderAndFilesRecursice(folderPath): Promise<command[]>{
 		
 		// first create this folder
@@ -269,6 +268,8 @@ export class FileContext {
 			content:data
 		}
 	}
+
+
 	public async loadBlockUITemplate( ){
 		
 		const path =  GrobaxTTRPGSystemHandler.PLUGIN_ROOT + '/' + GrobaxTTRPGSystemHandler.BUILTIN_UIS_FOLDER_NAME + '/'; 
@@ -306,7 +307,45 @@ export class FileContext {
 		 
 		return commands;
 	}
- 
+
+	private async loadUILayout( foldersrc : string , errors : string[] = []){
+		const src = foldersrc + '/' + GrobaxTTRPGSystemHandler.SYSTEM_UI_LAYOUTFILENAME ;
+		const exists	= await FileHandler.exists( src );
+		if(!exists)
+			return null;
+
+		const file = await FileHandler.readFile(src);
+		let model : UILayoutModel;
+		try {
+			model = JSONHandler.deserialize(UILayoutModel,file);
+		}catch(e){
+			errors.push(e.message);
+			return null;
+		}
+
+		model.folderSrc = foldersrc;
+		await model.isValid();
+		return model;
+	}
+	public async getAllBlockUIAvailablePreview( sys : SystemPreview ){
+		const UIFolderpath = sys.folderPath + '/' + GrobaxTTRPGSystemHandler.SYSTEM_UI_CONTAINER_FOLDER_NAME;
+		const exists = await FileHandler.exists(UIFolderpath)
+		
+		let layouts : UILayoutModel[]=[];
+		if( exists ){
+			let folders = (await FileHandler.lsdir(UIFolderpath)).folders;
+			for (let i = 0; i < folders.length; i++) {
+				const folder = folders[i];
+				let layout = await this.loadUILayout(folder);
+				if(layout)
+					layouts.push(layout);
+			}
+		}
+		return layouts;
+	}
+
+
+
 
 	
 }
