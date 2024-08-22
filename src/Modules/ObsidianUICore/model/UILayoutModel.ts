@@ -1,7 +1,11 @@
 import { JsonArrayString, JsonBoolean, JsonProperty, JsonString } from "../../../../src/Modules/JSONModules";
 import { FileHandler } from "../fileHandler";
+import { keyManagerInstance } from "../../../../src/Modules/Designer/Abstractions/KeyManager";
+ 
 
 export class UILayoutModel {
+
+	public id : string = keyManagerInstance.getNewKey();
 
 	@JsonString()
 	guid	:string;

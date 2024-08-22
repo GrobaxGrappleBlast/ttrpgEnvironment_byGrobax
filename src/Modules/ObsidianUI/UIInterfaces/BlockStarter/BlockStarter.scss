@@ -5,6 +5,7 @@
 	min-height: 200px;
 	background-color: $backgroundInput;
 	cursor:default;
+	
 }
 .SystemTable{
 	display: table;
@@ -65,8 +66,35 @@
 
 
 
-.SystemeSelectertable{
+.SystemSelectStage{
 	margin-left:25px;
 	margin-right:25px;
 	width: calc(100% - 25px - 25px);
+}
+
+.ColoredInteractive{
+	color:black;
+	&[data-color="red"]{
+		background-color: $red;
+	}
+	&[data-color="green"]{
+		background-color: $green;
+	}
+	&[data-color="blue"]{
+		background-color: $blue;
+	}
+}
+.SelectRow{
+	height:35px;
+	cursor: pointer;
+	&[data-selected="true"]{
+		background-color: $green;
+	}
+	&[data-selected="true"]:hover{
+		background: StrippedBackground($green,$blue)
+	}
+	&:hover{
+		background-color: $blue;
+	}
+
 }

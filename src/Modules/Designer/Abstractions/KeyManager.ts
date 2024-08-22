@@ -6,3 +6,5 @@ export class KeyManager {
 		return num.toString(16);
 	}
 }
+
+export const keyManagerInstance = new KeyManager();

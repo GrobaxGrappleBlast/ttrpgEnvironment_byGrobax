@@ -1,12 +1,14 @@
 <script lang="ts">
-	import { JSONHandler } from './../../../JSONModules/JsonHandler.ts';
+	import { fly, slide } from 'svelte/transition';
+	import { JSONHandler } from '../../../../../src/Modules/JSONModules/JsonHandler';
 	import { UILayoutModel } from '../../../../../src/Modules/ObsidianUICore/model/UILayoutModel';
 	import { onMount } from 'svelte';
 	import { SystemPreview } from '../../../../../src/Modules/ObsidianUICore/model/systemPreview';
 	import StaticMessageHandler from './../Designer01/BaseComponents/Messages/StaticMessageHandler.svelte';
     import { ObsidianUICoreAPI } from "../../../../../src/Modules/ObsidianUICore/API";
 	import './BlockStarter.scss'
-    import { TTRPGSystemJSONFormatting } from 'src/Modules/Designer/JsonModuleImplementation/TTRPGSystemJSONFormatting.js';
+    import { TTRPGSystemJSONFormatting } from '../../../../../src/Modules/Designer/JsonModuleImplementation/TTRPGSystemJSONFormatting.js';
+	import CustomSelect from '../../../../../src/Modules/ObsidianUI/UIInterfaces/Designer01/BaseComponents/CustomSelect/CustomSelect.svelte';
 	export let WriteDown : (txt : string) => any;
 	let api = ObsidianUICoreAPI.getInstance();
 	let msgHandler : StaticMessageHandler;
@@ -27,15 +29,27 @@
 			}
 			return;
 		}
-		systems = resp.response ?? [];
-		
+		systems = resp.response ?? [];		
 	}
 	
 	onMount(()=>{
 		LoadSystemOptions();
 	})
 	
- 
+	
+	function onChangeSelectSystem( event ){
+		const targ = event.target;
+		if(targ.value == '-1'){
+			selected_system = null;
+			selectedLayout=null;
+			layouts=null;
+			return;
+		}
+
+		const sys = systems.find(p=>p.id == targ.value);
+		if(sys)
+			selectSystem(sys);
+	}
 	function selectSystem( system ){
 		selectedLayout = null;
 		layouts=null;
@@ -66,6 +80,22 @@
 	}
 
 
+	function onChangeSelectLayout( event ){
+		const targ = event.target;
+		if(targ.value == '-1'){ 
+			selectedLayout=null;
+			layouts=null;
+			return;
+		}
+
+		if(!layouts)
+			return;
+		
+
+		const lay = layouts.find(p=>p.id == targ.value);
+		if(lay)
+			selectLayout(lay);
+	}
 	function selectLayout( layout ){
 		if ( selectedLayout == layout){
 			selectedLayout = null;
@@ -73,7 +103,6 @@
 		}
 		selectedLayout = layout;
 	}
-
 	async function saveAndLoad(){
 		
 		
@@ -94,7 +123,7 @@
 		}
 		
 		let systemObj = S.response as TTRPGSystemJSONFormatting;
-		let JSON JSONHandler.serialize(systemObj.fixed);
+		let JSON = JSONHandler.serialize(systemObj.fixed);
 		//TODO SERIALIZE THIS USING ONLY FIXED VALUES.
 	}
 </script>
@@ -103,84 +132,70 @@
 		bind:this={msgHandler}
 
 	/>
-	<p>
-		{'Select a System to Use '}
-	</p>
-	<div class="SystemTable BlocksStarterInteractiveContainer SystemeSelectertable">
-		<section class="SystemTableRow tableHeader" >
-			<div >
-				author
-			</div>
-			<div>
-				systemName
-			</div>
-			<div>
-				version
-			</div>
-			<div>
-				isEditable
-			</div>
-		</section>
-		{#each systems as system (system)}
-			<section class="SystemTableRow selectableRow" on:keyup on:click={()=>{selectSystem(system)}} data-selected={selected_system == system}>
-				<div>
-					{system.author}
-				</div>
-				<div>
-					{system.systemName}
-				</div>
-				<div>
-					{system.version}
-				</div>
-				<div>
-					{system.isEditable}
-				</div>
-			</section>
-		{/each}
+	<div style="height:20px">
+
 	</div>
-
-	{#if layouts != null}
-		<p>
-			{'Select a Layout for you system to Use '}
-		</p>
-		<div class="SystemTable BlocksStarterInteractiveContainer SystemeSelectertable">
-			<section class="SystemTableRow tableHeader" > 
-				<div > author </div> 
-				<div> LayoutName </div> 
-				<div> version </div> 
-				<div>  </div>
-			</section>
-			{#each layouts as  l}
-				<section 
-					class="SystemTableRow selectableRow" 
-					data-valid={l.valid} 
-					on:keyup on:click={ () => {selectLayout(l)}} 
-					data-selected={ selectedLayout == l }
-				>
-					<div>
-						{l.author}
-					</div>
-					<div>
-						{l.name}
-					</div>
-					<div>
-						{l.version}
-					</div>
-					<div>
-						{#each l.errors as err}
-							<div class="selectableRowErrorMessage" >{err}</div>
+	<div class="SystemSelectStage ">
+		<section>
+			<b>Select Presets To Use</b>
+			<p>
+				To Use this Addon, you must choose a system to use, and a UI for that system to use.
+				first select your system, and then select your layout 
+			</p>
+		</section>
+		<div class="BlocksStarterInteractiveContainer SystemTable" transition:slide >
+			<div class="SystemTableRow SelectRow" >
+				<div style="width:100px;" >
+					Chosen System
+				</div>
+				<div>
+					<select on:change={ onChangeSelectSystem }>
+						<option value="-1"> Select a System </option>
+						{#each systems as sys }
+							<option value={sys.id} >{ sys.systemName }</option>
 						{/each}
-					</div>
-				</section>
-			{/each}
-		</div>
-	{/if}
-
-	{#if selectedLayout }
-		<div>
-			<button on:click={saveAndLoad}>Save , Write And Load</button>
-		</div>
-	{/if}
+					</select>
+				</div>
+				<div>
+					Author: { selected_system?.author ?? '-'}
+				</div>
+				<div>
+					version: { selected_system?.version ?? '-'}
+				</div>
+			</div>
+			<div class="SystemTableRow SelectRow" >
+				<div style="width:100px;" >
+					Chosen Layout
+				</div>
+				<div>
+					{#if selected_system && layouts }
+						<select transition:slide  on:change={ onChangeSelectLayout }>
+							<option value="-1"> Select a Layout </option>
+								{#each layouts as lay }
+									<option value={lay.id} >{ lay.name }</option>
+								{/each}
+						</select>
+					{/if}
+				</div>
+				<div>
+					Author: { selectedLayout?.author  ?? '-'}
+				</div>
+				<div>
+					version: { selectedLayout?.version ?? '-'}
+				</div>
+			</div>
+		</div>	
+		<div style="height:10px;" ></div>
+		{#if selectedLayout }
+			<div transition:slide>
+				<button
+				class="ColoredInteractive" data-color="green"
+				on:click={saveAndLoad}>Save , Write And Load</button>
+			</div>
+		{/if}
+		<div style="height:20px;" ></div>
+	</div>
+	
 
 </div>
 <style >

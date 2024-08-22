@@ -1845,8 +1845,41 @@ button {
   background-color: var(--color-base-40);
 }
 
-.SystemeSelectertable {
+.SystemSelectStage {
   margin-left: 25px;
   margin-right: 25px;
   width: calc(100% - 25px - 25px);
+}
+
+.ColoredInteractive {
+  color: black;
+}
+
+.ColoredInteractive[data-color=red] {
+  background-color: var(--color-red);
+}
+
+.ColoredInteractive[data-color=green] {
+  background-color: var(--color-green);
+}
+
+.ColoredInteractive[data-color=blue] {
+  background-color: var(--interactive-accent);
+}
+
+.SelectRow {
+  height: 35px;
+  cursor: pointer;
+}
+
+.SelectRow[data-selected=true] {
+  background-color: var(--color-green);
+}
+
+.SelectRow[data-selected=true]:hover {
+  background: repeating-linear-gradient(-45deg, var(--color-green), var(--color-green) 4px, var(--interactive-accent) 4px, var(--interactive-accent) 10px);
+}
+
+.SelectRow:hover {
+  background-color: var(--interactive-accent);
 }

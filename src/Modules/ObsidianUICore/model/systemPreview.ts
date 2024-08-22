@@ -1,11 +1,17 @@
-import { KeyManager } from "../../Designer/Abstractions/KeyManager";
-import { JsonBoolean, JsonString } from "../../JSONModules";
+import { keyManagerInstance } from "../../Designer/Abstractions/KeyManager";
+import { JsonBoolean, JsonObject, JsonProperty, JsonString } from "../../JSONModules";
 
-const systemPreviewKeyManager = new KeyManager();
 
+
+
+@JsonObject({
+	onAfterDeSerialization:(self:SystemPreview, ...args )=>{
+		self.id = keyManagerInstance.getNewKey();
+	}
+})
 export class SystemPreview {
 
-	public id : string = systemPreviewKeyManager.getNewKey();
+	public id : string = keyManagerInstance.getNewKey();
 	public filePath:string ;
 
 	public constructor(){
