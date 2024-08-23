@@ -7,8 +7,9 @@
 	import StaticMessageHandler from './../Designer01/BaseComponents/Messages/StaticMessageHandler.svelte';
     import { ObsidianUICoreAPI } from "../../../../../src/Modules/ObsidianUICore/API";
 	import './BlockStarter.scss'
-    import { TTRPGSystemJSONFormatting } from '../../../../../src/Modules/Designer/JsonModuleImplementation/TTRPGSystemJSONFormatting.js';
+    import { TTRPG_SCHEMES, TTRPGSystemJSONFormatting } from '../../../../../src/Modules/Designer/JsonModuleImplementation/TTRPGSystemJSONFormatting.js';
 	import CustomSelect from '../../../../../src/Modules/ObsidianUI/UIInterfaces/Designer01/BaseComponents/CustomSelect/CustomSelect.svelte';
+	
 	export let WriteDown : (txt : string) => any;
 	let api = ObsidianUICoreAPI.getInstance();
 	let msgHandler : StaticMessageHandler;
@@ -105,8 +106,8 @@
 	}
 	async function saveAndLoad(){
 		
-		
-		if (!(selected_system && selectLayout)){
+		debugger
+		if (!(selected_system && selectedLayout)){
 			return;
 		}
 		
@@ -123,9 +124,10 @@
 		}
 		
 		let systemObj = S.response as TTRPGSystemJSONFormatting;
-		let JSON = JSONHandler.serialize(systemObj.fixed);
-		//TODO SERIALIZE THIS USING ONLY FIXED VALUES.
+		let JSON = JSONHandler.serialize(systemObj,TTRPG_SCHEMES.STATIC_SCHEME);
+		PREJSON = JSON;
 	}
+	let PREJSON = "";
 </script>
 <div class="BlockStarter" >
 	<StaticMessageHandler 
@@ -190,11 +192,14 @@
 			<div transition:slide>
 				<button
 				class="ColoredInteractive" data-color="green"
-				on:click={saveAndLoad}>Save , Write And Load</button>
+				on:click={ () => saveAndLoad() }>Save , Write And Load</button>
 			</div>
 		{/if}
 		<div style="height:20px;" ></div>
 	</div>
+	<pre>
+		{PREJSON}
+	</pre>
 	
 
 </div>

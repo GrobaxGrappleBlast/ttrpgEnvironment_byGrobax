@@ -25,10 +25,10 @@ export class Container2 {
 	@JsonProperty()
 	public simple : number | null = 2;
 	
-	@JsonProperty({scheme:'A'})
+	@JsonProperty({scheme:['A']})
 	public onlyA : number | null = 2;
 	 
-	@JsonProperty({scheme:'B'})
+	@JsonProperty({scheme:['B']})
 	public onlyB : number | null = 2;
 }
 export class Container {
@@ -38,10 +38,10 @@ export class Container {
 	@JsonProperty()
 	public simple : number | null = 2;
 	
-	@JsonProperty({scheme:'A'})
+	@JsonProperty({scheme:['A']})
 	public onlyA : number | null = 2;
 	 
-	@JsonProperty({scheme:'B'})
+	@JsonProperty({scheme:['B']})
 	public onlyB : number | null = 2;
 }
 
