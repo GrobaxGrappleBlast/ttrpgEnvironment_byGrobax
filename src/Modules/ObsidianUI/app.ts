@@ -22,10 +22,19 @@ export default class GrobaxTTRPGSystemHandler extends Plugin {
 	public static BUILTIN_UIS_FOLDER_NAME	: string;
 	public static SYSTEM_UI_CONTAINER_FOLDER_NAME	: string;
 	public static SYSTEM_UI_LAYOUTFILENAME	: string;
+	public static SYSTEM_LAYOUT_BLOCKNAME :string;
 
 	public static self			: GrobaxTTRPGSystemHandler;  
 	settings: MyPluginSettings;  
 
+	public static uuidv4() {
+		return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'
+		.replace(/[xy]/g, function (c) {
+			const r = Math.random() * 16 | 0, 
+				v = c == 'x' ? r : (r & 0x3 | 0x8);
+			return v.toString(16);
+		});
+	}
 
 	async onload() {
 
@@ -38,6 +47,8 @@ export default class GrobaxTTRPGSystemHandler extends Plugin {
 		GrobaxTTRPGSystemHandler.BUILTIN_UIS_FOLDER_NAME = "subProjects/BlockUIDev";
 		GrobaxTTRPGSystemHandler.SYSTEM_UI_CONTAINER_FOLDER_NAME = 'UILayouts';
 		GrobaxTTRPGSystemHandler.SYSTEM_UI_LAYOUTFILENAME = "UIPreview.json"
+
+		GrobaxTTRPGSystemHandler.SYSTEM_LAYOUT_BLOCKNAME = "TTRPG";	
 		 
 		// add Ribbon Icons, these are the icons in the left bar of the window
 		this.addRibbonIcon('dice', 'Hanss\' Plugin', (evt: MouseEvent) => {
@@ -48,11 +59,10 @@ export default class GrobaxTTRPGSystemHandler extends Plugin {
 		// Addinf the tab in settings. 
 		this.addSettingTab(new SampleSettingTab(this.app, this));
 
-		this.registerMarkdownCodeBlockProcessor("TTRPG-TEST", (source, el, ctx) => {
-
+		this.registerMarkdownCodeBlockProcessor(GrobaxTTRPGSystemHandler.SYSTEM_LAYOUT_BLOCKNAME, (source, el, ctx) => {
+			
 			const renderer = new BlockRenderer(source,el,ctx);
-			renderer.render();
-			console.log(renderer);
+			renderer.render(); 
 		});
 		
 	} 

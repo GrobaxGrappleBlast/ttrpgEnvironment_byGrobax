@@ -1,5 +1,7 @@
 
+import { TFile } from "obsidian";
 import { JSONHandler } from "../../../../src/Modules/JSONModules";
+import GrobaxTTRPGSystemHandler from "../app";
 import BlockStarter from "../UIInterfaces/BlockStarter/BlockStarter.svelte";
 import { BlockData } from "./BlockData";
 
@@ -13,6 +15,40 @@ export class BlockRenderer{
 		this.text 		= textContent ?? ''; 
 		this.element	= element; 
 		this.context	= context;
+	}
+
+
+	
+	private findBlockAndPasteInto(filetext:string, content:string ){
+		
+		let blockHead= '```'+GrobaxTTRPGSystemHandler.SYSTEM_LAYOUT_BLOCKNAME;
+		let pieces = filetext.split(blockHead);
+		// only a single block is on the page
+		if(pieces.length == 2){
+			
+			let afterblock_index = pieces[1].indexOf('```');
+			let block = pieces[1].substring(0,afterblock_index)
+			let afterblock = pieces[1].substring(afterblock_index,pieces[1].length - (block.length-1));
+
+			let page :string = pieces[0] + blockHead + "\n" + content + "\n" + afterblock;
+			return page;
+		}
+		return ''
+
+	}
+	public async writeBlock(txt){
+		
+		const app = GrobaxTTRPGSystemHandler.self.app; 
+		const vault = app.vault; 
+		let file  = vault.getFileByPath(this.context.sourcePath)
+		if(!file){
+			console.log('!!NOTFILE');
+			return '';
+		}
+
+		const fileContent = await app.vault.read(file);
+		let page = this.findBlockAndPasteInto(fileContent, txt )
+		vault.modify(file,page);
 	}
 	public render(){
 		function isValidBlockText( self :BlockRenderer ){
@@ -54,7 +90,7 @@ export class BlockRenderer{
 			new BlockStarter({
 				target:this.element,
 				props:{
-					WriteDown( txt ){} 
+					WriteDown: (txt) =>this.writeBlock(txt)
 				}
 			});
 		} 

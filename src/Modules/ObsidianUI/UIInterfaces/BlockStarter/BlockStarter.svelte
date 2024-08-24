@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { BlockData } from '../../../../../src/Modules/ObsidianUI/BlockRenderer/BlockData';
 	import { fly, slide } from 'svelte/transition';
 	import { JSONHandler } from '../../../../../src/Modules/JSONModules/JsonHandler';
 	import { UILayoutModel } from '../../../../../src/Modules/ObsidianUICore/model/UILayoutModel';
@@ -9,6 +10,7 @@
 	import './BlockStarter.scss'
     import { TTRPG_SCHEMES, TTRPGSystemJSONFormatting } from '../../../../../src/Modules/Designer/JsonModuleImplementation/TTRPGSystemJSONFormatting.js';
 	import CustomSelect from '../../../../../src/Modules/ObsidianUI/UIInterfaces/Designer01/BaseComponents/CustomSelect/CustomSelect.svelte';
+    import { SheetData } from '../../BlockRenderer/ComponentNode';
 	
 	export let WriteDown : (txt : string) => any;
 	let api = ObsidianUICoreAPI.getInstance();
@@ -105,8 +107,7 @@
 		selectedLayout = layout;
 	}
 	async function saveAndLoad(){
-		
-		debugger
+		 
 		if (!(selected_system && selectedLayout)){
 			return;
 		}
@@ -123,9 +124,26 @@
 			return 
 		}
 		
+		// System Writing
 		let systemObj = S.response as TTRPGSystemJSONFormatting;
-		let JSON = JSONHandler.serialize(systemObj,TTRPG_SCHEMES.STATIC_SCHEME);
-		PREJSON = JSON;
+		let FixedCommands = {};
+		Object.keys(systemObj.fixed.collections_names).forEach( col_key => {
+			const col = systemObj.fixed.collections_names[col_key];
+			Object.keys(col.nodes_names).forEach( node_key =>{
+				const node = col.nodes_names[node_key];
+				FixedCommands['fixed.' + col_key +'.'+node_key ] = node.getValue();
+			})
+		});
+
+
+		let out : BlockData = new BlockData();
+		out.characterValues = FixedCommands;
+		out.layout			= new SheetData([]);
+		out.layout.addRow();
+		out.layout.data[0].addColumn();
+		out.layout.data[0].data[0].addItem();
+	 
+		WriteDown( JSONHandler.serialize(BlockData) );
 	}
 	let PREJSON = "";
 </script>
