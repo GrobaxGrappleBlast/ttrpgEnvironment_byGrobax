@@ -1,25 +1,38 @@
+import { SystemPreview } from "../../../../src/Modules/ObsidianUICore/model/systemPreview";
 import { TTRPGSystem } from  "../../../../src/Modules/Designer";
-import { JsonProperty } from "../../../../src/Modules/JSONModules";
+import { JsonBoolean, JsonProperty, JsonString } from "../../../../src/Modules/JSONModules";
 import GrobaxTTRPGSystemHandler from "../app";
+import { UILayoutModel } from "../../../../src/Modules/ObsidianUICore/model/UILayoutModel";
+import { BASE_SCHEME } from "../../../../src/Modules/JSONModules/JsonModuleConstants";
+
+export class BlockDataSchemes{ 
+	static BASE = BASE_SCHEME;
+	static PAGE 	= 'PAGE'; 
+}
 
 export class BlockData{
 
 
 	public constructor(){}
 
-	@JsonProperty()
-	public BlockUUID:string = GrobaxTTRPGSystemHandler.uuidv4();;
+	@JsonString({scheme:[BlockDataSchemes.BASE,BlockDataSchemes.PAGE]})
+	public BlockUUID:string = GrobaxTTRPGSystemHandler.uuidv4();
 
-	@JsonProperty()
+	@JsonBoolean({scheme:[BlockDataSchemes.BASE,BlockDataSchemes.PAGE]})
 	public systemDataInFrontMatter:boolean = false;
 
-	@JsonProperty()
+	@JsonString({scheme:[BlockDataSchemes.BASE,BlockDataSchemes.PAGE]})
 	public systemDataInFrontMatter_key:string = '';
 
-	@JsonProperty()
+	@JsonProperty({type:SystemPreview ,scheme:[BlockDataSchemes.BASE,BlockDataSchemes.PAGE]})
+	public systemChosen:SystemPreview ;
+	
+	@JsonProperty({type:UILayoutModel,scheme:[BlockDataSchemes.BASE,BlockDataSchemes.PAGE]})
+	public LayoutChosen:UILayoutModel ;
+
+	@JsonProperty({scheme:[BlockDataSchemes.BASE,BlockDataSchemes.PAGE]})
 	public characterValues: Record<string,number> ={}
 
-
-	@JsonProperty()
+	@JsonProperty({scheme:[BlockDataSchemes.BASE,BlockDataSchemes.PAGE]})
 	public layout: any;
 }

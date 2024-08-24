@@ -28,9 +28,9 @@ export class BlockRenderer{
 			
 			let afterblock_index = pieces[1].indexOf('```');
 			let block = pieces[1].substring(0,afterblock_index)
-			let afterblock = pieces[1].substring(afterblock_index,pieces[1].length - (block.length-1));
-
-			let page :string = pieces[0] + blockHead + "\n" + content + "\n" + afterblock;
+			let afterblock = pieces[1].split('```',2)[1];
+ 
+			let page :string = pieces[0] + blockHead + "\n" + content + "\n```" + afterblock;
 			return page;
 		}
 		return ''
@@ -51,6 +51,14 @@ export class BlockRenderer{
 		vault.modify(file,page);
 	}
 	public render(){
+
+		let text = this.text;
+		text.trim();
+		if (text==''){
+			this.writeBlock( GrobaxTTRPGSystemHandler.uuidv4() )
+			return;
+		}
+
 		function isValidBlockText( self :BlockRenderer ){
 			let t = self.text;
 			t.trim();

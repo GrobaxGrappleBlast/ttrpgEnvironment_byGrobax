@@ -6,6 +6,9 @@ import { BASE_SCHEME, JSON_BASETYPES, JSON_TAGS, NoOutput, type Constructor } fr
 
 export class JSONHandler{
  
+	public static serializePretty(obj: any  , scheme : string = BASE_SCHEME ): string {
+		return JSON.stringify(JSONHandler.serializeRaw(obj, scheme , "first"),null,2);
+	} 
 	public static serialize(obj: any  , scheme : string = BASE_SCHEME ): string {
 		return JSON.stringify(JSONHandler.serializeRaw(obj, scheme , "first"));
 	} 

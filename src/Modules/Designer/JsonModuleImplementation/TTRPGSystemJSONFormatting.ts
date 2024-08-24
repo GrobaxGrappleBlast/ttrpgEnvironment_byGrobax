@@ -6,6 +6,7 @@ import { JsonObject, JsonMappingRecordInArrayOut, JsonClassTyped, JsonString } f
 import { TTRPGSystemGraphModel } from "../GraphV2/TTRPGSystemGraphModel";
 import { BASE_SCHEME } from "../../../../src/Modules/JSONModules/JsonModuleConstants";
 import { getMetadata, getMetaDataKeys, getOwnMetaData, getOwnMetaDataKeys } from "../../../../src/Modules/JSONModules/JsonModuleBaseFunction";
+import GrobaxTTRPGSystemHandler from "../../../../src/Modules/ObsidianUI/app";
  
 export class GrobCollectionDerived extends GrobCollection<GrobDerivedNode>{
 	
@@ -99,19 +100,19 @@ export class TTRPGSystemJSONFormatting extends TTRPGSystemGraphModel {
 	public derived 	: GrobGroupDerived	;
 
 	@JsonString()
-	@JsonString({scheme:TTRPG_SCHEMES.PREVIEW})
+	@JsonString({scheme:[TTRPG_SCHEMES.GRAPH,TTRPG_SCHEMES.PREVIEW]})
 	public author : string = "";
 
 	@JsonString()
-	@JsonString({scheme:TTRPG_SCHEMES.PREVIEW})
+	@JsonString({scheme:[TTRPG_SCHEMES.GRAPH,TTRPG_SCHEMES.PREVIEW]})
 	public version: string = "";
 	
 	@JsonString()
-	@JsonString({scheme:TTRPG_SCHEMES.PREVIEW})
-	public systemCodeName:string = "";
+	@JsonString({scheme:[TTRPG_SCHEMES.GRAPH,TTRPG_SCHEMES.PREVIEW]})
+	public systemCodeName:string = GrobaxTTRPGSystemHandler.uuidv4();
 	
 	@JsonString()
-	@JsonString({scheme:TTRPG_SCHEMES.PREVIEW})
+	@JsonString({scheme:[TTRPG_SCHEMES.GRAPH,TTRPG_SCHEMES.PREVIEW]})
 	public systemName:string = "";
 	
 	public constructor(){

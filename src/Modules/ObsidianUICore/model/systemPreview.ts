@@ -1,8 +1,12 @@
+import { BASE_SCHEME } from "../../../../src/Modules/JSONModules/JsonModuleConstants";
 import { keyManagerInstance } from "../../Designer/Abstractions/KeyManager";
 import { JsonBoolean, JsonObject, JsonProperty, JsonString } from "../../JSONModules";
 
 
-
+export class SystemPreviewSchemes{ 
+	static BASE = BASE_SCHEME;
+	static PAGE 	= 'PAGE'; 
+}
 
 @JsonObject({
 	onAfterDeSerialization:(self:SystemPreview, ...args )=>{
@@ -24,19 +28,19 @@ export class SystemPreview {
 		this.systemName = "Grobax' DnD TTPRPG";
 	}
 
-	@JsonBoolean()
+	@JsonBoolean({scheme:[SystemPreviewSchemes.BASE]})
 	public isEditable		: boolean = true ;
 
-	@JsonString()
+	@JsonString({scheme:[SystemPreviewSchemes.BASE]})
 	public author			: string ;
 	
-	@JsonString()
+	@JsonString({scheme:[SystemPreviewSchemes.BASE,SystemPreviewSchemes.PAGE]})
 	public version			: string ;
 	
-	@JsonString()
+	@JsonString({scheme:[SystemPreviewSchemes.BASE,SystemPreviewSchemes.PAGE]})
 	public systemCodeName	: string ;	
 
-	@JsonString()
+	@JsonString({scheme:[SystemPreviewSchemes.BASE,SystemPreviewSchemes.PAGE]})
 	public systemName		: string ;
 	
 	public folderPath		: string ;

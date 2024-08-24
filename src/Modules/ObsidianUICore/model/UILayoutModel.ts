@@ -1,31 +1,36 @@
 import { JsonArrayString, JsonBoolean, JsonProperty, JsonString } from "../../../../src/Modules/JSONModules";
 import { FileHandler } from "../fileHandler";
 import { keyManagerInstance } from "../../../../src/Modules/Designer/Abstractions/KeyManager";
+import GrobaxTTRPGSystemHandler from "../../../../src/Modules/ObsidianUI/app";
+import { BASE_SCHEME } from "../../../../src/Modules/JSONModules/JsonModuleConstants";
  
-
+export class UILayoutModelSchemes{ 
+	static BASE 	= BASE_SCHEME ;
+	static PAGE 	='PAGE'; 
+}
 export class UILayoutModel {
 
 	public id : string = keyManagerInstance.getNewKey();
 
-	@JsonString()
-	guid	:string;
+	@JsonString({scheme:[UILayoutModelSchemes.BASE,UILayoutModelSchemes.PAGE]})
+	guid	:string = GrobaxTTRPGSystemHandler.uuidv4();
 
-	@JsonString()
+	@JsonString({scheme:[UILayoutModelSchemes.BASE]})
 	author	:string;
 	
-	@JsonString()
+	@JsonString({scheme:[UILayoutModelSchemes.BASE]})
 	version:string;
 
-	@JsonString()
+	@JsonString({scheme:[UILayoutModelSchemes.BASE,UILayoutModelSchemes.PAGE]})
 	name	:string;
 	
-	@JsonString()
+	@JsonString({scheme:[UILayoutModelSchemes.BASE]})
 	mainStyle : string;
 	
-	@JsonString()
+	@JsonString({scheme:[UILayoutModelSchemes.BASE]})
 	componentJs	: string;
 
-	@JsonString()
+	@JsonString({scheme:[UILayoutModelSchemes.BASE]})
 	folderSrc:String;
 	valid : boolean = true;
 	errors : string[] = [];
