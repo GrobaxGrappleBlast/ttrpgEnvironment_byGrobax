@@ -6,7 +6,7 @@ import { JsonObject, JsonMappingRecordInArrayOut, JsonClassTyped, JsonString } f
 import { TTRPGSystemGraphModel } from "../GraphV2/TTRPGSystemGraphModel";
 import { BASE_SCHEME } from "../../../../src/Modules/JSONModules/JsonModuleConstants";
 import { getMetadata, getMetaDataKeys, getOwnMetaData, getOwnMetaDataKeys } from "../../../../src/Modules/JSONModules/JsonModuleBaseFunction";
-import GrobaxTTRPGSystemHandler from "../../../../src/Modules/ObsidianUI/app";
+import PluginHandler from "../../../../src/Modules/ObsidianUI/app";
  
 export class GrobCollectionDerived extends GrobCollection<GrobDerivedNode>{
 	
@@ -109,7 +109,7 @@ export class TTRPGSystemJSONFormatting extends TTRPGSystemGraphModel {
 	
 	@JsonString()
 	@JsonString({scheme:[TTRPG_SCHEMES.GRAPH,TTRPG_SCHEMES.PREVIEW]})
-	public systemCodeName:string = GrobaxTTRPGSystemHandler.uuidv4();
+	public systemCodeName:string = PluginHandler.uuidv4();
 	
 	@JsonString()
 	@JsonString({scheme:[TTRPG_SCHEMES.GRAPH,TTRPG_SCHEMES.PREVIEW]})

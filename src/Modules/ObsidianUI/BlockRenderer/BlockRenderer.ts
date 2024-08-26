@@ -1,10 +1,15 @@
 
 import { TFile } from "obsidian";
 import { JSONHandler } from "../../../../src/Modules/JSONModules";
-import GrobaxTTRPGSystemHandler from "../app";
+import PluginHandler from "../app";
 import BlockStarter from "../UIInterfaces/BlockStarter/BlockStarter.svelte";
 import { BlockData } from "./BlockData";
-
+import { FileHandler } from "../../../../src/Modules/ObsidianUICore/fileHandler";
+import {
+	dirname,
+	join,
+  } from "path";
+import path from 'path';
 
 export class BlockRenderer{
 
@@ -21,7 +26,7 @@ export class BlockRenderer{
 	
 	private findBlockAndPasteInto(filetext:string, content:string ){
 		
-		let blockHead= '```'+GrobaxTTRPGSystemHandler.SYSTEM_LAYOUT_BLOCKNAME;
+		let blockHead= '```'+PluginHandler.SYSTEM_LAYOUT_BLOCKNAME;
 		let pieces = filetext.split(blockHead);
 		// only a single block is on the page
 		if(pieces.length == 2){
@@ -38,7 +43,7 @@ export class BlockRenderer{
 	}
 	public async writeBlock(txt){
 		
-		const app = GrobaxTTRPGSystemHandler.self.app; 
+		const app = PluginHandler.self.app; 
 		const vault = app.vault; 
 		let file  = vault.getFileByPath(this.context.sourcePath)
 		if(!file){
@@ -50,12 +55,14 @@ export class BlockRenderer{
 		let page = this.findBlockAndPasteInto(fileContent, txt )
 		vault.modify(file,page);
 	}
-	public render(){
 
+	public async render(){
+
+		// if the block is brand new, just give it a guid, so we can distinguish blocks from eachother.
 		let text = this.text;
 		text.trim();
 		if (text==''){
-			this.writeBlock( GrobaxTTRPGSystemHandler.uuidv4() )
+			this.writeBlock( PluginHandler.uuidv4() )
 			return;
 		}
 
@@ -63,37 +70,58 @@ export class BlockRenderer{
 			let t = self.text;
 			t.trim();
 			if ( t == ''){
-				return false;
+				return null;
 			}
 	
 			try{
 				JSON.parse(self.text);
 			}catch(e){
-				return false;
+				return null;
 			}
 
-			let blockData = JSONHandler.deserialize<BlockData>(BlockData , self.text);
+			let blockData = JSONHandler.deserialize<BlockData>(BlockData , self.text, BlockData.schemes.PAGE );
 			return blockData;
 		}
 
-		let blockData = isValidBlockText(this);
+		let blockData :BlockData | null = isValidBlockText(this);
 		
-
+		
 		if ( blockData ){
-			this.element.innerHTML=`
-				<link rel="stylesheet" href="style.css">
-				<div id="MyElementInnerContaienr_GrobaTTPRPGVIEW" ></div>
-				<script type="module"> 
-					import App from 'components.js';
+ 
+			let systemPath = path.join(PluginHandler.SYSTEMS_FOLDER_NAME, 'grobax1', PluginHandler.SYSTEM_UI_CONTAINER_FOLDER_NAME, 'default');
+			let obsidianPath = path.join(PluginHandler.self.manifest.dir as string, systemPath);
+			//let base = (PluginHandler.App.vault.adapter as any).getBasePath()
+			//let _path = path.join(base, obsidianPath);
+			//let modulePath = path.join(_path, 'components.js'); 
+ 
+			let CSS= await FileHandler.readFile(obsidianPath + '/' +'style.css');
+
+			let container = this.element.createEl('div');
+			let style		= container.createEl('style');
+				style.innerHTML = CSS;
+
+			let AppContainer= container.createEl('div');
+				AppContainer.id = blockData.BlockUUID;
+
+			let script		= container.createEl('script');
+				script.setAttribute('type','module');
+  
+			let path_JS = PluginHandler.App.vault.adapter.getResourcePath(obsidianPath + '/' +'components.js'); 
+			script.innerHTML = `
+				import App from '${path_JS}';	
+				function CreateApp ( obj ){		 
 					const app = new App({
-						target: document.getElementById('MyElementInnerContaienr_GrobaTTPRPGVIEW'),
+						target:document.getElementById('${blockData.BlockUUID}'),
 						props: {
-							textData:_JSON,
-							sys:sys
+							textData:'${JSON.stringify(blockData.layout)}',
+							sys:'${JSON.stringify(blockData.characterValues)}'
 						}
-					});
-				</script>
+					}); 
+				}
 			`;
+  
+		 
+			 
 		}else{
 			new BlockStarter({
 				target:this.element,

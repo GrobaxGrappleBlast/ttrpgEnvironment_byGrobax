@@ -4,7 +4,7 @@ import { JSONHandler } from "../JSONModules";
 import { TTRPGSystem, TTRPG_SCHEMES } from "../Designer/index";
 import { SystemPreview } from "./model/systemPreview";
 import type { Message, messageList } from "../ObsidianUI/UIInterfaces/Designer01/BaseComponents/Messages/message";
-import GrobaxTTRPGSystemHandler from "../ObsidianUI/app";
+import PluginHandler from "../ObsidianUI/app";
 import { folder } from "jszip";
 import { UILayoutModel } from "./model/UILayoutModel";
 
@@ -17,8 +17,8 @@ export class FileContext {
 	// singleton implementation
 	private static instance:FileContext;
 	private constructor(){
-		this.path = GrobaxTTRPGSystemHandler.PLUGIN_ROOT + '/' +
-					GrobaxTTRPGSystemHandler.SYSTEMS_FOLDER_NAME; + '/' ;
+		this.path = PluginHandler.PLUGIN_ROOT + '/' +
+					PluginHandler.SYSTEMS_FOLDER_NAME; + '/' ;
 	}
 	public static getInstance(){ 
 		if(!FileContext.instance){
@@ -272,7 +272,7 @@ export class FileContext {
 
 	public async loadBlockUITemplate( ){
 		
-		const path =  GrobaxTTRPGSystemHandler.PLUGIN_ROOT + '/' + GrobaxTTRPGSystemHandler.BUILTIN_UIS_FOLDER_NAME + '/'; 
+		const path =  PluginHandler.PLUGIN_ROOT + '/' + PluginHandler.BUILTIN_UIS_FOLDER_NAME + '/'; 
 		let commands :command[] = [];
 
 		// first we get the upper files in the folder 
@@ -309,7 +309,7 @@ export class FileContext {
 	}
 
 	private async loadUILayout( foldersrc : string , errors : string[] = []){
-		const src = foldersrc + '/' + GrobaxTTRPGSystemHandler.SYSTEM_UI_LAYOUTFILENAME ;
+		const src = foldersrc + '/' + PluginHandler.SYSTEM_UI_LAYOUTFILENAME ;
 		const exists	= await FileHandler.exists( src );
 		if(!exists)
 			return null;
@@ -328,7 +328,7 @@ export class FileContext {
 		return model;
 	}
 	public async getAllBlockUIAvailablePreview( sys : SystemPreview ){
-		const UIFolderpath = sys.folderPath + '/' + GrobaxTTRPGSystemHandler.SYSTEM_UI_CONTAINER_FOLDER_NAME;
+		const UIFolderpath = sys.folderPath + '/' + PluginHandler.SYSTEM_UI_CONTAINER_FOLDER_NAME;
 		const exists = await FileHandler.exists(UIFolderpath)
 		
 		let layouts : UILayoutModel[]=[];

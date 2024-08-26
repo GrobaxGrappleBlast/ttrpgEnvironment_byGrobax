@@ -1,6 +1,6 @@
 
 <script lang="ts"> 
-    import GrobaxTTRPGSystemHandler from "../../../app";
+    import PluginHandler from "../../../app";
     import SystemDescriptor from "./SystemDescriptor.svelte";
 	import SystemDescriptorCreator from "./SystemDescriptorCreator.svelte";
 	import './SystemSelector.scss';
@@ -15,7 +15,7 @@
     import StaticMessageHandler from "../BaseComponents/Messages/StaticMessageHandler.svelte";
     import EditAbleListWritable from "../BaseComponents/editAbleList/EditAbleListWritable.svelte";
 
-	let plugin: GrobaxTTRPGSystemHandler;
+	let plugin: PluginHandler;
 	const dispatch = createEventDispatcher();
 	let previews : SystemPreview[] = [];
 	let _active_preview : SystemPreview = new SystemPreview();

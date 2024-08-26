@@ -1,7 +1,7 @@
 import { JsonArrayString, JsonBoolean, JsonProperty, JsonString } from "../../../../src/Modules/JSONModules";
 import { FileHandler } from "../fileHandler";
 import { keyManagerInstance } from "../../../../src/Modules/Designer/Abstractions/KeyManager";
-import GrobaxTTRPGSystemHandler from "../../../../src/Modules/ObsidianUI/app";
+import PluginHandler from "../../../../src/Modules/ObsidianUI/app";
 import { BASE_SCHEME } from "../../../../src/Modules/JSONModules/JsonModuleConstants";
  
 export class UILayoutModelSchemes{ 
@@ -13,7 +13,7 @@ export class UILayoutModel {
 	public id : string = keyManagerInstance.getNewKey();
 
 	@JsonString({scheme:[UILayoutModelSchemes.BASE,UILayoutModelSchemes.PAGE]})
-	guid	:string = GrobaxTTRPGSystemHandler.uuidv4();
+	guid	:string = PluginHandler.uuidv4();
 
 	@JsonString({scheme:[UILayoutModelSchemes.BASE]})
 	author	:string;

@@ -1,7 +1,7 @@
 import { SystemPreview } from "../../../../src/Modules/ObsidianUICore/model/systemPreview";
 import { TTRPGSystem } from  "../../../../src/Modules/Designer";
 import { JsonBoolean, JsonProperty, JsonString } from "../../../../src/Modules/JSONModules";
-import GrobaxTTRPGSystemHandler from "../app";
+import PluginHandler from "../app";
 import { UILayoutModel } from "../../../../src/Modules/ObsidianUICore/model/UILayoutModel";
 import { BASE_SCHEME } from "../../../../src/Modules/JSONModules/JsonModuleConstants";
 
@@ -12,11 +12,12 @@ export class BlockDataSchemes{
 
 export class BlockData{
 
+	public static schemes = BlockDataSchemes;
 
 	public constructor(){}
 
 	@JsonString({scheme:[BlockDataSchemes.BASE,BlockDataSchemes.PAGE]})
-	public BlockUUID:string = GrobaxTTRPGSystemHandler.uuidv4();
+	public BlockUUID:string = PluginHandler.uuidv4();
 
 	@JsonBoolean({scheme:[BlockDataSchemes.BASE,BlockDataSchemes.PAGE]})
 	public systemDataInFrontMatter:boolean = false;

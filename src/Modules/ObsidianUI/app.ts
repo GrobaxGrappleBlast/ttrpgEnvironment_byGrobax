@@ -1,7 +1,10 @@
 import { App, ItemView, Modal, Platform, Plugin, PluginSettingTab, Setting, TFile, WorkspaceLeaf, parseYaml } from 'obsidian';
 import  SvelteApp from './UIInterfaces/Designer01/app.svelte';
 import { BlockRenderer } from './BlockRenderer/BlockRenderer';
-
+import {
+	dirname,
+	join
+  } from "path";
 
 const VIEW_TYPE = "svelte-view";    
 interface MyPluginSettings {
@@ -13,7 +16,7 @@ const DEFAULT_SETTINGS: MyPluginSettings = {
 	mySetting: 'default'
 }
 
-export default class GrobaxTTRPGSystemHandler extends Plugin { 
+export default class PluginHandler extends Plugin { 
 
 	public static App : App; 
 	public static ROOT		  	: string;	
@@ -24,7 +27,7 @@ export default class GrobaxTTRPGSystemHandler extends Plugin {
 	public static SYSTEM_UI_LAYOUTFILENAME	: string;
 	public static SYSTEM_LAYOUT_BLOCKNAME :string;
 
-	public static self			: GrobaxTTRPGSystemHandler;  
+	public static self			: PluginHandler;  
 	settings: MyPluginSettings;  
 
 	public static uuidv4() {
@@ -39,16 +42,21 @@ export default class GrobaxTTRPGSystemHandler extends Plugin {
 	async onload() {
 
 		await this.loadSettings(); 
-		GrobaxTTRPGSystemHandler.self = this;
-		GrobaxTTRPGSystemHandler.App  = this.app;  
-		GrobaxTTRPGSystemHandler.ROOT = GrobaxTTRPGSystemHandler.App.vault.configDir; 
-		GrobaxTTRPGSystemHandler.PLUGIN_ROOT = this.manifest.dir as string; 
-		GrobaxTTRPGSystemHandler.SYSTEMS_FOLDER_NAME = "Systems"
-		GrobaxTTRPGSystemHandler.BUILTIN_UIS_FOLDER_NAME = "subProjects/BlockUIDev";
-		GrobaxTTRPGSystemHandler.SYSTEM_UI_CONTAINER_FOLDER_NAME = 'UILayouts';
-		GrobaxTTRPGSystemHandler.SYSTEM_UI_LAYOUTFILENAME = "UIPreview.json"
+		PluginHandler.self = this;
+		PluginHandler.App  = this.app;  
+		PluginHandler.ROOT = PluginHandler.App.vault.configDir; 
+		PluginHandler.PLUGIN_ROOT = this.manifest.dir as string; 
+		
+		// FOLDERS 
+		PluginHandler.SYSTEMS_FOLDER_NAME 				= "Systems"
+		PluginHandler.BUILTIN_UIS_FOLDER_NAME 			= "subProjects/BlockUIDev";
+		PluginHandler.SYSTEM_UI_CONTAINER_FOLDER_NAME 	= 'UILayouts';
+		PluginHandler.SYSTEM_UI_LAYOUTFILENAME 			= "UIPreview.json"
 
-		GrobaxTTRPGSystemHandler.SYSTEM_LAYOUT_BLOCKNAME = "TTRPG";	
+		// Get Folders 
+		
+
+		PluginHandler.SYSTEM_LAYOUT_BLOCKNAME 			= "TTRPG";	
 		 
 		// add Ribbon Icons, these are the icons in the left bar of the window
 		this.addRibbonIcon('dice', 'Hanss\' Plugin', (evt: MouseEvent) => {
@@ -59,7 +67,7 @@ export default class GrobaxTTRPGSystemHandler extends Plugin {
 		// Addinf the tab in settings. 
 		this.addSettingTab(new SampleSettingTab(this.app, this));
 
-		this.registerMarkdownCodeBlockProcessor(GrobaxTTRPGSystemHandler.SYSTEM_LAYOUT_BLOCKNAME, (source, el, ctx) => {
+		this.registerMarkdownCodeBlockProcessor(PluginHandler.SYSTEM_LAYOUT_BLOCKNAME, (source, el, ctx) => {
 			
 			const renderer = new BlockRenderer(source,el,ctx);
 			renderer.render(); 
@@ -82,9 +90,9 @@ export default class GrobaxTTRPGSystemHandler extends Plugin {
 }
 
 class SampleSettingTab extends PluginSettingTab {
-	plugin: GrobaxTTRPGSystemHandler;
+	plugin: PluginHandler;
 	
-	constructor(app: App, plugin: GrobaxTTRPGSystemHandler) {
+	constructor(app: App, plugin: PluginHandler) {
 		super(app, plugin);
 		this.plugin = plugin;
 	} 
@@ -103,9 +111,9 @@ class SampleSettingTab extends PluginSettingTab {
 
 }
 class ModalMount extends Modal {  
-	plugin:  GrobaxTTRPGSystemHandler; 
+	plugin:  PluginHandler; 
 
-	constructor(app: App , plugin: GrobaxTTRPGSystemHandler) {
+	constructor(app: App , plugin: PluginHandler) {
 		super(app);
 		this.plugin = plugin; 
 	} 
