@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Vite + Svelte + TS</title>
+  </head>
+  <body>
+    <div id="app"></div>
+    <script type="module">
+		
+		let _JSON = `{
+						"data": [
+							{
+								"data": []
+							},
+							{
+								"data": [
+									{
+										"data":[
+											{
+												"type":"HitPoints",
+												"data":"{}"
+											},
+											{
+												"type":"ProficiencyBonus",
+												"data":"{}"	
+											},
+											{
+												"type":"SpellInfo",
+												"data":"{}"
+											}
+										]
+									},
+									{
+										"data":[
+											{
+												"type":"SkillProficiencies",
+												"data":"{}"
+											}
+										]
+									}
+								]
+							},
+							{ 
+								"data": [
+									{
+										"data":[
+											{
+												"type":"Stats",
+												"data":"{}"
+											},
+											{}
+										]
+									}
+								]
+							}
+						]
+					}
+				`; 
+	
+		import App from './src/App.svelte'
+		import {system} from './declaration.ts'
+		const sys = new system();
+		
+		sys.fixed.stats.charisma	.setValue(10 )	;
+		sys.fixed.stats.constitution.setValue(10 +2);
+		sys.fixed.stats.dexterity	.setValue(10 +4);
+		sys.fixed.stats.intelligence.setValue(10 +6)	;
+		sys.fixed.stats.strength	.setValue(10 +2);
+		sys.fixed.stats.wisdom		.setValue(10 +4);
+
+		let _ = Object.keys(sys.fixed.SkillProficiencies);
+		for (let i = 0; i < _.length; i++) {
+			const key = _[i];
+			const prof = Math.floor(Math.random() * 3);
+			sys.fixed.SkillProficiencies[key].setValue(prof);
+		}
+
+		sys.fixed.generic["Proficiency Bonus"].setValue(2);
+		sys.fixed.generic["Hit Points"].setValue(50);
+
+		const app = new App({
+			target: document.getElementById('app'),
+			props: {
+				textData:_JSON,
+				sys:sys
+			}
+		})
+		
+		export default app
+
+	</script>
+	</body>
+</html>

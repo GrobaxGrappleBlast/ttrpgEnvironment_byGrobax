@@ -10,6 +10,7 @@
 	import StaticMessageHandler from "../BaseComponents/Messages/StaticMessageHandler.svelte";
 	import "./SystemDesigner.scss";
 	import EditAbleListWritable from "../BaseComponents/editAbleList/EditAbleListWritable.svelte";
+
 	const dispatch = createEventDispatcher();   
 	type viewE = {
 		key:string;
@@ -40,7 +41,6 @@
 		
 		
 		let selectedItem = $selectedCollectionData.find( p => p.key == selectedItemKey)?.value;
-		debugger
 		if (!selectedItem){
 			return;
 		}
@@ -145,7 +145,7 @@
 		// first add the new item to the graph. 
 		const name = findNewCollectionName('New Collection ');
 		$designer.createCollection(type, name)
-		
+		 
 		// Add name to the propper list
 		let addName = ( list ) => { 
 			list.push(nameToIViewItem(name,false)); 

@@ -144,7 +144,7 @@ button {
   background-color: var(--background-primary);
 }
 
-.GrobsButton, .SystemDescriptorButton {
+.GrobsButton {
   height: 24px;
   padding: 24px;
   border-radius: 2px;
@@ -168,7 +168,7 @@ button {
   cursor: pointer;
 }
 
-.GrobsButton:hover, .SystemDescriptorButton:hover {
+.GrobsButton:hover {
   background-color: var(--interactive-accent);
   color: var(--text-on-accent);
   display: inline-flex;
@@ -206,44 +206,91 @@ button {
   z-index: 100;
 }
 
-.SystemDescriptor, .SystemDescriptorCreator {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
+.ErrorHandlerSignage {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
 }
 
-.SystemDescriptorCheckBox:not([data-text=""]) {
-  height: 24px;
+.signage, .OKHandlerSign, .VerboseHandlerSign, .ErrorHandlerSign {
+  cursor: pointer;
   border-radius: 2px;
+  padding: 5px 15px 5px 15px;
+  display: grid;
+  grid-template-columns: 20px 1fr;
+  align-items: center;
+  justify-content: space-between;
 }
 
-.SystemDescriptorCheckBox:not([data-text=""])[data-isValid=true] {
-  border: solid 1px var(--color-green);
+.signage:hover, .OKHandlerSign:hover, .VerboseHandlerSign:hover, .ErrorHandlerSign:hover {
+  margin-left: -5px;
+  transition: ease 0.4s;
+  margin-right: 5px;
 }
 
-.SystemDescriptorCheckBox:not([data-text=""])[data-isValid=false] {
-  border: solid 1px var(--color-red);
+.signage p, .OKHandlerSign p, .VerboseHandlerSign p, .ErrorHandlerSign p {
+  grid-column: 2;
+  text-align: right;
+  line-height: 12px;
 }
 
-.SystemDescriptorCheckBox:not([data-text=""])::before {
-  content: attr(data-text);
+.signage i, .OKHandlerSign i, .VerboseHandlerSign i, .ErrorHandlerSign i {
+  margin-top: -10px;
+  grid-column: 2;
+  text-align: right;
+  line-height: 12px;
+  opacity: 0.5;
 }
 
-.SystemDescriptorButtonRow {
+.signage::before, .OKHandlerSign::before, .VerboseHandlerSign::before, .ErrorHandlerSign::before {
   display: flex;
   flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid white;
+  content: "!";
+  width: 15px;
+  height: 15px;
+  border-radius: 100%;
 }
 
-.SystemDescriptorButton[data-disabled=true] {
-  cursor: auto;
-  background: var(--color-base-40);
+.ErrorHandlerSign {
+  background-color: var(--color-red);
 }
 
-.SystemDescriptorButton[data-disabled=true]:hover {
-  background: var(--color-base-40);
+.ErrorHandlerSign::before {
+  content: "!";
 }
 
-.SystemDescriptorEditField {
-  padding-left: 10px;
+.VerboseHandlerSign {
+  background-color: var(--interactive-accent);
+}
+
+.VerboseHandlerSign::before {
+  content: "!";
+}
+
+.OKHandlerSign {
+  background-color: var(--color-green);
+}
+
+.OKHandlerSign::before {
+  content: "!";
+}.SystemExporterbuttonRow {
+  display: flex;
+  width: 100%;
+  flex-direction: row;
+  justify-content: space-evenly;
+}
+.SystemExporterbuttonRow > * {
+  padding: 10px;
+}
+.SystemExporterbuttonRow .ExecutionButton {
+  width: 150px;
+  height: 100px;
+  border: gray 1px solid;
+  border-radius: 5px;
+  cursor: pointer;
 }div {
   vertical-align: middle;
   line-height: 24px;
@@ -390,7 +437,7 @@ button {
   background-color: var(--background-primary);
 }
 
-.GrobsButton {
+.GrobsButton, .SystemDescriptorButton {
   height: 24px;
   padding: 24px;
   border-radius: 2px;
@@ -414,7 +461,7 @@ button {
   cursor: pointer;
 }
 
-.GrobsButton:hover {
+.GrobsButton:hover, .SystemDescriptorButton:hover {
   background-color: var(--interactive-accent);
   color: var(--text-on-accent);
   display: inline-flex;
@@ -452,76 +499,44 @@ button {
   z-index: 100;
 }
 
-.ErrorHandlerSignage {
-  display: flex;
-  flex-direction: column;
-  gap: 5px;
-}
-
-.signage, .OKHandlerSign, .VerboseHandlerSign, .ErrorHandlerSign {
-  cursor: pointer;
-  border-radius: 2px;
-  padding: 5px 15px 5px 15px;
+.SystemDescriptor, .SystemDescriptorCreator {
   display: grid;
-  grid-template-columns: 20px 1fr;
-  align-items: center;
-  justify-content: space-between;
+  grid-template-columns: 1fr 1fr;
 }
 
-.signage:hover, .OKHandlerSign:hover, .VerboseHandlerSign:hover, .ErrorHandlerSign:hover {
-  margin-left: -5px;
-  transition: ease 0.4s;
-  margin-right: 5px;
+.SystemDescriptorCheckBox:not([data-text=""]) {
+  height: 24px;
+  border-radius: 2px;
 }
 
-.signage p, .OKHandlerSign p, .VerboseHandlerSign p, .ErrorHandlerSign p {
-  grid-column: 2;
-  text-align: right;
-  line-height: 12px;
+.SystemDescriptorCheckBox:not([data-text=""])[data-isValid=true] {
+  border: solid 1px var(--color-green);
 }
 
-.signage i, .OKHandlerSign i, .VerboseHandlerSign i, .ErrorHandlerSign i {
-  margin-top: -10px;
-  grid-column: 2;
-  text-align: right;
-  line-height: 12px;
-  opacity: 0.5;
+.SystemDescriptorCheckBox:not([data-text=""])[data-isValid=false] {
+  border: solid 1px var(--color-red);
 }
 
-.signage::before, .OKHandlerSign::before, .VerboseHandlerSign::before, .ErrorHandlerSign::before {
+.SystemDescriptorCheckBox:not([data-text=""])::before {
+  content: attr(data-text);
+}
+
+.SystemDescriptorButtonRow {
   display: flex;
   flex-direction: row;
-  align-items: center;
-  justify-content: center;
-  border: 1px solid white;
-  content: "!";
-  width: 15px;
-  height: 15px;
-  border-radius: 100%;
 }
 
-.ErrorHandlerSign {
-  background-color: var(--color-red);
+.SystemDescriptorButton[data-disabled=true] {
+  cursor: auto;
+  background: var(--color-base-40);
 }
 
-.ErrorHandlerSign::before {
-  content: "!";
+.SystemDescriptorButton[data-disabled=true]:hover {
+  background: var(--color-base-40);
 }
 
-.VerboseHandlerSign {
-  background-color: var(--interactive-accent);
-}
-
-.VerboseHandlerSign::before {
-  content: "!";
-}
-
-.OKHandlerSign {
-  background-color: var(--color-green);
-}
-
-.OKHandlerSign::before {
-  content: "!";
+.SystemDescriptorEditField {
+  padding-left: 10px;
 }div {
   vertical-align: middle;
   line-height: 24px;
@@ -1322,6 +1337,15 @@ button {
 
 .MainMenuButton .MainMenuButton_desc {
   transition: 1s ease width, 0.3s ease opacity;
+}.SystemDesignerBlockSet {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 5px;
+}
+
+.SystemDesignerListBlock {
+  height: 200px;
+  overflow-y: scroll;
 }.toogleSectionHeader {
   cursor: pointer;
   height: 45px;
@@ -1358,11 +1382,6 @@ button {
 
 .toogleSectionHeader[data-toogled=false]:hover {
   background-color: var(--interactive-accent);
-}.SystemDesignerBlockSet {
-  height: 200px;
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 5px;
 }div {
   vertical-align: middle;
   line-height: 24px;
@@ -1665,20 +1684,30 @@ button {
   cursor: default;
 }
 .SelectPopUp {
-  overflow: initial;
   position: fixed;
   z-index: 500;
   width: inherit;
   background-color: #fff;
-  overflow-y: initial;
+  overflow-y: scroll;
+  overflow-x: hidden;
   border-radius: 2px;
 }
 .SelectPopUp::-webkit-scrollbar {
-  width: 10px;
-  margin-left: -10px;
+  width: 5px !important;
+  margin-left: -5px !important;
+}
+.SelectPopUp::-webkit-scrollbar-track {
+  width: 0px !important;
+}
+.SelectPopUp::-webkit-scrollbar-thumb {
+  height: 20px !important;
+  width: 5px !important;
+  background: var(--interactive-accent) !important;
+  cursor: pointer !important;
 }
 .SelectPopUp::-webkit-scrollbar-thumb:hover {
-  background: var(--color-green);
+  background: var(--color-green) !important;
+  cursor: pointer !important;
 }
 .SelectPopUp .GrobSelectOption {
   color: black;
@@ -1699,10 +1728,12 @@ button {
   padding-left: 5px;
   color: rgb(128, 128, 128);
 }
+.SelectPopUp .ArrowContainer {
+  position: fixed;
+}
 .SelectPopUp .Arrow {
-  margin-left: 50%;
-  margin-right: 50%;
-  margin-top: -7px;
+  top: -7px;
+  position: absolute;
   background-color: white;
   height: 8px;
   width: 16px;
@@ -1745,4 +1776,110 @@ button {
 .derivedOriginRowInteractionField[data-color=error] {
   background-color: var(--background-modifier-error);
   cursor: pointer;
-}.AppMainMenu.svelte-1ul43qu{display:grid;grid-template-columns:60px 60px 60px}
+}.AppMainMenu.svelte-1ul43qu{display:grid;grid-template-columns:60px 60px 60px}.BlockStarter {
+  width: 100%;
+  min-height: 200px;
+  background-color: var(--background-modifier-form-field);
+  cursor: default;
+}
+
+.SystemTable {
+  display: table;
+  width: 100%;
+  font-size: 12px;
+}
+
+.SystemTable .SystemTableRow {
+  display: table-row;
+}
+
+.SystemTable .SystemTableRow > div {
+  display: table-cell;
+  padding-left: 10px;
+}
+
+.BlocksStarterInteractiveContainer {
+  overflow-y: auto;
+  overflow-x: hidden;
+  border: solid var(--border-width) var(--interactive-accent);
+  background: var(--background-primary);
+  border: var(--input-border-width) solid var(--background-modifier-border);
+  color: var(--text-normal);
+  font-family: inherit;
+  font-size: var(--font-ui-small);
+  border-radius: var(--input-radius);
+  outline: none;
+  transition: 0.3s ease;
+}
+
+.BlocksStarterInteractiveContainer[data-disabled=true] {
+  border: solid var(--border-width) var(--interactive-accent);
+  background: transparent;
+  border: var(--input-border-width) solid var(--background-modifier-border);
+  color: var(--text-normal);
+  font-family: inherit;
+  font-size: var(--font-ui-small);
+  border-radius: var(--input-radius);
+  outline: none;
+  transition: 0.3s ease;
+}
+
+.selectableRow {
+  cursor: pointer;
+}
+
+.selectableRow[data-selected=true] {
+  background-color: var(--color-green);
+}
+
+.selectableRow[data-selected=true]:hover {
+  background: repeating-linear-gradient(-45deg, var(--color-green), var(--color-green) 4px, var(--interactive-accent) 4px, var(--interactive-accent) 10px);
+}
+
+.selectableRow:hover {
+  background-color: var(--interactive-accent);
+}
+
+.tableHeader {
+  border-radius: var(--input-radius) var(--input-radius) 0 0;
+  background-color: var(--color-base-40);
+}
+
+.SystemSelectStage {
+  margin-left: 25px;
+  margin-right: 25px;
+  width: calc(100% - 25px - 25px);
+}
+
+.ColoredInteractive {
+  color: black;
+}
+
+.ColoredInteractive[data-color=red] {
+  background-color: var(--color-red);
+}
+
+.ColoredInteractive[data-color=green] {
+  background-color: var(--color-green);
+}
+
+.ColoredInteractive[data-color=blue] {
+  background-color: var(--interactive-accent);
+}
+
+.SelectRow {
+  height: 35px;
+  cursor: pointer;
+}
+
+.SelectRow[data-selected=true] {
+  background-color: var(--color-green);
+}
+
+.SelectRow[data-selected=true]:hover {
+  background: repeating-linear-gradient(-45deg, var(--color-green), var(--color-green) 4px, var(--interactive-accent) 4px, var(--interactive-accent) 10px);
+}
+
+.SelectRow:hover {
+  background-color: var(--interactive-accent);
+}

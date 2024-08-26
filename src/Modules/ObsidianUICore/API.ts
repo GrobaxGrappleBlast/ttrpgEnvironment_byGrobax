@@ -36,7 +36,12 @@ export class ObsidianUICoreAPI {
 
 	public systemDefinition = new SystemDefinitionManagement();
 	public systemFactory	= new SystemFactory();
+	public UIImportExport 	= new UIImporterExpoter();
+	public tests 			= new Test();
 }
+
+
+
 
 class SystemDefinitionManagement{
 
@@ -240,4 +245,52 @@ class SystemFactory{
 	}
 
 	public async deleteSystemFactory(){}
+}
+
+
+
+class UIImporterExpoter{
+	public async loadBlockUIForExport(){
+
+		let messages : messageList = {};
+		try{  
+			let blockUIFilesResponse = await FileContext.getInstance().loadBlockUITemplate();;
+			return createResponse(200,blockUIFilesResponse, {} );
+		}
+		catch (e){
+			messages['Error']=({msg:e.message , type:'error'});
+			return createResponse(300,[],messages );
+		} 
+	}
+	
+	public async getAllAvailableUIsForSystem( sys : SystemPreview ){
+		let messages : messageList = {};
+		try{
+			let fileContext = FileContext.getInstance();
+			let layouts = await fileContext.getAllBlockUIAvailablePreview( sys );
+			return createResponse(200,layouts,messages );
+		}
+		catch (e){
+			messages['exception'] = {msg:e.message , type:'error'};
+			return createResponse(500,null,messages );
+		} 
+	}
+
+
+}
+
+
+
+class Test{
+
+	public async CallTestError( errorCode = 300  ){
+		
+		let messages : messageList = {};
+		messages['Error0']=({msg:'Test Message 1', type:'error'});
+		messages['Error1']=({msg:'Test Message 2', type:'verbose'});
+		messages['Error2']=({msg:'Test Message 3', type:'good'});
+
+
+		return createResponse(errorCode,[],messages );
+	}
 }

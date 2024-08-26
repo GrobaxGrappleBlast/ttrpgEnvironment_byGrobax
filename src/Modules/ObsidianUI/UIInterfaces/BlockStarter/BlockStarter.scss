@@ -1,0 +1,100 @@
+@import '../SystemStandards.scss';
+
+.BlockStarter{
+	width:100%;
+	min-height: 200px;
+	background-color: $backgroundInput;
+	cursor:default;
+	
+}
+.SystemTable{
+	display: table;
+	width: 100%;
+	font-size: 12px;
+	.SystemTableRow{
+	 	display: table-row;
+		&>div{
+			display: table-cell;
+			padding-left:10px;
+		}
+	}
+}
+
+.BlocksStarterInteractiveContainer {   
+    overflow-y:auto;
+    overflow-x:hidden;
+    border: solid var(--border-width) $blue;
+    background: $backgroundStandard;
+    border: var(--input-border-width) solid var(--background-modifier-border);
+    color: $textColor;
+    font-family: inherit; 
+    font-size: var(--font-ui-small);
+    border-radius: var(--input-radius);
+    outline: none; 
+    transition: 0.3s ease; 
+
+	&[data-disabled="true"]{ 
+		border: solid var(--border-width) $blue;
+		background:transparent;
+		border: var(--input-border-width) solid var(--background-modifier-border);
+		color: $textColor;
+		font-family: inherit; 
+		font-size: var(--font-ui-small);
+		border-radius: var(--input-radius);
+		outline: none; 
+		transition: 0.3s ease;
+	} 
+}
+
+// Wground:hat Color When.
+.selectableRow{
+	cursor: pointer;
+	&[data-selected="true"]{
+		background-color: $green;
+	}
+	&[data-selected="true"]:hover{
+		background: StrippedBackground($green,$blue)
+	}
+	&:hover{
+		background-color: $blue;
+	}
+}
+.tableHeader{
+	border-radius: var(--input-radius) var(--input-radius) 0 0 ;
+	background-color: $disabledInteraction;
+}
+
+
+
+.SystemSelectStage{
+	margin-left:25px;
+	margin-right:25px;
+	width: calc(100% - 25px - 25px);
+}
+
+.ColoredInteractive{
+	color:black;
+	&[data-color="red"]{
+		background-color: $red;
+	}
+	&[data-color="green"]{
+		background-color: $green;
+	}
+	&[data-color="blue"]{
+		background-color: $blue;
+	}
+}
+.SelectRow{
+	height:35px;
+	cursor: pointer;
+	&[data-selected="true"]{
+		background-color: $green;
+	}
+	&[data-selected="true"]:hover{
+		background: StrippedBackground($green,$blue)
+	}
+	&:hover{
+		background-color: $blue;
+	}
+
+}

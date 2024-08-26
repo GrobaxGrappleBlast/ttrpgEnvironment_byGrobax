@@ -5,6 +5,7 @@
     import { slidefade } from '../../Transitions/SlideFly';
 	import './CustomSelect.scss'
     import { slide } from 'svelte/transition';
+    import { svelteStandardAnimTime } from '../../../../../../../src/Modules/ObsidianUI/UIStandardValues';
 
 	let dispatch = createEventDispatcher();
 	export let options	: string[];
@@ -20,6 +21,11 @@
 	let label;
 	let labelRect: DOMRect |null;
 	let isFocussed = false; 
+	let endTracker: HTMLDivElement;
+	let topTracker: HTMLDivElement;
+	let override_maxHeight : number = maxHeight; 
+	let arrowOffsetLeft:number=0;
+
 	function onFocus(){
 		
 		const rect1 = label.getBoundingClientRect();
@@ -33,13 +39,14 @@
 		*/ 
 		labelRect= rect1;
 		isFocussed = true;
+		recalculateWidth();
+		setTimeout( recalculateHeight , svelteStandardAnimTime ) 
 	}
 	function onblur(){
 		setTimeout( () => {
 			isFocussed = false
 		}, 200) 
-	}
-
+	} 
 	function clickOption( event ){
 		 
 		let value = event.target.getAttribute('data-value');
@@ -50,7 +57,24 @@
 			selected = value;
 			dispatch('onSelect',selected)
 		}
-		
+	}
+	function recalculateHeight(){
+		let itemTop 	= topTracker.getBoundingClientRect().bottom
+		let itemBottom 	= endTracker.getBoundingClientRect().bottom
+		let windowBottom = window.document.body.getBoundingClientRect().height 
+		if( itemBottom > windowBottom){
+			let delta = itemBottom - windowBottom;
+			let total = itemBottom - itemTop;
+			let n = total - delta ;
+			if ( n < override_maxHeight ){
+				override_maxHeight = n;
+			}
+		} 
+	}
+
+	function recalculateWidth(){
+		let width = label.getBoundingClientRect().width //- 16;
+		arrowOffsetLeft = width/2;
 	}
 
 </script>
@@ -64,8 +88,7 @@
 			data-selected	={selected	?? false} 
 			tabindex="-1"  
 			on:focus={onFocus}
-			on:blur={ onblur }
-			
+			on:blur={ onblur } 
 		>
 			{ selected == null ? unSelectedplaceholder : selected }
 		
@@ -74,26 +97,32 @@
 	<!-- svelte-ignore missing-declaration -->
 	<div>
 		{#if isFocussed || forceOpen }
-			<div 
-				class="SelectPopUp" 
-				style={ 
-					"width:" + ((labelRect?.width) ?? 100 )+ "px;" + 
-					"left: " + ((labelRect?.x) ?? 0) + "px;" +
-					"top: "  + (((labelRect?.y) ?? 0) + ((labelRect?.height) ?? 0) + 8) + "px;"+
-					(maxHeight != null ? 'max-height:'+maxHeight : '')
-				}  
-				transition:slide
-			>
-				<div class="Arrow" ></div>	
-				{#each options as opt (opt)}
-					<div  class="GrobSelectOption" data-selected={selected == opt} data-value={opt} on:click={ clickOption } on:keydown={clickOption}>
-						{opt}
+			 
+				
+				<div 
+					class="SelectPopUp" 
+					style={ 
+						"width:" + ((labelRect?.width) ?? 100 )+ "px;" + 
+						"left: " + ((labelRect?.x) ?? 0) + "px;" +
+						"top: "  + (((labelRect?.y) ?? 0) + ((labelRect?.height) ?? 0) + 8) + "px;"+
+						'max-height:'+override_maxHeight+'px'
+					}  
+					transition:slide
+				> 
+					<div class="ArrowContainer " bind:this={topTracker} >
+						<div class="Arrow" style={`left:${arrowOffsetLeft}px`}></div>
 					</div>
-				{/each}
-				{#if options.length == 0}
-					<i  class="GrobSelectInfo">No Options</i>
-				{/if}
-			</div>
+					{#each options as opt (opt)}
+						<div  class="GrobSelectOption" data-selected={selected == opt} data-value={opt} on:click={ clickOption } on:keydown={clickOption}>
+							{opt}
+						</div>
+					{/each}
+					{#if options.length == 0}
+						<i  class="GrobSelectInfo">No Options</i>
+					{/if}
+					<div class="selectEndTracker" bind:this={endTracker}></div>
+				</div>
+			 
 		{/if}
 	</div>
 </div>
