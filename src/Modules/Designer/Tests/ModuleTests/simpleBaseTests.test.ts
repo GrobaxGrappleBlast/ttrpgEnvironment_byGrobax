@@ -1,5 +1,5 @@
 import exp from 'constants';
-import { JSONHandler } from '../../../JSONModules';
+import { JSONHandler } from 'grobax-json-handler';
 import 
 {
 	GrobDerivedOrigin,

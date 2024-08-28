@@ -1,6 +1,6 @@
 import { Mutex } from "async-mutex";
 import { FileHandler } from "./fileHandler";
-import { JSONHandler } from "../JSONModules";
+import { JSONHandler } from 'grobax-json-handler';
 import { TTRPGSystem, TTRPG_SCHEMES } from "../Designer/index";
 import { SystemPreview } from "./model/systemPreview";
 import type { Message, messageList } from "../ObsidianUI/UIInterfaces/Designer01/BaseComponents/Messages/message";

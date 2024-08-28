@@ -1,5 +1,5 @@
 
-import { JSONHandler } from '../../../JSONModules';
+import { JSONHandler } from 'grobax-json-handler';
 import {
 	GrobCollection,
 	GrobDerivedNode,

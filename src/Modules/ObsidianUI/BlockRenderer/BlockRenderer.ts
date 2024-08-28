@@ -1,6 +1,6 @@
 
 import { TFile } from "obsidian";
-import { JSONHandler } from "../../../../src/Modules/JSONModules";
+import { JSONHandler } from 'grobax-json-handler';
 import PluginHandler from "../app";
 import BlockStarter from "../UIInterfaces/BlockStarter/BlockStarter.svelte";
 import { BlockData } from "./BlockData";
