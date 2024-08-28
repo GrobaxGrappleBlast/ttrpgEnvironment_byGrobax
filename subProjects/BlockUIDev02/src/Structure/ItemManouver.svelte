@@ -22,8 +22,8 @@
 <div  class="ItemManouverContainer" >
 	{#if editMode }
 		<div class="ItemManouverOptions" >
-			{#if hasUp	}<div class="ItemManouverOption" on:keyup on:click={moveUp}	>Up</div>{/if}
-			{#if hasDown}<div class="ItemManouverOption" on:keyup on:click={moveDown}>Down</div>{/if}
+			{#if hasUp	}<div class="ItemManouverOption" role="none" on:keyup on:click={moveUp}	>Up</div>{/if}
+			{#if hasDown}<div class="ItemManouverOption" role="none" on:keyup on:click={moveDown}>Down</div>{/if}
 		</div>
 	{/if}
 </div>
