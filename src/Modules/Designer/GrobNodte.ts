@@ -1,7 +1,7 @@
 import { GrobCollection } from "./GrobCollection"; 
 import { AGraphItem } from "./Abstractions/AGraphItem"; 
 import type { GrobNodeType } from "./GraphV2/TTRPGSystemsGraphDependencies"; 
-import { JsonArrayClassTyped, JsonNumber, JsonString } from "../JSONModules/index";
+import { JsonArrayClassTyped, JsonNumber, JsonString } from "grobax-json-handler";
 
 var grobDerivedSymbolRegex =/@[a-zA-Z]/g;
 

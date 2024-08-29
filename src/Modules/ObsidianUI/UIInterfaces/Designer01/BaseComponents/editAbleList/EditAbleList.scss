@@ -36,10 +36,10 @@
 	&:not([data-isEdit="true"]){
 		&[data-can-hover="true"]{
 			&:hover{
+				background: $blue  ; 
 				&[data-selected="true"]{
 					background: StrippedBackground($green , $blue);
 				}
-				background: $blue  ; 
 			}
 		}
 		&[data-selected="true"]{

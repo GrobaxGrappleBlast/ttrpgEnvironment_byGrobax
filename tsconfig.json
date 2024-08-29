@@ -14,6 +14,7 @@
         "strictNullChecks": true,
         "importsNotUsedAsValues":"remove", 
         "types": ["svelte", "jest","node"],
+        "strict": false,
         
         "lib": [
             "DOM",

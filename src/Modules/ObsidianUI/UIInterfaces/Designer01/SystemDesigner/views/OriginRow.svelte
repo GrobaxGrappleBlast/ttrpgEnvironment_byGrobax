@@ -138,6 +138,7 @@
 			<CustomSelect 
 				bind:selected={rowData.segments[0] }
 				options={ options_level0 }		
+				
 				on:onSelect={(e) => onSelect(0,e.detail)} 
 				on:onDeselect={()=>onDeselect(0)} 
 				/>
@@ -145,6 +146,7 @@
 				bind:selected={rowData.segments[1]} 
 				options={options_level1}	
 				disabled={!(options_level0)}	
+				
 				on:onSelect={(e) => onSelect(1,e.detail)} 
 				on:onDeselect={()=>onDeselect(0)} 
 			/>
@@ -152,25 +154,26 @@
 				bind:selected={rowData.segments[2]} 
 				options={options_level2}	
 				disabled={!(options_level1)}	
+				 
 				on:onSelect={(e) => onSelect(2,e.detail)}
 				on:onDeselect={()=>onDeselect(0)}
 			
 			/>
 
 			<!-- Deletes -->
-			<div class="derivedOriginRowInteractionField" data-color={ rowData.inCalc ? 'verbose' : 'error' } on:click={ondelete} on:keydown={ondelete}>
+			<div class="derivedOriginRowInteractionField" role="none" data-color={ rowData.inCalc ? 'verbose' : 'error' } on:click={ondelete} on:keydown={ondelete}>
 				<Trash color={'white'}/>
 			</div>
 		</div>
 	{:else}
-		<div class="derivedOriginRow" on:click={fromPreOriginToOrigin} on:keydown={ fromPreOriginToOrigin } 	transition:slide|local >
+		<div class="derivedOriginRow" on:click={fromPreOriginToOrigin} role="none" on:keydown={ fromPreOriginToOrigin } 	transition:slide|local >
 			<div> {rowData.key} </div>
 			<div></div>
 			<div> Click To Add a Origin </div>
 			
 			{#if !rowData.inCalc }
 				<!-- Deletes -->
-				<div class="derivedOriginRowInteractionField" data-color={ rowData.inCalc ? 'verbose' : 'error' } on:click={ondelete} on:keydown={ondelete}>
+				<div class="derivedOriginRowInteractionField" role="none" data-color={ rowData.inCalc ? 'verbose' : 'error' } on:click={ondelete} on:keydown={ondelete}>
 					<Trash color={'white'}/>
 				</div>
 			{/if}

@@ -167,7 +167,7 @@ export class SystemExporterMethods {
 					if(!currItem)
 						continue;
 
-					for (let o = 0; o < (currItem['origins']?.length) ?? 0; o++) {
+					for (let o = 0; o < (currItem['origins']?.length); o++) {
 						const origin = currItem['origins'][o];
 						let originPathSegments = origin.originKey.split('.');
 						result += `

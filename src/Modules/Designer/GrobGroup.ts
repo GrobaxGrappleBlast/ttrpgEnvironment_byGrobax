@@ -1,7 +1,6 @@
 import { AGraphItem } from "./Abstractions/AGraphItem"; 
 import { GrobCollection } from "./GrobCollection"; 
 import type { GrobNodeType } from "./GraphV2/TTRPGSystemsGraphDependencies"; 
-import { JsonMappingRecordInArrayOut } from "../JSONModules/index";
 import type { IGrobGroup } from "./IGrobGroup";
 
 export type GrobGroupType = GrobGroup<GrobNodeType>;

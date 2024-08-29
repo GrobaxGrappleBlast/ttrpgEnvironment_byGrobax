@@ -1,5 +1,5 @@
 
-import { JsonString } from "../../JSONModules/Decorators";
+import { JsonString } from "grobax-json-handler";;
 import { KeyManager } from "./KeyManager";
 
 

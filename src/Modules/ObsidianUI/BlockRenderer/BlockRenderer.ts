@@ -5,11 +5,8 @@ import PluginHandler from "../app";
 import BlockStarter from "../UIInterfaces/BlockStarter/BlockStarter.svelte";
 import { BlockData } from "./BlockData";
 import { FileHandler } from "../../../../src/Modules/ObsidianUICore/fileHandler";
-import {
-	dirname,
-	join,
-  } from "path";
 import path from 'path';
+import { FileContext } from "../../../../src/Modules/ObsidianUICore/fileContext";
 
 export class BlockRenderer{
 
@@ -72,14 +69,9 @@ export class BlockRenderer{
 			if ( t == ''){
 				return null;
 			}
-	
-			try{
-				JSON.parse(self.text);
-			}catch(e){
-				return null;
-			}
-
-			let blockData = JSONHandler.deserialize<BlockData>(BlockData , self.text, BlockData.schemes.PAGE );
+	 
+			
+			let blockData = JSONHandler.deserialize<BlockData>(BlockData , t, BlockData.schemes.PAGE );
 			return blockData;
 		}
 
@@ -87,6 +79,13 @@ export class BlockRenderer{
 		
 		
 		if ( blockData ){
+
+			debugger
+			let preview = blockData.systemChosen;
+
+			debugger;
+
+			let systemInstance = await FileContext.getOrCreateSystemsDesigns(preview.folderPath);
  
 			let systemPath = path.join(PluginHandler.SYSTEMS_FOLDER_NAME, 'grobax1', PluginHandler.SYSTEM_UI_CONTAINER_FOLDER_NAME, 'default');
 			let obsidianPath = path.join(PluginHandler.self.manifest.dir as string, systemPath);
@@ -107,14 +106,21 @@ export class BlockRenderer{
 				script.setAttribute('type','module');
   
 			let path_JS = PluginHandler.App.vault.adapter.getResourcePath(obsidianPath + '/' +'components.js'); 
+			
+			window['GrobaxTTRPGGlobalVariable'][blockData.BlockUUID] = blockData;
+
 			script.innerHTML = `
 				import App from '${path_JS}';	
+				let key = '${blockData.BlockUUID}';
+				let sys = window['GrobaxTTRPGGlobalVariable']['${blockData.BlockUUID}'];
+				debugger;
 				function CreateApp ( obj ){		 
 					const app = new App({
 						target:document.getElementById('${blockData.BlockUUID}'),
 						props: {
+						
 							textData:'${JSON.stringify(blockData.layout)}',
-							sys:'${JSON.stringify(blockData.characterValues)}'
+							sys:sys
 						}
 					}); 
 				}

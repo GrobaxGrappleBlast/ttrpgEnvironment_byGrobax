@@ -1,5 +1,5 @@
 
-import { JsonString } from "../../../../src/Modules/JSONModules/Decorators";
+import { JsonString } from "grobax-json-handler";
 import type { IGraphItem } from "./IGraphItem";
 import { KeyManager } from "./KeyManager";
 

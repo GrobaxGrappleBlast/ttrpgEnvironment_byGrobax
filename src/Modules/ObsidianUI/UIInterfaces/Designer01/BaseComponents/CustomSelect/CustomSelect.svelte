@@ -9,7 +9,6 @@
 
 	let dispatch = createEventDispatcher();
 	export let options	: string[];
-	export let onSelect : ( v : string | null ) => any = (v) => null ;
 	export let selected : string | null = null ;
 	export let unSelectedplaceholder:string ='None Selected';
 	export let disabled :boolean = false;
@@ -113,7 +112,7 @@
 						<div class="Arrow" style={`left:${arrowOffsetLeft}px`}></div>
 					</div>
 					{#each options as opt (opt)}
-						<div  class="GrobSelectOption" data-selected={selected == opt} data-value={opt} on:click={ clickOption } on:keydown={clickOption}>
+						<div  class="GrobSelectOption" role="none" data-selected={selected == opt} data-value={opt} on:click={ clickOption } on:keydown={clickOption}>
 							{opt}
 						</div>
 					{/each}

@@ -5,11 +5,12 @@
     "target": "ESNext",
     "useDefineForClassFields": true,
     "module": "ESNext",
-    "resolveJsonModule": true,
-    "verbatimModuleSyntax": true,
+    "resolveJsonModule": true, 
     "allowJs": true,
     "isolatedModules": true,
-    "strict": false
+    "strict": false,
+    "moduleResolution":"Node",
+    "esModuleInterop": true
   },
   "include": [
     "src/**/*.d.ts",

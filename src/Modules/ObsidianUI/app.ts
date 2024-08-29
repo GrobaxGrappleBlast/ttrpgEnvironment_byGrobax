@@ -27,7 +27,9 @@ export default class PluginHandler extends Plugin {
 	public static SYSTEM_UI_LAYOUTFILENAME	: string;
 	public static SYSTEM_LAYOUT_BLOCKNAME :string;
 
-	public static self			: PluginHandler;  
+	public static self			: PluginHandler; 
+	
+	//@ts-ignore
 	settings: MyPluginSettings;  
 
 	public static uuidv4() {
@@ -68,10 +70,18 @@ export default class PluginHandler extends Plugin {
 		this.addSettingTab(new SampleSettingTab(this.app, this));
 
 		this.registerMarkdownCodeBlockProcessor(PluginHandler.SYSTEM_LAYOUT_BLOCKNAME, (source, el, ctx) => {
-			
 			const renderer = new BlockRenderer(source,el,ctx);
 			renderer.render(); 
 		});
+
+		this.registerEvent(
+			this.app.workspace.on('active-leaf-change', (leaf) => {
+				if (leaf) {
+					window['GrobaxTTRPGGlobalVariable'] = {};
+				}
+			})
+		);
+	  
 		
 	} 
 	onLayoutReady(): void {

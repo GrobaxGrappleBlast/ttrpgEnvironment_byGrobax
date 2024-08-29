@@ -1,6 +1,6 @@
-import { BASE_SCHEME } from "../../../../src/Modules/JSONModules/JsonModuleConstants";
+import { BASE_SCHEME } from "grobax-json-handler";
 import { keyManagerInstance } from "../../Designer/Abstractions/KeyManager";
-import { JsonBoolean, JsonObject, JsonProperty, JsonString } from "../../JSONModules";
+import { JsonBoolean, JsonObject, JsonProperty, JsonString } from "grobax-json-handler";
 
 
 export class SystemPreviewSchemes{ 

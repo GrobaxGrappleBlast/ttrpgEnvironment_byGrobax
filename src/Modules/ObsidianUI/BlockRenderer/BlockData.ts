@@ -1,9 +1,9 @@
 import { SystemPreview } from "../../../../src/Modules/ObsidianUICore/model/systemPreview";
 import { TTRPGSystem } from  "../../../../src/Modules/Designer";
-import { JsonBoolean, JsonProperty, JsonString } from "../../../../src/Modules/JSONModules";
+import { JsonBoolean, JsonProperty, JsonString } from "grobax-json-handler";
 import PluginHandler from "../app";
 import { UILayoutModel } from "../../../../src/Modules/ObsidianUICore/model/UILayoutModel";
-import { BASE_SCHEME } from "../../../../src/Modules/JSONModules/JsonModuleConstants";
+import { BASE_SCHEME } from "grobax-json-handler";
 
 export class BlockDataSchemes{ 
 	static BASE = BASE_SCHEME;

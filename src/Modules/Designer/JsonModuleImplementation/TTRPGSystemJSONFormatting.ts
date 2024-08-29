@@ -2,34 +2,33 @@ import { GrobCollection } from "../GrobCollection";
 import { GrobGroup } from "../GrobGroup";
 import type { GrobNodeType } from "../GraphV2/TTRPGSystemsGraphDependencies";
 import { GrobDerivedNode, GrobDerivedOrigin, GrobFixedNode } from "../GrobNodte";
-import { JsonObject, JsonMappingRecordInArrayOut, JsonClassTyped, JsonString } from "../../JSONModules/index"; 
+import { JsonObject, JsonMappingRecordInArrayOut, JsonClassTyped, JsonString } from "grobax-json-handler";
 import { TTRPGSystemGraphModel } from "../GraphV2/TTRPGSystemGraphModel";
-import { BASE_SCHEME } from "../../../../src/Modules/JSONModules/JsonModuleConstants";
-import { getMetadata, getMetaDataKeys, getOwnMetaData, getOwnMetaDataKeys } from "../../../../src/Modules/JSONModules/JsonModuleBaseFunction";
+import { BASE_SCHEME } from "grobax-json-handler";
 import PluginHandler from "../../../../src/Modules/ObsidianUI/app";
  
 export class GrobCollectionDerived extends GrobCollection<GrobDerivedNode>{
 	
-	@JsonMappingRecordInArrayOut({KeyPropertyName:'getName', name:'data',type:GrobDerivedNode , preSerializationConversion : true})
+	@JsonMappingRecordInArrayOut({KeyPropertyName:'getName', name:'data',type:GrobDerivedNode })
 	nodes_names: Record<string, GrobDerivedNode> = {}
 }
 
 export class GrobCollectionFixed extends GrobCollection<GrobFixedNode>{
 
-	@JsonMappingRecordInArrayOut({KeyPropertyName:'getName', name:'data',type:GrobFixedNode , preSerializationConversion : true})
+	@JsonMappingRecordInArrayOut({KeyPropertyName:'getName', name:'data',type:GrobFixedNode  })
 	nodes_names: Record<string, GrobFixedNode> = {}
 }
 
 export class GrobGroupDerived extends GrobGroup<GrobDerivedNode>{
 	
-	@JsonMappingRecordInArrayOut({KeyPropertyName:'getName', name:'data',type :GrobCollectionDerived , preSerializationConversion : true})
+	@JsonMappingRecordInArrayOut({KeyPropertyName:'getName', name:'data',type :GrobCollectionDerived  })
 	collections_names: Record<string, GrobCollectionDerived > = {};
 
 }
  
 export class GrobGroupFixed extends GrobGroup<GrobFixedNode>{
 	
-	@JsonMappingRecordInArrayOut({KeyPropertyName:'getName', name:'data', type :GrobCollectionFixed , preSerializationConversion : true })
+	@JsonMappingRecordInArrayOut({KeyPropertyName:'getName', name:'data', type :GrobCollectionFixed  })
 	collections_names: Record<string,GrobCollectionFixed> = {};
 
 }
