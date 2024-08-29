@@ -2,7 +2,7 @@
 
 	import CustomSelect from "../../BaseComponents/CustomSelect/CustomSelect.svelte";
 	import './OriginRow.scss';
-	import { GrobDerivedNode, TTRPGSystem, GrobFixedNode, GrobDerivedOrigin , type GrobNodeType } from "../../../../../Designer";
+	import {  TTRPGSystem, type GrobNodeType } from "../../../../../Designer";
 	import Trash from '../../BaseComponents/buttons/trash.svelte';
     import { createEventDispatcher, onMount } from "svelte";  
     import { slide } from "svelte/transition";
@@ -109,7 +109,7 @@
 		dispatch('onDelete',rowData.key)
 	}
 
-	function onChangeSymbol( s ){
+	function onChangeSymbol( s:any ){
 		dispatch('onSymbolSelected',{old:rowData.key, new:s })
 	}
 

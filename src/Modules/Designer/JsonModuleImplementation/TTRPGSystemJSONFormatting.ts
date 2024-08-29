@@ -92,10 +92,10 @@ export class TTRPG_SCHEMES {
 })
 export class TTRPGSystemJSONFormatting extends TTRPGSystemGraphModel {
 	  
-	@JsonClassTyped ( GrobGroupFixed , {preSerializationConversion : true})
+	@JsonClassTyped ( GrobGroupFixed )
 	public fixed 	: GrobGroupFixed	;
 
-	@JsonClassTyped ( GrobGroupDerived , {preSerializationConversion : true})
+	@JsonClassTyped ( GrobGroupDerived )
 	public derived 	: GrobGroupDerived	;
 
 	@JsonString()

@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { writable, type Writable } from "svelte/store"; 
 	import { GrobCollection, GrobDerivedNode, GrobDerivedOrigin, GrobFixedNode, TTRPGSystem, type GrobNodeType } from "../../../../../../src/Modules/Designer";
-	import StaticMessageHandler from "../BaseComponents/Messages/StaticMessageHandler.svelte";
+	import StaticMessageHandler from "../BaseComponents/Messages/StaticMessageHandler.svelte"// "../BaseComponents/Messages/StaticMessageHandler.svelte";
 	import "./SystemDesigner.scss"; 
     import SystemDesignerDelegate from "./SystemDesignerDelegate.svelte";
     import { slide } from "svelte/transition";
@@ -64,8 +64,7 @@
 		}
 		return true;
 
-	}
-
+	} 
 	function validateForSave(){
 		 
 		anyChanges = true;
@@ -100,6 +99,12 @@
 		}
 		
 	}
+
+
+	onMount(()=>{
+		debugger
+	})
+
 </script>
 <div>
 	<div
@@ -183,9 +188,9 @@
 			type		  = {'derived'}
 			bind:this={derivedDesigner}
 			on:change={ validateForSave }
-			on:selectCollection= { (e) => { editorOpen_derivedItem.set(null); if(e.detail){ editorOpen_specialDerivedItem = false } } }
-			on:selectItem= { (e) => { editorOpen_derivedItem.set(e.detail); editorOpen_specialDerivedItem = false } }
-			onSpecialAdd = { ( ) => { editorOpen_specialDerivedItem = !editorOpen_specialDerivedItem; console.log('editorOpen_specialDerivedItem') }}
+			on:selectCollection	= { (e) => { editorOpen_derivedItem.set(null); if(e.detail){ editorOpen_specialDerivedItem = false } } }
+			on:selectItem		= { (e) => { editorOpen_derivedItem.set(e.detail); editorOpen_specialDerivedItem = false } }
+			onSpecialAdd 		= { ( ) => { editorOpen_specialDerivedItem = !editorOpen_specialDerivedItem; console.log('editorOpen_specialDerivedItem') }}
 		/> 
 		<div class="linebreak" ></div>
 			{#if editorOpen_specialDerivedItem }

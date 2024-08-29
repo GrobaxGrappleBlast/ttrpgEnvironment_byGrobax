@@ -144,7 +144,7 @@
 		out.systemChosen = JSONHandler.deserialize(SystemPreview, (JSONHandler.serialize(systemObj,TTRPG_SCHEMES.PREVIEW)));
 		out.LayoutChosen = selectedLayout;
 		 
-		WriteDown( JSONHandler.serializePretty(out , BlockDataSchemes.PAGE ) );
+		WriteDown( JSONHandler.serialize(out , BlockDataSchemes.PAGE ) );
 	}
 	let PREJSON = "";
 </script>

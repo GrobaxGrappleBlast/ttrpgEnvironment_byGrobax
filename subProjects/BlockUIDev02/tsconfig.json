@@ -10,7 +10,10 @@
     "isolatedModules": true,
     "strict": false,
     "moduleResolution":"Node",
-    "esModuleInterop": true
+    "esModuleInterop": true,
+	"noImplicitAny": false,
+	"skipLibCheck":true,
+	
   },
   "include": [
     "src/**/*.d.ts",

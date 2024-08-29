@@ -26,6 +26,7 @@ export default class PluginHandler extends Plugin {
 	public static SYSTEM_UI_CONTAINER_FOLDER_NAME	: string;
 	public static SYSTEM_UI_LAYOUTFILENAME	: string;
 	public static SYSTEM_LAYOUT_BLOCKNAME :string;
+	public static GLOBAL_SYSTEM_PASSER :string;
 
 	public static self			: PluginHandler; 
 	
@@ -55,7 +56,8 @@ export default class PluginHandler extends Plugin {
 		PluginHandler.SYSTEM_UI_CONTAINER_FOLDER_NAME 	= 'UILayouts';
 		PluginHandler.SYSTEM_UI_LAYOUTFILENAME 			= "UIPreview.json"
 
-		// Get Folders 
+		// Strings used for global variables 
+		PluginHandler.GLOBAL_SYSTEM_PASSER				= 'GrobaxTTRPGGlobalVariable';
 		
 
 		PluginHandler.SYSTEM_LAYOUT_BLOCKNAME 			= "TTRPG";	
@@ -77,7 +79,7 @@ export default class PluginHandler extends Plugin {
 		this.registerEvent(
 			this.app.workspace.on('active-leaf-change', (leaf) => {
 				if (leaf) {
-					window['GrobaxTTRPGGlobalVariable'] = {};
+					window[PluginHandler.GLOBAL_SYSTEM_PASSER] = {};
 				}
 			})
 		);

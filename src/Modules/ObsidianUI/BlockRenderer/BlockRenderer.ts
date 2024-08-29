@@ -38,13 +38,11 @@ export class BlockRenderer{
 		return ''
 
 	}
-	public async writeBlock(txt){
-		
+	public async writeBlock(txt){ 
 		const app = PluginHandler.self.app; 
 		const vault = app.vault; 
 		let file  = vault.getFileByPath(this.context.sourcePath)
-		if(!file){
-			console.log('!!NOTFILE');
+		if(!file){ 
 			return '';
 		}
 
@@ -54,7 +52,7 @@ export class BlockRenderer{
 	}
 
 	public async render(){
-
+ 
 		// if the block is brand new, just give it a guid, so we can distinguish blocks from eachother.
 		let text = this.text;
 		text.trim();
@@ -64,15 +62,17 @@ export class BlockRenderer{
 		}
 
 		function isValidBlockText( self :BlockRenderer ){
-			let t = self.text;
-			t.trim();
-			if ( t == ''){
+			try{
+				let t = self.text;
+				t.trim();
+				if ( t == ''){
+					return null;
+				}
+				let blockData = JSONHandler.deserialize<BlockData>(BlockData , t, BlockData.schemes.PAGE );
+				return blockData;
+			}catch(e){
 				return null;
 			}
-	 
-			
-			let blockData = JSONHandler.deserialize<BlockData>(BlockData , t, BlockData.schemes.PAGE );
-			return blockData;
 		}
 
 		let blockData :BlockData | null = isValidBlockText(this);
@@ -89,10 +89,7 @@ export class BlockRenderer{
  
 			let systemPath = path.join(PluginHandler.SYSTEMS_FOLDER_NAME, 'grobax1', PluginHandler.SYSTEM_UI_CONTAINER_FOLDER_NAME, 'default');
 			let obsidianPath = path.join(PluginHandler.self.manifest.dir as string, systemPath);
-			//let base = (PluginHandler.App.vault.adapter as any).getBasePath()
-			//let _path = path.join(base, obsidianPath);
-			//let modulePath = path.join(_path, 'components.js'); 
- 
+		 
 			let CSS= await FileHandler.readFile(obsidianPath + '/' +'style.css');
 
 			let container = this.element.createEl('div');

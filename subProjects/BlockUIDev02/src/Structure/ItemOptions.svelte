@@ -1,8 +1,7 @@
 <script lang="ts">
-    import { slide } from "svelte/transition";
-
-    import { createEventDispatcher, onMount } from "svelte";
-    import { CNode } from "./ComponentNode";
+  
+    import { createEventDispatcher  } from "svelte";
+    import { type CNode } from "./ComponentNode";
     import { viewNameIndex } from "./ViewNameIndex";
     import CustomSelect from "../importedComponents/CustomSelect/CustomSelect.svelte";
 	let dispatch = createEventDispatcher();

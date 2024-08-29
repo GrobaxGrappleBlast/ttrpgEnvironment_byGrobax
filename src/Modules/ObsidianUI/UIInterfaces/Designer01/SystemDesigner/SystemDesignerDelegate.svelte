@@ -82,6 +82,7 @@
 
 	// Collection Functions 
 	export function selectCollection ( collection:string , allowDeselect = true , dispatchEvent = true ){ 
+ 
 		// deSelectItem
 		deSelectCollectionItem();
 
@@ -104,7 +105,7 @@
 		let mapped = names.map( p => {
 			return nameToIViewItem(p, p == selectedCollectionName ) 
 		} )
-
+ 
 		selectedCollectionData.set(mapped);
 		selectedCollectionName = collection;
 			

@@ -1,7 +1,7 @@
 import path from 'path';
 import { defineConfig } from 'vite';
 import { svelte } from '@sveltejs/vite-plugin-svelte';
-import autoPreprocess from 'svelte-preprocess';
+import sveltePreprocess from 'svelte-preprocess';
 import builtins from 'builtin-modules'; 
 
 
@@ -15,8 +15,9 @@ export default defineConfig(() => {
         ],
         plugins: [
             svelte({
-                compilerOptions: { css: true },
-                preprocess: autoPreprocess()
+                compilerOptions: { css: true,   hydratable: true },
+                preprocess: sveltePreprocess(),
+				
             }) 
         ],
         watch: !prod,
@@ -70,7 +71,7 @@ export default defineConfig(() => {
             },
             // Use root as the output dir
             emptyOutDir: false,
-            outDir: '.',
+            
         },
     }
 });
