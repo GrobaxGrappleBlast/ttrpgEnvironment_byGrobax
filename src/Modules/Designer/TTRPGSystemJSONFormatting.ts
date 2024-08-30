@@ -1,41 +1,98 @@
-import { GrobCollection } from "../GrobCollection";
-import { GrobGroup } from "../GrobGroup";
-import type { GrobNodeType } from "../GraphV2/TTRPGSystemsGraphDependencies";
-import { GrobDerivedNode, GrobDerivedOrigin, GrobFixedNode } from "../GrobNodte";
-import { JsonObject, JsonMappingRecordInArrayOut, JsonClassTyped, JsonString } from "grobax-json-handler";
-import { TTRPGSystemGraphModel } from "../GraphV2/TTRPGSystemGraphModel";
-import { BASE_SCHEME } from "grobax-json-handler";
-import PluginHandler from "../../../../src/Modules/ObsidianUI/app";
  
-export class GrobCollectionDerived extends GrobCollection<GrobDerivedNode>{
+import { GrobCollection , GrobGroup , type GrobNodeType , GrobDerivedNode, GrobDerivedOrigin, GrobFixedNode, TTRPGSystem , uuidv4 } from "ttrpg-system-graph";
+import { JsonObject, JsonMappingRecordInArrayOut, JsonClassTyped, JsonString, JsonNumber, JsonArrayClassTyped } from "grobax-json-handler";
+import { BASE_SCHEME } from "grobax-json-handler";
+ 
+
+// if something is AGraphItem 
+/*
+@JsonString() 
+public name ;
+*/
+// origins
+export class GrobJDerivedOrigin extends GrobDerivedOrigin { 
+	@JsonString()
+	public symbol: string; 
 	
-	@JsonMappingRecordInArrayOut({KeyPropertyName:'getName', name:'data',type:GrobDerivedNode })
-	nodes_names: Record<string, GrobDerivedNode> = {}
+	@JsonString()
+	public originKey: string ;
 }
 
-export class GrobCollectionFixed extends GrobCollection<GrobFixedNode>{
 
-	@JsonMappingRecordInArrayOut({KeyPropertyName:'getName', name:'data',type:GrobFixedNode  })
-	nodes_names: Record<string, GrobFixedNode> = {}
+
+
+
+// NODES  
+export class GrobJDerivedNode extends GrobDerivedNode {
+	@JsonString() 
+	public name ;
+
+	@JsonString({name : 'calculationString'})
+	public calc:string;
+
+	@JsonArrayClassTyped(GrobJDerivedOrigin,{name:'calcOrigins'})
+	public origins : GrobJDerivedOrigin[];
+} 
+export class GrobJFixedNode extends GrobFixedNode {
+
+	@JsonString() 
+	public name ;
+
+	@JsonNumber({name : 'standardValue'})
+	public ___value:number
 }
 
+
+
+
+
+//  COLLECTIONS 
+export class GrobCollectionDerived extends GrobCollection<GrobJDerivedNode>{ 
+	@JsonString() 
+	public name ;
+	
+	@JsonMappingRecordInArrayOut({KeyPropertyName:'getName', name:'data',type:GrobJDerivedNode })
+	nodes_names: Record<string, GrobJDerivedNode> = {}
+} 
+export class GrobCollectionFixed extends GrobCollection<GrobJFixedNode>{
+
+	@JsonString() 
+	public name ;
+
+	@JsonMappingRecordInArrayOut({KeyPropertyName:'getName', name:'data',type:GrobJFixedNode  })
+	nodes_names: Record<string, GrobJFixedNode> = {}
+}
+
+
+
+
+
+//  GROUPS 
 export class GrobGroupDerived extends GrobGroup<GrobDerivedNode>{
 	
+	@JsonString() 
+	public name ;
+
 	@JsonMappingRecordInArrayOut({KeyPropertyName:'getName', name:'data',type :GrobCollectionDerived  })
 	collections_names: Record<string, GrobCollectionDerived > = {};
 
-}
- 
+} 
 export class GrobGroupFixed extends GrobGroup<GrobFixedNode>{
 	
+	@JsonString() 
+	public name ;
+
 	@JsonMappingRecordInArrayOut({KeyPropertyName:'getName', name:'data', type :GrobCollectionFixed  })
 	collections_names: Record<string,GrobCollectionFixed> = {};
 
 }
 
-let baseSchemeValue = BASE_SCHEME
-export class TTRPG_SCHEMES {
-	static GRAPH 	= BASE_SCHEME ;
+
+
+
+
+ 
+export class TTRPG_SCHEMES { 
 	static PREVIEW ='mini';
 } 
 
@@ -90,7 +147,7 @@ export class TTRPG_SCHEMES {
 		const groups = Object.values((self as any).data); 
 	}
 })
-export class TTRPGSystemJSONFormatting extends TTRPGSystemGraphModel {
+export class TTRPGSystemJSONFormatting extends TTRPGSystem {
 	  
 	@JsonClassTyped ( GrobGroupFixed )
 	public fixed 	: GrobGroupFixed	;
@@ -99,19 +156,19 @@ export class TTRPGSystemJSONFormatting extends TTRPGSystemGraphModel {
 	public derived 	: GrobGroupDerived	;
 
 	@JsonString()
-	@JsonString({scheme:[TTRPG_SCHEMES.GRAPH,TTRPG_SCHEMES.PREVIEW]})
+	@JsonString({scheme:[BASE_SCHEME,TTRPG_SCHEMES.PREVIEW]})
 	public author : string = "";
 
 	@JsonString()
-	@JsonString({scheme:[TTRPG_SCHEMES.GRAPH,TTRPG_SCHEMES.PREVIEW]})
+	@JsonString({scheme:[BASE_SCHEME,TTRPG_SCHEMES.PREVIEW]})
 	public version: string = "";
 	
 	@JsonString()
-	@JsonString({scheme:[TTRPG_SCHEMES.GRAPH,TTRPG_SCHEMES.PREVIEW]})
-	public systemCodeName:string = PluginHandler.uuidv4();
+	@JsonString({scheme:[BASE_SCHEME,TTRPG_SCHEMES.PREVIEW]})
+	public systemCodeName:string = uuidv4();
 	
 	@JsonString()
-	@JsonString({scheme:[TTRPG_SCHEMES.GRAPH,TTRPG_SCHEMES.PREVIEW]})
+	@JsonString({scheme:[BASE_SCHEME,TTRPG_SCHEMES.PREVIEW]})
 	public systemName:string = "";
 	
 	public constructor(){
