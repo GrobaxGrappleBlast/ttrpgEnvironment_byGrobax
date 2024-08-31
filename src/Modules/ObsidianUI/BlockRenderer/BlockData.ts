@@ -1,5 +1,4 @@
 import { SystemPreview } from "../../../../src/Modules/ObsidianUICore/model/systemPreview";
-import { TTRPGSystem } from  "../../../../src/Modules/Designer";
 import { JsonBoolean, JsonProperty, JsonString } from "grobax-json-handler";
 import PluginHandler from "../app";
 import { UILayoutModel } from "../../../../src/Modules/ObsidianUICore/model/UILayoutModel";

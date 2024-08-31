@@ -1,6 +1,6 @@
 import { JsonArrayString, JsonBoolean, JsonProperty, JsonString } from "grobax-json-handler"; 
 import { FileHandler } from "../fileHandler";
-import { keyManagerInstance } from "../../../../src/Modules/Designer/Abstractions/KeyManager";
+import { keyManagerInstance } from "ttrpg-system-graph";
 import PluginHandler from "../../../../src/Modules/ObsidianUI/app";
 import { BASE_SCHEME } from "grobax-json-handler";
  

@@ -2,13 +2,13 @@
 
 	import CustomSelect from "../../BaseComponents/CustomSelect/CustomSelect.svelte";
 	import './OriginRow.scss';
-	import {  TTRPGSystem, type GrobNodeType } from "../../../../../Designer";
+	import { TTRPGSystemJSONFormatting, type  GrobJNodeType } from "../../../../../Designer/index";
 	import Trash from '../../BaseComponents/buttons/trash.svelte';
     import { createEventDispatcher, onMount } from "svelte";  
     import { slide } from "svelte/transition";
 	
-	export let system:TTRPGSystem; 
-	type originRowData = {key: string, segments:(string|null)[] , active :boolean , testValue :number, inCalc:boolean, target: GrobNodeType  | null , isSelectAllTarget:boolean };
+	export let system:TTRPGSystemJSONFormatting; 
+	type originRowData = {key: string, segments:(string|null)[] , active :boolean , testValue :number, inCalc:boolean, target: GrobJNodeType  | null , isSelectAllTarget:boolean };
 	export let rowData : originRowData;
 	export let availableSymbols : string [] = []; 
 	export let allowSelectAll : boolean = false; 

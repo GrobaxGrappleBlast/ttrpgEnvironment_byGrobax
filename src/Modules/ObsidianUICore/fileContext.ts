@@ -1,7 +1,7 @@
 import { Mutex } from "async-mutex";
 import { FileHandler } from "./fileHandler";
 import { JSONHandler } from 'grobax-json-handler';
-import { TTRPGSystem, TTRPG_SCHEMES } from "../Designer/index";
+import { TTRPGSystemJSONFormatting, TTRPG_SCHEMES } from "../Designer/index";
 import { SystemPreview } from "./model/systemPreview";
 import type { Message, messageList } from "../ObsidianUI/UIInterfaces/Designer01/BaseComponents/Messages/message";
 import PluginHandler from "../ObsidianUI/app";
@@ -204,7 +204,7 @@ export class FileContext {
 		if (!await FileHandler.exists(filepath)){
 
 			// Create the file. 
-			let designer = new TTRPGSystem();
+			let designer = new TTRPGSystemJSONFormatting();
 			designer.initAsNew();
 			await FileHandler.saveFile( filepath , JSONHandler.serialize(designer) );
 
@@ -212,10 +212,10 @@ export class FileContext {
 		}
 		
 		let file = await FileHandler.readFile(filepath);
-		let loaded = JSONHandler.deserialize<TTRPGSystem>( TTRPGSystem, file );
-		return loaded as TTRPGSystem;
+		let loaded = JSONHandler.deserialize<TTRPGSystemJSONFormatting>( TTRPGSystemJSONFormatting, file );
+		return loaded as TTRPGSystemJSONFormatting;
 	}
-	public async saveSystemsDesigns( folder:string , designer: TTRPGSystem ){
+	public async saveSystemsDesigns( folder:string , designer: TTRPGSystemJSONFormatting ){
 
 		// if the folder does not exist. return false 
 		if (! await FileHandler.exists(folder)){

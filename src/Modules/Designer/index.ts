@@ -18,10 +18,7 @@ export class GrobJDerivedOrigin extends GrobDerivedOrigin {
 	public originKey: string ;
 }
 
-
-
-
-
+ 
 // NODES  
 export class GrobJDerivedNode extends GrobDerivedNode {
 	@JsonString() 
@@ -41,10 +38,9 @@ export class GrobJFixedNode extends GrobFixedNode {
 	@JsonNumber({name : 'standardValue'})
 	public ___value:number
 }
+export type GrobJNodeType = GrobJDerivedNode | GrobJFixedNode;
 
-
-
-
+ 
 
 //  COLLECTIONS 
 export class GrobCollectionDerived extends GrobCollection<GrobJDerivedNode>{ 

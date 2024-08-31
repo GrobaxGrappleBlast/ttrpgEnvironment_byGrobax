@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { writable, type Writable } from "svelte/store"; 
-	import { GrobCollection, GrobDerivedNode, GrobDerivedOrigin, GrobFixedNode, TTRPGSystem, type GrobNodeType } from "../../../../../../src/Modules/Designer";
+	import { GrobJDerivedNode, GrobJFixedNode, TTRPGSystemJSONFormatting } from "../../../../../../src/Modules/Designer/index";
 	import StaticMessageHandler from "../BaseComponents/Messages/StaticMessageHandler.svelte"// "../BaseComponents/Messages/StaticMessageHandler.svelte";
 	import "./SystemDesigner.scss"; 
     import SystemDesignerDelegate from "./SystemDesignerDelegate.svelte";
@@ -14,14 +14,14 @@
     import { SystemPreview } from "../../../../../../src/Modules/ObsidianUICore/model/systemPreview";
     
 
-	export let system : Writable<TTRPGSystem>;  
+	export let system : Writable<TTRPGSystemJSONFormatting>;  
 	export let preview	: Writable<SystemPreview> = writable();
 	let messageHandler : StaticMessageHandler ;
 
 	//status bools
 	let editorOpen_specialDerivedItem	: boolean = false; 
-	let editorOpen_derivedItem			: Writable<GrobDerivedNode|null> = writable(null);
-	let editorOpen_fixedItem			: Writable<GrobFixedNode|null> = writable(null);
+	let editorOpen_derivedItem			: Writable<GrobJDerivedNode|null> = writable(null);
+	let editorOpen_fixedItem			: Writable<GrobJFixedNode|null> = writable(null);
 	 
 	// animation Booleans
 	let animationBool_derivedEditor			= false; 

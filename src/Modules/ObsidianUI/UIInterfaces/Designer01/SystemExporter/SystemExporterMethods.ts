@@ -1,9 +1,10 @@
 import JSZip from "jszip";
-import { TTRPGSystem, type groupKeyType } from "../../../../../../src/Modules/Designer";
+import { TTRPGSystemJSONFormatting} from "../../../../../../src/Modules/Designer/index";
+import { type groupKeyType } from "ttrpg-system-graph";
 import { ObsidianUICoreAPI } from "../../../../../../src/Modules/ObsidianUICore/API";
 
 export class SystemExporterMethods { 
-	public convertToTTRPGSystemToGUIBuilderPreview( system : TTRPGSystem ){
+	public convertToTTRPGSystemToGUIBuilderPreview( system : TTRPGSystemJSONFormatting ){
 		
 		let result = 
 			`export class TNode {  
@@ -200,7 +201,7 @@ export class SystemExporterMethods {
 	//		} 
 	//	}
 
-	public async createBlockUITemplatefile( system:TTRPGSystem ): Promise<Blob | null > {
+	public async createBlockUITemplatefile( system:TTRPGSystemJSONFormatting ): Promise<Blob | null > {
 		
 		let resp =  await ( ObsidianUICoreAPI.getInstance()).UIImportExport.loadBlockUIForExport();  
 		if (resp.responseCode != 200){

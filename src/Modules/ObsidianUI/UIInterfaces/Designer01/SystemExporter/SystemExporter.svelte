@@ -1,16 +1,16 @@
 <script lang="ts">
-	import SystemExporter from './SystemExporter.svelte';
+
     import { SystemExporterMethods } from "../../../../../../src/Modules/ObsidianUI/UIInterfaces/Designer01/SystemExporter/SystemExporterMethods";
 
 	import { writable, type Writable } from "svelte/store"; 
-	import { GrobCollection, GrobDerivedNode, GrobDerivedOrigin, GrobFixedNode, TTRPGSystem, type GrobNodeType } from "../../../../../../src/Modules/Designer";
+	import { TTRPGSystemJSONFormatting  } from "../../../../../../src/Modules/Designer/index";
 	import StaticMessageHandler from "../BaseComponents/Messages/StaticMessageHandler.svelte";
 	import './SystemExporter.scss'; 
     import { SystemPreview } from "../../../../../../src/Modules/ObsidianUICore/model/systemPreview";
     
 
 
-	export let system : Writable<TTRPGSystem>;  
+	export let system : Writable<TTRPGSystemJSONFormatting>;  
 	export let preview	: Writable<SystemPreview> = writable();
 	let exporter : SystemExporterMethods = new SystemExporterMethods();
 	let messageHandler : StaticMessageHandler ;

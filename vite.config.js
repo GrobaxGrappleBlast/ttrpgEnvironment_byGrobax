@@ -31,7 +31,7 @@ export default defineConfig(() => {
             lib: {
                 //  './modules/mainApp/starterIndex.ts'
                 entry: path.resolve(__dirname, './src/Modules/ObsidianUI/app.ts'),
-                formats: ['esm'],
+                formats: ['cjs'],
             },
             rollupOptions: {
                 output: {
@@ -70,6 +70,7 @@ export default defineConfig(() => {
                 ],
             },
             // Use root as the output dir
+            outDir:".",
             emptyOutDir: false,
             
         },

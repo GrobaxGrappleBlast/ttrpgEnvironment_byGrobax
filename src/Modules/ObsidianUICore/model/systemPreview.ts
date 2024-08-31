@@ -1,5 +1,5 @@
 import { BASE_SCHEME } from "grobax-json-handler";
-import { keyManagerInstance } from "../../Designer/Abstractions/KeyManager";
+import { keyManagerInstance } from "ttrpg-system-graph";
 import { JsonBoolean, JsonObject, JsonProperty, JsonString } from "grobax-json-handler";
 
 

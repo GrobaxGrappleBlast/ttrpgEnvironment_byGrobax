@@ -8,7 +8,7 @@
 	import StaticMessageHandler from './../Designer01/BaseComponents/Messages/StaticMessageHandler.svelte';
     import { ObsidianUICoreAPI } from "../../../../../src/Modules/ObsidianUICore/API";
 	import './BlockStarter.scss'
-    import { TTRPG_SCHEMES, TTRPGSystemJSONFormatting } from '../../../../../src/Modules/Designer/JsonModuleImplementation/TTRPGSystemJSONFormatting.js';
+	import {TTRPG_SCHEMES , TTRPGSystemJSONFormatting} from '../../../../../src/Modules/Designer/index';
     import { SheetData } from '../../BlockRenderer/ComponentNode';
 	
 	export let WriteDown : (txt : string) => any;
