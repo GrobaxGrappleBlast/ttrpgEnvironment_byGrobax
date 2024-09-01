@@ -9,12 +9,13 @@
 	export let data :CNode;
 	export let edit = false; 
 
+	console.log(sys);
 	let stats = sys.fixed.stats;
 </script>
 <div class="StatsRow" > 
 	{#each Object.keys(stats) as key}
-		{@const node = stats[key]}
-		{@const modNode = sys.derived.modifiers[key]}
+		{@const node	= stats[key]}
+		{@const modNode	= sys.derived.modifiers[key]}
 		<StaticValue
 			name={key}
 			statNode={node}

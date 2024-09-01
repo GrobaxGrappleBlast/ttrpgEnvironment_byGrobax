@@ -102,7 +102,7 @@
 
 
 	onMount(()=>{
-		debugger
+		//debugger
 	})
 
 </script>

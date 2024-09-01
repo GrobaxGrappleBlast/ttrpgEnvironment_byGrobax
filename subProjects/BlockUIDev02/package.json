@@ -5,6 +5,7 @@
   "type": "module",
   "scripts": {
     "dev": "vite --mode dev ",
+    "obdev": "vite --mode prod ",
     "build": "vite build --mode prod && npm run compile-ts",
     "preview": "vite preview",
     "check": "svelte-check --tsconfig ./tsconfig.json",

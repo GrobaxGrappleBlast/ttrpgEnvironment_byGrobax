@@ -14,7 +14,8 @@ const productionSetting = {
 	build: {
 		sourcemap: true, 
 		target: 'modules', // Target environment
-		outDir: 'export', // Output directory
+		//outDir: 'export', // Output directory
+		outDir:'../../Systems/grobax1/UILayouts/default',
 		emptyOutDir: true, // Clear output directory before build
 		lib: {
 			entry: 'src/index.ts',

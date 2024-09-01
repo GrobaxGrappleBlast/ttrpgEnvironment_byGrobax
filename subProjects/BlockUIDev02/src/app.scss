@@ -87,8 +87,6 @@ $opacWhite : #fff1;
 	@include  createItemClass( $opacWhite,palegreen,green, rgba(89, 191, 255, 0.468));	
 }
 
-
-
 .addButton{
 
 	@extend .standard10Button;
@@ -112,7 +110,7 @@ $opacWhite : #fff1;
 	cursor: pointer;
 	width:0px;
 	padding:$standard_padding_large;
-	background-color: $blue;
+	background-color: #576b69;
 	overflow: hidden;
 	transition: ease 0.5s;
 	
@@ -120,12 +118,14 @@ $opacWhite : #fff1;
 	width:30px;
 	float:left;
 	
+	
+
 	display: flex;
     justify-content: flex-start;
     align-items: center;
 
 	button {
-		width:125px;
+		width:50px;
 		float:left;
 		opacity: 0; 
 		transition: ease 0.5s;

@@ -5,10 +5,9 @@ import PluginHandler from "../app";
 import BlockStarter from "../UIInterfaces/BlockStarter/BlockStarter.svelte";
 import { BlockData } from "./BlockData";
 import { FileHandler } from "../../../../src/Modules/ObsidianUICore/fileHandler";
-import path from 'path';
-import { FileContext } from "../../../../src/Modules/ObsidianUICore/fileContext";
-import { ObsidianUICoreAPI } from '../../../../src/Modules/ObsidianUICore/API';
-import APPS from '../../../../subProjects/BlockUIDev02/src/App.svelte';
+import path from 'path'; 
+import { ObsidianUICoreAPI } from '../../../../src/Modules/ObsidianUICore/API'; 
+import { TTRPGSystemJSONFormatting } from '../../../../src/Modules/Designer';
 
 export class BlockRenderer{
 
@@ -20,8 +19,6 @@ export class BlockRenderer{
 		this.element	= element; 
 		this.context	= context;
 	}
-
-
 	
 	private findBlockAndPasteInto(filetext:string, content:string ){
 		
@@ -101,18 +98,32 @@ export class BlockRenderer{
 			let path_JS = PluginHandler.App.vault.adapter.getResourcePath(obsidianPath + '/' +'components.js'); 
 
 		
-			let resp	= await ObsidianUICoreAPI.getInstance().systemDefinition.getAllSystems();
+			// get the right System Preview
+			let resp = await ObsidianUICoreAPI.getInstance().systemDefinition.getAllSystems();
 			if (resp.responseCode != 200 ){
 				//TODO: also get out the messages
 				script.innerHTML="<div>TTPRPG - Could Not Load Available Systems</div>"
 				return;
 			}
-			let availableSystems = resp.response;
-			let sys = availableSystems?.find( p => p.systemCodeName == preview.systemCodeName );
-			window['GrobaxTTRPGGlobalVariable'][blockData.BlockUUID] = sys;
-			
-			let data = JSON.stringify(blockData.layout);
+			let chosenSystem = resp.response?.find( p => p.systemCodeName == preview.systemCodeName );
 
+			// ensure it exits
+			if(!chosenSystem){
+				script.innerHTML="<div>The Chosen TTRPG did not apear in Available Systems </div>"
+				return;
+			}
+
+			// get the system factory.
+			let resp2 = await ObsidianUICoreAPI.getInstance().systemFactory.getOrCreateSystemFactory(chosenSystem);
+			if (resp2.responseCode != 200 ){
+				//TODO: also get out the messages
+				script.innerHTML="<div>SOMETHING WENT WRONG 2</div>"
+				return;
+			}
+			let sys = resp2.response as TTRPGSystemJSONFormatting;
+ 
+			window['GrobaxTTRPGGlobalVariable'][blockData.BlockUUID] = sys;
+			let data = JSON.stringify(blockData.layout);
 			script.innerHTML = `
 				
 				import App from '${path_JS}';	

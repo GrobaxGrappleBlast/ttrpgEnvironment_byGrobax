@@ -532,7 +532,7 @@
         DragItemHandler.requestMoveItemUpDown(direction, id);
     }
     onMount(() => {
-        debugger;
+        //debugger;
     })
 
     let DragRowHandler = new DragHandlerController(OBJ, state);
