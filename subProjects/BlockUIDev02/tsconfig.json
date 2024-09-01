@@ -11,6 +11,7 @@
     "strict": false,
     "moduleResolution":"Node",
     "esModuleInterop": true,
+    "verbatimModuleSyntax":true,
 	"noImplicitAny": false,
 	"skipLibCheck":true,
 	

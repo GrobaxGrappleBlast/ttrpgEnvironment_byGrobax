@@ -1,6 +1,7 @@
 <script context="module" lang="ts">
     export const ANIMATION_DELAY = 220;
     export const ANIMATION_TIME = 100;
+
     class DragHandlerController {
         public data: Writable<SheetData>;
         public state: State;
@@ -493,19 +494,16 @@
 </script>
 
 <script lang="ts">
-    import "./app.scss";
-
+    import "./app.scss"; 
     import { onMount } from "svelte";
-    import { CNode, SheetData, keyManager } from "./Structure/ComponentNode";
+    import {  SheetData } from "./Structure/ComponentNode";
 
     import { get, type Writable, writable } from "svelte/store";
-    import { fade, fly } from "svelte/transition";
-    import { flip } from "svelte/animate";
+    import { fade, fly } from "svelte/transition"; 
     import ItemDestributor from "./Structure/ItemDestributor.svelte";
     import { system } from "../declaration";
     import { customFlip } from "./Svelte/CustomFlip";
-    import ItemManouver from "./Structure/ItemManouver.svelte";
-    import RowColumnOptions from "./Structure/RowColumnOptions.svelte";
+    import RowColumnOptions from "./Structure/RowColumnOptions.svelte";//;"./Structure/RowColumnOptions.svelte";
 
     let state: State = new State();
     let editMode: Writable<boolean> = state.editMode;
@@ -514,11 +512,13 @@
     let editLayout_03: Writable<boolean> = state.editLayout_03;
 
     export let textData: string;
-    export let sys: system;
+    export let sys: system; 
 
-    let OBJ: Writable<SheetData> = writable(
-        new SheetData(JSON.parse(textData).data),
-    );
+    let json = JSON.parse(textData);
+    let DATA = new SheetData(json); 
+    let OBJ: Writable<SheetData> = writable(DATA);
+ 
+
     function repeat(x, str, sep = " ") {
         let _ = str;
         for (let i = 0; i < x - 1; i++) {
@@ -527,13 +527,18 @@
         }
         return _;
     }
+
     function itemRequestMove(direction, id) {
         DragItemHandler.requestMoveItemUpDown(direction, id);
     }
+    onMount(() => {
+        debugger;
+    })
 
     let DragRowHandler = new DragHandlerController(OBJ, state);
     let DragColumnHandler = new DragItemHandlerController2(OBJ, state);
     let DragItemHandler = new DragItemHandlerController3(OBJ, state);
+
 </script>
 
 <div class="theme-light obsidianBody">
