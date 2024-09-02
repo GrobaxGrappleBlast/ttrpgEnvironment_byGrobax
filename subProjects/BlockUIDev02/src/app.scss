@@ -38,18 +38,21 @@
 	background-color: rgba(211, 211, 211, 0.077);
 }
 
+$borderThickess: 2px;
 @mixin createItemClass($standardColor, $editColor, $editColorHover , $previewColor ) {
 	
 		position:relative;
-		margin:$standard_padding_large;
+		margin:0;//$standard_padding_large;
 		width: auto;
+		
 		//min-height: 100px;
 
 		&[data-editpreview='true']{
 			border-radius: 5px;
-			border:4px dashed;
+			border:$borderThickess dashed;
 			border-color: $previewColor;
 			min-height: 100px;
+			margin:$standard_padding_large;
 		}
 
 		&[draggable="true"]{
@@ -57,9 +60,9 @@
 		}
 
 		&[data-edit="true"] {
-			min-height: 100px;
+			min-height: 30px;
 			border-radius: 5px;
-			border:2px solid;
+			border:$borderThickess solid;
 			border-color: $standardColor;
 			
 			&:hover {

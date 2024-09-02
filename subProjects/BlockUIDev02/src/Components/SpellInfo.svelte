@@ -7,8 +7,7 @@
 <script lang="ts">
     import { onDestroy, onMount } from "svelte";
     import { system, TNode } from "../../declaration";
-    import { CNode, keyManager } from "../Structure/ComponentNode";
-    import ItemOptions from "../Structure/ItemOptions.svelte";
+    import { CNode, keyManager } from "../Structure/ComponentNode"; 
 
     export let sys: system;
     export let edit: boolean;
@@ -16,16 +15,17 @@
     const KEY = keyManager.getNewKey();
 
     let dataData: SpellInfoData = data.data;
+	let spellBonusChoices = sys.getNodeNames('derived','Spell Bonus');
 
     if (JSON.stringify(dataData) === JSON.stringify({})) {
-        dataData.showStat = Object.keys(sys.derived["Spell Bonus"])[0];
+        dataData.showStat = spellBonusChoices[0];
     }
 
     let showStat: string = dataData.showStat;
     //@ts-ignore
-    let nodeDC: TNode = sys.derived["Spell Bonus"][showStat];
+    let nodeDC: TNode		= sys.getNode('derived','Spell Bonus',showStat) ;
     //@ts-ignore
-    let nodeBonus: TNode = sys.derived["Spell DC"][showStat];
+    let nodeBonus: TNode	= sys.getNode('derived','Spell DC',showStat) ;
 
     let chosen_DC = nodeDC.getValue();
     let chosen_BONUS = nodeBonus.getValue();
@@ -35,9 +35,9 @@
         let value = sortSelect.value;
         showStat = value;
         //@ts-ignore
-        nodeDC = sys.derived["Spell Bonus"][showStat];
+        nodeDC		= sys.getNode('derived','Spell Bonus',showStat);
         //@ts-ignore
-        nodeBonus = sys.derived["Spell DC"][showStat];
+        nodeBonus	= sys.getNode('derived','Spell DC',showStat);
         chosen_DC = nodeDC.getValue();
         chosen_BONUS = nodeBonus.getValue();
     }
@@ -71,7 +71,7 @@
     {#if edit}
         <div>
             <select bind:this={sortSelect} on:change={changeSort}>
-                {#each Object.keys(sys.derived["Spell Bonus"]) as key}
+                {#each spellBonusChoices as key}
                     <option value={key} selected={key == showStat}>
                         {key}
                     </option>

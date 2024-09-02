@@ -7,6 +7,8 @@
 	import StaticMessageHandler from "../BaseComponents/Messages/StaticMessageHandler.svelte";
 	import './SystemExporter.scss'; 
     import { SystemPreview } from "../../../../../../src/Modules/ObsidianUICore/model/systemPreview";
+    import exp from "constants";
+    import { debug } from "console";
     
 
 
@@ -22,13 +24,21 @@
 
 	async function onclick(){
 		
+		text = await exporter.createBlockUITemplatefileTEST( $system ) ?? '';
+		debugger;
+		return;
+		/*
+
 		let _content : Blob = await exporter.createBlockUITemplatefile($system) as Blob; 
 		if(!_content)
 			return;
 		 
 		content_URL = URL.createObjectURL(_content);
 		content = _content;
-		 
+		
+		
+
+		return;
 		// Create a temporary anchor element
 		const a = document.createElement('a');
 		a.href = content_URL; 
@@ -42,6 +52,7 @@
 		a.click();
 		document.body.removeChild(a);
     	URL.revokeObjectURL(content_URL); 
+		*/
 	}
 
 	
@@ -49,6 +60,11 @@
 <div>
 	<div class="SystemExporterbuttonRow">
 		<div class="ExecutionButton" on:click={onclick} > Export UI Template </div>
+		
+		<pre style="max-width:500px;"  contenteditable="true" >
+			{ text }
+		</pre>
+	
 		<div class="ExecutionText" > Export the base system as a file that can be used to program a JS userinterface </div>
 	</div> 
 </div>

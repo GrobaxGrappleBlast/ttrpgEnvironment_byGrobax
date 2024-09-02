@@ -3,17 +3,21 @@
 import { JSONHandler } from 'grobax-json-handler';
 import PluginHandler from "../app";
 import BlockStarter from "../UIInterfaces/BlockStarter/BlockStarter.svelte";
-import { BlockData } from "./BlockData";
+import { BlockData, BlockDataSchemes } from "./BlockData";
 import { FileHandler } from "../../../../src/Modules/ObsidianUICore/fileHandler";
 import path from 'path'; 
 import { ObsidianUICoreAPI } from '../../../../src/Modules/ObsidianUICore/API'; 
 import { TTRPGSystemJSONFormatting } from '../../../../src/Modules/Designer';
+import { SheetData } from './ComponentNode';
 
 export class BlockRenderer{
 
 	public text:string;
 	public element:HTMLElement;
 	public context:any;
+
+	public blockData : BlockData;
+
 	constructor(textContent : string , element : HTMLElement, context : any){
 		this.text 		= textContent ?? ''; 
 		this.element	= element; 
@@ -50,6 +54,7 @@ export class BlockRenderer{
 		vault.modify(file,page);
 	}
 
+
 	public async render(){
  
 		// if the block is brand new, just give it a guid, so we can distinguish blocks from eachother.
@@ -83,8 +88,9 @@ export class BlockRenderer{
 			let systemPath = path.join(PluginHandler.SYSTEMS_FOLDER_NAME, 'grobax1', PluginHandler.SYSTEM_UI_CONTAINER_FOLDER_NAME, 'default');
 			let obsidianPath = path.join(PluginHandler.self.manifest.dir as string, systemPath);
 		
-			let CSS= await FileHandler.readFile(obsidianPath + '/' +'style.css');
+			let CSS = await FileHandler.readFile(obsidianPath + '/' +'style.css');
 
+			// Create HTML elements for the block.
 			let container = this.element.createEl('div');
 			let style		= container.createEl('style');
 				style.innerHTML = CSS;
@@ -122,13 +128,21 @@ export class BlockRenderer{
 			}
 			let sys = resp2.response as TTRPGSystemJSONFormatting;
  
-			window['GrobaxTTRPGGlobalVariable'][blockData.BlockUUID] = sys;
-			let data = JSON.stringify(blockData.layout);
+			// ADD AlL UI
+			window['GrobaxTTRPGGlobalVariable'][blockData.BlockUUID] ={};
+			window['GrobaxTTRPGGlobalVariable'][blockData.BlockUUID]['sys'] = sys;
+			window['GrobaxTTRPGGlobalVariable'][blockData.BlockUUID]['func'] = 
+			( layoutChange , system ) => {
+				blockData.layout = layoutChange;
+				//TODO: include Ssytem Stats settings
+				const txt = JSONHandler.serialize(blockData , BlockDataSchemes.PAGE );
+				this.writeBlock(txt);
+			}; 
 			script.innerHTML = `
 				
 				import App from '${path_JS}';	
 				let key = '${blockData.BlockUUID}';
-				const sys = window['GrobaxTTRPGGlobalVariable']['${blockData.BlockUUID}'];
+				const sys = window['GrobaxTTRPGGlobalVariable']['${blockData.BlockUUID}']['sys'];
 				
 				const element = document.getElementById('${blockData.BlockUUID}');
 				const textData= '[]';
@@ -137,11 +151,15 @@ export class BlockRenderer{
 					target:element,
 					props: {
 						textData:textData,
-						sys:sys
+						sys:sys,
+						writeBlock:window['GrobaxTTRPGGlobalVariable'][${blockData.BlockUUID}]['func']
 					}
 				}); 
 				
 			`;
+
+			 
+			
 		
 		 
 			 

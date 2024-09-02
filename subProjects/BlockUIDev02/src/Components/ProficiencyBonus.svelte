@@ -8,7 +8,7 @@
 	export let editMode:boolean;
 	export let data :CNode;
 
-	let node: TNode = sys.fixed.generic["Proficiency Bonus"];
+	let node: TNode = sys.getNode('fixed','generic','Proficiency Bonus');
 	let v = node.getValue();
 	const KEY = keyManager.getNewKey();
 

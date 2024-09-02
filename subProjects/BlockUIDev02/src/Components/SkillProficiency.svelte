@@ -7,8 +7,8 @@
     export let name: string;
     export let sys: system;
 
-    let node_skill: TNode = sys.fixed.SkillProficiencies[name];
-    let node_bonus: TNode = sys.derived.skillproficiencyBonus[name];
+    let node_skill: TNode = sys.getNode('fixed','SkillProficiencies',name);
+    let node_bonus: TNode = sys.getNode('derived','skillproficiencyBonus',name);
 
     let value = node_skill.getValue();
     let bonus = node_bonus.getValue();

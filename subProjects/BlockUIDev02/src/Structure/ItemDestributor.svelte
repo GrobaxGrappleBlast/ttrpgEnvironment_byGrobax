@@ -20,8 +20,7 @@
 	let redrawIndex = 0;
 
 	function updateData( v ){ 
-		console.log( data )
-		console.log( Object.keys(viewNameIndex) )
+		console.log( data ) 
 		data = data;
 		redrawIndex++;
 	}
@@ -88,8 +87,7 @@
 			<div transition:slide  >
 				<Stats
 					edit={editMode} 
-					sys={sys}
-					bind:data={data} 
+					sys={sys} 
 					on:optionSelected={updateData}
 				/>
 			</div>

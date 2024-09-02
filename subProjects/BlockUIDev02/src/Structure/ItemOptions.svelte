@@ -15,8 +15,7 @@
  	function selectOption(){
 		let v = tab.value;
 		data.type = v;
-		dispatch('optionSelected');
-		console.log('optionSelected' , v)
+		dispatch('optionSelected'); 
 	}
 </script>
 <div  class="ItemOptionsContainer" >

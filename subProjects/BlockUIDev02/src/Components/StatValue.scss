@@ -1,27 +1,30 @@
-$padding : 10px;
 
 .StatsRow {
-
+	 
 	display: flex;
 	justify-content: space-between;
-	gap: 20px;
+	padding-right:10px; 
+}
+.statTitle{
+	width:calc( 100% + 10px );
+	display: flex;
+    justify-content: center;
 }
 
-.StatValue {
-	width: 100%;
+.StatValue { 
+	height:70px;
+	width: 80px;
+	padding-right:10px; 
 }
 
 .BoxValue {
 	border-radius: 5px;
 	border: 1px solid black;
 	background-color: lightgray;
-	width: 100%;
-	height: 100%;
+	 
 	display: flex;
 	align-items: center;
-	justify-content: center;
-
-
+	justify-content: center; 
 	outline: none;
 	text-align: center;
 	margin: 0;
@@ -32,14 +35,20 @@ $padding : 10px;
 }
 
 .LargeValue {
-	height: 50px;
-	width: calc(100% - $padding);
+	height: 30px;
+	width:calc( 100% );
+	& > input{
+		height:100%;  
+		width: 100%; 
+		padding:0;
+	}
 }
 
 .SmallValue {
 	width: 30px;
-	height: 30px;
+	height: 10px;
 	float: right;
-	margin-top: -20px;
+	margin-top: -10px;
 	margin-right: -10px;
+	color:black;
 }

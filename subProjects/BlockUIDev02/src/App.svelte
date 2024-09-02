@@ -513,6 +513,7 @@
 
     export let textData: string;
     export let sys: system; 
+    export let writeBlock: ( layout , system ) => any;
 
     let json = JSON.parse(textData);
     let DATA = new SheetData(json); 
@@ -628,7 +629,7 @@
                         )}
                         role="none"
                         style={`
-						${$editLayout_02 || $editLayout_01 ? "margin-bottom:60px" : ""}
+						${$editLayout_02 || $editLayout_01 ? "margin-bottom:30px" : ""}
 					`}
                         transition:fade={{ duration: ANIMATION_TIME }}
                         animate:customFlip={{ duration: ANIMATION_TIME }}
