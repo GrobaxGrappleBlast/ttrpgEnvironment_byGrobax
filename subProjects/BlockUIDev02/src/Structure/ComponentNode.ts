@@ -77,7 +77,12 @@ export class SheetRow{
 
 export class SheetData {
 
-	public constructor( data: any[] ){
+	public constructor( json: string | object ){
+
+		if ( typeof json == 'string'){
+			json = JSON.parse(json);
+		}
+		let data = (json as any).data as any[] ?? []; 
 		this.id = keyManager.getNewKey();
 		this.data = [];
 		data.forEach( d  => {

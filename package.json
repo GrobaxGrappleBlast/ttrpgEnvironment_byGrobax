@@ -39,8 +39,8 @@
     "dependencies": {
         "async-mutex": "^0.5.0",
         "grobax-json-handler": "github:GrobaxGrappleBlast/GrobaxJSONHandler",
-        "ttrpg-system-graph": "github:GrobaxGrappleBlast/TTRPGSystemGraph",
         "jszip": "^3.10.1",
+        "ttrpg-system-graph": "github:GrobaxGrappleBlast/TTRPGSystemGraph",
         "yaml": "^2.5.0"
     }
 }

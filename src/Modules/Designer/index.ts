@@ -171,6 +171,26 @@ export class TTRPGSystemJSONFormatting extends TTRPGSystem {
 		super(); 
 	}
 
+
+	setDefaultValues( defualtValues : {group:string, col:string , key:string , value}[] ){
+
+		let obj = {};
+		const groupKey = 'derived';
+		const colKeys = Object.keys(this.derived.collections_names);
+		for (let c = 0; c < Object.keys(this.derived.collections_names).length; c++) {
+			const colKey = colKeys[c];
+			const collection = this.derived.collections_names[colKey];
+
+			const nodeKeys = Object.keys(collection.nodes_names);
+			for (let i = 0; i < nodeKeys.length; i++) {
+				const nodeKey = nodeKeys[i];
+				const node = collection.nodes_names[nodeKey];
+				
+				obj[groupKey +'.'+ colKey +'.'+ nodeKey] = () => node.setValue( node.getValue() ?? 0 )
+			}
+		}
+
+	}
 }
 
 

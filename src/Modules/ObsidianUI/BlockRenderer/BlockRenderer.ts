@@ -52,9 +52,39 @@ export class BlockRenderer{
 		const fileContent = await app.vault.read(file);
 		let page = this.findBlockAndPasteInto(fileContent, txt )
 		vault.modify(file,page);
+	} 
+
+
+	private async getSystem( tag, blockData ){
+		// get the right System Preview
+		let resp = await ObsidianUICoreAPI.getInstance().systemDefinition.getAllSystems();
+		if (resp.responseCode != 200 ){
+			//TODO: also get out the messages
+			tag.innerHTML="<div>TTPRPG - Could Not Load Available Systems</div>"
+			return null;
+		}
+		let chosenSystem = resp.response?.find( p => p.systemCodeName == blockData.systemChosen.systemCodeName );
+
+		// ensure it exits
+		if(!chosenSystem){
+			tag.innerHTML="<div>The Chosen TTRPG did not apear in Available Systems </div>"
+			return null;
+		}
+
+		// get the system factory.
+		let resp2 = await ObsidianUICoreAPI.getInstance().systemFactory.getOrCreateSystemFactory(chosenSystem);
+		if (resp2.responseCode != 200 ){
+			//TODO: also get out the messages
+			tag.innerHTML="<div>SOMETHING WENT WRONG 2</div>"
+			return null;
+		}
+		let sys = resp2.response as TTRPGSystemJSONFormatting;
+		return sys;
 	}
-
-
+	private setSystemValuesFromBlockData( sys, blockData ){ 
+		debugger
+		console.log( sys, blockData )
+	}
 	public async render(){
  
 		// if the block is brand new, just give it a guid, so we can distinguish blocks from eachother.
@@ -77,8 +107,7 @@ export class BlockRenderer{
 			}catch(e){
 				return null;
 			}
-		}
-
+		} 
 		let blockData :BlockData | null = isValidBlockText(this);
 		
 		
@@ -90,78 +119,59 @@ export class BlockRenderer{
 		
 			let CSS = await FileHandler.readFile(obsidianPath + '/' +'style.css');
 
+			 
 			// Create HTML elements for the block.
+			if( window['GrobaxTTRPGGlobalVariable'][blockData.BlockUUID] ){
+				return;
+			}  
 			let container = this.element.createEl('div');
+			container.setAttr('data-hasViewActive','true');
 			let style		= container.createEl('style');
-				style.innerHTML = CSS;
-
+			style.innerHTML = CSS; 
 			let AppContainer= container.createEl('div');
-				AppContainer.id = blockData.BlockUUID;
-
+			AppContainer.id = blockData.BlockUUID; 
 			let script		= container.createEl('script');
-				script.setAttribute('type','module');
-
-			let path_JS = PluginHandler.App.vault.adapter.getResourcePath(obsidianPath + '/' +'components.js'); 
-
-		
-			// get the right System Preview
-			let resp = await ObsidianUICoreAPI.getInstance().systemDefinition.getAllSystems();
-			if (resp.responseCode != 200 ){
-				//TODO: also get out the messages
-				script.innerHTML="<div>TTPRPG - Could Not Load Available Systems</div>"
-				return;
-			}
-			let chosenSystem = resp.response?.find( p => p.systemCodeName == preview.systemCodeName );
-
-			// ensure it exits
-			if(!chosenSystem){
-				script.innerHTML="<div>The Chosen TTRPG did not apear in Available Systems </div>"
+			script.setAttribute('type','module'); 
+		  
+			// get the right System Preview 
+			let sys = await this.getSystem(AppContainer, blockData) as TTRPGSystemJSONFormatting;
+			if(!sys){
 				return;
 			}
 
-			// get the system factory.
-			let resp2 = await ObsidianUICoreAPI.getInstance().systemFactory.getOrCreateSystemFactory(chosenSystem);
-			if (resp2.responseCode != 200 ){
-				//TODO: also get out the messages
-				script.innerHTML="<div>SOMETHING WENT WRONG 2</div>"
-				return;
-			}
-			let sys = resp2.response as TTRPGSystemJSONFormatting;
- 
+			// Set SystemValues 
+			this.setSystemValuesFromBlockData(sys,blockData);
+  
 			// ADD AlL UI
 			window['GrobaxTTRPGGlobalVariable'][blockData.BlockUUID] ={};
 			window['GrobaxTTRPGGlobalVariable'][blockData.BlockUUID]['sys'] = sys;
+			console.log( blockData.BlockUUID );
 			window['GrobaxTTRPGGlobalVariable'][blockData.BlockUUID]['func'] = 
 			( layoutChange , system ) => {
 				blockData.layout = layoutChange;
 				//TODO: include Ssytem Stats settings
-				const txt = JSONHandler.serialize(blockData , BlockDataSchemes.PAGE );
+				const txt = JSONHandler.serialize(blockData , BlockDataSchemes.PAGE ); 
 				this.writeBlock(txt);
 			}; 
-			script.innerHTML = `
-				
+			let path_JS = PluginHandler.App.vault.adapter.getResourcePath(obsidianPath + '/' +'components.js'); 
+			script.innerHTML = ` 
 				import App from '${path_JS}';	
 				let key = '${blockData.BlockUUID}';
 				const sys = window['GrobaxTTRPGGlobalVariable']['${blockData.BlockUUID}']['sys'];
 				
 				const element = document.getElementById('${blockData.BlockUUID}');
-				const textData= '[]';
+				const textData= '${JSON.stringify(blockData.layout)}';
 				
 				const app = new App({
 					target:element,
 					props: {
 						textData:textData,
 						sys:sys,
-						writeBlock:window['GrobaxTTRPGGlobalVariable'][${blockData.BlockUUID}]['func']
+						writeBlock:window['GrobaxTTRPGGlobalVariable']['${blockData.BlockUUID}']['func']
 					}
-				}); 
-				
+				});  
 			`;
-
-			 
-			
-		
-		 
+ 
 			 
 		}else{
 			new BlockStarter({

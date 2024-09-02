@@ -514,9 +514,8 @@
     export let textData: string;
     export let sys: system; 
     export let writeBlock: ( layout , system ) => any;
-
-    let json = JSON.parse(textData);
-    let DATA = new SheetData(json); 
+		 
+    let DATA = new SheetData(textData ?? ''); 
     let OBJ: Writable<SheetData> = writable(DATA);
  
 
@@ -533,9 +532,14 @@
         DragItemHandler.requestMoveItemUpDown(direction, id);
     }
     onMount(() => {
-        //debugger;
+        
     })
-
+ 
+	let editWasClicked = false;
+	$: if(!$editMode && !$editLayout_01 && !$editLayout_02 && !$editLayout_03 && editWasClicked){
+		writeBlock(DATA,sys);
+	} 
+	 
     let DragRowHandler = new DragHandlerController(OBJ, state);
     let DragColumnHandler = new DragItemHandlerController2(OBJ, state);
     let DragItemHandler = new DragItemHandlerController3(OBJ, state);
@@ -554,7 +558,7 @@
             >
                 <button
                     data-active={$editMode}
-                    on:click={() => editMode.set(!$editMode)}
+                    on:click={() =>{ editMode.set(!$editMode); editWasClicked = true}}
                     >{"Stop Edit	"}</button
                 >
                 <button

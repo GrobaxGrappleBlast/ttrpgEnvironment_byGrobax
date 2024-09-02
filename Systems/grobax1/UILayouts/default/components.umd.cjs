@@ -1,11 +1,7087 @@
-(function(T,ne){typeof exports=="object"&&typeof module<"u"?module.exports=ne():typeof define=="function"&&define.amd?define(ne):(T=typeof globalThis<"u"?globalThis:T||self,T["<<name>>"]=ne())})(this,function(){"use strict";var Vi=Object.defineProperty;var Ti=(T,ne,me)=>ne in T?Vi(T,ne,{enumerable:!0,configurable:!0,writable:!0,value:me}):T[ne]=me;var N=(T,ne,me)=>Ti(T,typeof ne!="symbol"?ne+"":ne,me);function T(){}const ne=n=>n;function me(n){return n()}function rt(){return Object.create(null)}function z(n){n.forEach(me)}function Be(n){return typeof n=="function"}function ie(n,e){return n!=n?e==e:n!==e||n&&typeof n=="object"||typeof n=="function"}function fn(n){return Object.keys(n).length===0}function ot(n,...e){if(n==null){for(const i of e)i(void 0);return T}const t=n.subscribe(...e);return t.unsubscribe?()=>t.unsubscribe():t}function X(n){let e;return ot(n,t=>e=t)(),e}function Oe(n,e,t){n.$$.on_destroy.push(ot(e,t))}function dt(n){const e=typeof n=="string"&&n.match(/^\s*(-?[\d.]+)([^\s]*)\s*$/);return e?[parseFloat(e[1]),e[2]||"px"]:[n,"px"]}const ut=typeof window<"u";let ft=ut?()=>window.performance.now():()=>Date.now(),ze=ut?n=>requestAnimationFrame(n):T;const $e=new Set;function ct(n){$e.forEach(e=>{e.c(n)||($e.delete(e),e.f())}),$e.size!==0&&ze(ct)}function ht(n){let e;return $e.size===0&&ze(ct),{promise:new Promise(t=>{$e.add(e={c:n,f:t})}),abort(){$e.delete(e)}}}function v(n,e){n.appendChild(e)}function gt(n){if(!n)return document;const e=n.getRootNode?n.getRootNode():n.ownerDocument;return e&&e.host?e:n.ownerDocument}function cn(n){const e=y("style");return e.textContent="/* empty */",hn(gt(n),e),e.sheet}function hn(n,e){return v(n.head||n,e),e.sheet}function R(n,e,t){n.insertBefore(e,t||null)}function A(n){n.parentNode&&n.parentNode.removeChild(n)}function Ve(n,e){for(let t=0;t<n.length;t+=1)n[t]&&n[t].d(e)}function y(n){return document.createElement(n)}function G(n){return document.createTextNode(n)}function H(){return G(" ")}function gn(){return G("")}function U(n,e,t,i){return n.addEventListener(e,t,i),()=>n.removeEventListener(e,t,i)}function h(n,e,t){t==null?n.removeAttribute(e):n.getAttribute(e)!==t&&n.setAttribute(e,t)}function Te(n){return n===""?null:+n}function _n(n){return Array.from(n.childNodes)}function ce(n,e){e=""+e,n.data!==e&&(n.data=e)}function pe(n,e){n.value=e??""}function _t(n,e,t,i){t==null?n.style.removeProperty(e):n.style.setProperty(e,t,"")}function mt(n,e,{bubbles:t=!1,cancelable:i=!1}={}){return new CustomEvent(n,{detail:e,bubbles:t,cancelable:i})}function mn(n){const e={};return n.childNodes.forEach(t=>{e[t.slot||"default"]=!0}),e}const Ue=new Map;let Pe=0;function pn(n){let e=5381,t=n.length;for(;t--;)e=(e<<5)-e^n.charCodeAt(t);return e>>>0}function vn(n,e){const t={stylesheet:cn(e),rules:{}};return Ue.set(n,t),t}function Ye(n,e,t,i,s,l,a,r=0){const o=16.666/i;let d=`{
-`;for(let m=0;m<=1;m+=o){const p=e+(t-e)*l(m);d+=m*100+`%{${a(p,1-p)}}
-`}const u=d+`100% {${a(t,1-t)}}
-}`,g=`__svelte_${pn(u)}_${r}`,f=gt(n),{stylesheet:_,rules:c}=Ue.get(f)||vn(f,n);c[g]||(c[g]=!0,_.insertRule(`@keyframes ${g} ${u}`,_.cssRules.length));const b=n.style.animation||"";return n.style.animation=`${b?`${b}, `:""}${g} ${i}ms linear ${s}ms 1 both`,Pe+=1,g}function pt(n,e){const t=(n.style.animation||"").split(", "),i=t.filter(e?l=>l.indexOf(e)<0:l=>l.indexOf("__svelte")===-1),s=t.length-i.length;s&&(n.style.animation=i.join(", "),Pe-=s,Pe||yn())}function yn(){ze(()=>{Pe||(Ue.forEach(n=>{const{ownerNode:e}=n.stylesheet;e&&A(e)}),Ue.clear())})}function Ge(n,e,t,i){if(!e)return T;const s=n.getBoundingClientRect();if(e.left===s.left&&e.right===s.right&&e.top===s.top&&e.bottom===s.bottom)return T;const{delay:l=0,duration:a=300,easing:r=ne,start:o=ft()+l,end:d=o+a,tick:u=T,css:g}=t(n,{from:e,to:s},i);let f=!0,_=!1,c;function b(){g&&(c=Ye(n,0,1,a,l,r,g)),l||(_=!0)}function m(){g&&pt(n,c),f=!1}return ht(p=>{if(!_&&p>=o&&(_=!0),_&&p>=d&&(u(1,0),m()),!f)return!1;if(_){const $=p-o,k=0+1*r($/a);u(k,1-k)}return!0}),b(),u(0,1),m}function We(n){const e=getComputedStyle(n);if(e.position!=="absolute"&&e.position!=="fixed"){const{width:t,height:i}=e,s=n.getBoundingClientRect();n.style.position="absolute",n.style.width=t,n.style.height=i,He(n,s)}}function He(n,e){const t=n.getBoundingClientRect();if(e.left!==t.left||e.top!==t.top){const i=getComputedStyle(n),s=i.transform==="none"?"":i.transform;n.style.transform=`${s} translate(${e.left-t.left}px, ${e.top-t.top}px)`}}let Ne;function Le(n){Ne=n}function Qe(){if(!Ne)throw new Error("Function called outside component initialization");return Ne}function we(n){Qe().$$.on_mount.push(n)}function Ee(n){Qe().$$.on_destroy.push(n)}function Xe(){const n=Qe();return(e,t,{cancelable:i=!1}={})=>{const s=n.$$.callbacks[e];if(s){const l=mt(e,t,{cancelable:i});return s.slice().forEach(a=>{a.call(n,l)}),!l.defaultPrevented}return!0}}function ve(n,e){const t=n.$$.callbacks[e.type];t&&t.slice().forEach(i=>i.call(this,e))}const De=[],se=[];let Ie=[];const Ze=[],bn=Promise.resolve();let xe=!1;function $n(){xe||(xe=!0,bn.then(L))}function le(n){Ie.push(n)}function ke(n){Ze.push(n)}const et=new Set;let Me=0;function L(){if(Me!==0)return;const n=Ne;do{try{for(;Me<De.length;){const e=De[Me];Me++,Le(e),wn(e.$$)}}catch(e){throw De.length=0,Me=0,e}for(Le(null),De.length=0,Me=0;se.length;)se.pop()();for(let e=0;e<Ie.length;e+=1){const t=Ie[e];et.has(t)||(et.add(t),t())}Ie.length=0}while(De.length);for(;Ze.length;)Ze.pop()();xe=!1,et.clear(),Le(n)}function wn(n){if(n.fragment!==null){n.update(),z(n.before_update);const e=n.dirty;n.dirty=[-1],n.fragment&&n.fragment.p(n.ctx,e),n.after_update.forEach(le)}}function Dn(n){const e=[],t=[];Ie.forEach(i=>n.indexOf(i)===-1?e.push(i):t.push(i)),t.forEach(i=>i()),Ie=e}let Ae;function In(){return Ae||(Ae=Promise.resolve(),Ae.then(()=>{Ae=null})),Ae}function tt(n,e,t){n.dispatchEvent(mt(`${e?"intro":"outro"}${t}`))}const je=new Set;let he;function ue(){he={r:0,c:[],p:he}}function fe(){he.r||z(he.c),he=he.p}function B(n,e){n&&n.i&&(je.delete(n),n.i(e))}function j(n,e,t,i){if(n&&n.o){if(je.has(n))return;je.add(n),he.c.push(()=>{je.delete(n),i&&(t&&n.d(1),i())}),n.o(e)}else i&&i()}const kn={duration:0};function Y(n,e,t,i){let l=e(n,t,{direction:"both"}),a=i?0:1,r=null,o=null,d=null,u;function g(){d&&pt(n,d)}function f(c,b){const m=c.b-a;return b*=Math.abs(m),{a,b:c.b,d:m,duration:b,start:c.start,end:c.start+b,group:c.group}}function _(c){const{delay:b=0,duration:m=300,easing:p=ne,tick:$=T,css:k}=l||kn,w={start:ft()+b,b:c};c||(w.group=he,he.r+=1),"inert"in n&&(c?u!==void 0&&(n.inert=u):(u=n.inert,n.inert=!0)),r||o?o=w:(k&&(g(),d=Ye(n,a,c,m,b,p,k)),c&&$(0,1),r=f(w,m),le(()=>tt(n,c,"start")),ht(I=>{if(o&&I>o.start&&(r=f(o,m),o=null,tt(n,r.b,"start"),k&&(g(),d=Ye(n,a,r.b,r.duration,0,p,l.css))),r){if(I>=r.end)$(a=r.b,1-a),tt(n,r.b,"end"),o||(r.b?g():--r.group.r||z(r.group.c)),r=null;else if(I>=r.start){const E=I-r.start;a=r.a+r.d*p(E/r.duration),$(a,1-a)}}return!!(r||o)}))}return{run(c){Be(l)?In().then(()=>{l=l({direction:c?"in":"out"}),_(c)}):_(c)},end(){g(),r=o=null}}}function Z(n){return(n==null?void 0:n.length)!==void 0?n:Array.from(n)}function Mn(n,e){n.d(1),e.delete(n.key)}function Sn(n,e){j(n,1,1,()=>{e.delete(n.key)})}function nt(n,e){n.f(),Sn(n,e)}function Ke(n,e,t,i,s,l,a,r,o,d,u,g){let f=n.length,_=l.length,c=f;const b={};for(;c--;)b[n[c].key]=c;const m=[],p=new Map,$=new Map,k=[];for(c=_;c--;){const K=g(s,l,c),J=t(K);let C=a.get(J);C?k.push(()=>C.p(K,e)):(C=d(J,K),C.c()),p.set(J,m[c]=C),J in b&&$.set(J,Math.abs(c-b[J]))}const w=new Set,I=new Set;function E(K){B(K,1),K.m(r,u),a.set(K.key,K),u=K.first,_--}for(;f&&_;){const K=m[_-1],J=n[f-1],C=K.key,D=J.key;K===J?(u=K.first,f--,_--):p.has(D)?!a.has(C)||w.has(C)?E(K):I.has(D)?f--:$.get(C)>$.get(D)?(I.add(C),E(K)):(w.add(D),f--):(o(J,a),f--)}for(;f--;){const K=n[f];p.has(K.key)||o(K,a)}for(;_;)E(m[_-1]);return z(k),m}function Se(n,e,t){const i=n.$$.props[e];i!==void 0&&(n.$$.bound[i]=t,t(n.$$.ctx[i]))}function x(n){n&&n.c()}function W(n,e,t){const{fragment:i,after_update:s}=n.$$;i&&i.m(e,t),le(()=>{const l=n.$$.on_mount.map(me).filter(Be);n.$$.on_destroy?n.$$.on_destroy.push(...l):z(l),n.$$.on_mount=[]}),s.forEach(le)}function Q(n,e){const t=n.$$;t.fragment!==null&&(Dn(t.after_update),z(t.on_destroy),t.fragment&&t.fragment.d(e),t.on_destroy=t.fragment=null,t.ctx=[])}function Cn(n,e){n.$$.dirty[0]===-1&&(De.push(n),$n(),n.$$.dirty.fill(0)),n.$$.dirty[e/31|0]|=1<<e%31}function re(n,e,t,i,s,l,a=null,r=[-1]){const o=Ne;Le(n);const d=n.$$={fragment:null,ctx:[],props:l,update:T,not_equal:s,bound:rt(),on_mount:[],on_destroy:[],on_disconnect:[],before_update:[],after_update:[],context:new Map(e.context||(o?o.$$.context:[])),callbacks:rt(),dirty:r,skip_bound:!1,root:e.target||o.$$.root};a&&a(d.root);let u=!1;if(d.ctx=t?t(n,e.props||{},(g,f,..._)=>{const c=_.length?_[0]:f;return d.ctx&&s(d.ctx[g],d.ctx[g]=c)&&(!d.skip_bound&&d.bound[g]&&d.bound[g](c),u&&Cn(n,g)),f}):[],d.update(),u=!0,z(d.before_update),d.fragment=i?i(d.ctx):!1,e.target){if(e.hydrate){const g=_n(e.target);d.fragment&&d.fragment.l(g),g.forEach(A)}else d.fragment&&d.fragment.c();e.intro&&B(n.$$.fragment),W(n,e.target,e.anchor),L()}Le(o)}let vt;typeof HTMLElement=="function"&&(vt=class extends HTMLElement{constructor(e,t,i){super();N(this,"$$ctor");N(this,"$$s");N(this,"$$c");N(this,"$$cn",!1);N(this,"$$d",{});N(this,"$$r",!1);N(this,"$$p_d",{});N(this,"$$l",{});N(this,"$$l_u",new Map);this.$$ctor=e,this.$$s=t,i&&this.attachShadow({mode:"open"})}addEventListener(e,t,i){if(this.$$l[e]=this.$$l[e]||[],this.$$l[e].push(t),this.$$c){const s=this.$$c.$on(e,t);this.$$l_u.set(t,s)}super.addEventListener(e,t,i)}removeEventListener(e,t,i){if(super.removeEventListener(e,t,i),this.$$c){const s=this.$$l_u.get(t);s&&(s(),this.$$l_u.delete(t))}}async connectedCallback(){if(this.$$cn=!0,!this.$$c){let e=function(l){return()=>{let a;return{c:function(){a=y("slot"),l!=="default"&&h(a,"name",l)},m:function(d,u){R(d,a,u)},d:function(d){d&&A(a)}}}};if(await Promise.resolve(),!this.$$cn||this.$$c)return;const t={},i=mn(this);for(const l of this.$$s)l in i&&(t[l]=[e(l)]);for(const l of this.attributes){const a=this.$$g_p(l.name);a in this.$$d||(this.$$d[a]=Fe(a,l.value,this.$$p_d,"toProp"))}for(const l in this.$$p_d)!(l in this.$$d)&&this[l]!==void 0&&(this.$$d[l]=this[l],delete this[l]);this.$$c=new this.$$ctor({target:this.shadowRoot||this,props:{...this.$$d,$$slots:t,$$scope:{ctx:[]}}});const s=()=>{this.$$r=!0;for(const l in this.$$p_d)if(this.$$d[l]=this.$$c.$$.ctx[this.$$c.$$.props[l]],this.$$p_d[l].reflect){const a=Fe(l,this.$$d[l],this.$$p_d,"toAttribute");a==null?this.removeAttribute(this.$$p_d[l].attribute||l):this.setAttribute(this.$$p_d[l].attribute||l,a)}this.$$r=!1};this.$$c.$$.after_update.push(s),s();for(const l in this.$$l)for(const a of this.$$l[l]){const r=this.$$c.$on(l,a);this.$$l_u.set(a,r)}this.$$l={}}}attributeChangedCallback(e,t,i){var s;this.$$r||(e=this.$$g_p(e),this.$$d[e]=Fe(e,i,this.$$p_d,"toProp"),(s=this.$$c)==null||s.$set({[e]:this.$$d[e]}))}disconnectedCallback(){this.$$cn=!1,Promise.resolve().then(()=>{!this.$$cn&&this.$$c&&(this.$$c.$destroy(),this.$$c=void 0)})}$$g_p(e){return Object.keys(this.$$p_d).find(t=>this.$$p_d[t].attribute===e||!this.$$p_d[t].attribute&&t.toLowerCase()===e)||e}});function Fe(n,e,t,i){var l;const s=(l=t[n])==null?void 0:l.type;if(e=s==="Boolean"&&typeof e!="boolean"?e!=null:e,!i||!t[n])return e;if(i==="toAttribute")switch(s){case"Object":case"Array":return e==null?null:JSON.stringify(e);case"Boolean":return e?"":null;case"Number":return e??null;default:return e}else switch(s){case"Object":case"Array":return e&&JSON.parse(e);case"Boolean":return e;case"Number":return e!=null?+e:e;default:return e}}function oe(n,e,t,i,s,l){let a=class extends vt{constructor(){super(n,t,s),this.$$p_d=e}static get observedAttributes(){return Object.keys(e).map(r=>(e[r].attribute||r).toLowerCase())}};return Object.keys(e).forEach(r=>{Object.defineProperty(a.prototype,r,{get(){return this.$$c&&r in this.$$c?this.$$c[r]:this.$$d[r]},set(o){var d;o=Fe(r,o,e),this.$$d[r]=o,(d=this.$$c)==null||d.$set({[r]:o})}})}),i.forEach(r=>{Object.defineProperty(a.prototype,r,{get(){var o;return(o=this.$$c)==null?void 0:o[r]}})}),n.element=a,a}class de{constructor(){N(this,"$$");N(this,"$$set")}$destroy(){Q(this,1),this.$destroy=T}$on(e,t){if(!Be(t))return T;const i=this.$$.callbacks[e]||(this.$$.callbacks[e]=[]);return i.push(t),()=>{const s=i.indexOf(t);s!==-1&&i.splice(s,1)}}$set(e){this.$$set&&!fn(e)&&(this.$$.skip_bound=!0,this.$$set(e),this.$$.skip_bound=!1)}}const On="4";typeof window<"u"&&(window.__svelte||(window.__svelte={v:new Set})).v.add(On);class Nn{constructor(){N(this,"keyCounter",0)}getNewKey(){return(this.keyCounter++).toString(16)}}var ge=new Nn;class it{constructor(e="NONE",t="{}"){N(this,"id");N(this,"type");N(this,"data");this.id=ge.getNewKey(),this.type=e,this.data=JSON.parse(t)}}class yt{constructor(e=[]){N(this,"id");N(this,"data",[]);this.id=ge.getNewKey(),this.data=[],e.forEach(t=>{t!=null&&t.data&&t.type?this.data.push(new it(t.type,t.data)):this.data.push(new it)})}addItem(){this.data.push(new it)}remItem(e){let t=this.data.findIndex(i=>i.id==e);if(t==-1){console.error("cant remove column, since id is not present in data");return}this.data.splice(t,1)}}class bt{constructor(e=[]){N(this,"id");N(this,"data",[]);this.id=ge.getNewKey(),this.data=[],e.forEach(t=>{this.data.push(new yt(t.data))})}addColumn(){this.data.push(new yt)}remColumn(e){let t=this.data.findIndex(i=>i.id==e);if(t==-1){console.error("cant remove column, since id is not present in data");return}this.data.splice(t,1)}}class Ln{constructor(e){N(this,"id");N(this,"data",[]);this.id=ge.getNewKey(),this.data=[],e.forEach(t=>{t.data&&this.data.push(new bt(t.data))})}addRow(){this.data.push(new bt)}remRow(e){let t=this.data.findIndex(i=>i.id==e);if(t==-1){console.error("cant remove Row, since id is not present in data");return}this.data.splice(t,1)}}const Ce=[];function Re(n,e=T){let t;const i=new Set;function s(r){if(ie(n,r)&&(n=r,t)){const o=!Ce.length;for(const d of i)d[1](),Ce.push(d,n);if(o){for(let d=0;d<Ce.length;d+=2)Ce[d][0](Ce[d+1]);Ce.length=0}}}function l(r){s(r(n))}function a(r,o=T){const d=[r,o];return i.add(d),i.size===1&&(t=e(s,l)||T),r(n),()=>{i.delete(d),i.size===0&&t&&(t(),t=null)}}return{set:s,update:l,subscribe:a}}function st(n){const e=n-1;return e*e*e+1}function qe(n,{delay:e=0,duration:t=400,easing:i=ne}={}){const s=+getComputedStyle(n).opacity;return{delay:e,duration:t,easing:i,css:l=>`opacity: ${l*s}`}}function $t(n,{delay:e=0,duration:t=400,easing:i=st,x:s=0,y:l=0,opacity:a=0}={}){const r=getComputedStyle(n),o=+r.opacity,d=r.transform==="none"?"":r.transform,u=o*(1-a),[g,f]=dt(s),[_,c]=dt(l);return{delay:e,duration:t,easing:i,css:(b,m)=>`
-			transform: ${d} translate(${(1-b)*g}${f}, ${(1-b)*_}${c});
-			opacity: ${o-u*m}`}}function ae(n,{delay:e=0,duration:t=400,easing:i=st,axis:s="y"}={}){const l=getComputedStyle(n),a=+l.opacity,r=s==="y"?"height":"width",o=parseFloat(l[r]),d=s==="y"?["top","bottom"]:["left","right"],u=d.map(p=>`${p[0].toUpperCase()}${p.slice(1)}`),g=parseFloat(l[`padding${u[0]}`]),f=parseFloat(l[`padding${u[1]}`]),_=parseFloat(l[`margin${u[0]}`]),c=parseFloat(l[`margin${u[1]}`]),b=parseFloat(l[`border${u[0]}Width`]),m=parseFloat(l[`border${u[1]}Width`]);return{delay:e,duration:t,easing:i,css:p=>`overflow: hidden;opacity: ${Math.min(p*20,1)*a};${r}: ${p*o}px;padding-${d[0]}: ${p*g}px;padding-${d[1]}: ${p*f}px;margin-${d[0]}: ${p*_}px;margin-${d[1]}: ${p*c}px;border-${d[0]}-width: ${p*b}px;border-${d[1]}-width: ${p*m}px;`}}function En(n){let e,t,i;return{c(){e=y("div"),e.textContent="Hit Point Maximum",t=H(),i=y("input"),h(i,"type","number")},m(s,l){R(s,e,l),R(s,t,l),R(s,i,l)},d(s){s&&(A(e),A(t),A(i))}}}function An(n){let e,t,i;return{c(){e=y("div"),e.textContent="Hit Point Maximum",t=H(),i=y("input"),h(i,"type","number")},m(s,l){R(s,e,l),R(s,t,l),R(s,i,l)},d(s){s&&(A(e),A(t),A(i))}}}function Rn(n){let e,t,i;return{c(){e=y("div"),e.textContent="Hit Point Maximum",t=H(),i=y("input"),h(i,"type","number")},m(s,l){R(s,e,l),R(s,t,l),R(s,i,l)},d(s){s&&(A(e),A(t),A(i))}}}function Bn(n){let e,t,i,s,l,a,r,o,d,u,g,f;function _(m,p){return m[0]?Rn:m[1]?An:En}let c=_(n),b=c(n);return{c(){e=y("div"),t=y("div"),t.textContent="Hit Points",i=H(),s=y("input"),a=H(),r=y("div"),r.textContent="temporary Hit Points",o=H(),d=y("input"),u=H(),b.c(),h(s,"type","number"),s.disabled=l=!n[0],h(d,"type","number")},m(m,p){R(m,e,p),v(e,t),v(e,i),v(e,s),pe(s,n[2]),v(e,a),v(e,r),v(e,o),v(e,d),v(e,u),b.m(e,null),g||(f=[U(s,"input",n[6]),U(s,"change",n[3])],g=!0)},p(m,[p]){p&1&&l!==(l=!m[0])&&(s.disabled=l),p&4&&Te(s.value)!==m[2]&&pe(s,m[2]),c!==(c=_(m))&&(b.d(1),b=c(m),b&&(b.c(),b.m(e,null)))},i:T,o:T,d(m){m&&A(e),b.d(),g=!1,z(f)}}}function Vn(n,e,t){let{sys:i}=e,{editMode:s}=e,{playMode:l}=e,{data:a}=e,r=i.getNode("fixed","generic","Hit Points"),o=r.getValue();const d=ge.getNewKey();we(()=>{r.addUpdateListener(name+d+"SvelteView",()=>{t(2,o=r.getValue())})}),Ee(()=>{r.removeUpdateListener(name+d+"SvelteView")});function u(){return r.setValue(o),null}function g(){o=Te(this.value),t(2,o)}return n.$$set=f=>{"sys"in f&&t(4,i=f.sys),"editMode"in f&&t(0,s=f.editMode),"playMode"in f&&t(1,l=f.playMode),"data"in f&&t(5,a=f.data)},[s,l,o,u,i,a,g]}class wt extends de{constructor(e){super(),re(this,e,Vn,Bn,ie,{sys:4,editMode:0,playMode:1,data:5})}get sys(){return this.$$.ctx[4]}set sys(e){this.$$set({sys:e}),L()}get editMode(){return this.$$.ctx[0]}set editMode(e){this.$$set({editMode:e}),L()}get playMode(){return this.$$.ctx[1]}set playMode(e){this.$$set({playMode:e}),L()}get data(){return this.$$.ctx[5]}set data(e){this.$$set({data:e}),L()}}oe(wt,{sys:{},editMode:{},playMode:{},data:{}},[],[],!0);var ye=(n=>(n.HitPoints="HitPoints",n.ProficiencyBonus="ProficiencyBonus",n.SkillProficiencies="SkillProficiencies",n.SpellInfo="SpellInfo",n.Stats="Stats",n))(ye||{});function Tn(n,{from:e,to:t},i={}){const s=getComputedStyle(n),l=s.transform==="none"?"":s.transform,[a,r]=s.transformOrigin.split(" ").map(parseFloat),o=e.left+e.width*a/t.width-(t.left+a),d=e.top+e.height*r/t.height-(t.top+r),{delay:u=0,duration:g=_=>Math.sqrt(_)*120,easing:f=st}=i;return{delay:u,duration:Be(g)?g(Math.sqrt(o*o+d*d)):g,easing:f,css:(_,c)=>{const b=c*o,m=c*d,p=_+c*e.width/t.width,$=_+c*e.height/t.height;return`transform: ${l} translate(${b}px, ${m}px) scale(${p}, ${$});`}}}function Dt(n,e,t){const i=n.slice();return i[23]=e[t],i}function It(n){let e,t=(n[0]==null?n[2]:n[0])+"",i,s,l,a,r,o;return{c(){e=y("div"),i=G(t),h(e,"class","GrobSelectLabel effect"),h(e,"data-isdisabled",s=n[3]??!1),h(e,"data-iserror",l=n[4]??!1),h(e,"data-selected",a=n[0]??!1),h(e,"tabindex","-1")},m(d,u){R(d,e,u),v(e,i),n[17](e),r||(o=[U(e,"focus",n[13]),U(e,"blur",n[14])],r=!0)},p(d,u){u&5&&t!==(t=(d[0]==null?d[2]:d[0])+"")&&ce(i,t),u&8&&s!==(s=d[3]??!1)&&h(e,"data-isdisabled",s),u&16&&l!==(l=d[4]??!1)&&h(e,"data-iserror",l),u&1&&a!==(a=d[0]??!1)&&h(e,"data-selected",a)},d(d){d&&A(e),n[17](null),r=!1,z(o)}}}function kt(n){let e,t,i,s,l,a=[],r=new Map,o,d,u,g,f,_,c=Z(n[1]);const b=p=>p[23];for(let p=0;p<c.length;p+=1){let $=Dt(n,c,p),k=b($);r.set(k,a[p]=Mt(k,$))}let m=n[1].length==0&&St();return{c(){var p,$,k,w;e=y("div"),t=y("div"),i=y("div"),l=H();for(let I=0;I<a.length;I+=1)a[I].c();o=H(),m&&m.c(),d=H(),u=y("div"),h(i,"class","Arrow"),h(i,"style",s=`left:${n[12]}px`),h(t,"class","ArrowContainer"),h(u,"class","selectEndTracker"),h(e,"class","SelectPopUp"),h(e,"style",g="width:"+(((p=n[7])==null?void 0:p.width)??100)+"px;left: "+((($=n[7])==null?void 0:$.x)??0)+"px;top: "+((((k=n[7])==null?void 0:k.y)??0)+(((w=n[7])==null?void 0:w.height)??0)+8)+"px;max-height:"+n[11]+"px")},m(p,$){R(p,e,$),v(e,t),v(t,i),n[18](t),v(e,l);for(let k=0;k<a.length;k+=1)a[k]&&a[k].m(e,null);v(e,o),m&&m.m(e,null),v(e,d),v(e,u),n[19](u),_=!0},p(p,$){var k,w,I,E;(!_||$&4096&&s!==(s=`left:${p[12]}px`))&&h(i,"style",s),$&32771&&(c=Z(p[1]),a=Ke(a,$,b,1,p,c,r,e,Mn,Mt,o,Dt)),p[1].length==0?m||(m=St(),m.c(),m.m(e,d)):m&&(m.d(1),m=null),(!_||$&2176&&g!==(g="width:"+(((k=p[7])==null?void 0:k.width)??100)+"px;left: "+(((w=p[7])==null?void 0:w.x)??0)+"px;top: "+((((I=p[7])==null?void 0:I.y)??0)+(((E=p[7])==null?void 0:E.height)??0)+8)+"px;max-height:"+p[11]+"px"))&&h(e,"style",g)},i(p){_||(p&&le(()=>{_&&(f||(f=Y(e,ae,{},!0)),f.run(1))}),_=!0)},o(p){p&&(f||(f=Y(e,ae,{},!1)),f.run(0)),_=!1},d(p){p&&A(e),n[18](null);for(let $=0;$<a.length;$+=1)a[$].d();m&&m.d(),n[19](null),p&&f&&f.end()}}}function Mt(n,e){let t,i=e[23]+"",s,l,a,r,o;return{key:n,first:null,c(){t=y("div"),s=G(i),h(t,"role","none"),h(t,"class","GrobSelectOption"),h(t,"data-selected",l=e[0]==e[23]),h(t,"data-value",a=e[23]),this.first=t},m(d,u){R(d,t,u),v(t,s),r||(o=[U(t,"click",e[15]),U(t,"keydown",e[15])],r=!0)},p(d,u){e=d,u&2&&i!==(i=e[23]+"")&&ce(s,i),u&3&&l!==(l=e[0]==e[23])&&h(t,"data-selected",l),u&2&&a!==(a=e[23])&&h(t,"data-value",a)},d(d){d&&A(t),r=!1,z(o)}}}function St(n){let e;return{c(){e=y("i"),e.textContent="No Options",h(e,"class","GrobSelectInfo")},m(t,i){R(t,e,i)},d(t){t&&A(e)}}}function Un(n){let e,t=n[0],i,s,l=It(n),a=(n[8]||n[5])&&kt(n);return{c(){e=y("div"),l.c(),i=H(),s=y("div"),a&&a.c(),h(e,"class","GrobSelect")},m(r,o){R(r,e,o),l.m(e,null),v(e,i),v(e,s),a&&a.m(s,null)},p(r,[o]){o&1&&ie(t,t=r[0])?(l.d(1),l=It(r),l.c(),l.m(e,i)):l.p(r,o),r[8]||r[5]?a?(a.p(r,o),o&288&&B(a,1)):(a=kt(r),a.c(),B(a,1),a.m(s,null)):a&&(ue(),j(a,1,1,()=>{a=null}),fe())},i(r){B(a)},o(r){j(a)},d(r){r&&A(e),l.d(r),a&&a.d()}}}const Pn=100;function Hn(n,e,t){let i=Xe(),{options:s}=e,{selected:l=null}=e,{unSelectedplaceholder:a="None Selected"}=e,{disabled:r=!1}=e,{isError:o=!1}=e,{forceOpen:d=!1}=e,{maxHeight:u=500}=e,g,f,_=!1,c,b,m=u,p=0;function $(){const D=g.getBoundingClientRect();t(7,f=D),t(8,_=!0),E(),setTimeout(I,Pn)}function k(){setTimeout(()=>{t(8,_=!1)},200)}function w(D){let F=D.target.getAttribute("data-value");l==F?(t(0,l=null),i("onDeselect")):(t(0,l=F),i("onSelect",l))}function I(){let D=b.getBoundingClientRect().bottom,F=c.getBoundingClientRect().bottom,ee=window.document.body.getBoundingClientRect().height;if(F>ee){let te=F-ee,M=F-D-te;M<m&&t(11,m=M)}}function E(){let D=g.getBoundingClientRect().width;t(12,p=D/2)}function K(D){se[D?"unshift":"push"](()=>{g=D,t(6,g)})}function J(D){se[D?"unshift":"push"](()=>{b=D,t(10,b)})}function C(D){se[D?"unshift":"push"](()=>{c=D,t(9,c)})}return n.$$set=D=>{"options"in D&&t(1,s=D.options),"selected"in D&&t(0,l=D.selected),"unSelectedplaceholder"in D&&t(2,a=D.unSelectedplaceholder),"disabled"in D&&t(3,r=D.disabled),"isError"in D&&t(4,o=D.isError),"forceOpen"in D&&t(5,d=D.forceOpen),"maxHeight"in D&&t(16,u=D.maxHeight)},[l,s,a,r,o,d,g,f,_,c,b,m,p,$,k,w,u,K,J,C]}class jn extends de{constructor(e){super(),re(this,e,Hn,Un,ie,{options:1,selected:0,unSelectedplaceholder:2,disabled:3,isError:4,forceOpen:5,maxHeight:16})}get options(){return this.$$.ctx[1]}set options(e){this.$$set({options:e}),L()}get selected(){return this.$$.ctx[0]}set selected(e){this.$$set({selected:e}),L()}get unSelectedplaceholder(){return this.$$.ctx[2]}set unSelectedplaceholder(e){this.$$set({unSelectedplaceholder:e}),L()}get disabled(){return this.$$.ctx[3]}set disabled(e){this.$$set({disabled:e}),L()}get isError(){return this.$$.ctx[4]}set isError(e){this.$$set({isError:e}),L()}get forceOpen(){return this.$$.ctx[5]}set forceOpen(e){this.$$set({forceOpen:e}),L()}get maxHeight(){return this.$$.ctx[16]}set maxHeight(e){this.$$set({maxHeight:e}),L()}}oe(jn,{options:{},selected:{},unSelectedplaceholder:{},disabled:{type:"Boolean"},isError:{type:"Boolean"},forceOpen:{type:"Boolean"},maxHeight:{}},[],[],!0);function Ct(n,e,t){const i=n.slice();return i[8]=e[t],i}function Ot(n){let e,t=n[8]+"",i,s;return{c(){e=y("option"),i=G(t),s=H(),e.__value=n[8],pe(e,e.__value),e.selected=n[2]==n[8]},m(l,a){R(l,e,a),v(e,i),v(e,s)},p:T,d(l){l&&A(e)}}}function Kn(n){let e,t,i,s,l,a,r,o=Z(n[1]),d=[];for(let u=0;u<o.length;u+=1)d[u]=Ot(Ct(n,o,u));return{c(){e=y("div"),t=y("div"),i=y("div"),s=y("select"),l=y("option"),l.textContent="choose component ";for(let u=0;u<d.length;u+=1)d[u].c();l.__value=null,pe(l,l.__value),h(i,"class","ItemOptionBtn "),h(t,"class","ItemOptions"),h(e,"class","ItemOptionsContainer")},m(u,g){R(u,e,g),v(e,t),v(t,i),v(i,s),v(s,l);for(let f=0;f<d.length;f+=1)d[f]&&d[f].m(s,null);n[6](s),a||(r=U(s,"change",n[3]),a=!0)},p(u,[g]){if(g&6){o=Z(u[1]);let f;for(f=0;f<o.length;f+=1){const _=Ct(u,o,f);d[f]?d[f].p(_,g):(d[f]=Ot(_),d[f].c(),d[f].m(s,null))}for(;f<d.length;f+=1)d[f].d(1);d.length=o.length}},i:T,o:T,d(u){u&&A(e),Ve(d,u),n[6](null),a=!1,r()}}}function Fn(n,e,t){let i=Xe(),{data:s}=e,{editMode:l}=e,a=Object.keys(ye),r=s.type,o;function d(){let g=o.value;t(4,s.type=g,s),i("optionSelected")}function u(g){se[g?"unshift":"push"](()=>{o=g,t(0,o),t(1,a)})}return n.$$set=g=>{"data"in g&&t(4,s=g.data),"editMode"in g&&t(5,l=g.editMode)},[o,a,r,d,s,l,u]}class Nt extends de{constructor(e){super(),re(this,e,Fn,Kn,ie,{data:4,editMode:5})}get data(){return this.$$.ctx[4]}set data(e){this.$$set({data:e}),L()}get editMode(){return this.$$.ctx[5]}set editMode(e){this.$$set({editMode:e}),L()}}oe(Nt,{data:{},editMode:{}},[],[],!0);function qn(n){let e,t,i,s,l,a,r;return{c(){e=y("div"),t=y("div"),t.textContent="Proficiency Bonus",i=H(),s=y("input"),h(s,"type","number"),s.disabled=l=!n[0],h(e,"class","ProficiencyBonus")},m(o,d){R(o,e,d),v(e,t),v(e,i),v(e,s),pe(s,n[1]),a||(r=[U(s,"input",n[5]),U(s,"change",n[2])],a=!0)},p(o,[d]){d&1&&l!==(l=!o[0])&&(s.disabled=l),d&2&&Te(s.value)!==o[1]&&pe(s,o[1])},i:T,o:T,d(o){o&&A(e),a=!1,z(r)}}}function Jn(n,e,t){let{sys:i}=e,{editMode:s}=e,{data:l}=e,a=i.getNode("fixed","generic","Proficiency Bonus"),r=a.getValue();const o=ge.getNewKey();we(()=>{a.addUpdateListener(name+o+"SvelteView",()=>{t(1,r=a.getValue())})}),Ee(()=>{a.removeUpdateListener(name+o+"SvelteView")});function d(){return a.setValue(r),null}function u(){r=Te(this.value),t(1,r)}return n.$$set=g=>{"sys"in g&&t(3,i=g.sys),"editMode"in g&&t(0,s=g.editMode),"data"in g&&t(4,l=g.data)},[s,r,d,i,l,u]}class Lt extends de{constructor(e){super(),re(this,e,Jn,qn,ie,{sys:3,editMode:0,data:4})}get sys(){return this.$$.ctx[3]}set sys(e){this.$$set({sys:e}),L()}get editMode(){return this.$$.ctx[0]}set editMode(e){this.$$set({editMode:e}),L()}get data(){return this.$$.ctx[4]}set data(e){this.$$set({data:e}),L()}}oe(Lt,{sys:{},editMode:{},data:{}},[],[],!0);function zn(n){let e,t,i,s,l,a,r,o,d,u,g,f,_;return{c(){e=y("div"),t=y("div"),i=y("div"),s=H(),l=y("div"),a=y("p"),r=G(n[1]),o=H(),d=y("div"),u=y("p"),g=G(n[3]),h(i,"class","skillproficiencyMark"),h(i,"data-level",n[2]),h(i,"role","none"),h(t,"class","skillproficiencyMarkParent"),h(l,"class","skillproficiencyMarkName"),h(d,"class","skillproficiencyMarkValue"),h(e,"class","skillproficiencyContainer"),h(e,"data-edit",n[0])},m(c,b){R(c,e,b),v(e,t),v(t,i),v(e,s),v(e,l),v(l,a),v(a,r),v(e,o),v(e,d),v(d,u),v(u,g),f||(_=[U(i,"keyup",n[6]),U(i,"click",n[4])],f=!0)},p(c,[b]){b&4&&h(i,"data-level",c[2]),b&2&&ce(r,c[1]),b&8&&ce(g,c[3]),b&1&&h(e,"data-edit",c[0])},i:T,o:T,d(c){c&&A(e),f=!1,z(_)}}}function Yn(n,e,t){let{edit:i}=e,{name:s}=e,{sys:l}=e,a=l.getNode("fixed","SkillProficiencies",s),r=l.getNode("derived","skillproficiencyBonus",s),o=a.getValue(),d=r.getValue();const u=ge.getNewKey();we(()=>{a.addUpdateListener(s+u+"SvelteView",()=>{t(2,o=a.getValue())}),r.addUpdateListener(s+u+"SvelteView",()=>{t(3,d=r.getValue())})}),Ee(()=>{a.removeUpdateListener(s+"SvelteView"),r.removeUpdateListener(s+"SvelteView")});function g(){if(!i)return;let _=a.getValue();return _=(_+1)%3,a.setValue(_),null}function f(_){ve.call(this,n,_)}return n.$$set=_=>{"edit"in _&&t(0,i=_.edit),"name"in _&&t(1,s=_.name),"sys"in _&&t(5,l=_.sys)},[i,s,o,d,g,l,f]}class Et extends de{constructor(e){super(),re(this,e,Yn,zn,ie,{edit:0,name:1,sys:5})}get edit(){return this.$$.ctx[0]}set edit(e){this.$$set({edit:e}),L()}get name(){return this.$$.ctx[1]}set name(e){this.$$set({name:e}),L()}get sys(){return this.$$.ctx[5]}set sys(e){this.$$set({sys:e}),L()}}oe(Et,{edit:{},name:{},sys:{}},[],[],!0);function At(n,e,t){const i=n.slice();return i[4]=e[t],i}function Rt(n){let e,t;return e=new Et({props:{edit:n[0],name:n[4],sys:n[1]}}),{c(){x(e.$$.fragment)},m(i,s){W(e,i,s),t=!0},p(i,s){const l={};s&1&&(l.edit=i[0]),s&2&&(l.sys=i[1]),e.$set(l)},i(i){t||(B(e.$$.fragment,i),t=!0)},o(i){j(e.$$.fragment,i),t=!1},d(i){Q(e,i)}}}function Gn(n){let e,t,i=Z(n[2]),s=[];for(let a=0;a<i.length;a+=1)s[a]=Rt(At(n,i,a));const l=a=>j(s[a],1,1,()=>{s[a]=null});return{c(){e=y("div");for(let a=0;a<s.length;a+=1)s[a].c();h(e,"class","skillproficiencyCollection"),h(e,"data-edit",n[0])},m(a,r){R(a,e,r);for(let o=0;o<s.length;o+=1)s[o]&&s[o].m(e,null);t=!0},p(a,[r]){if(r&7){i=Z(a[2]);let o;for(o=0;o<i.length;o+=1){const d=At(a,i,o);s[o]?(s[o].p(d,r),B(s[o],1)):(s[o]=Rt(d),s[o].c(),B(s[o],1),s[o].m(e,null))}for(ue(),o=i.length;o<s.length;o+=1)l(o);fe()}(!t||r&1)&&h(e,"data-edit",a[0])},i(a){if(!t){for(let r=0;r<i.length;r+=1)B(s[r]);t=!0}},o(a){s=s.filter(Boolean);for(let r=0;r<s.length;r+=1)j(s[r]);t=!1},d(a){a&&A(e),Ve(s,a)}}}function Wn(n,e,t){let{edit:i}=e,{sys:s}=e,{data:l}=e,a=s.getNodeNames("fixed","SkillProficiencies");return n.$$set=r=>{"edit"in r&&t(0,i=r.edit),"sys"in r&&t(1,s=r.sys),"data"in r&&t(3,l=r.data)},[i,s,a,l]}class Bt extends de{constructor(e){super(),re(this,e,Wn,Gn,ie,{edit:0,sys:1,data:3})}get edit(){return this.$$.ctx[0]}set edit(e){this.$$set({edit:e}),L()}get sys(){return this.$$.ctx[1]}set sys(e){this.$$set({sys:e}),L()}get data(){return this.$$.ctx[3]}set data(e){this.$$set({data:e}),L()}}oe(Bt,{edit:{},sys:{},data:{}},[],[],!0);function Vt(n,e,t){const i=n.slice();return i[17]=e[t],i}function Qn(n){let e;return{c(){e=y("div")},m(t,i){R(t,e,i)},p:T,d(t){t&&A(e)}}}function Xn(n){let e,t,i,s,l=Z(n[5]),a=[];for(let r=0;r<l.length;r+=1)a[r]=Tt(Vt(n,l,r));return{c(){e=y("div"),t=y("select");for(let r=0;r<a.length;r+=1)a[r].c()},m(r,o){R(r,e,o),v(e,t);for(let d=0;d<a.length;d+=1)a[d]&&a[d].m(t,null);n[9](t),i||(s=U(t,"change",n[6]),i=!0)},p(r,o){if(o&34){l=Z(r[5]);let d;for(d=0;d<l.length;d+=1){const u=Vt(r,l,d);a[d]?a[d].p(u,o):(a[d]=Tt(u),a[d].c(),a[d].m(t,null))}for(;d<a.length;d+=1)a[d].d(1);a.length=l.length}},d(r){r&&A(e),Ve(a,r),n[9](null),i=!1,s()}}}function Tt(n){let e,t=n[17]+"",i,s,l;return{c(){e=y("option"),i=G(t),s=H(),e.__value=n[17],pe(e,e.__value),e.selected=l=n[17]==n[1]},m(a,r){R(a,e,r),v(e,i),v(e,s)},p(a,r){r&2&&l!==(l=a[17]==a[1])&&(e.selected=l)},d(a){a&&A(e)}}}function Zn(n){let e,t,i,s,l,a,r,o,d,u,g,f,_,c,b,m,p;function $(I,E){return I[0]?Xn:Qn}let k=$(n),w=k(n);return{c(){e=y("div"),w.c(),t=H(),i=y("div"),s=y("div"),l=G(n[1]),a=H(),r=y("div"),o=y("div"),o.textContent="Spell DC",d=H(),u=y("div"),g=G(n[2]),f=H(),_=y("div"),c=y("div"),c.textContent="Spell Bonus",b=H(),m=y("div"),p=G(n[3]),h(i,"class","spellDCContainer")},m(I,E){R(I,e,E),w.m(e,null),v(e,t),v(e,i),v(i,s),v(s,l),v(i,a),v(i,r),v(r,o),v(r,d),v(r,u),v(u,g),v(i,f),v(i,_),v(_,c),v(_,b),v(_,m),v(m,p)},p(I,[E]){k===(k=$(I))&&w?w.p(I,E):(w.d(1),w=k(I),w&&(w.c(),w.m(e,t))),E&2&&ce(l,I[1]),E&4&&ce(g,I[2]),E&8&&ce(p,I[3])},i:T,o:T,d(I){I&&A(e),w.d()}}}function xn(n,e,t){let{sys:i}=e,{edit:s}=e,{data:l}=e;const a=ge.getNewKey();let r=l.data,o=i.getNodeNames("derived","Spell Bonus");JSON.stringify(r)===JSON.stringify({})&&(r.showStat=o[0]);let d=r.showStat,u=i.getNode("derived","Spell Bonus",d),g=i.getNode("derived","Spell DC",d),f=u.getValue(),_=g.getValue(),c;function b(){let w=c.value;t(1,d=w),u=i.getNode("derived","Spell Bonus",d),g=i.getNode("derived","Spell DC",d),t(2,f=u.getValue()),t(3,_=g.getValue())}function m(){t(2,f=u.getValue()),t(3,_=g.getValue())}function p(){u.addUpdateListener(name+"SpellInfoView"+a,()=>{m()}),g.addUpdateListener(name+"SpellInfoView"+a,()=>{m()})}we(()=>{p()});function $(){u.removeUpdateListener(name+"SpellInfoView"+a),g.removeUpdateListener(name+"SpellInfoView"+a)}Ee(()=>{$()});function k(w){se[w?"unshift":"push"](()=>{c=w,t(4,c),t(5,o)})}return n.$$set=w=>{"sys"in w&&t(7,i=w.sys),"edit"in w&&t(0,s=w.edit),"data"in w&&t(8,l=w.data)},[s,d,f,_,c,o,b,i,l,k]}class Ut extends de{constructor(e){super(),re(this,e,xn,Zn,ie,{sys:7,edit:0,data:8})}get sys(){return this.$$.ctx[7]}set sys(e){this.$$set({sys:e}),L()}get edit(){return this.$$.ctx[0]}set edit(e){this.$$set({edit:e}),L()}get data(){return this.$$.ctx[8]}set data(e){this.$$set({data:e}),L()}}oe(Ut,{sys:{},edit:{},data:{}},[],[],!0);function ei(n){let e,t,i,s,l,a,r,o,d,u,g,f,_;return{c(){e=y("div"),t=y("div"),i=G(n[0]),s=H(),l=y("div"),a=y("input"),o=H(),d=y("div"),u=y("div"),g=G(n[3]),h(t,"class","statTitle"),h(a,"class","BoxValue"),h(a,"data-editmode",n[1]),a.disabled=r=!n[1],a.value=n[2],h(a,"type","number"),h(a,"min","0"),h(a,"max","100"),h(l,"class","LargeValue"),h(u,"class","BoxValue"),h(d,"class","SmallValue"),h(e,"class","StatValue")},m(c,b){R(c,e,b),v(e,t),v(t,i),v(e,s),v(e,l),v(l,a),n[8](a),v(e,o),v(e,d),v(d,u),v(u,g),f||(_=U(a,"change",n[5]),f=!0)},p(c,[b]){b&1&&ce(i,c[0]),b&2&&h(a,"data-editmode",c[1]),b&2&&r!==(r=!c[1])&&(a.disabled=r),b&4&&a.value!==c[2]&&(a.value=c[2]),b&8&&ce(g,c[3])},i:T,o:T,d(c){c&&A(e),n[8](null),f=!1,_()}}}function ti(n,e,t){let{name:i}=e,{statNode:s}=e,{modNode:l}=e,{editmode:a=!1}=e,r=s.getValue(),o=l.getValue();const d=ge.getNewKey();we(()=>{s.addUpdateListener("onDerivedNodeUpdate"+d,u),l.addUpdateListener("onDerivedNodeUpdate"+d,u)}),Ee(()=>{s.removeUpdateListener("onDerivedNodeUpdate"+d),l.removeUpdateListener("onDerivedNodeUpdate"+d)});function u(){t(2,r=s.getValue()),t(3,o=l.getValue())}function g(){let c=parseInt(f.value);s.setValue(c)}let f;function _(c){se[c?"unshift":"push"](()=>{f=c,t(4,f)})}return n.$$set=c=>{"name"in c&&t(0,i=c.name),"statNode"in c&&t(6,s=c.statNode),"modNode"in c&&t(7,l=c.modNode),"editmode"in c&&t(1,a=c.editmode)},[i,a,r,o,f,g,s,l,_]}class Pt extends de{constructor(e){super(),re(this,e,ti,ei,ie,{name:0,statNode:6,modNode:7,editmode:1})}get name(){return this.$$.ctx[0]}set name(e){this.$$set({name:e}),L()}get statNode(){return this.$$.ctx[6]}set statNode(e){this.$$set({statNode:e}),L()}get modNode(){return this.$$.ctx[7]}set modNode(e){this.$$set({modNode:e}),L()}get editmode(){return this.$$.ctx[1]}set editmode(e){this.$$set({editmode:e}),L()}}oe(Pt,{name:{},statNode:{},modNode:{},editmode:{type:"Boolean"}},[],[],!0);function Ht(n,e,t){const i=n.slice();i[3]=e[t];const s=i[0].getNode("fixed","stats",i[3]);i[4]=s;const l=i[0].getNode("derived","modifiers",i[3]);return i[5]=l,i}function jt(n){let e,t;return e=new Pt({props:{name:n[3],statNode:n[4],modNode:n[5],editmode:n[1]}}),{c(){x(e.$$.fragment)},m(i,s){W(e,i,s),t=!0},p(i,s){const l={};s&1&&(l.statNode=i[4]),s&1&&(l.modNode=i[5]),s&2&&(l.editmode=i[1]),e.$set(l)},i(i){t||(B(e.$$.fragment,i),t=!0)},o(i){j(e.$$.fragment,i),t=!1},d(i){Q(e,i)}}}function ni(n){let e,t,i=Z(n[2]),s=[];for(let a=0;a<i.length;a+=1)s[a]=jt(Ht(n,i,a));const l=a=>j(s[a],1,1,()=>{s[a]=null});return{c(){e=y("div");for(let a=0;a<s.length;a+=1)s[a].c();h(e,"class","StatsRow")},m(a,r){R(a,e,r);for(let o=0;o<s.length;o+=1)s[o]&&s[o].m(e,null);t=!0},p(a,[r]){if(r&7){i=Z(a[2]);let o;for(o=0;o<i.length;o+=1){const d=Ht(a,i,o);s[o]?(s[o].p(d,r),B(s[o],1)):(s[o]=jt(d),s[o].c(),B(s[o],1),s[o].m(e,null))}for(ue(),o=i.length;o<s.length;o+=1)l(o);fe()}},i(a){if(!t){for(let r=0;r<i.length;r+=1)B(s[r]);t=!0}},o(a){s=s.filter(Boolean);for(let r=0;r<s.length;r+=1)j(s[r]);t=!1},d(a){a&&A(e),Ve(s,a)}}}function ii(n,e,t){let{sys:i}=e,{edit:s=!1}=e,l=i.getNodeNames("fixed","stats");return n.$$set=a=>{"sys"in a&&t(0,i=a.sys),"edit"in a&&t(1,s=a.edit)},[i,s,l]}class Kt extends de{constructor(e){super(),re(this,e,ii,ni,ie,{sys:0,edit:1})}get sys(){return this.$$.ctx[0]}set sys(e){this.$$set({sys:e}),L()}get edit(){return this.$$.ctx[1]}set edit(e){this.$$set({edit:e}),L()}}oe(Kt,{sys:{},edit:{type:"Boolean"}},[],[],!0);function Ft(n){let e,t,i=n[1]&&qt(n),s=n[2]&&Jt(n);return{c(){e=y("div"),i&&i.c(),t=H(),s&&s.c(),h(e,"class","ItemManouverOptions")},m(l,a){R(l,e,a),i&&i.m(e,null),v(e,t),s&&s.m(e,null)},p(l,a){l[1]?i?i.p(l,a):(i=qt(l),i.c(),i.m(e,t)):i&&(i.d(1),i=null),l[2]?s?s.p(l,a):(s=Jt(l),s.c(),s.m(e,null)):s&&(s.d(1),s=null)},d(l){l&&A(e),i&&i.d(),s&&s.d()}}}function qt(n){let e,t,i;return{c(){e=y("div"),e.textContent="Up",h(e,"class","ItemManouverOption"),h(e,"role","none")},m(s,l){R(s,e,l),t||(i=[U(e,"keyup",n[7]),U(e,"click",n[3])],t=!0)},p:T,d(s){s&&A(e),t=!1,z(i)}}}function Jt(n){let e,t,i;return{c(){e=y("div"),e.textContent="Down",h(e,"class","ItemManouverOption"),h(e,"role","none")},m(s,l){R(s,e,l),t||(i=[U(e,"keyup",n[6]),U(e,"click",n[4])],t=!0)},p:T,d(s){s&&A(e),t=!1,z(i)}}}function si(n){let e,t=n[0]&&Ft(n);return{c(){e=y("div"),t&&t.c(),h(e,"class","ItemManouverContainer")},m(i,s){R(i,e,s),t&&t.m(e,null)},p(i,[s]){i[0]?t?t.p(i,s):(t=Ft(i),t.c(),t.m(e,null)):t&&(t.d(1),t=null)},i:T,o:T,d(i){i&&A(e),t&&t.d()}}}function li(n,e,t){let i=Xe(),{data:s}=e,{editMode:l}=e,{hasUp:a}=e,{hasDown:r}=e;function o(){i("moveUp",s.id)}function d(){i("moveDown",s.id)}function u(f){ve.call(this,n,f)}function g(f){ve.call(this,n,f)}return n.$$set=f=>{"data"in f&&t(5,s=f.data),"editMode"in f&&t(0,l=f.editMode),"hasUp"in f&&t(1,a=f.hasUp),"hasDown"in f&&t(2,r=f.hasDown)},[l,a,r,o,d,s,u,g]}class zt extends de{constructor(e){super(),re(this,e,li,si,ie,{data:5,editMode:0,hasUp:1,hasDown:2})}get data(){return this.$$.ctx[5]}set data(e){this.$$set({data:e}),L()}get editMode(){return this.$$.ctx[0]}set editMode(e){this.$$set({editMode:e}),L()}get hasUp(){return this.$$.ctx[1]}set hasUp(e){this.$$set({hasUp:e}),L()}get hasDown(){return this.$$.ctx[2]}set hasDown(e){this.$$set({hasDown:e}),L()}}oe(zt,{data:{},editMode:{},hasUp:{},hasDown:{}},[],[],!0);function Yt(n){let e,t,i;function s(a){n[7](a)}let l={editMode:!0};return n[0]!==void 0&&(l.data=n[0]),e=new Nt({props:l}),se.push(()=>Se(e,"data",s)),e.$on("optionSelected",n[6]),{c(){x(e.$$.fragment)},m(a,r){W(e,a,r),i=!0},p(a,r){const o={};!t&&r&1&&(t=!0,o.data=a[0],ke(()=>t=!1)),e.$set(o)},i(a){i||(B(e.$$.fragment,a),i=!0)},o(a){j(e.$$.fragment,a),i=!1},d(a){Q(e,a)}}}function Gt(n){let e,t,i;function s(a){n[8](a)}let l={editMode:n[5],hasDown:n[4]!=n[3]-1,hasUp:n[4]!=0};return n[0]!==void 0&&(l.data=n[0]),e=new zt({props:l}),se.push(()=>Se(e,"data",s)),e.$on("moveUp",n[9]),e.$on("moveDown",n[10]),{c(){x(e.$$.fragment)},m(a,r){W(e,a,r),i=!0},p(a,r){const o={};r&32&&(o.editMode=a[5]),r&24&&(o.hasDown=a[4]!=a[3]-1),r&16&&(o.hasUp=a[4]!=0),!t&&r&1&&(t=!0,o.data=a[0],ke(()=>t=!1)),e.$set(o)},i(a){i||(B(e.$$.fragment,a),i=!0)},o(a){j(e.$$.fragment,a),i=!1},d(a){Q(e,a)}}}function ai(n){let e,t,i,s;return t=new Kt({props:{edit:n[1],sys:n[2]}}),t.$on("optionSelected",n[6]),{c(){e=y("div"),x(t.$$.fragment)},m(l,a){R(l,e,a),W(t,e,null),s=!0},p(l,a){const r={};a&2&&(r.edit=l[1]),a&4&&(r.sys=l[2]),t.$set(r)},i(l){s||(B(t.$$.fragment,l),l&&le(()=>{s&&(i||(i=Y(e,ae,{},!0)),i.run(1))}),s=!0)},o(l){j(t.$$.fragment,l),l&&(i||(i=Y(e,ae,{},!1)),i.run(0)),s=!1},d(l){l&&A(e),Q(t),l&&i&&i.end()}}}function ri(n){let e,t,i,s,l;function a(o){n[14](o)}let r={edit:n[1],sys:n[2]};return n[0]!==void 0&&(r.data=n[0]),t=new Ut({props:r}),se.push(()=>Se(t,"data",a)),t.$on("optionSelected",n[6]),{c(){e=y("div"),x(t.$$.fragment)},m(o,d){R(o,e,d),W(t,e,null),l=!0},p(o,d){const u={};d&2&&(u.edit=o[1]),d&4&&(u.sys=o[2]),!i&&d&1&&(i=!0,u.data=o[0],ke(()=>i=!1)),t.$set(u)},i(o){l||(B(t.$$.fragment,o),o&&le(()=>{l&&(s||(s=Y(e,ae,{},!0)),s.run(1))}),l=!0)},o(o){j(t.$$.fragment,o),o&&(s||(s=Y(e,ae,{},!1)),s.run(0)),l=!1},d(o){o&&A(e),Q(t),o&&s&&s.end()}}}function oi(n){let e,t,i,s,l;function a(o){n[13](o)}let r={edit:n[1],sys:n[2]};return n[0]!==void 0&&(r.data=n[0]),t=new Bt({props:r}),se.push(()=>Se(t,"data",a)),t.$on("optionSelected",n[6]),{c(){e=y("div"),x(t.$$.fragment)},m(o,d){R(o,e,d),W(t,e,null),l=!0},p(o,d){const u={};d&2&&(u.edit=o[1]),d&4&&(u.sys=o[2]),!i&&d&1&&(i=!0,u.data=o[0],ke(()=>i=!1)),t.$set(u)},i(o){l||(B(t.$$.fragment,o),o&&le(()=>{l&&(s||(s=Y(e,ae,{},!0)),s.run(1))}),l=!0)},o(o){j(t.$$.fragment,o),o&&(s||(s=Y(e,ae,{},!1)),s.run(0)),l=!1},d(o){o&&A(e),Q(t),o&&s&&s.end()}}}function di(n){let e,t,i,s,l;function a(o){n[12](o)}let r={sys:n[2],editMode:n[1]};return n[0]!==void 0&&(r.data=n[0]),t=new Lt({props:r}),se.push(()=>Se(t,"data",a)),t.$on("optionSelected",n[6]),{c(){e=y("div"),x(t.$$.fragment)},m(o,d){R(o,e,d),W(t,e,null),l=!0},p(o,d){const u={};d&4&&(u.sys=o[2]),d&2&&(u.editMode=o[1]),!i&&d&1&&(i=!0,u.data=o[0],ke(()=>i=!1)),t.$set(u)},i(o){l||(B(t.$$.fragment,o),o&&le(()=>{l&&(s||(s=Y(e,ae,{},!0)),s.run(1))}),l=!0)},o(o){j(t.$$.fragment,o),o&&(s||(s=Y(e,ae,{},!1)),s.run(0)),l=!1},d(o){o&&A(e),Q(t),o&&s&&s.end()}}}function ui(n){let e,t,i,s,l;function a(o){n[11](o)}let r={sys:n[2],editMode:n[1],playMode:!1};return n[0]!==void 0&&(r.data=n[0]),t=new wt({props:r}),se.push(()=>Se(t,"data",a)),t.$on("optionSelected",n[6]),{c(){e=y("div"),x(t.$$.fragment)},m(o,d){R(o,e,d),W(t,e,null),l=!0},p(o,d){const u={};d&4&&(u.sys=o[2]),d&2&&(u.editMode=o[1]),!i&&d&1&&(i=!0,u.data=o[0],ke(()=>i=!1)),t.$set(u)},i(o){l||(B(t.$$.fragment,o),o&&le(()=>{l&&(s||(s=Y(e,ae,{},!0)),s.run(1))}),l=!0)},o(o){j(t.$$.fragment,o),o&&(s||(s=Y(e,ae,{},!1)),s.run(0)),l=!1},d(o){o&&A(e),Q(t),o&&s&&s.end()}}}function fi(n){let e,t,i,s,l,a,r=n[1]&&Yt(n),o=n[3]!=1&&Gt(n);const d=[ui,di,oi,ri,ai],u=[];function g(f,_){return f[0].type==ye.HitPoints?0:f[0].type==ye.ProficiencyBonus?1:f[0].type==ye.SkillProficiencies?2:f[0].type==ye.SpellInfo?3:f[0].type==ye.Stats?4:-1}return~(s=g(n))&&(l=u[s]=d[s](n)),{c(){e=y("div"),r&&r.c(),t=H(),o&&o.c(),i=H(),l&&l.c(),h(e,"data-name","ItemDestributor"),h(e,"class","itemDestributer")},m(f,_){R(f,e,_),r&&r.m(e,null),v(e,t),o&&o.m(e,null),v(e,i),~s&&u[s].m(e,null),a=!0},p(f,[_]){f[1]?r?(r.p(f,_),_&2&&B(r,1)):(r=Yt(f),r.c(),B(r,1),r.m(e,t)):r&&(ue(),j(r,1,1,()=>{r=null}),fe()),f[3]!=1?o?(o.p(f,_),_&8&&B(o,1)):(o=Gt(f),o.c(),B(o,1),o.m(e,i)):o&&(ue(),j(o,1,1,()=>{o=null}),fe());let c=s;s=g(f),s===c?~s&&u[s].p(f,_):(l&&(ue(),j(u[c],1,1,()=>{u[c]=null}),fe()),~s?(l=u[s],l?l.p(f,_):(l=u[s]=d[s](f),l.c()),B(l,1),l.m(e,null)):l=null)},i(f){a||(B(r),B(o),B(l),a=!0)},o(f){j(r),j(o),j(l),a=!1},d(f){f&&A(e),r&&r.d(),o&&o.d(),~s&&u[s].d()}}}function ci(n,e,t){let{data:i}=e,{editMode:s}=e,{sys:l}=e,{length:a}=e,{index:r}=e,{layoutMode:o=!1}=e;function d($){console.log(i),t(0,i)}function u($){i=$,t(0,i)}function g($){i=$,t(0,i)}function f($){ve.call(this,n,$)}function _($){ve.call(this,n,$)}function c($){i=$,t(0,i)}function b($){i=$,t(0,i)}function m($){i=$,t(0,i)}function p($){i=$,t(0,i)}return n.$$set=$=>{"data"in $&&t(0,i=$.data),"editMode"in $&&t(1,s=$.editMode),"sys"in $&&t(2,l=$.sys),"length"in $&&t(3,a=$.length),"index"in $&&t(4,r=$.index),"layoutMode"in $&&t(5,o=$.layoutMode)},[i,s,l,a,r,o,d,u,g,f,_,c,b,m,p]}class Wt extends de{constructor(e){super(),re(this,e,ci,fi,ie,{data:0,editMode:1,sys:2,length:3,index:4,layoutMode:5})}get data(){return this.$$.ctx[0]}set data(e){this.$$set({data:e}),L()}get editMode(){return this.$$.ctx[1]}set editMode(e){this.$$set({editMode:e}),L()}get sys(){return this.$$.ctx[2]}set sys(e){this.$$set({sys:e}),L()}get length(){return this.$$.ctx[3]}set length(e){this.$$set({length:e}),L()}get index(){return this.$$.ctx[4]}set index(e){this.$$set({index:e}),L()}get layoutMode(){return this.$$.ctx[5]}set layoutMode(e){this.$$set({layoutMode:e}),L()}}oe(Wt,{data:{},editMode:{},sys:{},length:{},index:{},layoutMode:{type:"Boolean"}},[],[],!0);function lt(n,e,t){return n.style.animation&&(n.style=null),Tn(n,e,t??{duration:500})}function Qt(n){let e,t,i,s,l=n[4]&&Xt(n),a=n[3]&&Zt(n);return{c(){e=y("div"),l&&l.c(),t=H(),a&&a.c(),h(e,"class","RowColumnOptions"),h(e,"style",n[5])},m(r,o){R(r,e,o),l&&l.m(e,null),v(e,t),a&&a.m(e,null),s=!0},p(r,o){r[4]?l?l.p(r,o):(l=Xt(r),l.c(),l.m(e,t)):l&&(l.d(1),l=null),r[3]?a?a.p(r,o):(a=Zt(r),a.c(),a.m(e,null)):a&&(a.d(1),a=null)},i(r){s||(r&&le(()=>{s&&(i||(i=Y(e,ae,{},!0)),i.run(1))}),s=!0)},o(r){r&&(i||(i=Y(e,ae,{},!1)),i.run(0)),s=!1},d(r){r&&A(e),l&&l.d(),a&&a.d(),r&&i&&i.end()}}}function Xt(n){let e,t,i,s;return{c(){e=y("div"),t=G(n[1]),h(e,"class","itemOption"),h(e,"role","none")},m(l,a){R(l,e,a),v(e,t),i||(s=[U(e,"keyup",n[10]),U(e,"click",n[11])],i=!0)},p(l,a){a&2&&ce(t,l[1])},d(l){l&&A(e),i=!1,z(s)}}}function Zt(n){let e,t,i,s;return{c(){e=y("div"),t=G(n[2]),h(e,"class","itemOption rem"),h(e,"role","none")},m(l,a){R(l,e,a),v(e,t),i||(s=[U(e,"keyup",n[9]),U(e,"click",n[12])],i=!0)},p(l,a){a&4&&ce(t,l[2])},d(l){l&&A(e),i=!1,z(s)}}}function hi(n){let e,t=n[0]&&Qt(n);return{c(){t&&t.c(),e=gn()},m(i,s){t&&t.m(i,s),R(i,e,s)},p(i,[s]){i[0]?t?(t.p(i,s),s&1&&B(t,1)):(t=Qt(i),t.c(),B(t,1),t.m(e.parentNode,e)):t&&(ue(),j(t,1,1,()=>{t=null}),fe())},i(i){B(t)},o(i){j(t)},d(i){i&&A(e),t&&t.d(i)}}}function gi(n,e,t){let{active:i}=e,{addText:s="Add Item"}=e,{remText:l="Remove This Item"}=e,{offset:a=0}=e,{side:r="left"}=e,{verti:o="bottom"}=e,{onRemove:d=null}=e,{onAdd:u=null}=e,g=r+":"+a+";"+o+":"+a+";";function f(m){ve.call(this,n,m)}function _(m){ve.call(this,n,m)}const c=()=>u(),b=()=>d();return n.$$set=m=>{"active"in m&&t(0,i=m.active),"addText"in m&&t(1,s=m.addText),"remText"in m&&t(2,l=m.remText),"offset"in m&&t(6,a=m.offset),"side"in m&&t(7,r=m.side),"verti"in m&&t(8,o=m.verti),"onRemove"in m&&t(3,d=m.onRemove),"onAdd"in m&&t(4,u=m.onAdd)},[i,s,l,d,u,g,a,r,o,f,_,c,b]}class be extends de{constructor(e){super(),re(this,e,gi,hi,ie,{active:0,addText:1,remText:2,offset:6,side:7,verti:8,onRemove:3,onAdd:4})}get active(){return this.$$.ctx[0]}set active(e){this.$$set({active:e}),L()}get addText(){return this.$$.ctx[1]}set addText(e){this.$$set({addText:e}),L()}get remText(){return this.$$.ctx[2]}set remText(e){this.$$set({remText:e}),L()}get offset(){return this.$$.ctx[6]}set offset(e){this.$$set({offset:e}),L()}get side(){return this.$$.ctx[7]}set side(e){this.$$set({side:e}),L()}get verti(){return this.$$.ctx[8]}set verti(e){this.$$set({verti:e}),L()}get onRemove(){return this.$$.ctx[3]}set onRemove(e){this.$$set({onRemove:e}),L()}get onAdd(){return this.$$.ctx[4]}set onAdd(e){this.$$set({onAdd:e}),L()}}oe(be,{active:{},addText:{},remText:{},offset:{},side:{},verti:{},onRemove:{},onAdd:{}},[],[],!0);function xt(n,e,t){const i=n.slice();return i[45]=e[t],i[47]=t,i}function en(n,e,t){const i=n.slice();return i[48]=e[t],i[50]=t,i}function tn(n,e,t){const i=n.slice();return i[51]=e[t],i[53]=t,i}function nn(n){let e,t;function i(){return n[22](n[45],n[48])}return e=new be({props:{offset:15,active:n[3],remText:"remove this column",onRemove:i}}),{c(){x(e.$$.fragment)},m(s,l){W(e,s,l),t=!0},p(s,l){n=s;const a={};l[0]&8&&(a.active=n[3]),l[0]&32&&(a.onRemove=i),e.$set(a)},i(s){t||(B(e.$$.fragment,s),t=!0)},o(s){j(e.$$.fragment,s),t=!1},d(s){Q(e,s)}}}function sn(n){let e;return{c(){e=y("div"),_t(e,"height","50px")},m(t,i){R(t,e,i)},d(t){t&&A(e)}}}function ln(n,e){let t,i,s,l,a,r,o,d,u,g=T,f,_,c;function b(){return e[24](e[48],e[51])}i=new be({props:{offset:15,active:e[4],addText:"remove",onRemove:b}}),l=new Wt({props:{data:e[51],editMode:e[1],layoutMode:e[4],sys:e[0],length:e[48].data.length,index:e[53]}}),l.$on("moveUp",e[25]),l.$on("moveDown",e[26]);function m(...w){return e[27](e[51],...w)}function p(...w){return e[28](e[51],...w)}function $(...w){return e[29](e[51],...w)}function k(...w){return e[30](e[51],...w)}return{key:n,first:null,c(){t=y("div"),x(i.$$.fragment),s=H(),x(l.$$.fragment),h(t,"class","Item"),h(t,"data-edit",a=e[1]||e[4]||e[3]),h(t,"data-itemid",r=e[51].id),h(t,"data-edit-active",e[4]),h(t,"data-dragging",o=e[14].isBeingDragged(e[51].id)),h(t,"role","none"),h(t,"draggable",e[4]),this.first=t},m(w,I){R(w,t,I),W(i,t,null),v(t,s),W(l,t,null),f=!0,_||(c=[U(t,"dragstart",m),U(t,"dragend",p),U(t,"drop",$),U(t,"dragleave",k),U(t,"dragover",bi)],_=!0)},p(w,I){e=w;const E={};I[0]&16&&(E.active=e[4]),I[0]&32&&(E.onRemove=b),i.$set(E);const K={};I[0]&32&&(K.data=e[51]),I[0]&2&&(K.editMode=e[1]),I[0]&16&&(K.layoutMode=e[4]),I[0]&1&&(K.sys=e[0]),I[0]&32&&(K.length=e[48].data.length),I[0]&32&&(K.index=e[53]),l.$set(K),(!f||I[0]&26&&a!==(a=e[1]||e[4]||e[3]))&&h(t,"data-edit",a),(!f||I[0]&32&&r!==(r=e[51].id))&&h(t,"data-itemid",r),(!f||I[0]&16)&&h(t,"data-edit-active",e[4]),(!f||I[0]&32&&o!==(o=e[14].isBeingDragged(e[51].id)))&&h(t,"data-dragging",o),(!f||I[0]&16)&&h(t,"draggable",e[4])},r(){u=t.getBoundingClientRect()},f(){We(t),g(),He(t,u)},a(){g(),g=Ge(t,u,lt,{duration:_e})},i(w){f||(B(i.$$.fragment,w),B(l.$$.fragment,w),w&&le(()=>{f&&(d||(d=Y(t,qe,{duration:_e},!0)),d.run(1))}),f=!0)},o(w){j(i.$$.fragment,w),j(l.$$.fragment,w),w&&(d||(d=Y(t,qe,{duration:_e},!1)),d.run(0)),f=!1},d(w){w&&A(t),Q(i),Q(l),w&&d&&d.end(),_=!1,z(c)}}}function an(n,e){let t,i,s,l,a,r=[],o=new Map,d,u,g,f,_,c,b=T,m,p,$,k=e[45].data.length>1&&nn(e);function w(){return e[23](e[48])}s=new be({props:{offset:15,active:e[4],addText:"add a new Item",onAdd:w}});let I=(e[4]||e[3])&&sn(),E=Z(e[48].data);const K=O=>O[51].id;for(let O=0;O<E.length;O+=1){let M=tn(e,E,O),P=K(M);o.set(P,r[O]=ln(P,M))}function J(...O){return e[31](e[48],...O)}function C(...O){return e[32](e[48],...O)}function D(...O){return e[33](e[48],...O)}function F(...O){return e[34](e[48],...O)}function ee(...O){return e[35](e[48],...O)}function te(...O){return e[36](e[48],...O)}return{key:n,first:null,c(){t=y("div"),k&&k.c(),i=H(),x(s.$$.fragment),l=H(),I&&I.c(),a=H();for(let O=0;O<r.length;O+=1)r[O].c();h(t,"class","Column"),h(t,"data-edit",d=e[3]||e[2]),h(t,"data-editpreview",e[4]),h(t,"data-itemid",u=e[48].id),h(t,"data-edit-active",e[3]),h(t,"data-dragging",g=e[13].isBeingDragged(e[48].id)),h(t,"role","none"),h(t,"style",f=`
-						${e[3]||e[2]?"margin-bottom:30px":""}
-					`),h(t,"draggable",e[3]),this.first=t},m(O,M){R(O,t,M),k&&k.m(t,null),v(t,i),W(s,t,null),v(t,l),I&&I.m(t,null),v(t,a);for(let P=0;P<r.length;P+=1)r[P]&&r[P].m(t,null);m=!0,p||($=[U(t,"dragstart",J),U(t,"dragenter",C),U(t,"dragend",D),U(t,"drop",F),U(t,"dragleave",ee),U(t,"dragover",te)],p=!0)},p(O,M){e=O,e[45].data.length>1?k?(k.p(e,M),M[0]&32&&B(k,1)):(k=nn(e),k.c(),B(k,1),k.m(t,i)):k&&(ue(),j(k,1,1,()=>{k=null}),fe());const P={};if(M[0]&16&&(P.active=e[4]),M[0]&32&&(P.onAdd=w),s.$set(P),e[4]||e[3]?I||(I=sn(),I.c(),I.m(t,a)):I&&(I.d(1),I=null),M[0]&19515){E=Z(e[48].data),ue();for(let q=0;q<r.length;q+=1)r[q].r();r=Ke(r,M,K,1,e,E,o,t,nt,ln,null,tn);for(let q=0;q<r.length;q+=1)r[q].a();fe()}(!m||M[0]&12&&d!==(d=e[3]||e[2]))&&h(t,"data-edit",d),(!m||M[0]&16)&&h(t,"data-editpreview",e[4]),(!m||M[0]&32&&u!==(u=e[48].id))&&h(t,"data-itemid",u),(!m||M[0]&8)&&h(t,"data-edit-active",e[3]),(!m||M[0]&32&&g!==(g=e[13].isBeingDragged(e[48].id)))&&h(t,"data-dragging",g),(!m||M[0]&12&&f!==(f=`
-						${e[3]||e[2]?"margin-bottom:30px":""}
-					`))&&h(t,"style",f),(!m||M[0]&8)&&h(t,"draggable",e[3])},r(){c=t.getBoundingClientRect()},f(){We(t),b(),He(t,c)},a(){b(),b=Ge(t,c,lt,{duration:_e})},i(O){if(!m){B(k),B(s.$$.fragment,O);for(let M=0;M<E.length;M+=1)B(r[M]);O&&le(()=>{m&&(_||(_=Y(t,qe,{duration:_e},!0)),_.run(1))}),m=!0}},o(O){j(k),j(s.$$.fragment,O);for(let M=0;M<r.length;M+=1)j(r[M]);O&&(_||(_=Y(t,qe,{duration:_e},!1)),_.run(0)),m=!1},d(O){O&&A(t),k&&k.d(),Q(s),I&&I.d();for(let M=0;M<r.length;M+=1)r[M].d();O&&_&&_.end(),p=!1,z($)}}}function rn(n,e){let t,i,s,l,a,r=[],o=new Map,d,u,g,f,_=T,c,b,m;function p(){return e[20](e[45])}i=new be({props:{active:e[3],onAdd:p,addText:"add Column"}});function $(){return e[21](e[45])}l=new be({props:{active:e[2],onRemove:$,remText:"remove this line"}});let k=Z(e[45].data);const w=C=>C[48].id;for(let C=0;C<k.length;C+=1){let D=en(e,k,C),F=w(D);o.set(F,r[C]=an(F,D))}function I(...C){return e[37](e[45],...C)}function E(...C){return e[38](e[45],...C)}function K(...C){return e[39](e[45],...C)}function J(...C){return e[40](e[45],...C)}return{key:n,first:null,c(){t=y("div"),x(i.$$.fragment),s=H(),x(l.$$.fragment),a=H();for(let C=0;C<r.length;C+=1)r[C].c();h(t,"class","Row"),h(t,"data-edit",e[2]),h(t,"data-edit-active",e[2]),h(t,"data-editpreview",e[3]),h(t,"role","none"),h(t,"style",d=`grid-template-columns:${dn(e[45].data.length,"1fr")}`),h(t,"data-rowid",u=e[45].id),h(t,"draggable",e[2]),this.first=t},m(C,D){R(C,t,D),W(i,t,null),v(t,s),W(l,t,null),v(t,a);for(let F=0;F<r.length;F+=1)r[F]&&r[F].m(t,null);c=!0,b||(m=[U(t,"dragstart",I),U(t,"dragenter",E),U(t,"dragend",K),U(t,"dragover",J)],b=!0)},p(C,D){e=C;const F={};D[0]&8&&(F.active=e[3]),D[0]&32&&(F.onAdd=p),i.$set(F);const ee={};if(D[0]&4&&(ee.active=e[2]),D[0]&32&&(ee.onRemove=$),l.$set(ee),D[0]&27711){k=Z(e[45].data),ue();for(let te=0;te<r.length;te+=1)r[te].r();r=Ke(r,D,w,1,e,k,o,t,nt,an,null,en);for(let te=0;te<r.length;te+=1)r[te].a();fe()}(!c||D[0]&4)&&h(t,"data-edit",e[2]),(!c||D[0]&4)&&h(t,"data-edit-active",e[2]),(!c||D[0]&8)&&h(t,"data-editpreview",e[3]),(!c||D[0]&32&&d!==(d=`grid-template-columns:${dn(e[45].data.length,"1fr")}`))&&h(t,"style",d),(!c||D[0]&32&&u!==(u=e[45].id))&&h(t,"data-rowid",u),(!c||D[0]&4)&&h(t,"draggable",e[2])},r(){f=t.getBoundingClientRect()},f(){We(t),_(),He(t,f)},a(){_(),_=Ge(t,f,lt,{duration:_e})},i(C){if(!c){B(i.$$.fragment,C),B(l.$$.fragment,C);for(let D=0;D<k.length;D+=1)B(r[D]);C&&le(()=>{c&&(g||(g=Y(t,$t,{duration:_e,y:100},!0)),g.run(1))}),c=!0}},o(C){j(i.$$.fragment,C),j(l.$$.fragment,C);for(let D=0;D<r.length;D+=1)j(r[D]);C&&(g||(g=Y(t,$t,{duration:_e,y:100},!1)),g.run(0)),c=!1},d(C){C&&A(t),Q(i),Q(l);for(let D=0;D<r.length;D+=1)r[D].d();C&&g&&g.end(),b=!1,z(m)}}}function on(n){let e,t,i;return t=new be({props:{active:n[2],onAdd:n[41],offset:15,addText:"add Line"}}),{c(){e=y("div"),x(t.$$.fragment),h(e,"class","Row"),_t(e,"height","100px")},m(s,l){R(s,e,l),W(t,e,null),i=!0},p(s,l){const a={};l[0]&4&&(a.active=s[2]),l[0]&32&&(a.onAdd=s[41]),t.$set(a)},i(s){i||(B(t.$$.fragment,s),i=!0)},o(s){j(t.$$.fragment,s),i=!1},d(s){s&&A(e),Q(t)}}}function _i(n){let e,t,i,s,l,a="Stop Edit	",r,o,d,u="Layout Row	",g,f,_,c="Layout Col	",b,m,p,$="Layout Items",k,w,I,E=[],K=new Map,J,C,D,F,ee=Z(n[5].data);const te=M=>M[45].id;for(let M=0;M<ee.length;M+=1){let P=xt(n,ee,M),q=te(P);K.set(q,E[M]=rn(q,P))}let O=n[2]&&on(n);return{c(){e=y("div"),t=y("div"),i=y("div"),s=y("div"),l=y("button"),r=G(a),o=H(),d=y("button"),g=G(u),f=H(),_=y("button"),b=G(c),m=H(),p=y("button"),k=G($),I=H();for(let M=0;M<E.length;M+=1)E[M].c();J=H(),O&&O.c(),h(l,"data-active",n[1]),h(d,"data-active",n[2]),h(_,"data-active",n[3]),h(p,"data-active",n[4]),h(s,"class","SheetEditorMenu"),h(s,"data-isopen",w=n[1]||n[2]||n[3]||n[4]),h(i,"class","SheetEditorMenuContainer"),h(t,"class","Sheet"),h(e,"class","theme-light obsidianBody")},m(M,P){R(M,e,P),v(e,t),v(t,i),v(i,s),v(s,l),v(l,r),v(s,o),v(s,d),v(d,g),v(s,f),v(s,_),v(_,b),v(s,m),v(s,p),v(p,k),v(t,I);for(let q=0;q<E.length;q+=1)E[q]&&E[q].m(t,null);v(t,J),O&&O.m(t,null),C=!0,D||(F=[U(l,"click",n[16]),U(d,"click",n[17]),U(_,"click",n[18]),U(p,"click",n[19])],D=!0)},p(M,P){if((!C||P[0]&2)&&h(l,"data-active",M[1]),(!C||P[0]&4)&&h(d,"data-active",M[2]),(!C||P[0]&8)&&h(_,"data-active",M[3]),(!C||P[0]&16)&&h(p,"data-active",M[4]),(!C||P[0]&30&&w!==(w=M[1]||M[2]||M[3]||M[4]))&&h(s,"data-isopen",w),P[0]&31807){ee=Z(M[5].data),ue();for(let q=0;q<E.length;q+=1)E[q].r();E=Ke(E,P,te,1,M,ee,K,t,nt,rn,J,xt);for(let q=0;q<E.length;q+=1)E[q].a();fe()}M[2]?O?(O.p(M,P),P[0]&4&&B(O,1)):(O=on(M),O.c(),B(O,1),O.m(t,null)):O&&(ue(),j(O,1,1,()=>{O=null}),fe())},i(M){if(!C){for(let P=0;P<ee.length;P+=1)B(E[P]);B(O),C=!0}},o(M){for(let P=0;P<E.length;P+=1)j(E[P]);j(O),C=!1},d(M){M&&A(e);for(let P=0;P<E.length;P+=1)E[P].d();O&&O.d(),D=!1,z(F)}}}const Je=220,_e=100;class mi{constructor(e,t){N(this,"data");N(this,"state");N(this,"layerActive");N(this,"isDragging",!1);N(this,"pauseDragg",!1);N(this,"dragID");N(this,"targetID");this.data=e,this.state=t,this.layerActive=t.editLayout_01}moveRow(){this.isDragging&&(!this.dragID||!this.targetID||this.targetID==this.dragID||this.data.update(e=>{let t=this.findIndexOfID(this.dragID),i=this.findIndexOfID(this.targetID);const s=e.data[t];return this.pauseDragg=!0,setTimeout(()=>{this.pauseDragg=!1},Je),e.data[t]=e.data[i],e.data[i]=s,e}))}onDragStart(e,t){if(!X(this.layerActive))return;const i=e.target;i.classList.contains("Row")&&(this.isDragging=!0,this.dragID=t,i.setAttribute("data-dragging","true"))}onDragOver(e,t){X(this.layerActive)&&(!this.isDragging||this.pauseDragg||(this.targetID=t,this.moveRow()))}onDragEnd(e,t){if(!X(this.layerActive))return;this.isDragging=!1,this.dragID=null,this.targetID=null,e.target.setAttribute("data-dragging","false")}findIndexOfID(e){return X(this.data).data.findIndex(t=>t.id==e)}}class pi{constructor(e,t){N(this,"data");N(this,"state");N(this,"layerActive");N(this,"isDragging",!1);N(this,"pauseDragg",!1);N(this,"dragTargetElement");N(this,"dragID");N(this,"targetID");N(this,"lastDragId");N(this,"lasttargId");this.data=e,this.state=t,this.layerActive=t.editLayout_02}innerMoveItem(e,t,i){let s,l,a,r;if([s,l]=this.findRowIndexOfID(t),[a,r]=this.findRowIndexOfID(i),s==-1||a==-1)return;const o=e.data[s].data[l],d=e.data[a].data[r];e.data[s].data[l]=d,e.data[a].data[r]=o}moveRowItem(){this.isDragging&&(!this.dragID||this.targetID==this.dragID||this.data.update(e=>this.dragID==this.lastDragId&&this.targetID==this.lasttargId?(this.innerMoveItem(e,this.lasttargId,this.lastDragId),e):(this.lastDragId&&this.lasttargId&&this.innerMoveItem(e,this.lastDragId,this.lasttargId),this.targetID&&this.innerMoveItem(e,this.dragID,this.targetID),this.lastDragId=this.dragID,this.lasttargId=this.targetID,this.pauseDragg=!0,setTimeout(()=>{this.pauseDragg=!1},Je),e)))}onDragStart(e,t){if(!X(this.layerActive))return;const i=e.target;i.classList.contains("Column")&&(this.dragTargetElement=i,this.isDragging=!0,this.dragID=t,this.lastDragId=null,this.lasttargId=null,i.setAttribute("data-dragging","true"))}onDragOver(e,t){var i;X(this.layerActive)&&(!this.isDragging||this.pauseDragg||(this.targetID=t,this.moveRowItem(),(i=this.dragTargetElement)==null||i.setAttribute("data-dragging","true")))}onDragEnd(e,t){var i;X(this.layerActive)&&(this.isDragging=!1,this.dragID=null,this.targetID=null,e.target.setAttribute("data-dragging","false"),(i=this.dragTargetElement)==null||i.setAttribute("data-dragging","false"))}onLeave(e,t){this.targetID=null}findRowIndexOfID(e){let t=-1;return[X(this.data).data.findIndex(s=>{let l=s.data.findIndex(a=>a.id==e);return l!=-1?(t=l,!0):!1}),t]}isBeingDragged(e){return this.dragID==e}}class vi{constructor(e,t){N(this,"data");N(this,"state");N(this,"layerActive");N(this,"isDragging",!1);N(this,"pauseDragg",!1);N(this,"dragTargetElement");N(this,"dragID");N(this,"targetID");N(this,"targetRowId");N(this,"lastDragId");N(this,"lasttargId");N(this,"lasttargRowId");this.data=e,this.state=t,this.layerActive=t.editLayout_03}innerSwitchItem(e,t,i){let s,l,a,r,o,d;if([s,l,a]=this.findIndexsOfID(t),[r,o,d]=this.findIndexsOfID(i),s==-1||r==-1||l==-1||o==-1||a==-1||d==-1)return;const u=e.data[s].data[l].data[a],g=e.data[r].data[o].data[d];e.data[s].data[l].data[a]=g,e.data[r].data[o].data[d]=u}innerMoveItem(e,t,i){let s,l,a,r,o;if([s,l,a]=this.findIndexsOfID(t),[r,o]=this.findColumnIndexsOfID(i),s==-1||r==-1||l==-1||o==-1||a==-1||s==r&&l==o)return;let d=e.data[s].data[l].data.splice(a,1)[0];e.data[r].data[o].data.push(d)}moveRowItem(){this.isDragging&&(!this.dragID||this.targetID==this.dragID||this.targetRowId&&this.data.update(e=>(this.targetRowId&&this.innerMoveItem(e,this.dragID,this.targetRowId),this.lastDragId=this.dragID,this.lasttargId=this.targetID,this.lasttargRowId=null,this.pauseDragg=!0,setTimeout(()=>{this.pauseDragg=!1},Je),e)))}requestMoveItemUpDown(e,t){this.data.update(i=>{let s,l,a;[s,l,a]=this.findIndexsOfID(t);let r=a+e;if(r<0)return;if(i.data[s].data[l].data.length-1<r)return console.error("Out of Bounds move, so did not attempt"),i;const o=i.data[s].data[l].data.splice(a,1)[0];return i.data[s].data[l].data.splice(r,0,o),this.pauseDragg=!0,setTimeout(()=>{this.pauseDragg=!1},Je),i})}onDragStart(e,t){if(!X(this.layerActive))return;const i=e.target;i.classList.contains("Item")&&(this.dragTargetElement=i,this.isDragging=!0,this.dragID=t,this.lastDragId=null,this.lasttargId=null,i.setAttribute("data-dragging","true"))}onDragOverColumn(e,t){var i;X(this.layerActive)&&(!this.isDragging||this.pauseDragg||(this.targetID=null,this.targetRowId=t,this.moveRowItem(),(i=this.dragTargetElement)==null||i.setAttribute("data-dragging","true")))}onDragEnd(e,t){var i;X(this.layerActive)&&(this.isDragging=!1,this.dragID=null,this.targetID=null,e.target.setAttribute("data-dragging","false"),(i=this.dragTargetElement)==null||i.setAttribute("data-dragging","false"))}onLeave(e,t){this.targetID=null}findIndexsOfID(e){let t=-1,i=-1,s=-1;return s=X(this.data).data.findIndex(a=>{let r=a.data.findIndex(o=>{let d=o.data.findIndex(u=>u.id==e);return d!=-1?(t=d,!0):!1});return r!=-1?(i=r,!0):!1}),[s,i,t]}findColumnIndexsOfID(e){let t=-1,i=-1;return i=X(this.data).data.findIndex(l=>{let a=l.data.findIndex(r=>r.id==e);return a!=-1?(t=a,!0):!1}),[i,t]}isBeingDragged(e){return this.dragID==e}}class yi{constructor(){N(this,"editMode",Re(!1));N(this,"editLayout_01",Re(!1));N(this,"editLayout_02",Re(!1));N(this,"editLayout_03",Re(!1));this.editMode.subscribe(e=>{e&&(this.editLayout_01.set(!1),this.editLayout_02.set(!1),this.editLayout_03.set(!1))}),this.editLayout_01.subscribe(e=>{e&&(this.editLayout_02.set(!1),this.editLayout_03.set(!1),this.editMode.set(!1))}),this.editLayout_02.subscribe(e=>{e&&(this.editLayout_01.set(!1),this.editLayout_03.set(!1),this.editMode.set(!1))}),this.editLayout_03.subscribe(e=>{e&&(this.editLayout_01.set(!1),this.editLayout_02.set(!1),this.editMode.set(!1))})}}function dn(n,e,t=" "){let i=e;for(let s=0;s<n-1;s++)i+=t,i+=e;return i}const bi=n=>{n.preventDefault()};function $i(n,e,t){let i,s,l,a,r,o=new yi,d=o.editMode;Oe(n,d,S=>t(1,i=S));let u=o.editLayout_01;Oe(n,u,S=>t(2,s=S));let g=o.editLayout_02;Oe(n,g,S=>t(3,l=S));let f=o.editLayout_03;Oe(n,f,S=>t(4,a=S));let{textData:_}=e,{sys:c}=e,b=JSON.parse(_),m=new Ln(b),p=Re(m);Oe(n,p,S=>t(5,r=S));function $(S,V){I.requestMoveItemUpDown(S,V)}we(()=>{});let k=new mi(p,o),w=new pi(p,o),I=new vi(p,o);const E=()=>d.set(!i),K=()=>u.set(!X(u)),J=()=>g.set(!X(g)),C=()=>f.set(!X(f)),D=S=>{S.addColumn(),p.update(V=>V)},F=S=>{p.update(V=>(V.remRow(S.id),V))},ee=(S,V)=>{S.remColumn(V.id),p.update(at=>at)},te=S=>{S.addItem(),p.update(V=>V)},O=(S,V)=>{S.remItem(V.id),p.update(at=>at)},M=S=>{$(-1,S.detail)},P=S=>{$(1,S.detail)},q=(S,V)=>{I.onDragStart(V,S.id)},wi=(S,V)=>{I.onDragEnd(V,S.id)},Di=(S,V)=>{I.onDragEnd(V,S.id)},Ii=(S,V)=>{I.onLeave(V,S.id)},ki=(S,V)=>{w.onDragStart(V,S.id)},Mi=(S,V)=>{w.onDragOver(V,S.id),I.onDragOverColumn(V,S.id)},Si=(S,V)=>{w.onDragEnd(V,S.id)},Ci=(S,V)=>{w.onDragEnd(V,S.id)},Oi=(S,V)=>{w.onLeave(V,S.id)},Ni=(S,V)=>{w.onDragOver(V,S.id),I.onDragOverColumn(V,S.id),V.preventDefault()},Li=(S,V)=>k.onDragStart(V,S.id),Ei=(S,V)=>k.onDragOver(V,S.id),Ai=(S,V)=>k.onDragEnd(V,S.id),Ri=(S,V)=>{k.onDragOver(V,S.id),V.preventDefault()},Bi=()=>{p.update(S=>(S.addRow(),S.data[r.data.length-1].addColumn(),S))};return n.$$set=S=>{"textData"in S&&t(15,_=S.textData),"sys"in S&&t(0,c=S.sys)},[c,i,s,l,a,r,d,u,g,f,p,$,k,w,I,_,E,K,J,C,D,F,ee,te,O,M,P,q,wi,Di,Ii,ki,Mi,Si,Ci,Oi,Ni,Li,Ei,Ai,Ri,Bi]}class un extends de{constructor(e){super(),re(this,e,$i,_i,ie,{textData:15,sys:0},null,[-1,-1])}get textData(){return this.$$.ctx[15]}set textData(e){this.$$set({textData:e}),L()}get sys(){return this.$$.ctx[0]}set sys(e){this.$$set({sys:e}),L()}}return oe(un,{textData:{},sys:{}},[],[],!0),un});
+(function(global, factory) {
+  typeof exports === "object" && typeof module !== "undefined" ? module.exports = factory() : typeof define === "function" && define.amd ? define(factory) : (global = typeof globalThis !== "undefined" ? globalThis : global || self, global["<<name>>"] = factory());
+})(this, function() {
+  "use strict";var __defProp = Object.defineProperty;
+var __defNormalProp = (obj, key, value) => key in obj ? __defProp(obj, key, { enumerable: true, configurable: true, writable: true, value }) : obj[key] = value;
+var __publicField = (obj, key, value) => __defNormalProp(obj, typeof key !== "symbol" ? key + "" : key, value);
+
+  function noop() {
+  }
+  const identity = (x) => x;
+  function run(fn) {
+    return fn();
+  }
+  function blank_object() {
+    return /* @__PURE__ */ Object.create(null);
+  }
+  function run_all(fns) {
+    fns.forEach(run);
+  }
+  function is_function(thing) {
+    return typeof thing === "function";
+  }
+  function safe_not_equal(a, b) {
+    return a != a ? b == b : a !== b || a && typeof a === "object" || typeof a === "function";
+  }
+  function is_empty(obj) {
+    return Object.keys(obj).length === 0;
+  }
+  function subscribe(store, ...callbacks) {
+    if (store == null) {
+      for (const callback of callbacks) {
+        callback(void 0);
+      }
+      return noop;
+    }
+    const unsub = store.subscribe(...callbacks);
+    return unsub.unsubscribe ? () => unsub.unsubscribe() : unsub;
+  }
+  function get_store_value(store) {
+    let value;
+    subscribe(store, (_) => value = _)();
+    return value;
+  }
+  function component_subscribe(component, store, callback) {
+    component.$$.on_destroy.push(subscribe(store, callback));
+  }
+  function split_css_unit(value) {
+    const split = typeof value === "string" && value.match(/^\s*(-?[\d.]+)([^\s]*)\s*$/);
+    return split ? [parseFloat(split[1]), split[2] || "px"] : [
+      /** @type {number} */
+      value,
+      "px"
+    ];
+  }
+  const is_client = typeof window !== "undefined";
+  let now = is_client ? () => window.performance.now() : () => Date.now();
+  let raf = is_client ? (cb) => requestAnimationFrame(cb) : noop;
+  const tasks = /* @__PURE__ */ new Set();
+  function run_tasks(now2) {
+    tasks.forEach((task) => {
+      if (!task.c(now2)) {
+        tasks.delete(task);
+        task.f();
+      }
+    });
+    if (tasks.size !== 0) raf(run_tasks);
+  }
+  function loop(callback) {
+    let task;
+    if (tasks.size === 0) raf(run_tasks);
+    return {
+      promise: new Promise((fulfill) => {
+        tasks.add(task = { c: callback, f: fulfill });
+      }),
+      abort() {
+        tasks.delete(task);
+      }
+    };
+  }
+  function append(target, node) {
+    target.appendChild(node);
+  }
+  function get_root_for_style(node) {
+    if (!node) return document;
+    const root = node.getRootNode ? node.getRootNode() : node.ownerDocument;
+    if (root && /** @type {ShadowRoot} */
+    root.host) {
+      return (
+        /** @type {ShadowRoot} */
+        root
+      );
+    }
+    return node.ownerDocument;
+  }
+  function append_empty_stylesheet(node) {
+    const style_element = element("style");
+    style_element.textContent = "/* empty */";
+    append_stylesheet(get_root_for_style(node), style_element);
+    return style_element.sheet;
+  }
+  function append_stylesheet(node, style) {
+    append(
+      /** @type {Document} */
+      node.head || node,
+      style
+    );
+    return style.sheet;
+  }
+  function insert(target, node, anchor) {
+    target.insertBefore(node, anchor || null);
+  }
+  function detach(node) {
+    if (node.parentNode) {
+      node.parentNode.removeChild(node);
+    }
+  }
+  function destroy_each(iterations, detaching) {
+    for (let i = 0; i < iterations.length; i += 1) {
+      if (iterations[i]) iterations[i].d(detaching);
+    }
+  }
+  function element(name2) {
+    return document.createElement(name2);
+  }
+  function text(data) {
+    return document.createTextNode(data);
+  }
+  function space() {
+    return text(" ");
+  }
+  function empty() {
+    return text("");
+  }
+  function listen(node, event, handler, options) {
+    node.addEventListener(event, handler, options);
+    return () => node.removeEventListener(event, handler, options);
+  }
+  function attr(node, attribute, value) {
+    if (value == null) node.removeAttribute(attribute);
+    else if (node.getAttribute(attribute) !== value) node.setAttribute(attribute, value);
+  }
+  function to_number(value) {
+    return value === "" ? null : +value;
+  }
+  function children(element2) {
+    return Array.from(element2.childNodes);
+  }
+  function set_data(text2, data) {
+    data = "" + data;
+    if (text2.data === data) return;
+    text2.data = /** @type {string} */
+    data;
+  }
+  function set_input_value(input, value) {
+    input.value = value == null ? "" : value;
+  }
+  function set_style(node, key, value, important) {
+    if (value == null) {
+      node.style.removeProperty(key);
+    } else {
+      node.style.setProperty(key, value, "");
+    }
+  }
+  function custom_event(type, detail, { bubbles = false, cancelable = false } = {}) {
+    return new CustomEvent(type, { detail, bubbles, cancelable });
+  }
+  function get_custom_elements_slots(element2) {
+    const result = {};
+    element2.childNodes.forEach(
+      /** @param {Element} node */
+      (node) => {
+        result[node.slot || "default"] = true;
+      }
+    );
+    return result;
+  }
+  const managed_styles = /* @__PURE__ */ new Map();
+  let active = 0;
+  function hash(str) {
+    let hash2 = 5381;
+    let i = str.length;
+    while (i--) hash2 = (hash2 << 5) - hash2 ^ str.charCodeAt(i);
+    return hash2 >>> 0;
+  }
+  function create_style_information(doc, node) {
+    const info = { stylesheet: append_empty_stylesheet(node), rules: {} };
+    managed_styles.set(doc, info);
+    return info;
+  }
+  function create_rule(node, a, b, duration, delay, ease, fn, uid = 0) {
+    const step = 16.666 / duration;
+    let keyframes = "{\n";
+    for (let p = 0; p <= 1; p += step) {
+      const t = a + (b - a) * ease(p);
+      keyframes += p * 100 + `%{${fn(t, 1 - t)}}
+`;
+    }
+    const rule = keyframes + `100% {${fn(b, 1 - b)}}
+}`;
+    const name2 = `__svelte_${hash(rule)}_${uid}`;
+    const doc = get_root_for_style(node);
+    const { stylesheet, rules } = managed_styles.get(doc) || create_style_information(doc, node);
+    if (!rules[name2]) {
+      rules[name2] = true;
+      stylesheet.insertRule(`@keyframes ${name2} ${rule}`, stylesheet.cssRules.length);
+    }
+    const animation = node.style.animation || "";
+    node.style.animation = `${animation ? `${animation}, ` : ""}${name2} ${duration}ms linear ${delay}ms 1 both`;
+    active += 1;
+    return name2;
+  }
+  function delete_rule(node, name2) {
+    const previous = (node.style.animation || "").split(", ");
+    const next = previous.filter(
+      name2 ? (anim) => anim.indexOf(name2) < 0 : (anim) => anim.indexOf("__svelte") === -1
+      // remove all Svelte animations
+    );
+    const deleted = previous.length - next.length;
+    if (deleted) {
+      node.style.animation = next.join(", ");
+      active -= deleted;
+      if (!active) clear_rules();
+    }
+  }
+  function clear_rules() {
+    raf(() => {
+      if (active) return;
+      managed_styles.forEach((info) => {
+        const { ownerNode } = info.stylesheet;
+        if (ownerNode) detach(ownerNode);
+      });
+      managed_styles.clear();
+    });
+  }
+  function create_animation(node, from, fn, params) {
+    if (!from) return noop;
+    const to = node.getBoundingClientRect();
+    if (from.left === to.left && from.right === to.right && from.top === to.top && from.bottom === to.bottom)
+      return noop;
+    const {
+      delay = 0,
+      duration = 300,
+      easing = identity,
+      // @ts-ignore todo: should this be separated from destructuring? Or start/end added to public api and documentation?
+      start: start_time = now() + delay,
+      // @ts-ignore todo:
+      end = start_time + duration,
+      tick = noop,
+      css
+    } = fn(node, { from, to }, params);
+    let running = true;
+    let started = false;
+    let name2;
+    function start() {
+      if (css) {
+        name2 = create_rule(node, 0, 1, duration, delay, easing, css);
+      }
+      if (!delay) {
+        started = true;
+      }
+    }
+    function stop() {
+      if (css) delete_rule(node, name2);
+      running = false;
+    }
+    loop((now2) => {
+      if (!started && now2 >= start_time) {
+        started = true;
+      }
+      if (started && now2 >= end) {
+        tick(1, 0);
+        stop();
+      }
+      if (!running) {
+        return false;
+      }
+      if (started) {
+        const p = now2 - start_time;
+        const t = 0 + 1 * easing(p / duration);
+        tick(t, 1 - t);
+      }
+      return true;
+    });
+    start();
+    tick(0, 1);
+    return stop;
+  }
+  function fix_position(node) {
+    const style = getComputedStyle(node);
+    if (style.position !== "absolute" && style.position !== "fixed") {
+      const { width, height } = style;
+      const a = node.getBoundingClientRect();
+      node.style.position = "absolute";
+      node.style.width = width;
+      node.style.height = height;
+      add_transform(node, a);
+    }
+  }
+  function add_transform(node, a) {
+    const b = node.getBoundingClientRect();
+    if (a.left !== b.left || a.top !== b.top) {
+      const style = getComputedStyle(node);
+      const transform = style.transform === "none" ? "" : style.transform;
+      node.style.transform = `${transform} translate(${a.left - b.left}px, ${a.top - b.top}px)`;
+    }
+  }
+  let current_component;
+  function set_current_component(component) {
+    current_component = component;
+  }
+  function get_current_component() {
+    if (!current_component) throw new Error("Function called outside component initialization");
+    return current_component;
+  }
+  function onMount(fn) {
+    get_current_component().$$.on_mount.push(fn);
+  }
+  function onDestroy(fn) {
+    get_current_component().$$.on_destroy.push(fn);
+  }
+  function createEventDispatcher() {
+    const component = get_current_component();
+    return (type, detail, { cancelable = false } = {}) => {
+      const callbacks = component.$$.callbacks[type];
+      if (callbacks) {
+        const event = custom_event(
+          /** @type {string} */
+          type,
+          detail,
+          { cancelable }
+        );
+        callbacks.slice().forEach((fn) => {
+          fn.call(component, event);
+        });
+        return !event.defaultPrevented;
+      }
+      return true;
+    };
+  }
+  function bubble(component, event) {
+    const callbacks = component.$$.callbacks[event.type];
+    if (callbacks) {
+      callbacks.slice().forEach((fn) => fn.call(this, event));
+    }
+  }
+  const dirty_components = [];
+  const binding_callbacks = [];
+  let render_callbacks = [];
+  const flush_callbacks = [];
+  const resolved_promise = /* @__PURE__ */ Promise.resolve();
+  let update_scheduled = false;
+  function schedule_update() {
+    if (!update_scheduled) {
+      update_scheduled = true;
+      resolved_promise.then(flush);
+    }
+  }
+  function add_render_callback(fn) {
+    render_callbacks.push(fn);
+  }
+  function add_flush_callback(fn) {
+    flush_callbacks.push(fn);
+  }
+  const seen_callbacks = /* @__PURE__ */ new Set();
+  let flushidx = 0;
+  function flush() {
+    if (flushidx !== 0) {
+      return;
+    }
+    const saved_component = current_component;
+    do {
+      try {
+        while (flushidx < dirty_components.length) {
+          const component = dirty_components[flushidx];
+          flushidx++;
+          set_current_component(component);
+          update(component.$$);
+        }
+      } catch (e) {
+        dirty_components.length = 0;
+        flushidx = 0;
+        throw e;
+      }
+      set_current_component(null);
+      dirty_components.length = 0;
+      flushidx = 0;
+      while (binding_callbacks.length) binding_callbacks.pop()();
+      for (let i = 0; i < render_callbacks.length; i += 1) {
+        const callback = render_callbacks[i];
+        if (!seen_callbacks.has(callback)) {
+          seen_callbacks.add(callback);
+          callback();
+        }
+      }
+      render_callbacks.length = 0;
+    } while (dirty_components.length);
+    while (flush_callbacks.length) {
+      flush_callbacks.pop()();
+    }
+    update_scheduled = false;
+    seen_callbacks.clear();
+    set_current_component(saved_component);
+  }
+  function update($$) {
+    if ($$.fragment !== null) {
+      $$.update();
+      run_all($$.before_update);
+      const dirty = $$.dirty;
+      $$.dirty = [-1];
+      $$.fragment && $$.fragment.p($$.ctx, dirty);
+      $$.after_update.forEach(add_render_callback);
+    }
+  }
+  function flush_render_callbacks(fns) {
+    const filtered = [];
+    const targets = [];
+    render_callbacks.forEach((c) => fns.indexOf(c) === -1 ? filtered.push(c) : targets.push(c));
+    targets.forEach((c) => c());
+    render_callbacks = filtered;
+  }
+  let promise;
+  function wait() {
+    if (!promise) {
+      promise = Promise.resolve();
+      promise.then(() => {
+        promise = null;
+      });
+    }
+    return promise;
+  }
+  function dispatch(node, direction, kind) {
+    node.dispatchEvent(custom_event(`${direction ? "intro" : "outro"}${kind}`));
+  }
+  const outroing = /* @__PURE__ */ new Set();
+  let outros;
+  function group_outros() {
+    outros = {
+      r: 0,
+      c: [],
+      p: outros
+      // parent group
+    };
+  }
+  function check_outros() {
+    if (!outros.r) {
+      run_all(outros.c);
+    }
+    outros = outros.p;
+  }
+  function transition_in(block, local) {
+    if (block && block.i) {
+      outroing.delete(block);
+      block.i(local);
+    }
+  }
+  function transition_out(block, local, detach2, callback) {
+    if (block && block.o) {
+      if (outroing.has(block)) return;
+      outroing.add(block);
+      outros.c.push(() => {
+        outroing.delete(block);
+        if (callback) {
+          if (detach2) block.d(1);
+          callback();
+        }
+      });
+      block.o(local);
+    } else if (callback) {
+      callback();
+    }
+  }
+  const null_transition = { duration: 0 };
+  function create_bidirectional_transition(node, fn, params, intro) {
+    const options = { direction: "both" };
+    let config = fn(node, params, options);
+    let t = intro ? 0 : 1;
+    let running_program = null;
+    let pending_program = null;
+    let animation_name = null;
+    let original_inert_value;
+    function clear_animation() {
+      if (animation_name) delete_rule(node, animation_name);
+    }
+    function init2(program, duration) {
+      const d = (
+        /** @type {Program['d']} */
+        program.b - t
+      );
+      duration *= Math.abs(d);
+      return {
+        a: t,
+        b: program.b,
+        d,
+        duration,
+        start: program.start,
+        end: program.start + duration,
+        group: program.group
+      };
+    }
+    function go(b) {
+      const {
+        delay = 0,
+        duration = 300,
+        easing = identity,
+        tick = noop,
+        css
+      } = config || null_transition;
+      const program = {
+        start: now() + delay,
+        b
+      };
+      if (!b) {
+        program.group = outros;
+        outros.r += 1;
+      }
+      if ("inert" in node) {
+        if (b) {
+          if (original_inert_value !== void 0) {
+            node.inert = original_inert_value;
+          }
+        } else {
+          original_inert_value = /** @type {HTMLElement} */
+          node.inert;
+          node.inert = true;
+        }
+      }
+      if (running_program || pending_program) {
+        pending_program = program;
+      } else {
+        if (css) {
+          clear_animation();
+          animation_name = create_rule(node, t, b, duration, delay, easing, css);
+        }
+        if (b) tick(0, 1);
+        running_program = init2(program, duration);
+        add_render_callback(() => dispatch(node, b, "start"));
+        loop((now2) => {
+          if (pending_program && now2 > pending_program.start) {
+            running_program = init2(pending_program, duration);
+            pending_program = null;
+            dispatch(node, running_program.b, "start");
+            if (css) {
+              clear_animation();
+              animation_name = create_rule(
+                node,
+                t,
+                running_program.b,
+                running_program.duration,
+                0,
+                easing,
+                config.css
+              );
+            }
+          }
+          if (running_program) {
+            if (now2 >= running_program.end) {
+              tick(t = running_program.b, 1 - t);
+              dispatch(node, running_program.b, "end");
+              if (!pending_program) {
+                if (running_program.b) {
+                  clear_animation();
+                } else {
+                  if (!--running_program.group.r) run_all(running_program.group.c);
+                }
+              }
+              running_program = null;
+            } else if (now2 >= running_program.start) {
+              const p = now2 - running_program.start;
+              t = running_program.a + running_program.d * easing(p / running_program.duration);
+              tick(t, 1 - t);
+            }
+          }
+          return !!(running_program || pending_program);
+        });
+      }
+    }
+    return {
+      run(b) {
+        if (is_function(config)) {
+          wait().then(() => {
+            const opts = { direction: b ? "in" : "out" };
+            config = config(opts);
+            go(b);
+          });
+        } else {
+          go(b);
+        }
+      },
+      end() {
+        clear_animation();
+        running_program = pending_program = null;
+      }
+    };
+  }
+  function ensure_array_like(array_like_or_iterator) {
+    return (array_like_or_iterator == null ? void 0 : array_like_or_iterator.length) !== void 0 ? array_like_or_iterator : Array.from(array_like_or_iterator);
+  }
+  function destroy_block(block, lookup) {
+    block.d(1);
+    lookup.delete(block.key);
+  }
+  function outro_and_destroy_block(block, lookup) {
+    transition_out(block, 1, 1, () => {
+      lookup.delete(block.key);
+    });
+  }
+  function fix_and_outro_and_destroy_block(block, lookup) {
+    block.f();
+    outro_and_destroy_block(block, lookup);
+  }
+  function update_keyed_each(old_blocks, dirty, get_key, dynamic, ctx, list, lookup, node, destroy, create_each_block2, next, get_context) {
+    let o = old_blocks.length;
+    let n = list.length;
+    let i = o;
+    const old_indexes = {};
+    while (i--) old_indexes[old_blocks[i].key] = i;
+    const new_blocks = [];
+    const new_lookup = /* @__PURE__ */ new Map();
+    const deltas = /* @__PURE__ */ new Map();
+    const updates = [];
+    i = n;
+    while (i--) {
+      const child_ctx = get_context(ctx, list, i);
+      const key = get_key(child_ctx);
+      let block = lookup.get(key);
+      if (!block) {
+        block = create_each_block2(key, child_ctx);
+        block.c();
+      } else {
+        updates.push(() => block.p(child_ctx, dirty));
+      }
+      new_lookup.set(key, new_blocks[i] = block);
+      if (key in old_indexes) deltas.set(key, Math.abs(i - old_indexes[key]));
+    }
+    const will_move = /* @__PURE__ */ new Set();
+    const did_move = /* @__PURE__ */ new Set();
+    function insert2(block) {
+      transition_in(block, 1);
+      block.m(node, next);
+      lookup.set(block.key, block);
+      next = block.first;
+      n--;
+    }
+    while (o && n) {
+      const new_block = new_blocks[n - 1];
+      const old_block = old_blocks[o - 1];
+      const new_key = new_block.key;
+      const old_key = old_block.key;
+      if (new_block === old_block) {
+        next = new_block.first;
+        o--;
+        n--;
+      } else if (!new_lookup.has(old_key)) {
+        destroy(old_block, lookup);
+        o--;
+      } else if (!lookup.has(new_key) || will_move.has(new_key)) {
+        insert2(new_block);
+      } else if (did_move.has(old_key)) {
+        o--;
+      } else if (deltas.get(new_key) > deltas.get(old_key)) {
+        did_move.add(new_key);
+        insert2(new_block);
+      } else {
+        will_move.add(old_key);
+        o--;
+      }
+    }
+    while (o--) {
+      const old_block = old_blocks[o];
+      if (!new_lookup.has(old_block.key)) destroy(old_block, lookup);
+    }
+    while (n) insert2(new_blocks[n - 1]);
+    run_all(updates);
+    return new_blocks;
+  }
+  function bind(component, name2, callback) {
+    const index = component.$$.props[name2];
+    if (index !== void 0) {
+      component.$$.bound[index] = callback;
+      callback(component.$$.ctx[index]);
+    }
+  }
+  function create_component(block) {
+    block && block.c();
+  }
+  function mount_component(component, target, anchor) {
+    const { fragment, after_update } = component.$$;
+    fragment && fragment.m(target, anchor);
+    add_render_callback(() => {
+      const new_on_destroy = component.$$.on_mount.map(run).filter(is_function);
+      if (component.$$.on_destroy) {
+        component.$$.on_destroy.push(...new_on_destroy);
+      } else {
+        run_all(new_on_destroy);
+      }
+      component.$$.on_mount = [];
+    });
+    after_update.forEach(add_render_callback);
+  }
+  function destroy_component(component, detaching) {
+    const $$ = component.$$;
+    if ($$.fragment !== null) {
+      flush_render_callbacks($$.after_update);
+      run_all($$.on_destroy);
+      $$.fragment && $$.fragment.d(detaching);
+      $$.on_destroy = $$.fragment = null;
+      $$.ctx = [];
+    }
+  }
+  function make_dirty(component, i) {
+    if (component.$$.dirty[0] === -1) {
+      dirty_components.push(component);
+      schedule_update();
+      component.$$.dirty.fill(0);
+    }
+    component.$$.dirty[i / 31 | 0] |= 1 << i % 31;
+  }
+  function init(component, options, instance2, create_fragment2, not_equal, props, append_styles = null, dirty = [-1]) {
+    const parent_component = current_component;
+    set_current_component(component);
+    const $$ = component.$$ = {
+      fragment: null,
+      ctx: [],
+      // state
+      props,
+      update: noop,
+      not_equal,
+      bound: blank_object(),
+      // lifecycle
+      on_mount: [],
+      on_destroy: [],
+      on_disconnect: [],
+      before_update: [],
+      after_update: [],
+      context: new Map(options.context || (parent_component ? parent_component.$$.context : [])),
+      // everything else
+      callbacks: blank_object(),
+      dirty,
+      skip_bound: false,
+      root: options.target || parent_component.$$.root
+    };
+    append_styles && append_styles($$.root);
+    let ready = false;
+    $$.ctx = instance2 ? instance2(component, options.props || {}, (i, ret, ...rest) => {
+      const value = rest.length ? rest[0] : ret;
+      if ($$.ctx && not_equal($$.ctx[i], $$.ctx[i] = value)) {
+        if (!$$.skip_bound && $$.bound[i]) $$.bound[i](value);
+        if (ready) make_dirty(component, i);
+      }
+      return ret;
+    }) : [];
+    $$.update();
+    ready = true;
+    run_all($$.before_update);
+    $$.fragment = create_fragment2 ? create_fragment2($$.ctx) : false;
+    if (options.target) {
+      if (options.hydrate) {
+        const nodes = children(options.target);
+        $$.fragment && $$.fragment.l(nodes);
+        nodes.forEach(detach);
+      } else {
+        $$.fragment && $$.fragment.c();
+      }
+      if (options.intro) transition_in(component.$$.fragment);
+      mount_component(component, options.target, options.anchor);
+      flush();
+    }
+    set_current_component(parent_component);
+  }
+  let SvelteElement;
+  if (typeof HTMLElement === "function") {
+    SvelteElement = class extends HTMLElement {
+      constructor($$componentCtor, $$slots, use_shadow_dom) {
+        super();
+        /** The Svelte component constructor */
+        __publicField(this, "$$ctor");
+        /** Slots */
+        __publicField(this, "$$s");
+        /** The Svelte component instance */
+        __publicField(this, "$$c");
+        /** Whether or not the custom element is connected */
+        __publicField(this, "$$cn", false);
+        /** Component props data */
+        __publicField(this, "$$d", {});
+        /** `true` if currently in the process of reflecting component props back to attributes */
+        __publicField(this, "$$r", false);
+        /** @type {Record<string, CustomElementPropDefinition>} Props definition (name, reflected, type etc) */
+        __publicField(this, "$$p_d", {});
+        /** @type {Record<string, Function[]>} Event listeners */
+        __publicField(this, "$$l", {});
+        /** @type {Map<Function, Function>} Event listener unsubscribe functions */
+        __publicField(this, "$$l_u", /* @__PURE__ */ new Map());
+        this.$$ctor = $$componentCtor;
+        this.$$s = $$slots;
+        if (use_shadow_dom) {
+          this.attachShadow({ mode: "open" });
+        }
+      }
+      addEventListener(type, listener, options) {
+        this.$$l[type] = this.$$l[type] || [];
+        this.$$l[type].push(listener);
+        if (this.$$c) {
+          const unsub = this.$$c.$on(type, listener);
+          this.$$l_u.set(listener, unsub);
+        }
+        super.addEventListener(type, listener, options);
+      }
+      removeEventListener(type, listener, options) {
+        super.removeEventListener(type, listener, options);
+        if (this.$$c) {
+          const unsub = this.$$l_u.get(listener);
+          if (unsub) {
+            unsub();
+            this.$$l_u.delete(listener);
+          }
+        }
+      }
+      async connectedCallback() {
+        this.$$cn = true;
+        if (!this.$$c) {
+          let create_slot = function(name2) {
+            return () => {
+              let node;
+              const obj = {
+                c: function create() {
+                  node = element("slot");
+                  if (name2 !== "default") {
+                    attr(node, "name", name2);
+                  }
+                },
+                /**
+                 * @param {HTMLElement} target
+                 * @param {HTMLElement} [anchor]
+                 */
+                m: function mount(target, anchor) {
+                  insert(target, node, anchor);
+                },
+                d: function destroy(detaching) {
+                  if (detaching) {
+                    detach(node);
+                  }
+                }
+              };
+              return obj;
+            };
+          };
+          await Promise.resolve();
+          if (!this.$$cn || this.$$c) {
+            return;
+          }
+          const $$slots = {};
+          const existing_slots = get_custom_elements_slots(this);
+          for (const name2 of this.$$s) {
+            if (name2 in existing_slots) {
+              $$slots[name2] = [create_slot(name2)];
+            }
+          }
+          for (const attribute of this.attributes) {
+            const name2 = this.$$g_p(attribute.name);
+            if (!(name2 in this.$$d)) {
+              this.$$d[name2] = get_custom_element_value(name2, attribute.value, this.$$p_d, "toProp");
+            }
+          }
+          for (const key in this.$$p_d) {
+            if (!(key in this.$$d) && this[key] !== void 0) {
+              this.$$d[key] = this[key];
+              delete this[key];
+            }
+          }
+          this.$$c = new this.$$ctor({
+            target: this.shadowRoot || this,
+            props: {
+              ...this.$$d,
+              $$slots,
+              $$scope: {
+                ctx: []
+              }
+            }
+          });
+          const reflect_attributes = () => {
+            this.$$r = true;
+            for (const key in this.$$p_d) {
+              this.$$d[key] = this.$$c.$$.ctx[this.$$c.$$.props[key]];
+              if (this.$$p_d[key].reflect) {
+                const attribute_value = get_custom_element_value(
+                  key,
+                  this.$$d[key],
+                  this.$$p_d,
+                  "toAttribute"
+                );
+                if (attribute_value == null) {
+                  this.removeAttribute(this.$$p_d[key].attribute || key);
+                } else {
+                  this.setAttribute(this.$$p_d[key].attribute || key, attribute_value);
+                }
+              }
+            }
+            this.$$r = false;
+          };
+          this.$$c.$$.after_update.push(reflect_attributes);
+          reflect_attributes();
+          for (const type in this.$$l) {
+            for (const listener of this.$$l[type]) {
+              const unsub = this.$$c.$on(type, listener);
+              this.$$l_u.set(listener, unsub);
+            }
+          }
+          this.$$l = {};
+        }
+      }
+      // We don't need this when working within Svelte code, but for compatibility of people using this outside of Svelte
+      // and setting attributes through setAttribute etc, this is helpful
+      attributeChangedCallback(attr2, _oldValue, newValue) {
+        var _a;
+        if (this.$$r) return;
+        attr2 = this.$$g_p(attr2);
+        this.$$d[attr2] = get_custom_element_value(attr2, newValue, this.$$p_d, "toProp");
+        (_a = this.$$c) == null ? void 0 : _a.$set({ [attr2]: this.$$d[attr2] });
+      }
+      disconnectedCallback() {
+        this.$$cn = false;
+        Promise.resolve().then(() => {
+          if (!this.$$cn && this.$$c) {
+            this.$$c.$destroy();
+            this.$$c = void 0;
+          }
+        });
+      }
+      $$g_p(attribute_name) {
+        return Object.keys(this.$$p_d).find(
+          (key) => this.$$p_d[key].attribute === attribute_name || !this.$$p_d[key].attribute && key.toLowerCase() === attribute_name
+        ) || attribute_name;
+      }
+    };
+  }
+  function get_custom_element_value(prop, value, props_definition, transform) {
+    var _a;
+    const type = (_a = props_definition[prop]) == null ? void 0 : _a.type;
+    value = type === "Boolean" && typeof value !== "boolean" ? value != null : value;
+    if (!transform || !props_definition[prop]) {
+      return value;
+    } else if (transform === "toAttribute") {
+      switch (type) {
+        case "Object":
+        case "Array":
+          return value == null ? null : JSON.stringify(value);
+        case "Boolean":
+          return value ? "" : null;
+        case "Number":
+          return value == null ? null : value;
+        default:
+          return value;
+      }
+    } else {
+      switch (type) {
+        case "Object":
+        case "Array":
+          return value && JSON.parse(value);
+        case "Boolean":
+          return value;
+        case "Number":
+          return value != null ? +value : value;
+        default:
+          return value;
+      }
+    }
+  }
+  function create_custom_element(Component, props_definition, slots, accessors, use_shadow_dom, extend) {
+    let Class = class extends SvelteElement {
+      constructor() {
+        super(Component, slots, use_shadow_dom);
+        this.$$p_d = props_definition;
+      }
+      static get observedAttributes() {
+        return Object.keys(props_definition).map(
+          (key) => (props_definition[key].attribute || key).toLowerCase()
+        );
+      }
+    };
+    Object.keys(props_definition).forEach((prop) => {
+      Object.defineProperty(Class.prototype, prop, {
+        get() {
+          return this.$$c && prop in this.$$c ? this.$$c[prop] : this.$$d[prop];
+        },
+        set(value) {
+          var _a;
+          value = get_custom_element_value(prop, value, props_definition);
+          this.$$d[prop] = value;
+          (_a = this.$$c) == null ? void 0 : _a.$set({ [prop]: value });
+        }
+      });
+    });
+    accessors.forEach((accessor) => {
+      Object.defineProperty(Class.prototype, accessor, {
+        get() {
+          var _a;
+          return (_a = this.$$c) == null ? void 0 : _a[accessor];
+        }
+      });
+    });
+    Component.element = /** @type {any} */
+    Class;
+    return Class;
+  }
+  class SvelteComponent {
+    constructor() {
+      /**
+       * ### PRIVATE API
+       *
+       * Do not use, may change at any time
+       *
+       * @type {any}
+       */
+      __publicField(this, "$$");
+      /**
+       * ### PRIVATE API
+       *
+       * Do not use, may change at any time
+       *
+       * @type {any}
+       */
+      __publicField(this, "$$set");
+    }
+    /** @returns {void} */
+    $destroy() {
+      destroy_component(this, 1);
+      this.$destroy = noop;
+    }
+    /**
+     * @template {Extract<keyof Events, string>} K
+     * @param {K} type
+     * @param {((e: Events[K]) => void) | null | undefined} callback
+     * @returns {() => void}
+     */
+    $on(type, callback) {
+      if (!is_function(callback)) {
+        return noop;
+      }
+      const callbacks = this.$$.callbacks[type] || (this.$$.callbacks[type] = []);
+      callbacks.push(callback);
+      return () => {
+        const index = callbacks.indexOf(callback);
+        if (index !== -1) callbacks.splice(index, 1);
+      };
+    }
+    /**
+     * @param {Partial<Props>} props
+     * @returns {void}
+     */
+    $set(props) {
+      if (this.$$set && !is_empty(props)) {
+        this.$$.skip_bound = true;
+        this.$$set(props);
+        this.$$.skip_bound = false;
+      }
+    }
+  }
+  const PUBLIC_VERSION = "4";
+  if (typeof window !== "undefined")
+    (window.__svelte || (window.__svelte = { v: /* @__PURE__ */ new Set() })).v.add(PUBLIC_VERSION);
+  class KeyManager {
+    constructor() {
+      __publicField(this, "keyCounter", 0);
+    }
+    getNewKey() {
+      let num = this.keyCounter++;
+      return num.toString(16);
+    }
+  }
+  var keyManager = new KeyManager();
+  class CNode {
+    constructor(type = "NONE", data = "{}") {
+      __publicField(this, "id");
+      __publicField(this, "type");
+      __publicField(this, "data");
+      this.id = keyManager.getNewKey();
+      this.type = type;
+      this.data = JSON.parse(data);
+    }
+  }
+  class SheetColumn {
+    constructor(data = []) {
+      __publicField(this, "id");
+      __publicField(this, "data", []);
+      this.id = keyManager.getNewKey();
+      this.data = [];
+      data.forEach((d) => {
+        if (d != null && d.data && d.type) {
+          this.data.push(new CNode(d.type, d.data));
+        } else {
+          this.data.push(new CNode());
+        }
+      });
+    }
+    addItem() {
+      this.data.push(new CNode());
+    }
+    remItem(id) {
+      let i = this.data.findIndex((p) => p.id == id);
+      if (i == -1) {
+        console.error("cant remove column, since id is not present in data");
+        return;
+      }
+      this.data.splice(i, 1);
+    }
+  }
+  class SheetRow {
+    constructor(data = []) {
+      __publicField(this, "id");
+      __publicField(this, "data", []);
+      this.id = keyManager.getNewKey();
+      this.data = [];
+      data.forEach((d) => {
+        this.data.push(new SheetColumn(d.data));
+      });
+    }
+    addColumn() {
+      this.data.push(new SheetColumn());
+    }
+    remColumn(id) {
+      let i = this.data.findIndex((p) => p.id == id);
+      if (i == -1) {
+        console.error("cant remove column, since id is not present in data");
+        return;
+      }
+      this.data.splice(i, 1);
+    }
+  }
+  class SheetData {
+    constructor(json) {
+      __publicField(this, "id");
+      __publicField(this, "data", []);
+      if (typeof json == "string") {
+        json = JSON.parse(json);
+      }
+      let data = json.data ?? [];
+      this.id = keyManager.getNewKey();
+      this.data = [];
+      data.forEach((d) => {
+        if (d.data)
+          this.data.push(new SheetRow(d.data));
+      });
+    }
+    addRow() {
+      this.data.push(new SheetRow());
+    }
+    remRow(id) {
+      let i = this.data.findIndex((p) => p.id == id);
+      if (i == -1) {
+        console.error("cant remove Row, since id is not present in data");
+        return;
+      }
+      this.data.splice(i, 1);
+    }
+  }
+  const subscriber_queue = [];
+  function writable(value, start = noop) {
+    let stop;
+    const subscribers = /* @__PURE__ */ new Set();
+    function set(new_value) {
+      if (safe_not_equal(value, new_value)) {
+        value = new_value;
+        if (stop) {
+          const run_queue = !subscriber_queue.length;
+          for (const subscriber of subscribers) {
+            subscriber[1]();
+            subscriber_queue.push(subscriber, value);
+          }
+          if (run_queue) {
+            for (let i = 0; i < subscriber_queue.length; i += 2) {
+              subscriber_queue[i][0](subscriber_queue[i + 1]);
+            }
+            subscriber_queue.length = 0;
+          }
+        }
+      }
+    }
+    function update2(fn) {
+      set(fn(value));
+    }
+    function subscribe2(run2, invalidate = noop) {
+      const subscriber = [run2, invalidate];
+      subscribers.add(subscriber);
+      if (subscribers.size === 1) {
+        stop = start(set, update2) || noop;
+      }
+      run2(value);
+      return () => {
+        subscribers.delete(subscriber);
+        if (subscribers.size === 0 && stop) {
+          stop();
+          stop = null;
+        }
+      };
+    }
+    return { set, update: update2, subscribe: subscribe2 };
+  }
+  function cubicOut(t) {
+    const f = t - 1;
+    return f * f * f + 1;
+  }
+  function fade(node, { delay = 0, duration = 400, easing = identity } = {}) {
+    const o = +getComputedStyle(node).opacity;
+    return {
+      delay,
+      duration,
+      easing,
+      css: (t) => `opacity: ${t * o}`
+    };
+  }
+  function fly(node, { delay = 0, duration = 400, easing = cubicOut, x = 0, y = 0, opacity = 0 } = {}) {
+    const style = getComputedStyle(node);
+    const target_opacity = +style.opacity;
+    const transform = style.transform === "none" ? "" : style.transform;
+    const od = target_opacity * (1 - opacity);
+    const [xValue, xUnit] = split_css_unit(x);
+    const [yValue, yUnit] = split_css_unit(y);
+    return {
+      delay,
+      duration,
+      easing,
+      css: (t, u) => `
+			transform: ${transform} translate(${(1 - t) * xValue}${xUnit}, ${(1 - t) * yValue}${yUnit});
+			opacity: ${target_opacity - od * u}`
+    };
+  }
+  function slide(node, { delay = 0, duration = 400, easing = cubicOut, axis = "y" } = {}) {
+    const style = getComputedStyle(node);
+    const opacity = +style.opacity;
+    const primary_property = axis === "y" ? "height" : "width";
+    const primary_property_value = parseFloat(style[primary_property]);
+    const secondary_properties = axis === "y" ? ["top", "bottom"] : ["left", "right"];
+    const capitalized_secondary_properties = secondary_properties.map(
+      (e) => `${e[0].toUpperCase()}${e.slice(1)}`
+    );
+    const padding_start_value = parseFloat(style[`padding${capitalized_secondary_properties[0]}`]);
+    const padding_end_value = parseFloat(style[`padding${capitalized_secondary_properties[1]}`]);
+    const margin_start_value = parseFloat(style[`margin${capitalized_secondary_properties[0]}`]);
+    const margin_end_value = parseFloat(style[`margin${capitalized_secondary_properties[1]}`]);
+    const border_width_start_value = parseFloat(
+      style[`border${capitalized_secondary_properties[0]}Width`]
+    );
+    const border_width_end_value = parseFloat(
+      style[`border${capitalized_secondary_properties[1]}Width`]
+    );
+    return {
+      delay,
+      duration,
+      easing,
+      css: (t) => `overflow: hidden;opacity: ${Math.min(t * 20, 1) * opacity};${primary_property}: ${t * primary_property_value}px;padding-${secondary_properties[0]}: ${t * padding_start_value}px;padding-${secondary_properties[1]}: ${t * padding_end_value}px;margin-${secondary_properties[0]}: ${t * margin_start_value}px;margin-${secondary_properties[1]}: ${t * margin_end_value}px;border-${secondary_properties[0]}-width: ${t * border_width_start_value}px;border-${secondary_properties[1]}-width: ${t * border_width_end_value}px;`
+    };
+  }
+  function create_else_block$1(ctx) {
+    let div;
+    let t1;
+    let input;
+    return {
+      c() {
+        div = element("div");
+        div.textContent = "Hit Point Maximum";
+        t1 = space();
+        input = element("input");
+        attr(input, "type", "number");
+      },
+      m(target, anchor) {
+        insert(target, div, anchor);
+        insert(target, t1, anchor);
+        insert(target, input, anchor);
+      },
+      d(detaching) {
+        if (detaching) {
+          detach(div);
+          detach(t1);
+          detach(input);
+        }
+      }
+    };
+  }
+  function create_if_block_1$5(ctx) {
+    let div;
+    let t1;
+    let input;
+    return {
+      c() {
+        div = element("div");
+        div.textContent = "Hit Point Maximum";
+        t1 = space();
+        input = element("input");
+        attr(input, "type", "number");
+      },
+      m(target, anchor) {
+        insert(target, div, anchor);
+        insert(target, t1, anchor);
+        insert(target, input, anchor);
+      },
+      d(detaching) {
+        if (detaching) {
+          detach(div);
+          detach(t1);
+          detach(input);
+        }
+      }
+    };
+  }
+  function create_if_block$6(ctx) {
+    let div;
+    let t1;
+    let input;
+    return {
+      c() {
+        div = element("div");
+        div.textContent = "Hit Point Maximum";
+        t1 = space();
+        input = element("input");
+        attr(input, "type", "number");
+      },
+      m(target, anchor) {
+        insert(target, div, anchor);
+        insert(target, t1, anchor);
+        insert(target, input, anchor);
+      },
+      d(detaching) {
+        if (detaching) {
+          detach(div);
+          detach(t1);
+          detach(input);
+        }
+      }
+    };
+  }
+  function create_fragment$c(ctx) {
+    let div2;
+    let div0;
+    let t1;
+    let input0;
+    let input0_disabled_value;
+    let t2;
+    let div1;
+    let t4;
+    let input1;
+    let t5;
+    let mounted;
+    let dispose;
+    function select_block_type(ctx2, dirty) {
+      if (
+        /*editMode*/
+        ctx2[0]
+      ) return create_if_block$6;
+      if (
+        /*playMode*/
+        ctx2[1]
+      ) return create_if_block_1$5;
+      return create_else_block$1;
+    }
+    let current_block_type = select_block_type(ctx);
+    let if_block = current_block_type(ctx);
+    return {
+      c() {
+        div2 = element("div");
+        div0 = element("div");
+        div0.textContent = "Hit Points";
+        t1 = space();
+        input0 = element("input");
+        t2 = space();
+        div1 = element("div");
+        div1.textContent = "temporary Hit Points";
+        t4 = space();
+        input1 = element("input");
+        t5 = space();
+        if_block.c();
+        attr(input0, "type", "number");
+        input0.disabled = input0_disabled_value = !/*editMode*/
+        ctx[0];
+        attr(input1, "type", "number");
+      },
+      m(target, anchor) {
+        insert(target, div2, anchor);
+        append(div2, div0);
+        append(div2, t1);
+        append(div2, input0);
+        set_input_value(
+          input0,
+          /*v*/
+          ctx[2]
+        );
+        append(div2, t2);
+        append(div2, div1);
+        append(div2, t4);
+        append(div2, input1);
+        append(div2, t5);
+        if_block.m(div2, null);
+        if (!mounted) {
+          dispose = [
+            listen(
+              input0,
+              "input",
+              /*input0_input_handler*/
+              ctx[6]
+            ),
+            listen(
+              input0,
+              "change",
+              /*iterateValue*/
+              ctx[3]
+            )
+          ];
+          mounted = true;
+        }
+      },
+      p(ctx2, [dirty]) {
+        if (dirty & /*editMode*/
+        1 && input0_disabled_value !== (input0_disabled_value = !/*editMode*/
+        ctx2[0])) {
+          input0.disabled = input0_disabled_value;
+        }
+        if (dirty & /*v*/
+        4 && to_number(input0.value) !== /*v*/
+        ctx2[2]) {
+          set_input_value(
+            input0,
+            /*v*/
+            ctx2[2]
+          );
+        }
+        if (current_block_type !== (current_block_type = select_block_type(ctx2))) {
+          if_block.d(1);
+          if_block = current_block_type(ctx2);
+          if (if_block) {
+            if_block.c();
+            if_block.m(div2, null);
+          }
+        }
+      },
+      i: noop,
+      o: noop,
+      d(detaching) {
+        if (detaching) {
+          detach(div2);
+        }
+        if_block.d();
+        mounted = false;
+        run_all(dispose);
+      }
+    };
+  }
+  function instance$c($$self, $$props, $$invalidate) {
+    let { sys } = $$props;
+    let { editMode } = $$props;
+    let { playMode } = $$props;
+    let { data } = $$props;
+    let node = sys.getNode("fixed", "generic", "Hit Points");
+    let v = node.getValue();
+    const KEY = keyManager.getNewKey();
+    onMount(() => {
+      node.addUpdateListener(name + KEY + "SvelteView", () => {
+        $$invalidate(2, v = node.getValue());
+      });
+    });
+    onDestroy(() => {
+      node.removeUpdateListener(name + KEY + "SvelteView");
+    });
+    function iterateValue() {
+      node.setValue(v);
+      return null;
+    }
+    function input0_input_handler() {
+      v = to_number(this.value);
+      $$invalidate(2, v);
+    }
+    $$self.$$set = ($$props2) => {
+      if ("sys" in $$props2) $$invalidate(4, sys = $$props2.sys);
+      if ("editMode" in $$props2) $$invalidate(0, editMode = $$props2.editMode);
+      if ("playMode" in $$props2) $$invalidate(1, playMode = $$props2.playMode);
+      if ("data" in $$props2) $$invalidate(5, data = $$props2.data);
+    };
+    return [editMode, playMode, v, iterateValue, sys, data, input0_input_handler];
+  }
+  class HitPoints extends SvelteComponent {
+    constructor(options) {
+      super();
+      init(this, options, instance$c, create_fragment$c, safe_not_equal, {
+        sys: 4,
+        editMode: 0,
+        playMode: 1,
+        data: 5
+      });
+    }
+    get sys() {
+      return this.$$.ctx[4];
+    }
+    set sys(sys) {
+      this.$$set({ sys });
+      flush();
+    }
+    get editMode() {
+      return this.$$.ctx[0];
+    }
+    set editMode(editMode) {
+      this.$$set({ editMode });
+      flush();
+    }
+    get playMode() {
+      return this.$$.ctx[1];
+    }
+    set playMode(playMode) {
+      this.$$set({ playMode });
+      flush();
+    }
+    get data() {
+      return this.$$.ctx[5];
+    }
+    set data(data) {
+      this.$$set({ data });
+      flush();
+    }
+  }
+  create_custom_element(HitPoints, { "sys": {}, "editMode": {}, "playMode": {}, "data": {} }, [], [], true);
+  var viewNameIndex = /* @__PURE__ */ ((viewNameIndex2) => {
+    viewNameIndex2["HitPoints"] = "HitPoints";
+    viewNameIndex2["ProficiencyBonus"] = "ProficiencyBonus";
+    viewNameIndex2["SkillProficiencies"] = "SkillProficiencies";
+    viewNameIndex2["SpellInfo"] = "SpellInfo";
+    viewNameIndex2["Stats"] = "Stats";
+    return viewNameIndex2;
+  })(viewNameIndex || {});
+  function flip(node, { from, to }, params = {}) {
+    const style = getComputedStyle(node);
+    const transform = style.transform === "none" ? "" : style.transform;
+    const [ox, oy] = style.transformOrigin.split(" ").map(parseFloat);
+    const dx = from.left + from.width * ox / to.width - (to.left + ox);
+    const dy = from.top + from.height * oy / to.height - (to.top + oy);
+    const { delay = 0, duration = (d) => Math.sqrt(d) * 120, easing = cubicOut } = params;
+    return {
+      delay,
+      duration: is_function(duration) ? duration(Math.sqrt(dx * dx + dy * dy)) : duration,
+      easing,
+      css: (t, u) => {
+        const x = u * dx;
+        const y = u * dy;
+        const sx = t + u * from.width / to.width;
+        const sy = t + u * from.height / to.height;
+        return `transform: ${transform} translate(${x}px, ${y}px) scale(${sx}, ${sy});`;
+      }
+    };
+  }
+  function get_each_context$5(ctx, list, i) {
+    const child_ctx = ctx.slice();
+    child_ctx[23] = list[i];
+    return child_ctx;
+  }
+  function create_key_block(ctx) {
+    let div;
+    let t_value = (
+      /*selected*/
+      (ctx[0] == null ? (
+        /*unSelectedplaceholder*/
+        ctx[2]
+      ) : (
+        /*selected*/
+        ctx[0]
+      )) + ""
+    );
+    let t;
+    let div_data_isdisabled_value;
+    let div_data_iserror_value;
+    let div_data_selected_value;
+    let mounted;
+    let dispose;
+    return {
+      c() {
+        div = element("div");
+        t = text(t_value);
+        attr(div, "class", "GrobSelectLabel effect");
+        attr(div, "data-isdisabled", div_data_isdisabled_value = /*disabled*/
+        ctx[3] ?? false);
+        attr(div, "data-iserror", div_data_iserror_value = /*isError*/
+        ctx[4] ?? false);
+        attr(div, "data-selected", div_data_selected_value = /*selected*/
+        ctx[0] ?? false);
+        attr(div, "tabindex", "-1");
+      },
+      m(target, anchor) {
+        insert(target, div, anchor);
+        append(div, t);
+        ctx[17](div);
+        if (!mounted) {
+          dispose = [
+            listen(
+              div,
+              "focus",
+              /*onFocus*/
+              ctx[13]
+            ),
+            listen(
+              div,
+              "blur",
+              /*onblur*/
+              ctx[14]
+            )
+          ];
+          mounted = true;
+        }
+      },
+      p(ctx2, dirty) {
+        if (dirty & /*selected, unSelectedplaceholder*/
+        5 && t_value !== (t_value = /*selected*/
+        (ctx2[0] == null ? (
+          /*unSelectedplaceholder*/
+          ctx2[2]
+        ) : (
+          /*selected*/
+          ctx2[0]
+        )) + "")) set_data(t, t_value);
+        if (dirty & /*disabled*/
+        8 && div_data_isdisabled_value !== (div_data_isdisabled_value = /*disabled*/
+        ctx2[3] ?? false)) {
+          attr(div, "data-isdisabled", div_data_isdisabled_value);
+        }
+        if (dirty & /*isError*/
+        16 && div_data_iserror_value !== (div_data_iserror_value = /*isError*/
+        ctx2[4] ?? false)) {
+          attr(div, "data-iserror", div_data_iserror_value);
+        }
+        if (dirty & /*selected*/
+        1 && div_data_selected_value !== (div_data_selected_value = /*selected*/
+        ctx2[0] ?? false)) {
+          attr(div, "data-selected", div_data_selected_value);
+        }
+      },
+      d(detaching) {
+        if (detaching) {
+          detach(div);
+        }
+        ctx[17](null);
+        mounted = false;
+        run_all(dispose);
+      }
+    };
+  }
+  function create_if_block$5(ctx) {
+    let div3;
+    let div1;
+    let div0;
+    let div0_style_value;
+    let t0;
+    let each_blocks = [];
+    let each_1_lookup = /* @__PURE__ */ new Map();
+    let t1;
+    let t2;
+    let div2;
+    let div3_style_value;
+    let div3_transition;
+    let current;
+    let each_value = ensure_array_like(
+      /*options*/
+      ctx[1]
+    );
+    const get_key = (ctx2) => (
+      /*opt*/
+      ctx2[23]
+    );
+    for (let i = 0; i < each_value.length; i += 1) {
+      let child_ctx = get_each_context$5(ctx, each_value, i);
+      let key = get_key(child_ctx);
+      each_1_lookup.set(key, each_blocks[i] = create_each_block$5(key, child_ctx));
+    }
+    let if_block = (
+      /*options*/
+      ctx[1].length == 0 && create_if_block_1$4()
+    );
+    return {
+      c() {
+        var _a, _b, _c, _d;
+        div3 = element("div");
+        div1 = element("div");
+        div0 = element("div");
+        t0 = space();
+        for (let i = 0; i < each_blocks.length; i += 1) {
+          each_blocks[i].c();
+        }
+        t1 = space();
+        if (if_block) if_block.c();
+        t2 = space();
+        div2 = element("div");
+        attr(div0, "class", "Arrow");
+        attr(div0, "style", div0_style_value = `left:${/*arrowOffsetLeft*/
+        ctx[12]}px`);
+        attr(div1, "class", "ArrowContainer");
+        attr(div2, "class", "selectEndTracker");
+        attr(div3, "class", "SelectPopUp");
+        attr(div3, "style", div3_style_value = "width:" + /*labelRect*/
+        (((_a = ctx[7]) == null ? void 0 : _a.width) ?? 100) + "px;left: " + /*labelRect*/
+        (((_b = ctx[7]) == null ? void 0 : _b.x) ?? 0) + "px;top: " + /*labelRect*/
+        ((((_c = ctx[7]) == null ? void 0 : _c.y) ?? 0) + /*labelRect*/
+        (((_d = ctx[7]) == null ? void 0 : _d.height) ?? 0) + 8) + "px;max-height:" + /*override_maxHeight*/
+        ctx[11] + "px");
+      },
+      m(target, anchor) {
+        insert(target, div3, anchor);
+        append(div3, div1);
+        append(div1, div0);
+        ctx[18](div1);
+        append(div3, t0);
+        for (let i = 0; i < each_blocks.length; i += 1) {
+          if (each_blocks[i]) {
+            each_blocks[i].m(div3, null);
+          }
+        }
+        append(div3, t1);
+        if (if_block) if_block.m(div3, null);
+        append(div3, t2);
+        append(div3, div2);
+        ctx[19](div2);
+        current = true;
+      },
+      p(ctx2, dirty) {
+        var _a, _b, _c, _d;
+        if (!current || dirty & /*arrowOffsetLeft*/
+        4096 && div0_style_value !== (div0_style_value = `left:${/*arrowOffsetLeft*/
+        ctx2[12]}px`)) {
+          attr(div0, "style", div0_style_value);
+        }
+        if (dirty & /*selected, options, clickOption*/
+        32771) {
+          each_value = ensure_array_like(
+            /*options*/
+            ctx2[1]
+          );
+          each_blocks = update_keyed_each(each_blocks, dirty, get_key, 1, ctx2, each_value, each_1_lookup, div3, destroy_block, create_each_block$5, t1, get_each_context$5);
+        }
+        if (
+          /*options*/
+          ctx2[1].length == 0
+        ) {
+          if (if_block) ;
+          else {
+            if_block = create_if_block_1$4();
+            if_block.c();
+            if_block.m(div3, t2);
+          }
+        } else if (if_block) {
+          if_block.d(1);
+          if_block = null;
+        }
+        if (!current || dirty & /*labelRect, override_maxHeight*/
+        2176 && div3_style_value !== (div3_style_value = "width:" + /*labelRect*/
+        (((_a = ctx2[7]) == null ? void 0 : _a.width) ?? 100) + "px;left: " + /*labelRect*/
+        (((_b = ctx2[7]) == null ? void 0 : _b.x) ?? 0) + "px;top: " + /*labelRect*/
+        ((((_c = ctx2[7]) == null ? void 0 : _c.y) ?? 0) + /*labelRect*/
+        (((_d = ctx2[7]) == null ? void 0 : _d.height) ?? 0) + 8) + "px;max-height:" + /*override_maxHeight*/
+        ctx2[11] + "px")) {
+          attr(div3, "style", div3_style_value);
+        }
+      },
+      i(local) {
+        if (current) return;
+        if (local) {
+          add_render_callback(() => {
+            if (!current) return;
+            if (!div3_transition) div3_transition = create_bidirectional_transition(div3, slide, {}, true);
+            div3_transition.run(1);
+          });
+        }
+        current = true;
+      },
+      o(local) {
+        if (local) {
+          if (!div3_transition) div3_transition = create_bidirectional_transition(div3, slide, {}, false);
+          div3_transition.run(0);
+        }
+        current = false;
+      },
+      d(detaching) {
+        if (detaching) {
+          detach(div3);
+        }
+        ctx[18](null);
+        for (let i = 0; i < each_blocks.length; i += 1) {
+          each_blocks[i].d();
+        }
+        if (if_block) if_block.d();
+        ctx[19](null);
+        if (detaching && div3_transition) div3_transition.end();
+      }
+    };
+  }
+  function create_each_block$5(key_1, ctx) {
+    let div;
+    let t_value = (
+      /*opt*/
+      ctx[23] + ""
+    );
+    let t;
+    let div_data_selected_value;
+    let div_data_value_value;
+    let mounted;
+    let dispose;
+    return {
+      key: key_1,
+      first: null,
+      c() {
+        div = element("div");
+        t = text(t_value);
+        attr(div, "role", "none");
+        attr(div, "class", "GrobSelectOption");
+        attr(div, "data-selected", div_data_selected_value = /*selected*/
+        ctx[0] == /*opt*/
+        ctx[23]);
+        attr(div, "data-value", div_data_value_value = /*opt*/
+        ctx[23]);
+        this.first = div;
+      },
+      m(target, anchor) {
+        insert(target, div, anchor);
+        append(div, t);
+        if (!mounted) {
+          dispose = [
+            listen(
+              div,
+              "click",
+              /*clickOption*/
+              ctx[15]
+            ),
+            listen(
+              div,
+              "keydown",
+              /*clickOption*/
+              ctx[15]
+            )
+          ];
+          mounted = true;
+        }
+      },
+      p(new_ctx, dirty) {
+        ctx = new_ctx;
+        if (dirty & /*options*/
+        2 && t_value !== (t_value = /*opt*/
+        ctx[23] + "")) set_data(t, t_value);
+        if (dirty & /*selected, options*/
+        3 && div_data_selected_value !== (div_data_selected_value = /*selected*/
+        ctx[0] == /*opt*/
+        ctx[23])) {
+          attr(div, "data-selected", div_data_selected_value);
+        }
+        if (dirty & /*options*/
+        2 && div_data_value_value !== (div_data_value_value = /*opt*/
+        ctx[23])) {
+          attr(div, "data-value", div_data_value_value);
+        }
+      },
+      d(detaching) {
+        if (detaching) {
+          detach(div);
+        }
+        mounted = false;
+        run_all(dispose);
+      }
+    };
+  }
+  function create_if_block_1$4(ctx) {
+    let i;
+    return {
+      c() {
+        i = element("i");
+        i.textContent = "No Options";
+        attr(i, "class", "GrobSelectInfo");
+      },
+      m(target, anchor) {
+        insert(target, i, anchor);
+      },
+      d(detaching) {
+        if (detaching) {
+          detach(i);
+        }
+      }
+    };
+  }
+  function create_fragment$b(ctx) {
+    let div1;
+    let previous_key = (
+      /*selected*/
+      ctx[0]
+    );
+    let t;
+    let div0;
+    let key_block = create_key_block(ctx);
+    let if_block = (
+      /*isFocussed*/
+      (ctx[8] || /*forceOpen*/
+      ctx[5]) && create_if_block$5(ctx)
+    );
+    return {
+      c() {
+        div1 = element("div");
+        key_block.c();
+        t = space();
+        div0 = element("div");
+        if (if_block) if_block.c();
+        attr(div1, "class", "GrobSelect");
+      },
+      m(target, anchor) {
+        insert(target, div1, anchor);
+        key_block.m(div1, null);
+        append(div1, t);
+        append(div1, div0);
+        if (if_block) if_block.m(div0, null);
+      },
+      p(ctx2, [dirty]) {
+        if (dirty & /*selected*/
+        1 && safe_not_equal(previous_key, previous_key = /*selected*/
+        ctx2[0])) {
+          key_block.d(1);
+          key_block = create_key_block(ctx2);
+          key_block.c();
+          key_block.m(div1, t);
+        } else {
+          key_block.p(ctx2, dirty);
+        }
+        if (
+          /*isFocussed*/
+          ctx2[8] || /*forceOpen*/
+          ctx2[5]
+        ) {
+          if (if_block) {
+            if_block.p(ctx2, dirty);
+            if (dirty & /*isFocussed, forceOpen*/
+            288) {
+              transition_in(if_block, 1);
+            }
+          } else {
+            if_block = create_if_block$5(ctx2);
+            if_block.c();
+            transition_in(if_block, 1);
+            if_block.m(div0, null);
+          }
+        } else if (if_block) {
+          group_outros();
+          transition_out(if_block, 1, 1, () => {
+            if_block = null;
+          });
+          check_outros();
+        }
+      },
+      i(local) {
+        transition_in(if_block);
+      },
+      o(local) {
+        transition_out(if_block);
+      },
+      d(detaching) {
+        if (detaching) {
+          detach(div1);
+        }
+        key_block.d(detaching);
+        if (if_block) if_block.d();
+      }
+    };
+  }
+  const svelteStandardAnimTime = 100;
+  function instance$b($$self, $$props, $$invalidate) {
+    let dispatch2 = createEventDispatcher();
+    let { options } = $$props;
+    let { selected = null } = $$props;
+    let { unSelectedplaceholder = "None Selected" } = $$props;
+    let { disabled = false } = $$props;
+    let { isError = false } = $$props;
+    let { forceOpen = false } = $$props;
+    let { maxHeight = 500 } = $$props;
+    let label;
+    let labelRect;
+    let isFocussed = false;
+    let endTracker;
+    let topTracker;
+    let override_maxHeight = maxHeight;
+    let arrowOffsetLeft = 0;
+    function onFocus() {
+      const rect1 = label.getBoundingClientRect();
+      $$invalidate(7, labelRect = rect1);
+      $$invalidate(8, isFocussed = true);
+      recalculateWidth();
+      setTimeout(recalculateHeight, svelteStandardAnimTime);
+    }
+    function onblur() {
+      setTimeout(
+        () => {
+          $$invalidate(8, isFocussed = false);
+        },
+        200
+      );
+    }
+    function clickOption(event) {
+      let value = event.target.getAttribute("data-value");
+      if (selected == value) {
+        $$invalidate(0, selected = null);
+        dispatch2("onDeselect");
+      } else {
+        $$invalidate(0, selected = value);
+        dispatch2("onSelect", selected);
+      }
+    }
+    function recalculateHeight() {
+      let itemTop = topTracker.getBoundingClientRect().bottom;
+      let itemBottom = endTracker.getBoundingClientRect().bottom;
+      let windowBottom = window.document.body.getBoundingClientRect().height;
+      if (itemBottom > windowBottom) {
+        let delta = itemBottom - windowBottom;
+        let total = itemBottom - itemTop;
+        let n = total - delta;
+        if (n < override_maxHeight) {
+          $$invalidate(11, override_maxHeight = n);
+        }
+      }
+    }
+    function recalculateWidth() {
+      let width = label.getBoundingClientRect().width;
+      $$invalidate(12, arrowOffsetLeft = width / 2);
+    }
+    function div_binding($$value) {
+      binding_callbacks[$$value ? "unshift" : "push"](() => {
+        label = $$value;
+        $$invalidate(6, label);
+      });
+    }
+    function div1_binding($$value) {
+      binding_callbacks[$$value ? "unshift" : "push"](() => {
+        topTracker = $$value;
+        $$invalidate(10, topTracker);
+      });
+    }
+    function div2_binding($$value) {
+      binding_callbacks[$$value ? "unshift" : "push"](() => {
+        endTracker = $$value;
+        $$invalidate(9, endTracker);
+      });
+    }
+    $$self.$$set = ($$props2) => {
+      if ("options" in $$props2) $$invalidate(1, options = $$props2.options);
+      if ("selected" in $$props2) $$invalidate(0, selected = $$props2.selected);
+      if ("unSelectedplaceholder" in $$props2) $$invalidate(2, unSelectedplaceholder = $$props2.unSelectedplaceholder);
+      if ("disabled" in $$props2) $$invalidate(3, disabled = $$props2.disabled);
+      if ("isError" in $$props2) $$invalidate(4, isError = $$props2.isError);
+      if ("forceOpen" in $$props2) $$invalidate(5, forceOpen = $$props2.forceOpen);
+      if ("maxHeight" in $$props2) $$invalidate(16, maxHeight = $$props2.maxHeight);
+    };
+    return [
+      selected,
+      options,
+      unSelectedplaceholder,
+      disabled,
+      isError,
+      forceOpen,
+      label,
+      labelRect,
+      isFocussed,
+      endTracker,
+      topTracker,
+      override_maxHeight,
+      arrowOffsetLeft,
+      onFocus,
+      onblur,
+      clickOption,
+      maxHeight,
+      div_binding,
+      div1_binding,
+      div2_binding
+    ];
+  }
+  class CustomSelect extends SvelteComponent {
+    constructor(options) {
+      super();
+      init(this, options, instance$b, create_fragment$b, safe_not_equal, {
+        options: 1,
+        selected: 0,
+        unSelectedplaceholder: 2,
+        disabled: 3,
+        isError: 4,
+        forceOpen: 5,
+        maxHeight: 16
+      });
+    }
+    get options() {
+      return this.$$.ctx[1];
+    }
+    set options(options) {
+      this.$$set({ options });
+      flush();
+    }
+    get selected() {
+      return this.$$.ctx[0];
+    }
+    set selected(selected) {
+      this.$$set({ selected });
+      flush();
+    }
+    get unSelectedplaceholder() {
+      return this.$$.ctx[2];
+    }
+    set unSelectedplaceholder(unSelectedplaceholder) {
+      this.$$set({ unSelectedplaceholder });
+      flush();
+    }
+    get disabled() {
+      return this.$$.ctx[3];
+    }
+    set disabled(disabled) {
+      this.$$set({ disabled });
+      flush();
+    }
+    get isError() {
+      return this.$$.ctx[4];
+    }
+    set isError(isError) {
+      this.$$set({ isError });
+      flush();
+    }
+    get forceOpen() {
+      return this.$$.ctx[5];
+    }
+    set forceOpen(forceOpen) {
+      this.$$set({ forceOpen });
+      flush();
+    }
+    get maxHeight() {
+      return this.$$.ctx[16];
+    }
+    set maxHeight(maxHeight) {
+      this.$$set({ maxHeight });
+      flush();
+    }
+  }
+  create_custom_element(CustomSelect, { "options": {}, "selected": {}, "unSelectedplaceholder": {}, "disabled": { "type": "Boolean" }, "isError": { "type": "Boolean" }, "forceOpen": { "type": "Boolean" }, "maxHeight": {} }, [], [], true);
+  function get_each_context$4(ctx, list, i) {
+    const child_ctx = ctx.slice();
+    child_ctx[8] = list[i];
+    return child_ctx;
+  }
+  function create_each_block$4(ctx) {
+    let option;
+    let t0_value = (
+      /*opt*/
+      ctx[8] + ""
+    );
+    let t0;
+    let t1;
+    return {
+      c() {
+        option = element("option");
+        t0 = text(t0_value);
+        t1 = space();
+        option.__value = /*opt*/
+        ctx[8];
+        set_input_value(option, option.__value);
+        option.selected = /*selected*/
+        ctx[2] == /*opt*/
+        ctx[8];
+      },
+      m(target, anchor) {
+        insert(target, option, anchor);
+        append(option, t0);
+        append(option, t1);
+      },
+      p: noop,
+      d(detaching) {
+        if (detaching) {
+          detach(option);
+        }
+      }
+    };
+  }
+  function create_fragment$a(ctx) {
+    let div2;
+    let div1;
+    let div0;
+    let select;
+    let option;
+    let mounted;
+    let dispose;
+    let each_value = ensure_array_like(
+      /*options*/
+      ctx[1]
+    );
+    let each_blocks = [];
+    for (let i = 0; i < each_value.length; i += 1) {
+      each_blocks[i] = create_each_block$4(get_each_context$4(ctx, each_value, i));
+    }
+    return {
+      c() {
+        div2 = element("div");
+        div1 = element("div");
+        div0 = element("div");
+        select = element("select");
+        option = element("option");
+        option.textContent = "choose component ";
+        for (let i = 0; i < each_blocks.length; i += 1) {
+          each_blocks[i].c();
+        }
+        option.__value = null;
+        set_input_value(option, option.__value);
+        attr(div0, "class", "ItemOptionBtn ");
+        attr(div1, "class", "ItemOptions");
+        attr(div2, "class", "ItemOptionsContainer");
+      },
+      m(target, anchor) {
+        insert(target, div2, anchor);
+        append(div2, div1);
+        append(div1, div0);
+        append(div0, select);
+        append(select, option);
+        for (let i = 0; i < each_blocks.length; i += 1) {
+          if (each_blocks[i]) {
+            each_blocks[i].m(select, null);
+          }
+        }
+        ctx[6](select);
+        if (!mounted) {
+          dispose = listen(
+            select,
+            "change",
+            /*selectOption*/
+            ctx[3]
+          );
+          mounted = true;
+        }
+      },
+      p(ctx2, [dirty]) {
+        if (dirty & /*options, selected*/
+        6) {
+          each_value = ensure_array_like(
+            /*options*/
+            ctx2[1]
+          );
+          let i;
+          for (i = 0; i < each_value.length; i += 1) {
+            const child_ctx = get_each_context$4(ctx2, each_value, i);
+            if (each_blocks[i]) {
+              each_blocks[i].p(child_ctx, dirty);
+            } else {
+              each_blocks[i] = create_each_block$4(child_ctx);
+              each_blocks[i].c();
+              each_blocks[i].m(select, null);
+            }
+          }
+          for (; i < each_blocks.length; i += 1) {
+            each_blocks[i].d(1);
+          }
+          each_blocks.length = each_value.length;
+        }
+      },
+      i: noop,
+      o: noop,
+      d(detaching) {
+        if (detaching) {
+          detach(div2);
+        }
+        destroy_each(each_blocks, detaching);
+        ctx[6](null);
+        mounted = false;
+        dispose();
+      }
+    };
+  }
+  function instance$a($$self, $$props, $$invalidate) {
+    let dispatch2 = createEventDispatcher();
+    let { data } = $$props;
+    let { editMode } = $$props;
+    let options = Object.keys(viewNameIndex);
+    let selected = data.type;
+    let tab;
+    function selectOption() {
+      let v = tab.value;
+      $$invalidate(4, data.type = v, data);
+      dispatch2("optionSelected");
+    }
+    function select_binding($$value) {
+      binding_callbacks[$$value ? "unshift" : "push"](() => {
+        tab = $$value;
+        $$invalidate(0, tab);
+        $$invalidate(1, options);
+      });
+    }
+    $$self.$$set = ($$props2) => {
+      if ("data" in $$props2) $$invalidate(4, data = $$props2.data);
+      if ("editMode" in $$props2) $$invalidate(5, editMode = $$props2.editMode);
+    };
+    return [tab, options, selected, selectOption, data, editMode, select_binding];
+  }
+  class ItemOptions extends SvelteComponent {
+    constructor(options) {
+      super();
+      init(this, options, instance$a, create_fragment$a, safe_not_equal, { data: 4, editMode: 5 });
+    }
+    get data() {
+      return this.$$.ctx[4];
+    }
+    set data(data) {
+      this.$$set({ data });
+      flush();
+    }
+    get editMode() {
+      return this.$$.ctx[5];
+    }
+    set editMode(editMode) {
+      this.$$set({ editMode });
+      flush();
+    }
+  }
+  create_custom_element(ItemOptions, { "data": {}, "editMode": {} }, [], [], true);
+  function create_fragment$9(ctx) {
+    let div1;
+    let div0;
+    let t1;
+    let input;
+    let input_disabled_value;
+    let mounted;
+    let dispose;
+    return {
+      c() {
+        div1 = element("div");
+        div0 = element("div");
+        div0.textContent = "Proficiency Bonus";
+        t1 = space();
+        input = element("input");
+        attr(input, "type", "number");
+        input.disabled = input_disabled_value = !/*editMode*/
+        ctx[0];
+        attr(div1, "class", "ProficiencyBonus");
+      },
+      m(target, anchor) {
+        insert(target, div1, anchor);
+        append(div1, div0);
+        append(div1, t1);
+        append(div1, input);
+        set_input_value(
+          input,
+          /*v*/
+          ctx[1]
+        );
+        if (!mounted) {
+          dispose = [
+            listen(
+              input,
+              "input",
+              /*input_input_handler*/
+              ctx[5]
+            ),
+            listen(
+              input,
+              "change",
+              /*iterateValue*/
+              ctx[2]
+            )
+          ];
+          mounted = true;
+        }
+      },
+      p(ctx2, [dirty]) {
+        if (dirty & /*editMode*/
+        1 && input_disabled_value !== (input_disabled_value = !/*editMode*/
+        ctx2[0])) {
+          input.disabled = input_disabled_value;
+        }
+        if (dirty & /*v*/
+        2 && to_number(input.value) !== /*v*/
+        ctx2[1]) {
+          set_input_value(
+            input,
+            /*v*/
+            ctx2[1]
+          );
+        }
+      },
+      i: noop,
+      o: noop,
+      d(detaching) {
+        if (detaching) {
+          detach(div1);
+        }
+        mounted = false;
+        run_all(dispose);
+      }
+    };
+  }
+  function instance$9($$self, $$props, $$invalidate) {
+    let { sys } = $$props;
+    let { editMode } = $$props;
+    let { data } = $$props;
+    let node = sys.getNode("fixed", "generic", "Proficiency Bonus");
+    let v = node.getValue();
+    const KEY = keyManager.getNewKey();
+    onMount(() => {
+      node.addUpdateListener(name + KEY + "SvelteView", () => {
+        $$invalidate(1, v = node.getValue());
+      });
+    });
+    onDestroy(() => {
+      node.removeUpdateListener(name + KEY + "SvelteView");
+    });
+    function iterateValue() {
+      node.setValue(v);
+      return null;
+    }
+    function input_input_handler() {
+      v = to_number(this.value);
+      $$invalidate(1, v);
+    }
+    $$self.$$set = ($$props2) => {
+      if ("sys" in $$props2) $$invalidate(3, sys = $$props2.sys);
+      if ("editMode" in $$props2) $$invalidate(0, editMode = $$props2.editMode);
+      if ("data" in $$props2) $$invalidate(4, data = $$props2.data);
+    };
+    return [editMode, v, iterateValue, sys, data, input_input_handler];
+  }
+  class ProficiencyBonus extends SvelteComponent {
+    constructor(options) {
+      super();
+      init(this, options, instance$9, create_fragment$9, safe_not_equal, { sys: 3, editMode: 0, data: 4 });
+    }
+    get sys() {
+      return this.$$.ctx[3];
+    }
+    set sys(sys) {
+      this.$$set({ sys });
+      flush();
+    }
+    get editMode() {
+      return this.$$.ctx[0];
+    }
+    set editMode(editMode) {
+      this.$$set({ editMode });
+      flush();
+    }
+    get data() {
+      return this.$$.ctx[4];
+    }
+    set data(data) {
+      this.$$set({ data });
+      flush();
+    }
+  }
+  create_custom_element(ProficiencyBonus, { "sys": {}, "editMode": {}, "data": {} }, [], [], true);
+  function create_fragment$8(ctx) {
+    let div4;
+    let div1;
+    let div0;
+    let t0;
+    let div2;
+    let p0;
+    let t1;
+    let t2;
+    let div3;
+    let p1;
+    let t3;
+    let mounted;
+    let dispose;
+    return {
+      c() {
+        div4 = element("div");
+        div1 = element("div");
+        div0 = element("div");
+        t0 = space();
+        div2 = element("div");
+        p0 = element("p");
+        t1 = text(
+          /*name*/
+          ctx[1]
+        );
+        t2 = space();
+        div3 = element("div");
+        p1 = element("p");
+        t3 = text(
+          /*bonus*/
+          ctx[3]
+        );
+        attr(div0, "class", "skillproficiencyMark");
+        attr(
+          div0,
+          "data-level",
+          /*value*/
+          ctx[2]
+        );
+        attr(div0, "role", "none");
+        attr(div1, "class", "skillproficiencyMarkParent");
+        attr(div2, "class", "skillproficiencyMarkName");
+        attr(div3, "class", "skillproficiencyMarkValue");
+        attr(div4, "class", "skillproficiencyContainer");
+        attr(
+          div4,
+          "data-edit",
+          /*edit*/
+          ctx[0]
+        );
+      },
+      m(target, anchor) {
+        insert(target, div4, anchor);
+        append(div4, div1);
+        append(div1, div0);
+        append(div4, t0);
+        append(div4, div2);
+        append(div2, p0);
+        append(p0, t1);
+        append(div4, t2);
+        append(div4, div3);
+        append(div3, p1);
+        append(p1, t3);
+        if (!mounted) {
+          dispose = [
+            listen(
+              div0,
+              "keyup",
+              /*keyup_handler*/
+              ctx[6]
+            ),
+            listen(
+              div0,
+              "click",
+              /*iterateValue*/
+              ctx[4]
+            )
+          ];
+          mounted = true;
+        }
+      },
+      p(ctx2, [dirty]) {
+        if (dirty & /*value*/
+        4) {
+          attr(
+            div0,
+            "data-level",
+            /*value*/
+            ctx2[2]
+          );
+        }
+        if (dirty & /*name*/
+        2) set_data(
+          t1,
+          /*name*/
+          ctx2[1]
+        );
+        if (dirty & /*bonus*/
+        8) set_data(
+          t3,
+          /*bonus*/
+          ctx2[3]
+        );
+        if (dirty & /*edit*/
+        1) {
+          attr(
+            div4,
+            "data-edit",
+            /*edit*/
+            ctx2[0]
+          );
+        }
+      },
+      i: noop,
+      o: noop,
+      d(detaching) {
+        if (detaching) {
+          detach(div4);
+        }
+        mounted = false;
+        run_all(dispose);
+      }
+    };
+  }
+  function instance$8($$self, $$props, $$invalidate) {
+    let { edit } = $$props;
+    let { name: name2 } = $$props;
+    let { sys } = $$props;
+    let node_skill = sys.getNode("fixed", "SkillProficiencies", name2);
+    let node_bonus = sys.getNode("derived", "skillproficiencyBonus", name2);
+    let value = node_skill.getValue();
+    let bonus = node_bonus.getValue();
+    const KEY = keyManager.getNewKey();
+    onMount(() => {
+      node_skill.addUpdateListener(name2 + KEY + "SvelteView", () => {
+        $$invalidate(2, value = node_skill.getValue());
+      });
+      node_bonus.addUpdateListener(name2 + KEY + "SvelteView", () => {
+        $$invalidate(3, bonus = node_bonus.getValue());
+      });
+    });
+    onDestroy(() => {
+      node_skill.removeUpdateListener(name2 + "SvelteView");
+      node_bonus.removeUpdateListener(name2 + "SvelteView");
+    });
+    function iterateValue() {
+      if (!edit) {
+        return;
+      }
+      let value2 = node_skill.getValue();
+      value2 = (value2 + 1) % 3;
+      node_skill.setValue(value2);
+      return null;
+    }
+    function keyup_handler(event) {
+      bubble.call(this, $$self, event);
+    }
+    $$self.$$set = ($$props2) => {
+      if ("edit" in $$props2) $$invalidate(0, edit = $$props2.edit);
+      if ("name" in $$props2) $$invalidate(1, name2 = $$props2.name);
+      if ("sys" in $$props2) $$invalidate(5, sys = $$props2.sys);
+    };
+    return [edit, name2, value, bonus, iterateValue, sys, keyup_handler];
+  }
+  class SkillProficiency extends SvelteComponent {
+    constructor(options) {
+      super();
+      init(this, options, instance$8, create_fragment$8, safe_not_equal, { edit: 0, name: 1, sys: 5 });
+    }
+    get edit() {
+      return this.$$.ctx[0];
+    }
+    set edit(edit) {
+      this.$$set({ edit });
+      flush();
+    }
+    get name() {
+      return this.$$.ctx[1];
+    }
+    set name(name2) {
+      this.$$set({ name: name2 });
+      flush();
+    }
+    get sys() {
+      return this.$$.ctx[5];
+    }
+    set sys(sys) {
+      this.$$set({ sys });
+      flush();
+    }
+  }
+  create_custom_element(SkillProficiency, { "edit": {}, "name": {}, "sys": {} }, [], [], true);
+  function get_each_context$3(ctx, list, i) {
+    const child_ctx = ctx.slice();
+    child_ctx[4] = list[i];
+    return child_ctx;
+  }
+  function create_each_block$3(ctx) {
+    let skillproficiency;
+    let current;
+    skillproficiency = new SkillProficiency({
+      props: {
+        edit: (
+          /*edit*/
+          ctx[0]
+        ),
+        name: (
+          /*name*/
+          ctx[4]
+        ),
+        sys: (
+          /*sys*/
+          ctx[1]
+        )
+      }
+    });
+    return {
+      c() {
+        create_component(skillproficiency.$$.fragment);
+      },
+      m(target, anchor) {
+        mount_component(skillproficiency, target, anchor);
+        current = true;
+      },
+      p(ctx2, dirty) {
+        const skillproficiency_changes = {};
+        if (dirty & /*edit*/
+        1) skillproficiency_changes.edit = /*edit*/
+        ctx2[0];
+        if (dirty & /*sys*/
+        2) skillproficiency_changes.sys = /*sys*/
+        ctx2[1];
+        skillproficiency.$set(skillproficiency_changes);
+      },
+      i(local) {
+        if (current) return;
+        transition_in(skillproficiency.$$.fragment, local);
+        current = true;
+      },
+      o(local) {
+        transition_out(skillproficiency.$$.fragment, local);
+        current = false;
+      },
+      d(detaching) {
+        destroy_component(skillproficiency, detaching);
+      }
+    };
+  }
+  function create_fragment$7(ctx) {
+    let div;
+    let current;
+    let each_value = ensure_array_like(
+      /*names*/
+      ctx[2]
+    );
+    let each_blocks = [];
+    for (let i = 0; i < each_value.length; i += 1) {
+      each_blocks[i] = create_each_block$3(get_each_context$3(ctx, each_value, i));
+    }
+    const out = (i) => transition_out(each_blocks[i], 1, 1, () => {
+      each_blocks[i] = null;
+    });
+    return {
+      c() {
+        div = element("div");
+        for (let i = 0; i < each_blocks.length; i += 1) {
+          each_blocks[i].c();
+        }
+        attr(div, "class", "skillproficiencyCollection");
+        attr(
+          div,
+          "data-edit",
+          /*edit*/
+          ctx[0]
+        );
+      },
+      m(target, anchor) {
+        insert(target, div, anchor);
+        for (let i = 0; i < each_blocks.length; i += 1) {
+          if (each_blocks[i]) {
+            each_blocks[i].m(div, null);
+          }
+        }
+        current = true;
+      },
+      p(ctx2, [dirty]) {
+        if (dirty & /*edit, names, sys*/
+        7) {
+          each_value = ensure_array_like(
+            /*names*/
+            ctx2[2]
+          );
+          let i;
+          for (i = 0; i < each_value.length; i += 1) {
+            const child_ctx = get_each_context$3(ctx2, each_value, i);
+            if (each_blocks[i]) {
+              each_blocks[i].p(child_ctx, dirty);
+              transition_in(each_blocks[i], 1);
+            } else {
+              each_blocks[i] = create_each_block$3(child_ctx);
+              each_blocks[i].c();
+              transition_in(each_blocks[i], 1);
+              each_blocks[i].m(div, null);
+            }
+          }
+          group_outros();
+          for (i = each_value.length; i < each_blocks.length; i += 1) {
+            out(i);
+          }
+          check_outros();
+        }
+        if (!current || dirty & /*edit*/
+        1) {
+          attr(
+            div,
+            "data-edit",
+            /*edit*/
+            ctx2[0]
+          );
+        }
+      },
+      i(local) {
+        if (current) return;
+        for (let i = 0; i < each_value.length; i += 1) {
+          transition_in(each_blocks[i]);
+        }
+        current = true;
+      },
+      o(local) {
+        each_blocks = each_blocks.filter(Boolean);
+        for (let i = 0; i < each_blocks.length; i += 1) {
+          transition_out(each_blocks[i]);
+        }
+        current = false;
+      },
+      d(detaching) {
+        if (detaching) {
+          detach(div);
+        }
+        destroy_each(each_blocks, detaching);
+      }
+    };
+  }
+  function instance$7($$self, $$props, $$invalidate) {
+    let { edit } = $$props;
+    let { sys } = $$props;
+    let { data } = $$props;
+    let names = sys.getNodeNames("fixed", "SkillProficiencies");
+    $$self.$$set = ($$props2) => {
+      if ("edit" in $$props2) $$invalidate(0, edit = $$props2.edit);
+      if ("sys" in $$props2) $$invalidate(1, sys = $$props2.sys);
+      if ("data" in $$props2) $$invalidate(3, data = $$props2.data);
+    };
+    return [edit, sys, names, data];
+  }
+  class SkillProficiencyCollection extends SvelteComponent {
+    constructor(options) {
+      super();
+      init(this, options, instance$7, create_fragment$7, safe_not_equal, { edit: 0, sys: 1, data: 3 });
+    }
+    get edit() {
+      return this.$$.ctx[0];
+    }
+    set edit(edit) {
+      this.$$set({ edit });
+      flush();
+    }
+    get sys() {
+      return this.$$.ctx[1];
+    }
+    set sys(sys) {
+      this.$$set({ sys });
+      flush();
+    }
+    get data() {
+      return this.$$.ctx[3];
+    }
+    set data(data) {
+      this.$$set({ data });
+      flush();
+    }
+  }
+  create_custom_element(SkillProficiencyCollection, { "edit": {}, "sys": {}, "data": {} }, [], [], true);
+  function get_each_context$2(ctx, list, i) {
+    const child_ctx = ctx.slice();
+    child_ctx[17] = list[i];
+    return child_ctx;
+  }
+  function create_else_block(ctx) {
+    let div;
+    return {
+      c() {
+        div = element("div");
+      },
+      m(target, anchor) {
+        insert(target, div, anchor);
+      },
+      p: noop,
+      d(detaching) {
+        if (detaching) {
+          detach(div);
+        }
+      }
+    };
+  }
+  function create_if_block$4(ctx) {
+    let div;
+    let select;
+    let mounted;
+    let dispose;
+    let each_value = ensure_array_like(
+      /*spellBonusChoices*/
+      ctx[5]
+    );
+    let each_blocks = [];
+    for (let i = 0; i < each_value.length; i += 1) {
+      each_blocks[i] = create_each_block$2(get_each_context$2(ctx, each_value, i));
+    }
+    return {
+      c() {
+        div = element("div");
+        select = element("select");
+        for (let i = 0; i < each_blocks.length; i += 1) {
+          each_blocks[i].c();
+        }
+      },
+      m(target, anchor) {
+        insert(target, div, anchor);
+        append(div, select);
+        for (let i = 0; i < each_blocks.length; i += 1) {
+          if (each_blocks[i]) {
+            each_blocks[i].m(select, null);
+          }
+        }
+        ctx[9](select);
+        if (!mounted) {
+          dispose = listen(
+            select,
+            "change",
+            /*changeSort*/
+            ctx[6]
+          );
+          mounted = true;
+        }
+      },
+      p(ctx2, dirty) {
+        if (dirty & /*spellBonusChoices, showStat*/
+        34) {
+          each_value = ensure_array_like(
+            /*spellBonusChoices*/
+            ctx2[5]
+          );
+          let i;
+          for (i = 0; i < each_value.length; i += 1) {
+            const child_ctx = get_each_context$2(ctx2, each_value, i);
+            if (each_blocks[i]) {
+              each_blocks[i].p(child_ctx, dirty);
+            } else {
+              each_blocks[i] = create_each_block$2(child_ctx);
+              each_blocks[i].c();
+              each_blocks[i].m(select, null);
+            }
+          }
+          for (; i < each_blocks.length; i += 1) {
+            each_blocks[i].d(1);
+          }
+          each_blocks.length = each_value.length;
+        }
+      },
+      d(detaching) {
+        if (detaching) {
+          detach(div);
+        }
+        destroy_each(each_blocks, detaching);
+        ctx[9](null);
+        mounted = false;
+        dispose();
+      }
+    };
+  }
+  function create_each_block$2(ctx) {
+    let option;
+    let t0_value = (
+      /*key*/
+      ctx[17] + ""
+    );
+    let t0;
+    let t1;
+    let option_selected_value;
+    return {
+      c() {
+        option = element("option");
+        t0 = text(t0_value);
+        t1 = space();
+        option.__value = /*key*/
+        ctx[17];
+        set_input_value(option, option.__value);
+        option.selected = option_selected_value = /*key*/
+        ctx[17] == /*showStat*/
+        ctx[1];
+      },
+      m(target, anchor) {
+        insert(target, option, anchor);
+        append(option, t0);
+        append(option, t1);
+      },
+      p(ctx2, dirty) {
+        if (dirty & /*showStat*/
+        2 && option_selected_value !== (option_selected_value = /*key*/
+        ctx2[17] == /*showStat*/
+        ctx2[1])) {
+          option.selected = option_selected_value;
+        }
+      },
+      d(detaching) {
+        if (detaching) {
+          detach(option);
+        }
+      }
+    };
+  }
+  function create_fragment$6(ctx) {
+    let div8;
+    let t0;
+    let div7;
+    let div0;
+    let t1;
+    let t2;
+    let div3;
+    let div1;
+    let t4;
+    let div2;
+    let t5;
+    let t6;
+    let div6;
+    let div4;
+    let t8;
+    let div5;
+    let t9;
+    function select_block_type(ctx2, dirty) {
+      if (
+        /*edit*/
+        ctx2[0]
+      ) return create_if_block$4;
+      return create_else_block;
+    }
+    let current_block_type = select_block_type(ctx);
+    let if_block = current_block_type(ctx);
+    return {
+      c() {
+        div8 = element("div");
+        if_block.c();
+        t0 = space();
+        div7 = element("div");
+        div0 = element("div");
+        t1 = text(
+          /*showStat*/
+          ctx[1]
+        );
+        t2 = space();
+        div3 = element("div");
+        div1 = element("div");
+        div1.textContent = "Spell DC";
+        t4 = space();
+        div2 = element("div");
+        t5 = text(
+          /*chosen_DC*/
+          ctx[2]
+        );
+        t6 = space();
+        div6 = element("div");
+        div4 = element("div");
+        div4.textContent = "Spell Bonus";
+        t8 = space();
+        div5 = element("div");
+        t9 = text(
+          /*chosen_BONUS*/
+          ctx[3]
+        );
+        attr(div7, "class", "spellDCContainer");
+      },
+      m(target, anchor) {
+        insert(target, div8, anchor);
+        if_block.m(div8, null);
+        append(div8, t0);
+        append(div8, div7);
+        append(div7, div0);
+        append(div0, t1);
+        append(div7, t2);
+        append(div7, div3);
+        append(div3, div1);
+        append(div3, t4);
+        append(div3, div2);
+        append(div2, t5);
+        append(div7, t6);
+        append(div7, div6);
+        append(div6, div4);
+        append(div6, t8);
+        append(div6, div5);
+        append(div5, t9);
+      },
+      p(ctx2, [dirty]) {
+        if (current_block_type === (current_block_type = select_block_type(ctx2)) && if_block) {
+          if_block.p(ctx2, dirty);
+        } else {
+          if_block.d(1);
+          if_block = current_block_type(ctx2);
+          if (if_block) {
+            if_block.c();
+            if_block.m(div8, t0);
+          }
+        }
+        if (dirty & /*showStat*/
+        2) set_data(
+          t1,
+          /*showStat*/
+          ctx2[1]
+        );
+        if (dirty & /*chosen_DC*/
+        4) set_data(
+          t5,
+          /*chosen_DC*/
+          ctx2[2]
+        );
+        if (dirty & /*chosen_BONUS*/
+        8) set_data(
+          t9,
+          /*chosen_BONUS*/
+          ctx2[3]
+        );
+      },
+      i: noop,
+      o: noop,
+      d(detaching) {
+        if (detaching) {
+          detach(div8);
+        }
+        if_block.d();
+      }
+    };
+  }
+  function instance$6($$self, $$props, $$invalidate) {
+    let { sys } = $$props;
+    let { edit } = $$props;
+    let { data } = $$props;
+    const KEY = keyManager.getNewKey();
+    let dataData = data.data;
+    let spellBonusChoices = sys.getNodeNames("derived", "Spell Bonus");
+    if (JSON.stringify(dataData) === JSON.stringify({})) {
+      dataData.showStat = spellBonusChoices[0];
+    }
+    let showStat = dataData.showStat;
+    let nodeDC = sys.getNode("derived", "Spell Bonus", showStat);
+    let nodeBonus = sys.getNode("derived", "Spell DC", showStat);
+    let chosen_DC = nodeDC.getValue();
+    let chosen_BONUS = nodeBonus.getValue();
+    let sortSelect;
+    function changeSort() {
+      let value = sortSelect.value;
+      $$invalidate(1, showStat = value);
+      nodeDC = sys.getNode("derived", "Spell Bonus", showStat);
+      nodeBonus = sys.getNode("derived", "Spell DC", showStat);
+      $$invalidate(2, chosen_DC = nodeDC.getValue());
+      $$invalidate(3, chosen_BONUS = nodeBonus.getValue());
+    }
+    function update2() {
+      $$invalidate(2, chosen_DC = nodeDC.getValue());
+      $$invalidate(3, chosen_BONUS = nodeBonus.getValue());
+    }
+    function addListeners() {
+      nodeDC.addUpdateListener(name + "SpellInfoView" + KEY, () => {
+        update2();
+      });
+      nodeBonus.addUpdateListener(name + "SpellInfoView" + KEY, () => {
+        update2();
+      });
+    }
+    onMount(() => {
+      addListeners();
+    });
+    function removeListener() {
+      nodeDC.removeUpdateListener(name + "SpellInfoView" + KEY);
+      nodeBonus.removeUpdateListener(name + "SpellInfoView" + KEY);
+    }
+    onDestroy(() => {
+      removeListener();
+    });
+    function select_binding($$value) {
+      binding_callbacks[$$value ? "unshift" : "push"](() => {
+        sortSelect = $$value;
+        $$invalidate(4, sortSelect);
+        $$invalidate(5, spellBonusChoices);
+      });
+    }
+    $$self.$$set = ($$props2) => {
+      if ("sys" in $$props2) $$invalidate(7, sys = $$props2.sys);
+      if ("edit" in $$props2) $$invalidate(0, edit = $$props2.edit);
+      if ("data" in $$props2) $$invalidate(8, data = $$props2.data);
+    };
+    return [
+      edit,
+      showStat,
+      chosen_DC,
+      chosen_BONUS,
+      sortSelect,
+      spellBonusChoices,
+      changeSort,
+      sys,
+      data,
+      select_binding
+    ];
+  }
+  class SpellInfo extends SvelteComponent {
+    constructor(options) {
+      super();
+      init(this, options, instance$6, create_fragment$6, safe_not_equal, { sys: 7, edit: 0, data: 8 });
+    }
+    get sys() {
+      return this.$$.ctx[7];
+    }
+    set sys(sys) {
+      this.$$set({ sys });
+      flush();
+    }
+    get edit() {
+      return this.$$.ctx[0];
+    }
+    set edit(edit) {
+      this.$$set({ edit });
+      flush();
+    }
+    get data() {
+      return this.$$.ctx[8];
+    }
+    set data(data) {
+      this.$$set({ data });
+      flush();
+    }
+  }
+  create_custom_element(SpellInfo, { "sys": {}, "edit": {}, "data": {} }, [], [], true);
+  function create_fragment$5(ctx) {
+    let div4;
+    let div0;
+    let t0;
+    let t1;
+    let div1;
+    let input;
+    let input_disabled_value;
+    let t2;
+    let div3;
+    let div2;
+    let t3;
+    let mounted;
+    let dispose;
+    return {
+      c() {
+        div4 = element("div");
+        div0 = element("div");
+        t0 = text(
+          /*name*/
+          ctx[0]
+        );
+        t1 = space();
+        div1 = element("div");
+        input = element("input");
+        t2 = space();
+        div3 = element("div");
+        div2 = element("div");
+        t3 = text(
+          /*modNodeValue*/
+          ctx[3]
+        );
+        attr(div0, "class", "statTitle");
+        attr(input, "class", "BoxValue");
+        attr(
+          input,
+          "data-editmode",
+          /*editmode*/
+          ctx[1]
+        );
+        input.disabled = input_disabled_value = !/*editmode*/
+        ctx[1];
+        input.value = /*nodeValue*/
+        ctx[2];
+        attr(input, "type", "number");
+        attr(input, "min", "0");
+        attr(input, "max", "100");
+        attr(div1, "class", "LargeValue");
+        attr(div2, "class", "BoxValue");
+        attr(div3, "class", "SmallValue");
+        attr(div4, "class", "StatValue");
+      },
+      m(target, anchor) {
+        insert(target, div4, anchor);
+        append(div4, div0);
+        append(div0, t0);
+        append(div4, t1);
+        append(div4, div1);
+        append(div1, input);
+        ctx[8](input);
+        append(div4, t2);
+        append(div4, div3);
+        append(div3, div2);
+        append(div2, t3);
+        if (!mounted) {
+          dispose = listen(
+            input,
+            "change",
+            /*onChange*/
+            ctx[5]
+          );
+          mounted = true;
+        }
+      },
+      p(ctx2, [dirty]) {
+        if (dirty & /*name*/
+        1) set_data(
+          t0,
+          /*name*/
+          ctx2[0]
+        );
+        if (dirty & /*editmode*/
+        2) {
+          attr(
+            input,
+            "data-editmode",
+            /*editmode*/
+            ctx2[1]
+          );
+        }
+        if (dirty & /*editmode*/
+        2 && input_disabled_value !== (input_disabled_value = !/*editmode*/
+        ctx2[1])) {
+          input.disabled = input_disabled_value;
+        }
+        if (dirty & /*nodeValue*/
+        4 && input.value !== /*nodeValue*/
+        ctx2[2]) {
+          input.value = /*nodeValue*/
+          ctx2[2];
+        }
+        if (dirty & /*modNodeValue*/
+        8) set_data(
+          t3,
+          /*modNodeValue*/
+          ctx2[3]
+        );
+      },
+      i: noop,
+      o: noop,
+      d(detaching) {
+        if (detaching) {
+          detach(div4);
+        }
+        ctx[8](null);
+        mounted = false;
+        dispose();
+      }
+    };
+  }
+  function instance$5($$self, $$props, $$invalidate) {
+    let { name: name2 } = $$props;
+    let { statNode } = $$props;
+    let { modNode } = $$props;
+    let { editmode = false } = $$props;
+    let nodeValue = statNode.getValue();
+    let modNodeValue = modNode.getValue();
+    const KEY = keyManager.getNewKey();
+    onMount(() => {
+      statNode.addUpdateListener("onDerivedNodeUpdate" + KEY, onDerivedOrFixedNodeUpdate);
+      modNode.addUpdateListener("onDerivedNodeUpdate" + KEY, onDerivedOrFixedNodeUpdate);
+    });
+    onDestroy(() => {
+      statNode.removeUpdateListener("onDerivedNodeUpdate" + KEY);
+      modNode.removeUpdateListener("onDerivedNodeUpdate" + KEY);
+    });
+    function onDerivedOrFixedNodeUpdate() {
+      $$invalidate(2, nodeValue = statNode.getValue());
+      $$invalidate(3, modNodeValue = modNode.getValue());
+    }
+    function onChange() {
+      let value = parseInt(statValueDiv.value);
+      statNode.setValue(value);
+    }
+    let statValueDiv;
+    function input_binding($$value) {
+      binding_callbacks[$$value ? "unshift" : "push"](() => {
+        statValueDiv = $$value;
+        $$invalidate(4, statValueDiv);
+      });
+    }
+    $$self.$$set = ($$props2) => {
+      if ("name" in $$props2) $$invalidate(0, name2 = $$props2.name);
+      if ("statNode" in $$props2) $$invalidate(6, statNode = $$props2.statNode);
+      if ("modNode" in $$props2) $$invalidate(7, modNode = $$props2.modNode);
+      if ("editmode" in $$props2) $$invalidate(1, editmode = $$props2.editmode);
+    };
+    return [
+      name2,
+      editmode,
+      nodeValue,
+      modNodeValue,
+      statValueDiv,
+      onChange,
+      statNode,
+      modNode,
+      input_binding
+    ];
+  }
+  class StatValue extends SvelteComponent {
+    constructor(options) {
+      super();
+      init(this, options, instance$5, create_fragment$5, safe_not_equal, {
+        name: 0,
+        statNode: 6,
+        modNode: 7,
+        editmode: 1
+      });
+    }
+    get name() {
+      return this.$$.ctx[0];
+    }
+    set name(name2) {
+      this.$$set({ name: name2 });
+      flush();
+    }
+    get statNode() {
+      return this.$$.ctx[6];
+    }
+    set statNode(statNode) {
+      this.$$set({ statNode });
+      flush();
+    }
+    get modNode() {
+      return this.$$.ctx[7];
+    }
+    set modNode(modNode) {
+      this.$$set({ modNode });
+      flush();
+    }
+    get editmode() {
+      return this.$$.ctx[1];
+    }
+    set editmode(editmode) {
+      this.$$set({ editmode });
+      flush();
+    }
+  }
+  create_custom_element(StatValue, { "name": {}, "statNode": {}, "modNode": {}, "editmode": { "type": "Boolean" } }, [], [], true);
+  function get_each_context$1(ctx, list, i) {
+    const child_ctx = ctx.slice();
+    child_ctx[3] = list[i];
+    const constants_0 = (
+      /*sys*/
+      child_ctx[0].getNode(
+        "fixed",
+        "stats",
+        /*key*/
+        child_ctx[3]
+      )
+    );
+    child_ctx[4] = constants_0;
+    const constants_1 = (
+      /*sys*/
+      child_ctx[0].getNode(
+        "derived",
+        "modifiers",
+        /*key*/
+        child_ctx[3]
+      )
+    );
+    child_ctx[5] = constants_1;
+    return child_ctx;
+  }
+  function create_each_block$1(ctx) {
+    let staticvalue;
+    let current;
+    staticvalue = new StatValue({
+      props: {
+        name: (
+          /*key*/
+          ctx[3]
+        ),
+        statNode: (
+          /*node*/
+          ctx[4]
+        ),
+        modNode: (
+          /*modNode*/
+          ctx[5]
+        ),
+        editmode: (
+          /*edit*/
+          ctx[1]
+        )
+      }
+    });
+    return {
+      c() {
+        create_component(staticvalue.$$.fragment);
+      },
+      m(target, anchor) {
+        mount_component(staticvalue, target, anchor);
+        current = true;
+      },
+      p(ctx2, dirty) {
+        const staticvalue_changes = {};
+        if (dirty & /*sys*/
+        1) staticvalue_changes.statNode = /*node*/
+        ctx2[4];
+        if (dirty & /*sys*/
+        1) staticvalue_changes.modNode = /*modNode*/
+        ctx2[5];
+        if (dirty & /*edit*/
+        2) staticvalue_changes.editmode = /*edit*/
+        ctx2[1];
+        staticvalue.$set(staticvalue_changes);
+      },
+      i(local) {
+        if (current) return;
+        transition_in(staticvalue.$$.fragment, local);
+        current = true;
+      },
+      o(local) {
+        transition_out(staticvalue.$$.fragment, local);
+        current = false;
+      },
+      d(detaching) {
+        destroy_component(staticvalue, detaching);
+      }
+    };
+  }
+  function create_fragment$4(ctx) {
+    let div;
+    let current;
+    let each_value = ensure_array_like(
+      /*stats*/
+      ctx[2]
+    );
+    let each_blocks = [];
+    for (let i = 0; i < each_value.length; i += 1) {
+      each_blocks[i] = create_each_block$1(get_each_context$1(ctx, each_value, i));
+    }
+    const out = (i) => transition_out(each_blocks[i], 1, 1, () => {
+      each_blocks[i] = null;
+    });
+    return {
+      c() {
+        div = element("div");
+        for (let i = 0; i < each_blocks.length; i += 1) {
+          each_blocks[i].c();
+        }
+        attr(div, "class", "StatsRow");
+      },
+      m(target, anchor) {
+        insert(target, div, anchor);
+        for (let i = 0; i < each_blocks.length; i += 1) {
+          if (each_blocks[i]) {
+            each_blocks[i].m(div, null);
+          }
+        }
+        current = true;
+      },
+      p(ctx2, [dirty]) {
+        if (dirty & /*stats, sys, edit*/
+        7) {
+          each_value = ensure_array_like(
+            /*stats*/
+            ctx2[2]
+          );
+          let i;
+          for (i = 0; i < each_value.length; i += 1) {
+            const child_ctx = get_each_context$1(ctx2, each_value, i);
+            if (each_blocks[i]) {
+              each_blocks[i].p(child_ctx, dirty);
+              transition_in(each_blocks[i], 1);
+            } else {
+              each_blocks[i] = create_each_block$1(child_ctx);
+              each_blocks[i].c();
+              transition_in(each_blocks[i], 1);
+              each_blocks[i].m(div, null);
+            }
+          }
+          group_outros();
+          for (i = each_value.length; i < each_blocks.length; i += 1) {
+            out(i);
+          }
+          check_outros();
+        }
+      },
+      i(local) {
+        if (current) return;
+        for (let i = 0; i < each_value.length; i += 1) {
+          transition_in(each_blocks[i]);
+        }
+        current = true;
+      },
+      o(local) {
+        each_blocks = each_blocks.filter(Boolean);
+        for (let i = 0; i < each_blocks.length; i += 1) {
+          transition_out(each_blocks[i]);
+        }
+        current = false;
+      },
+      d(detaching) {
+        if (detaching) {
+          detach(div);
+        }
+        destroy_each(each_blocks, detaching);
+      }
+    };
+  }
+  function instance$4($$self, $$props, $$invalidate) {
+    let { sys } = $$props;
+    let { edit = false } = $$props;
+    let stats = sys.getNodeNames("fixed", "stats");
+    $$self.$$set = ($$props2) => {
+      if ("sys" in $$props2) $$invalidate(0, sys = $$props2.sys);
+      if ("edit" in $$props2) $$invalidate(1, edit = $$props2.edit);
+    };
+    return [sys, edit, stats];
+  }
+  class Stats extends SvelteComponent {
+    constructor(options) {
+      super();
+      init(this, options, instance$4, create_fragment$4, safe_not_equal, { sys: 0, edit: 1 });
+    }
+    get sys() {
+      return this.$$.ctx[0];
+    }
+    set sys(sys) {
+      this.$$set({ sys });
+      flush();
+    }
+    get edit() {
+      return this.$$.ctx[1];
+    }
+    set edit(edit) {
+      this.$$set({ edit });
+      flush();
+    }
+  }
+  create_custom_element(Stats, { "sys": {}, "edit": { "type": "Boolean" } }, [], [], true);
+  function create_if_block$3(ctx) {
+    let div;
+    let t;
+    let if_block0 = (
+      /*hasUp*/
+      ctx[1] && create_if_block_2$3(ctx)
+    );
+    let if_block1 = (
+      /*hasDown*/
+      ctx[2] && create_if_block_1$3(ctx)
+    );
+    return {
+      c() {
+        div = element("div");
+        if (if_block0) if_block0.c();
+        t = space();
+        if (if_block1) if_block1.c();
+        attr(div, "class", "ItemManouverOptions");
+      },
+      m(target, anchor) {
+        insert(target, div, anchor);
+        if (if_block0) if_block0.m(div, null);
+        append(div, t);
+        if (if_block1) if_block1.m(div, null);
+      },
+      p(ctx2, dirty) {
+        if (
+          /*hasUp*/
+          ctx2[1]
+        ) {
+          if (if_block0) {
+            if_block0.p(ctx2, dirty);
+          } else {
+            if_block0 = create_if_block_2$3(ctx2);
+            if_block0.c();
+            if_block0.m(div, t);
+          }
+        } else if (if_block0) {
+          if_block0.d(1);
+          if_block0 = null;
+        }
+        if (
+          /*hasDown*/
+          ctx2[2]
+        ) {
+          if (if_block1) {
+            if_block1.p(ctx2, dirty);
+          } else {
+            if_block1 = create_if_block_1$3(ctx2);
+            if_block1.c();
+            if_block1.m(div, null);
+          }
+        } else if (if_block1) {
+          if_block1.d(1);
+          if_block1 = null;
+        }
+      },
+      d(detaching) {
+        if (detaching) {
+          detach(div);
+        }
+        if (if_block0) if_block0.d();
+        if (if_block1) if_block1.d();
+      }
+    };
+  }
+  function create_if_block_2$3(ctx) {
+    let div;
+    let mounted;
+    let dispose;
+    return {
+      c() {
+        div = element("div");
+        div.textContent = "Up";
+        attr(div, "class", "ItemManouverOption");
+        attr(div, "role", "none");
+      },
+      m(target, anchor) {
+        insert(target, div, anchor);
+        if (!mounted) {
+          dispose = [
+            listen(
+              div,
+              "keyup",
+              /*keyup_handler*/
+              ctx[7]
+            ),
+            listen(
+              div,
+              "click",
+              /*moveUp*/
+              ctx[3]
+            )
+          ];
+          mounted = true;
+        }
+      },
+      p: noop,
+      d(detaching) {
+        if (detaching) {
+          detach(div);
+        }
+        mounted = false;
+        run_all(dispose);
+      }
+    };
+  }
+  function create_if_block_1$3(ctx) {
+    let div;
+    let mounted;
+    let dispose;
+    return {
+      c() {
+        div = element("div");
+        div.textContent = "Down";
+        attr(div, "class", "ItemManouverOption");
+        attr(div, "role", "none");
+      },
+      m(target, anchor) {
+        insert(target, div, anchor);
+        if (!mounted) {
+          dispose = [
+            listen(
+              div,
+              "keyup",
+              /*keyup_handler_1*/
+              ctx[6]
+            ),
+            listen(
+              div,
+              "click",
+              /*moveDown*/
+              ctx[4]
+            )
+          ];
+          mounted = true;
+        }
+      },
+      p: noop,
+      d(detaching) {
+        if (detaching) {
+          detach(div);
+        }
+        mounted = false;
+        run_all(dispose);
+      }
+    };
+  }
+  function create_fragment$3(ctx) {
+    let div;
+    let if_block = (
+      /*editMode*/
+      ctx[0] && create_if_block$3(ctx)
+    );
+    return {
+      c() {
+        div = element("div");
+        if (if_block) if_block.c();
+        attr(div, "class", "ItemManouverContainer");
+      },
+      m(target, anchor) {
+        insert(target, div, anchor);
+        if (if_block) if_block.m(div, null);
+      },
+      p(ctx2, [dirty]) {
+        if (
+          /*editMode*/
+          ctx2[0]
+        ) {
+          if (if_block) {
+            if_block.p(ctx2, dirty);
+          } else {
+            if_block = create_if_block$3(ctx2);
+            if_block.c();
+            if_block.m(div, null);
+          }
+        } else if (if_block) {
+          if_block.d(1);
+          if_block = null;
+        }
+      },
+      i: noop,
+      o: noop,
+      d(detaching) {
+        if (detaching) {
+          detach(div);
+        }
+        if (if_block) if_block.d();
+      }
+    };
+  }
+  function instance$3($$self, $$props, $$invalidate) {
+    let dispatch2 = createEventDispatcher();
+    let { data } = $$props;
+    let { editMode } = $$props;
+    let { hasUp } = $$props;
+    let { hasDown } = $$props;
+    function moveUp() {
+      dispatch2("moveUp", data.id);
+    }
+    function moveDown() {
+      dispatch2("moveDown", data.id);
+    }
+    function keyup_handler_1(event) {
+      bubble.call(this, $$self, event);
+    }
+    function keyup_handler(event) {
+      bubble.call(this, $$self, event);
+    }
+    $$self.$$set = ($$props2) => {
+      if ("data" in $$props2) $$invalidate(5, data = $$props2.data);
+      if ("editMode" in $$props2) $$invalidate(0, editMode = $$props2.editMode);
+      if ("hasUp" in $$props2) $$invalidate(1, hasUp = $$props2.hasUp);
+      if ("hasDown" in $$props2) $$invalidate(2, hasDown = $$props2.hasDown);
+    };
+    return [
+      editMode,
+      hasUp,
+      hasDown,
+      moveUp,
+      moveDown,
+      data,
+      keyup_handler_1,
+      keyup_handler
+    ];
+  }
+  class ItemManouver extends SvelteComponent {
+    constructor(options) {
+      super();
+      init(this, options, instance$3, create_fragment$3, safe_not_equal, {
+        data: 5,
+        editMode: 0,
+        hasUp: 1,
+        hasDown: 2
+      });
+    }
+    get data() {
+      return this.$$.ctx[5];
+    }
+    set data(data) {
+      this.$$set({ data });
+      flush();
+    }
+    get editMode() {
+      return this.$$.ctx[0];
+    }
+    set editMode(editMode) {
+      this.$$set({ editMode });
+      flush();
+    }
+    get hasUp() {
+      return this.$$.ctx[1];
+    }
+    set hasUp(hasUp) {
+      this.$$set({ hasUp });
+      flush();
+    }
+    get hasDown() {
+      return this.$$.ctx[2];
+    }
+    set hasDown(hasDown) {
+      this.$$set({ hasDown });
+      flush();
+    }
+  }
+  create_custom_element(ItemManouver, { "data": {}, "editMode": {}, "hasUp": {}, "hasDown": {} }, [], [], true);
+  function create_if_block_6(ctx) {
+    let itemoptions;
+    let updating_data;
+    let current;
+    function itemoptions_data_binding(value) {
+      ctx[7](value);
+    }
+    let itemoptions_props = { editMode: true };
+    if (
+      /*data*/
+      ctx[0] !== void 0
+    ) {
+      itemoptions_props.data = /*data*/
+      ctx[0];
+    }
+    itemoptions = new ItemOptions({ props: itemoptions_props });
+    binding_callbacks.push(() => bind(itemoptions, "data", itemoptions_data_binding));
+    itemoptions.$on(
+      "optionSelected",
+      /*updateData*/
+      ctx[6]
+    );
+    return {
+      c() {
+        create_component(itemoptions.$$.fragment);
+      },
+      m(target, anchor) {
+        mount_component(itemoptions, target, anchor);
+        current = true;
+      },
+      p(ctx2, dirty) {
+        const itemoptions_changes = {};
+        if (!updating_data && dirty & /*data*/
+        1) {
+          updating_data = true;
+          itemoptions_changes.data = /*data*/
+          ctx2[0];
+          add_flush_callback(() => updating_data = false);
+        }
+        itemoptions.$set(itemoptions_changes);
+      },
+      i(local) {
+        if (current) return;
+        transition_in(itemoptions.$$.fragment, local);
+        current = true;
+      },
+      o(local) {
+        transition_out(itemoptions.$$.fragment, local);
+        current = false;
+      },
+      d(detaching) {
+        destroy_component(itemoptions, detaching);
+      }
+    };
+  }
+  function create_if_block_5(ctx) {
+    let itemmanouver;
+    let updating_data;
+    let current;
+    function itemmanouver_data_binding(value) {
+      ctx[8](value);
+    }
+    let itemmanouver_props = {
+      editMode: (
+        /*layoutMode*/
+        ctx[5]
+      ),
+      hasDown: (
+        /*index*/
+        ctx[4] != /*length*/
+        ctx[3] - 1
+      ),
+      hasUp: (
+        /*index*/
+        ctx[4] != 0
+      )
+    };
+    if (
+      /*data*/
+      ctx[0] !== void 0
+    ) {
+      itemmanouver_props.data = /*data*/
+      ctx[0];
+    }
+    itemmanouver = new ItemManouver({ props: itemmanouver_props });
+    binding_callbacks.push(() => bind(itemmanouver, "data", itemmanouver_data_binding));
+    itemmanouver.$on(
+      "moveUp",
+      /*moveUp_handler*/
+      ctx[9]
+    );
+    itemmanouver.$on(
+      "moveDown",
+      /*moveDown_handler*/
+      ctx[10]
+    );
+    return {
+      c() {
+        create_component(itemmanouver.$$.fragment);
+      },
+      m(target, anchor) {
+        mount_component(itemmanouver, target, anchor);
+        current = true;
+      },
+      p(ctx2, dirty) {
+        const itemmanouver_changes = {};
+        if (dirty & /*layoutMode*/
+        32) itemmanouver_changes.editMode = /*layoutMode*/
+        ctx2[5];
+        if (dirty & /*index, length*/
+        24) itemmanouver_changes.hasDown = /*index*/
+        ctx2[4] != /*length*/
+        ctx2[3] - 1;
+        if (dirty & /*index*/
+        16) itemmanouver_changes.hasUp = /*index*/
+        ctx2[4] != 0;
+        if (!updating_data && dirty & /*data*/
+        1) {
+          updating_data = true;
+          itemmanouver_changes.data = /*data*/
+          ctx2[0];
+          add_flush_callback(() => updating_data = false);
+        }
+        itemmanouver.$set(itemmanouver_changes);
+      },
+      i(local) {
+        if (current) return;
+        transition_in(itemmanouver.$$.fragment, local);
+        current = true;
+      },
+      o(local) {
+        transition_out(itemmanouver.$$.fragment, local);
+        current = false;
+      },
+      d(detaching) {
+        destroy_component(itemmanouver, detaching);
+      }
+    };
+  }
+  function create_if_block_4(ctx) {
+    let div;
+    let stats;
+    let div_transition;
+    let current;
+    stats = new Stats({
+      props: {
+        edit: (
+          /*editMode*/
+          ctx[1]
+        ),
+        sys: (
+          /*sys*/
+          ctx[2]
+        )
+      }
+    });
+    stats.$on(
+      "optionSelected",
+      /*updateData*/
+      ctx[6]
+    );
+    return {
+      c() {
+        div = element("div");
+        create_component(stats.$$.fragment);
+      },
+      m(target, anchor) {
+        insert(target, div, anchor);
+        mount_component(stats, div, null);
+        current = true;
+      },
+      p(ctx2, dirty) {
+        const stats_changes = {};
+        if (dirty & /*editMode*/
+        2) stats_changes.edit = /*editMode*/
+        ctx2[1];
+        if (dirty & /*sys*/
+        4) stats_changes.sys = /*sys*/
+        ctx2[2];
+        stats.$set(stats_changes);
+      },
+      i(local) {
+        if (current) return;
+        transition_in(stats.$$.fragment, local);
+        if (local) {
+          add_render_callback(() => {
+            if (!current) return;
+            if (!div_transition) div_transition = create_bidirectional_transition(div, slide, {}, true);
+            div_transition.run(1);
+          });
+        }
+        current = true;
+      },
+      o(local) {
+        transition_out(stats.$$.fragment, local);
+        if (local) {
+          if (!div_transition) div_transition = create_bidirectional_transition(div, slide, {}, false);
+          div_transition.run(0);
+        }
+        current = false;
+      },
+      d(detaching) {
+        if (detaching) {
+          detach(div);
+        }
+        destroy_component(stats);
+        if (detaching && div_transition) div_transition.end();
+      }
+    };
+  }
+  function create_if_block_3(ctx) {
+    let div;
+    let spellinfo;
+    let updating_data;
+    let div_transition;
+    let current;
+    function spellinfo_data_binding(value) {
+      ctx[14](value);
+    }
+    let spellinfo_props = {
+      edit: (
+        /*editMode*/
+        ctx[1]
+      ),
+      sys: (
+        /*sys*/
+        ctx[2]
+      )
+    };
+    if (
+      /*data*/
+      ctx[0] !== void 0
+    ) {
+      spellinfo_props.data = /*data*/
+      ctx[0];
+    }
+    spellinfo = new SpellInfo({ props: spellinfo_props });
+    binding_callbacks.push(() => bind(spellinfo, "data", spellinfo_data_binding));
+    spellinfo.$on(
+      "optionSelected",
+      /*updateData*/
+      ctx[6]
+    );
+    return {
+      c() {
+        div = element("div");
+        create_component(spellinfo.$$.fragment);
+      },
+      m(target, anchor) {
+        insert(target, div, anchor);
+        mount_component(spellinfo, div, null);
+        current = true;
+      },
+      p(ctx2, dirty) {
+        const spellinfo_changes = {};
+        if (dirty & /*editMode*/
+        2) spellinfo_changes.edit = /*editMode*/
+        ctx2[1];
+        if (dirty & /*sys*/
+        4) spellinfo_changes.sys = /*sys*/
+        ctx2[2];
+        if (!updating_data && dirty & /*data*/
+        1) {
+          updating_data = true;
+          spellinfo_changes.data = /*data*/
+          ctx2[0];
+          add_flush_callback(() => updating_data = false);
+        }
+        spellinfo.$set(spellinfo_changes);
+      },
+      i(local) {
+        if (current) return;
+        transition_in(spellinfo.$$.fragment, local);
+        if (local) {
+          add_render_callback(() => {
+            if (!current) return;
+            if (!div_transition) div_transition = create_bidirectional_transition(div, slide, {}, true);
+            div_transition.run(1);
+          });
+        }
+        current = true;
+      },
+      o(local) {
+        transition_out(spellinfo.$$.fragment, local);
+        if (local) {
+          if (!div_transition) div_transition = create_bidirectional_transition(div, slide, {}, false);
+          div_transition.run(0);
+        }
+        current = false;
+      },
+      d(detaching) {
+        if (detaching) {
+          detach(div);
+        }
+        destroy_component(spellinfo);
+        if (detaching && div_transition) div_transition.end();
+      }
+    };
+  }
+  function create_if_block_2$2(ctx) {
+    let div;
+    let skillproficiencycollection;
+    let updating_data;
+    let div_transition;
+    let current;
+    function skillproficiencycollection_data_binding(value) {
+      ctx[13](value);
+    }
+    let skillproficiencycollection_props = {
+      edit: (
+        /*editMode*/
+        ctx[1]
+      ),
+      sys: (
+        /*sys*/
+        ctx[2]
+      )
+    };
+    if (
+      /*data*/
+      ctx[0] !== void 0
+    ) {
+      skillproficiencycollection_props.data = /*data*/
+      ctx[0];
+    }
+    skillproficiencycollection = new SkillProficiencyCollection({ props: skillproficiencycollection_props });
+    binding_callbacks.push(() => bind(skillproficiencycollection, "data", skillproficiencycollection_data_binding));
+    skillproficiencycollection.$on(
+      "optionSelected",
+      /*updateData*/
+      ctx[6]
+    );
+    return {
+      c() {
+        div = element("div");
+        create_component(skillproficiencycollection.$$.fragment);
+      },
+      m(target, anchor) {
+        insert(target, div, anchor);
+        mount_component(skillproficiencycollection, div, null);
+        current = true;
+      },
+      p(ctx2, dirty) {
+        const skillproficiencycollection_changes = {};
+        if (dirty & /*editMode*/
+        2) skillproficiencycollection_changes.edit = /*editMode*/
+        ctx2[1];
+        if (dirty & /*sys*/
+        4) skillproficiencycollection_changes.sys = /*sys*/
+        ctx2[2];
+        if (!updating_data && dirty & /*data*/
+        1) {
+          updating_data = true;
+          skillproficiencycollection_changes.data = /*data*/
+          ctx2[0];
+          add_flush_callback(() => updating_data = false);
+        }
+        skillproficiencycollection.$set(skillproficiencycollection_changes);
+      },
+      i(local) {
+        if (current) return;
+        transition_in(skillproficiencycollection.$$.fragment, local);
+        if (local) {
+          add_render_callback(() => {
+            if (!current) return;
+            if (!div_transition) div_transition = create_bidirectional_transition(div, slide, {}, true);
+            div_transition.run(1);
+          });
+        }
+        current = true;
+      },
+      o(local) {
+        transition_out(skillproficiencycollection.$$.fragment, local);
+        if (local) {
+          if (!div_transition) div_transition = create_bidirectional_transition(div, slide, {}, false);
+          div_transition.run(0);
+        }
+        current = false;
+      },
+      d(detaching) {
+        if (detaching) {
+          detach(div);
+        }
+        destroy_component(skillproficiencycollection);
+        if (detaching && div_transition) div_transition.end();
+      }
+    };
+  }
+  function create_if_block_1$2(ctx) {
+    let div;
+    let proficiencybonus;
+    let updating_data;
+    let div_transition;
+    let current;
+    function proficiencybonus_data_binding(value) {
+      ctx[12](value);
+    }
+    let proficiencybonus_props = {
+      sys: (
+        /*sys*/
+        ctx[2]
+      ),
+      editMode: (
+        /*editMode*/
+        ctx[1]
+      )
+    };
+    if (
+      /*data*/
+      ctx[0] !== void 0
+    ) {
+      proficiencybonus_props.data = /*data*/
+      ctx[0];
+    }
+    proficiencybonus = new ProficiencyBonus({ props: proficiencybonus_props });
+    binding_callbacks.push(() => bind(proficiencybonus, "data", proficiencybonus_data_binding));
+    proficiencybonus.$on(
+      "optionSelected",
+      /*updateData*/
+      ctx[6]
+    );
+    return {
+      c() {
+        div = element("div");
+        create_component(proficiencybonus.$$.fragment);
+      },
+      m(target, anchor) {
+        insert(target, div, anchor);
+        mount_component(proficiencybonus, div, null);
+        current = true;
+      },
+      p(ctx2, dirty) {
+        const proficiencybonus_changes = {};
+        if (dirty & /*sys*/
+        4) proficiencybonus_changes.sys = /*sys*/
+        ctx2[2];
+        if (dirty & /*editMode*/
+        2) proficiencybonus_changes.editMode = /*editMode*/
+        ctx2[1];
+        if (!updating_data && dirty & /*data*/
+        1) {
+          updating_data = true;
+          proficiencybonus_changes.data = /*data*/
+          ctx2[0];
+          add_flush_callback(() => updating_data = false);
+        }
+        proficiencybonus.$set(proficiencybonus_changes);
+      },
+      i(local) {
+        if (current) return;
+        transition_in(proficiencybonus.$$.fragment, local);
+        if (local) {
+          add_render_callback(() => {
+            if (!current) return;
+            if (!div_transition) div_transition = create_bidirectional_transition(div, slide, {}, true);
+            div_transition.run(1);
+          });
+        }
+        current = true;
+      },
+      o(local) {
+        transition_out(proficiencybonus.$$.fragment, local);
+        if (local) {
+          if (!div_transition) div_transition = create_bidirectional_transition(div, slide, {}, false);
+          div_transition.run(0);
+        }
+        current = false;
+      },
+      d(detaching) {
+        if (detaching) {
+          detach(div);
+        }
+        destroy_component(proficiencybonus);
+        if (detaching && div_transition) div_transition.end();
+      }
+    };
+  }
+  function create_if_block$2(ctx) {
+    let div;
+    let hitpoints;
+    let updating_data;
+    let div_transition;
+    let current;
+    function hitpoints_data_binding(value) {
+      ctx[11](value);
+    }
+    let hitpoints_props = {
+      sys: (
+        /*sys*/
+        ctx[2]
+      ),
+      editMode: (
+        /*editMode*/
+        ctx[1]
+      ),
+      playMode: false
+    };
+    if (
+      /*data*/
+      ctx[0] !== void 0
+    ) {
+      hitpoints_props.data = /*data*/
+      ctx[0];
+    }
+    hitpoints = new HitPoints({ props: hitpoints_props });
+    binding_callbacks.push(() => bind(hitpoints, "data", hitpoints_data_binding));
+    hitpoints.$on(
+      "optionSelected",
+      /*updateData*/
+      ctx[6]
+    );
+    return {
+      c() {
+        div = element("div");
+        create_component(hitpoints.$$.fragment);
+      },
+      m(target, anchor) {
+        insert(target, div, anchor);
+        mount_component(hitpoints, div, null);
+        current = true;
+      },
+      p(ctx2, dirty) {
+        const hitpoints_changes = {};
+        if (dirty & /*sys*/
+        4) hitpoints_changes.sys = /*sys*/
+        ctx2[2];
+        if (dirty & /*editMode*/
+        2) hitpoints_changes.editMode = /*editMode*/
+        ctx2[1];
+        if (!updating_data && dirty & /*data*/
+        1) {
+          updating_data = true;
+          hitpoints_changes.data = /*data*/
+          ctx2[0];
+          add_flush_callback(() => updating_data = false);
+        }
+        hitpoints.$set(hitpoints_changes);
+      },
+      i(local) {
+        if (current) return;
+        transition_in(hitpoints.$$.fragment, local);
+        if (local) {
+          add_render_callback(() => {
+            if (!current) return;
+            if (!div_transition) div_transition = create_bidirectional_transition(div, slide, {}, true);
+            div_transition.run(1);
+          });
+        }
+        current = true;
+      },
+      o(local) {
+        transition_out(hitpoints.$$.fragment, local);
+        if (local) {
+          if (!div_transition) div_transition = create_bidirectional_transition(div, slide, {}, false);
+          div_transition.run(0);
+        }
+        current = false;
+      },
+      d(detaching) {
+        if (detaching) {
+          detach(div);
+        }
+        destroy_component(hitpoints);
+        if (detaching && div_transition) div_transition.end();
+      }
+    };
+  }
+  function create_fragment$2(ctx) {
+    let div;
+    let t0;
+    let t1;
+    let current_block_type_index;
+    let if_block2;
+    let current;
+    let if_block0 = (
+      /*editMode*/
+      ctx[1] && create_if_block_6(ctx)
+    );
+    let if_block1 = (
+      /*length*/
+      ctx[3] != 1 && create_if_block_5(ctx)
+    );
+    const if_block_creators = [
+      create_if_block$2,
+      create_if_block_1$2,
+      create_if_block_2$2,
+      create_if_block_3,
+      create_if_block_4
+    ];
+    const if_blocks = [];
+    function select_block_type(ctx2, dirty) {
+      if (
+        /*data*/
+        ctx2[0].type == viewNameIndex.HitPoints
+      ) return 0;
+      if (
+        /*data*/
+        ctx2[0].type == viewNameIndex.ProficiencyBonus
+      ) return 1;
+      if (
+        /*data*/
+        ctx2[0].type == viewNameIndex.SkillProficiencies
+      ) return 2;
+      if (
+        /*data*/
+        ctx2[0].type == viewNameIndex.SpellInfo
+      ) return 3;
+      if (
+        /*data*/
+        ctx2[0].type == viewNameIndex.Stats
+      ) return 4;
+      return -1;
+    }
+    if (~(current_block_type_index = select_block_type(ctx))) {
+      if_block2 = if_blocks[current_block_type_index] = if_block_creators[current_block_type_index](ctx);
+    }
+    return {
+      c() {
+        div = element("div");
+        if (if_block0) if_block0.c();
+        t0 = space();
+        if (if_block1) if_block1.c();
+        t1 = space();
+        if (if_block2) if_block2.c();
+        attr(div, "data-name", "ItemDestributor");
+        attr(div, "class", "itemDestributer");
+      },
+      m(target, anchor) {
+        insert(target, div, anchor);
+        if (if_block0) if_block0.m(div, null);
+        append(div, t0);
+        if (if_block1) if_block1.m(div, null);
+        append(div, t1);
+        if (~current_block_type_index) {
+          if_blocks[current_block_type_index].m(div, null);
+        }
+        current = true;
+      },
+      p(ctx2, [dirty]) {
+        if (
+          /*editMode*/
+          ctx2[1]
+        ) {
+          if (if_block0) {
+            if_block0.p(ctx2, dirty);
+            if (dirty & /*editMode*/
+            2) {
+              transition_in(if_block0, 1);
+            }
+          } else {
+            if_block0 = create_if_block_6(ctx2);
+            if_block0.c();
+            transition_in(if_block0, 1);
+            if_block0.m(div, t0);
+          }
+        } else if (if_block0) {
+          group_outros();
+          transition_out(if_block0, 1, 1, () => {
+            if_block0 = null;
+          });
+          check_outros();
+        }
+        if (
+          /*length*/
+          ctx2[3] != 1
+        ) {
+          if (if_block1) {
+            if_block1.p(ctx2, dirty);
+            if (dirty & /*length*/
+            8) {
+              transition_in(if_block1, 1);
+            }
+          } else {
+            if_block1 = create_if_block_5(ctx2);
+            if_block1.c();
+            transition_in(if_block1, 1);
+            if_block1.m(div, t1);
+          }
+        } else if (if_block1) {
+          group_outros();
+          transition_out(if_block1, 1, 1, () => {
+            if_block1 = null;
+          });
+          check_outros();
+        }
+        let previous_block_index = current_block_type_index;
+        current_block_type_index = select_block_type(ctx2);
+        if (current_block_type_index === previous_block_index) {
+          if (~current_block_type_index) {
+            if_blocks[current_block_type_index].p(ctx2, dirty);
+          }
+        } else {
+          if (if_block2) {
+            group_outros();
+            transition_out(if_blocks[previous_block_index], 1, 1, () => {
+              if_blocks[previous_block_index] = null;
+            });
+            check_outros();
+          }
+          if (~current_block_type_index) {
+            if_block2 = if_blocks[current_block_type_index];
+            if (!if_block2) {
+              if_block2 = if_blocks[current_block_type_index] = if_block_creators[current_block_type_index](ctx2);
+              if_block2.c();
+            } else {
+              if_block2.p(ctx2, dirty);
+            }
+            transition_in(if_block2, 1);
+            if_block2.m(div, null);
+          } else {
+            if_block2 = null;
+          }
+        }
+      },
+      i(local) {
+        if (current) return;
+        transition_in(if_block0);
+        transition_in(if_block1);
+        transition_in(if_block2);
+        current = true;
+      },
+      o(local) {
+        transition_out(if_block0);
+        transition_out(if_block1);
+        transition_out(if_block2);
+        current = false;
+      },
+      d(detaching) {
+        if (detaching) {
+          detach(div);
+        }
+        if (if_block0) if_block0.d();
+        if (if_block1) if_block1.d();
+        if (~current_block_type_index) {
+          if_blocks[current_block_type_index].d();
+        }
+      }
+    };
+  }
+  function instance$2($$self, $$props, $$invalidate) {
+    let { data } = $$props;
+    let { editMode } = $$props;
+    let { sys } = $$props;
+    let { length } = $$props;
+    let { index } = $$props;
+    let { layoutMode = false } = $$props;
+    function updateData(v) {
+      console.log(data);
+      $$invalidate(0, data);
+    }
+    function itemoptions_data_binding(value) {
+      data = value;
+      $$invalidate(0, data);
+    }
+    function itemmanouver_data_binding(value) {
+      data = value;
+      $$invalidate(0, data);
+    }
+    function moveUp_handler(event) {
+      bubble.call(this, $$self, event);
+    }
+    function moveDown_handler(event) {
+      bubble.call(this, $$self, event);
+    }
+    function hitpoints_data_binding(value) {
+      data = value;
+      $$invalidate(0, data);
+    }
+    function proficiencybonus_data_binding(value) {
+      data = value;
+      $$invalidate(0, data);
+    }
+    function skillproficiencycollection_data_binding(value) {
+      data = value;
+      $$invalidate(0, data);
+    }
+    function spellinfo_data_binding(value) {
+      data = value;
+      $$invalidate(0, data);
+    }
+    $$self.$$set = ($$props2) => {
+      if ("data" in $$props2) $$invalidate(0, data = $$props2.data);
+      if ("editMode" in $$props2) $$invalidate(1, editMode = $$props2.editMode);
+      if ("sys" in $$props2) $$invalidate(2, sys = $$props2.sys);
+      if ("length" in $$props2) $$invalidate(3, length = $$props2.length);
+      if ("index" in $$props2) $$invalidate(4, index = $$props2.index);
+      if ("layoutMode" in $$props2) $$invalidate(5, layoutMode = $$props2.layoutMode);
+    };
+    return [
+      data,
+      editMode,
+      sys,
+      length,
+      index,
+      layoutMode,
+      updateData,
+      itemoptions_data_binding,
+      itemmanouver_data_binding,
+      moveUp_handler,
+      moveDown_handler,
+      hitpoints_data_binding,
+      proficiencybonus_data_binding,
+      skillproficiencycollection_data_binding,
+      spellinfo_data_binding
+    ];
+  }
+  class ItemDestributor extends SvelteComponent {
+    constructor(options) {
+      super();
+      init(this, options, instance$2, create_fragment$2, safe_not_equal, {
+        data: 0,
+        editMode: 1,
+        sys: 2,
+        length: 3,
+        index: 4,
+        layoutMode: 5
+      });
+    }
+    get data() {
+      return this.$$.ctx[0];
+    }
+    set data(data) {
+      this.$$set({ data });
+      flush();
+    }
+    get editMode() {
+      return this.$$.ctx[1];
+    }
+    set editMode(editMode) {
+      this.$$set({ editMode });
+      flush();
+    }
+    get sys() {
+      return this.$$.ctx[2];
+    }
+    set sys(sys) {
+      this.$$set({ sys });
+      flush();
+    }
+    get length() {
+      return this.$$.ctx[3];
+    }
+    set length(length) {
+      this.$$set({ length });
+      flush();
+    }
+    get index() {
+      return this.$$.ctx[4];
+    }
+    set index(index) {
+      this.$$set({ index });
+      flush();
+    }
+    get layoutMode() {
+      return this.$$.ctx[5];
+    }
+    set layoutMode(layoutMode) {
+      this.$$set({ layoutMode });
+      flush();
+    }
+  }
+  create_custom_element(ItemDestributor, { "data": {}, "editMode": {}, "sys": {}, "length": {}, "index": {}, "layoutMode": { "type": "Boolean" } }, [], [], true);
+  function customFlip(node, fromTo, params) {
+    if (node.style.animation) node.style = null;
+    return flip(node, fromTo, params ?? { duration: 500 });
+  }
+  function create_if_block$1(ctx) {
+    let div;
+    let t;
+    let div_transition;
+    let current;
+    let if_block0 = (
+      /*onAdd*/
+      ctx[4] && create_if_block_2$1(ctx)
+    );
+    let if_block1 = (
+      /*onRemove*/
+      ctx[3] && create_if_block_1$1(ctx)
+    );
+    return {
+      c() {
+        div = element("div");
+        if (if_block0) if_block0.c();
+        t = space();
+        if (if_block1) if_block1.c();
+        attr(div, "class", "RowColumnOptions");
+        attr(
+          div,
+          "style",
+          /*cssStyle*/
+          ctx[5]
+        );
+      },
+      m(target, anchor) {
+        insert(target, div, anchor);
+        if (if_block0) if_block0.m(div, null);
+        append(div, t);
+        if (if_block1) if_block1.m(div, null);
+        current = true;
+      },
+      p(ctx2, dirty) {
+        if (
+          /*onAdd*/
+          ctx2[4]
+        ) {
+          if (if_block0) {
+            if_block0.p(ctx2, dirty);
+          } else {
+            if_block0 = create_if_block_2$1(ctx2);
+            if_block0.c();
+            if_block0.m(div, t);
+          }
+        } else if (if_block0) {
+          if_block0.d(1);
+          if_block0 = null;
+        }
+        if (
+          /*onRemove*/
+          ctx2[3]
+        ) {
+          if (if_block1) {
+            if_block1.p(ctx2, dirty);
+          } else {
+            if_block1 = create_if_block_1$1(ctx2);
+            if_block1.c();
+            if_block1.m(div, null);
+          }
+        } else if (if_block1) {
+          if_block1.d(1);
+          if_block1 = null;
+        }
+      },
+      i(local) {
+        if (current) return;
+        if (local) {
+          add_render_callback(() => {
+            if (!current) return;
+            if (!div_transition) div_transition = create_bidirectional_transition(div, slide, {}, true);
+            div_transition.run(1);
+          });
+        }
+        current = true;
+      },
+      o(local) {
+        if (local) {
+          if (!div_transition) div_transition = create_bidirectional_transition(div, slide, {}, false);
+          div_transition.run(0);
+        }
+        current = false;
+      },
+      d(detaching) {
+        if (detaching) {
+          detach(div);
+        }
+        if (if_block0) if_block0.d();
+        if (if_block1) if_block1.d();
+        if (detaching && div_transition) div_transition.end();
+      }
+    };
+  }
+  function create_if_block_2$1(ctx) {
+    let div;
+    let t;
+    let mounted;
+    let dispose;
+    return {
+      c() {
+        div = element("div");
+        t = text(
+          /*addText*/
+          ctx[1]
+        );
+        attr(div, "class", "itemOption");
+        attr(div, "role", "none");
+      },
+      m(target, anchor) {
+        insert(target, div, anchor);
+        append(div, t);
+        if (!mounted) {
+          dispose = [
+            listen(
+              div,
+              "keyup",
+              /*keyup_handler*/
+              ctx[10]
+            ),
+            listen(
+              div,
+              "click",
+              /*click_handler*/
+              ctx[11]
+            )
+          ];
+          mounted = true;
+        }
+      },
+      p(ctx2, dirty) {
+        if (dirty & /*addText*/
+        2) set_data(
+          t,
+          /*addText*/
+          ctx2[1]
+        );
+      },
+      d(detaching) {
+        if (detaching) {
+          detach(div);
+        }
+        mounted = false;
+        run_all(dispose);
+      }
+    };
+  }
+  function create_if_block_1$1(ctx) {
+    let div;
+    let t;
+    let mounted;
+    let dispose;
+    return {
+      c() {
+        div = element("div");
+        t = text(
+          /*remText*/
+          ctx[2]
+        );
+        attr(div, "class", "itemOption rem");
+        attr(div, "role", "none");
+      },
+      m(target, anchor) {
+        insert(target, div, anchor);
+        append(div, t);
+        if (!mounted) {
+          dispose = [
+            listen(
+              div,
+              "keyup",
+              /*keyup_handler_1*/
+              ctx[9]
+            ),
+            listen(
+              div,
+              "click",
+              /*click_handler_1*/
+              ctx[12]
+            )
+          ];
+          mounted = true;
+        }
+      },
+      p(ctx2, dirty) {
+        if (dirty & /*remText*/
+        4) set_data(
+          t,
+          /*remText*/
+          ctx2[2]
+        );
+      },
+      d(detaching) {
+        if (detaching) {
+          detach(div);
+        }
+        mounted = false;
+        run_all(dispose);
+      }
+    };
+  }
+  function create_fragment$1(ctx) {
+    let if_block_anchor;
+    let if_block = (
+      /*active*/
+      ctx[0] && create_if_block$1(ctx)
+    );
+    return {
+      c() {
+        if (if_block) if_block.c();
+        if_block_anchor = empty();
+      },
+      m(target, anchor) {
+        if (if_block) if_block.m(target, anchor);
+        insert(target, if_block_anchor, anchor);
+      },
+      p(ctx2, [dirty]) {
+        if (
+          /*active*/
+          ctx2[0]
+        ) {
+          if (if_block) {
+            if_block.p(ctx2, dirty);
+            if (dirty & /*active*/
+            1) {
+              transition_in(if_block, 1);
+            }
+          } else {
+            if_block = create_if_block$1(ctx2);
+            if_block.c();
+            transition_in(if_block, 1);
+            if_block.m(if_block_anchor.parentNode, if_block_anchor);
+          }
+        } else if (if_block) {
+          group_outros();
+          transition_out(if_block, 1, 1, () => {
+            if_block = null;
+          });
+          check_outros();
+        }
+      },
+      i(local) {
+        transition_in(if_block);
+      },
+      o(local) {
+        transition_out(if_block);
+      },
+      d(detaching) {
+        if (detaching) {
+          detach(if_block_anchor);
+        }
+        if (if_block) if_block.d(detaching);
+      }
+    };
+  }
+  function instance$1($$self, $$props, $$invalidate) {
+    let { active: active2 } = $$props;
+    let { addText = "Add Item" } = $$props;
+    let { remText = "Remove This Item" } = $$props;
+    let { offset = 0 } = $$props;
+    let { side = "left" } = $$props;
+    let { verti = "bottom" } = $$props;
+    let { onRemove = null } = $$props;
+    let { onAdd = null } = $$props;
+    let cssStyle = side + ":" + offset + ";" + verti + ":" + offset + ";";
+    function keyup_handler_1(event) {
+      bubble.call(this, $$self, event);
+    }
+    function keyup_handler(event) {
+      bubble.call(this, $$self, event);
+    }
+    const click_handler = () => onAdd();
+    const click_handler_1 = () => onRemove();
+    $$self.$$set = ($$props2) => {
+      if ("active" in $$props2) $$invalidate(0, active2 = $$props2.active);
+      if ("addText" in $$props2) $$invalidate(1, addText = $$props2.addText);
+      if ("remText" in $$props2) $$invalidate(2, remText = $$props2.remText);
+      if ("offset" in $$props2) $$invalidate(6, offset = $$props2.offset);
+      if ("side" in $$props2) $$invalidate(7, side = $$props2.side);
+      if ("verti" in $$props2) $$invalidate(8, verti = $$props2.verti);
+      if ("onRemove" in $$props2) $$invalidate(3, onRemove = $$props2.onRemove);
+      if ("onAdd" in $$props2) $$invalidate(4, onAdd = $$props2.onAdd);
+    };
+    return [
+      active2,
+      addText,
+      remText,
+      onRemove,
+      onAdd,
+      cssStyle,
+      offset,
+      side,
+      verti,
+      keyup_handler_1,
+      keyup_handler,
+      click_handler,
+      click_handler_1
+    ];
+  }
+  class RowColumnOptions extends SvelteComponent {
+    constructor(options) {
+      super();
+      init(this, options, instance$1, create_fragment$1, safe_not_equal, {
+        active: 0,
+        addText: 1,
+        remText: 2,
+        offset: 6,
+        side: 7,
+        verti: 8,
+        onRemove: 3,
+        onAdd: 4
+      });
+    }
+    get active() {
+      return this.$$.ctx[0];
+    }
+    set active(active2) {
+      this.$$set({ active: active2 });
+      flush();
+    }
+    get addText() {
+      return this.$$.ctx[1];
+    }
+    set addText(addText) {
+      this.$$set({ addText });
+      flush();
+    }
+    get remText() {
+      return this.$$.ctx[2];
+    }
+    set remText(remText) {
+      this.$$set({ remText });
+      flush();
+    }
+    get offset() {
+      return this.$$.ctx[6];
+    }
+    set offset(offset) {
+      this.$$set({ offset });
+      flush();
+    }
+    get side() {
+      return this.$$.ctx[7];
+    }
+    set side(side) {
+      this.$$set({ side });
+      flush();
+    }
+    get verti() {
+      return this.$$.ctx[8];
+    }
+    set verti(verti) {
+      this.$$set({ verti });
+      flush();
+    }
+    get onRemove() {
+      return this.$$.ctx[3];
+    }
+    set onRemove(onRemove) {
+      this.$$set({ onRemove });
+      flush();
+    }
+    get onAdd() {
+      return this.$$.ctx[4];
+    }
+    set onAdd(onAdd) {
+      this.$$set({ onAdd });
+      flush();
+    }
+  }
+  create_custom_element(RowColumnOptions, { "active": {}, "addText": {}, "remText": {}, "offset": {}, "side": {}, "verti": {}, "onRemove": {}, "onAdd": {} }, [], [], true);
+  function get_each_context(ctx, list, i) {
+    const child_ctx = ctx.slice();
+    child_ctx[46] = list[i];
+    child_ctx[48] = i;
+    return child_ctx;
+  }
+  function get_each_context_1(ctx, list, i) {
+    const child_ctx = ctx.slice();
+    child_ctx[49] = list[i];
+    child_ctx[51] = i;
+    return child_ctx;
+  }
+  function get_each_context_2(ctx, list, i) {
+    const child_ctx = ctx.slice();
+    child_ctx[52] = list[i];
+    child_ctx[54] = i;
+    return child_ctx;
+  }
+  function create_if_block_2(ctx) {
+    let rowcolumnoptions;
+    let current;
+    function func_2() {
+      return (
+        /*func_2*/
+        ctx[24](
+          /*row*/
+          ctx[46],
+          /*column*/
+          ctx[49]
+        )
+      );
+    }
+    rowcolumnoptions = new RowColumnOptions({
+      props: {
+        offset: 15,
+        active: (
+          /*$editLayout_02*/
+          ctx[3]
+        ),
+        remText: "remove this column",
+        onRemove: func_2
+      }
+    });
+    return {
+      c() {
+        create_component(rowcolumnoptions.$$.fragment);
+      },
+      m(target, anchor) {
+        mount_component(rowcolumnoptions, target, anchor);
+        current = true;
+      },
+      p(new_ctx, dirty) {
+        ctx = new_ctx;
+        const rowcolumnoptions_changes = {};
+        if (dirty[0] & /*$editLayout_02*/
+        8) rowcolumnoptions_changes.active = /*$editLayout_02*/
+        ctx[3];
+        if (dirty[0] & /*$OBJ*/
+        64) rowcolumnoptions_changes.onRemove = func_2;
+        rowcolumnoptions.$set(rowcolumnoptions_changes);
+      },
+      i(local) {
+        if (current) return;
+        transition_in(rowcolumnoptions.$$.fragment, local);
+        current = true;
+      },
+      o(local) {
+        transition_out(rowcolumnoptions.$$.fragment, local);
+        current = false;
+      },
+      d(detaching) {
+        destroy_component(rowcolumnoptions, detaching);
+      }
+    };
+  }
+  function create_if_block_1(ctx) {
+    let div;
+    return {
+      c() {
+        div = element("div");
+        set_style(div, "height", "50px");
+      },
+      m(target, anchor) {
+        insert(target, div, anchor);
+      },
+      d(detaching) {
+        if (detaching) {
+          detach(div);
+        }
+      }
+    };
+  }
+  function create_each_block_2(key_1, ctx) {
+    let div;
+    let rowcolumnoptions;
+    let t;
+    let itemdestributor;
+    let div_data_edit_value;
+    let div_data_itemid_value;
+    let div_data_dragging_value;
+    let div_transition;
+    let rect;
+    let stop_animation = noop;
+    let current;
+    let mounted;
+    let dispose;
+    function func_4() {
+      return (
+        /*func_4*/
+        ctx[26](
+          /*column*/
+          ctx[49],
+          /*item*/
+          ctx[52]
+        )
+      );
+    }
+    rowcolumnoptions = new RowColumnOptions({
+      props: {
+        offset: 15,
+        active: (
+          /*$editLayout_03*/
+          ctx[2]
+        ),
+        addText: "remove",
+        onRemove: func_4
+      }
+    });
+    itemdestributor = new ItemDestributor({
+      props: {
+        data: (
+          /*item*/
+          ctx[52]
+        ),
+        editMode: (
+          /*$editMode*/
+          ctx[5]
+        ),
+        layoutMode: (
+          /*$editLayout_03*/
+          ctx[2]
+        ),
+        sys: (
+          /*sys*/
+          ctx[0]
+        ),
+        length: (
+          /*column*/
+          ctx[49].data.length
+        ),
+        index: (
+          /*k*/
+          ctx[54]
+        )
+      }
+    });
+    itemdestributor.$on(
+      "moveUp",
+      /*moveUp_handler*/
+      ctx[27]
+    );
+    itemdestributor.$on(
+      "moveDown",
+      /*moveDown_handler*/
+      ctx[28]
+    );
+    function dragstart_handler(...args) {
+      return (
+        /*dragstart_handler*/
+        ctx[29](
+          /*item*/
+          ctx[52],
+          ...args
+        )
+      );
+    }
+    function dragend_handler(...args) {
+      return (
+        /*dragend_handler*/
+        ctx[30](
+          /*item*/
+          ctx[52],
+          ...args
+        )
+      );
+    }
+    function drop_handler(...args) {
+      return (
+        /*drop_handler*/
+        ctx[31](
+          /*item*/
+          ctx[52],
+          ...args
+        )
+      );
+    }
+    function dragleave_handler(...args) {
+      return (
+        /*dragleave_handler*/
+        ctx[32](
+          /*item*/
+          ctx[52],
+          ...args
+        )
+      );
+    }
+    return {
+      key: key_1,
+      first: null,
+      c() {
+        div = element("div");
+        create_component(rowcolumnoptions.$$.fragment);
+        t = space();
+        create_component(itemdestributor.$$.fragment);
+        attr(div, "class", "Item");
+        attr(div, "data-edit", div_data_edit_value = /*$editMode*/
+        ctx[5] || /*$editLayout_03*/
+        ctx[2] || /*$editLayout_02*/
+        ctx[3]);
+        attr(div, "data-itemid", div_data_itemid_value = /*item*/
+        ctx[52].id);
+        attr(
+          div,
+          "data-edit-active",
+          /*$editLayout_03*/
+          ctx[2]
+        );
+        attr(div, "data-dragging", div_data_dragging_value = /*DragItemHandler*/
+        ctx[15].isBeingDragged(
+          /*item*/
+          ctx[52].id
+        ));
+        attr(div, "role", "none");
+        attr(
+          div,
+          "draggable",
+          /*$editLayout_03*/
+          ctx[2]
+        );
+        this.first = div;
+      },
+      m(target, anchor) {
+        insert(target, div, anchor);
+        mount_component(rowcolumnoptions, div, null);
+        append(div, t);
+        mount_component(itemdestributor, div, null);
+        current = true;
+        if (!mounted) {
+          dispose = [
+            listen(div, "dragstart", dragstart_handler),
+            listen(div, "dragend", dragend_handler),
+            listen(div, "drop", drop_handler),
+            listen(div, "dragleave", dragleave_handler),
+            listen(div, "dragover", dragover_handler)
+          ];
+          mounted = true;
+        }
+      },
+      p(new_ctx, dirty) {
+        ctx = new_ctx;
+        const rowcolumnoptions_changes = {};
+        if (dirty[0] & /*$editLayout_03*/
+        4) rowcolumnoptions_changes.active = /*$editLayout_03*/
+        ctx[2];
+        if (dirty[0] & /*$OBJ*/
+        64) rowcolumnoptions_changes.onRemove = func_4;
+        rowcolumnoptions.$set(rowcolumnoptions_changes);
+        const itemdestributor_changes = {};
+        if (dirty[0] & /*$OBJ*/
+        64) itemdestributor_changes.data = /*item*/
+        ctx[52];
+        if (dirty[0] & /*$editMode*/
+        32) itemdestributor_changes.editMode = /*$editMode*/
+        ctx[5];
+        if (dirty[0] & /*$editLayout_03*/
+        4) itemdestributor_changes.layoutMode = /*$editLayout_03*/
+        ctx[2];
+        if (dirty[0] & /*sys*/
+        1) itemdestributor_changes.sys = /*sys*/
+        ctx[0];
+        if (dirty[0] & /*$OBJ*/
+        64) itemdestributor_changes.length = /*column*/
+        ctx[49].data.length;
+        if (dirty[0] & /*$OBJ*/
+        64) itemdestributor_changes.index = /*k*/
+        ctx[54];
+        itemdestributor.$set(itemdestributor_changes);
+        if (!current || dirty[0] & /*$editMode, $editLayout_03, $editLayout_02*/
+        44 && div_data_edit_value !== (div_data_edit_value = /*$editMode*/
+        ctx[5] || /*$editLayout_03*/
+        ctx[2] || /*$editLayout_02*/
+        ctx[3])) {
+          attr(div, "data-edit", div_data_edit_value);
+        }
+        if (!current || dirty[0] & /*$OBJ*/
+        64 && div_data_itemid_value !== (div_data_itemid_value = /*item*/
+        ctx[52].id)) {
+          attr(div, "data-itemid", div_data_itemid_value);
+        }
+        if (!current || dirty[0] & /*$editLayout_03*/
+        4) {
+          attr(
+            div,
+            "data-edit-active",
+            /*$editLayout_03*/
+            ctx[2]
+          );
+        }
+        if (!current || dirty[0] & /*$OBJ*/
+        64 && div_data_dragging_value !== (div_data_dragging_value = /*DragItemHandler*/
+        ctx[15].isBeingDragged(
+          /*item*/
+          ctx[52].id
+        ))) {
+          attr(div, "data-dragging", div_data_dragging_value);
+        }
+        if (!current || dirty[0] & /*$editLayout_03*/
+        4) {
+          attr(
+            div,
+            "draggable",
+            /*$editLayout_03*/
+            ctx[2]
+          );
+        }
+      },
+      r() {
+        rect = div.getBoundingClientRect();
+      },
+      f() {
+        fix_position(div);
+        stop_animation();
+        add_transform(div, rect);
+      },
+      a() {
+        stop_animation();
+        stop_animation = create_animation(div, rect, customFlip, { duration: ANIMATION_TIME });
+      },
+      i(local) {
+        if (current) return;
+        transition_in(rowcolumnoptions.$$.fragment, local);
+        transition_in(itemdestributor.$$.fragment, local);
+        if (local) {
+          add_render_callback(() => {
+            if (!current) return;
+            if (!div_transition) div_transition = create_bidirectional_transition(div, fade, { duration: ANIMATION_TIME }, true);
+            div_transition.run(1);
+          });
+        }
+        current = true;
+      },
+      o(local) {
+        transition_out(rowcolumnoptions.$$.fragment, local);
+        transition_out(itemdestributor.$$.fragment, local);
+        if (local) {
+          if (!div_transition) div_transition = create_bidirectional_transition(div, fade, { duration: ANIMATION_TIME }, false);
+          div_transition.run(0);
+        }
+        current = false;
+      },
+      d(detaching) {
+        if (detaching) {
+          detach(div);
+        }
+        destroy_component(rowcolumnoptions);
+        destroy_component(itemdestributor);
+        if (detaching && div_transition) div_transition.end();
+        mounted = false;
+        run_all(dispose);
+      }
+    };
+  }
+  function create_each_block_1(key_1, ctx) {
+    let div;
+    let t0;
+    let rowcolumnoptions;
+    let t1;
+    let t2;
+    let each_blocks = [];
+    let each_1_lookup = /* @__PURE__ */ new Map();
+    let div_data_edit_value;
+    let div_data_itemid_value;
+    let div_data_dragging_value;
+    let div_style_value;
+    let div_transition;
+    let rect;
+    let stop_animation = noop;
+    let current;
+    let mounted;
+    let dispose;
+    let if_block0 = (
+      /*row*/
+      ctx[46].data.length > 1 && create_if_block_2(ctx)
+    );
+    function func_3() {
+      return (
+        /*func_3*/
+        ctx[25](
+          /*column*/
+          ctx[49]
+        )
+      );
+    }
+    rowcolumnoptions = new RowColumnOptions({
+      props: {
+        offset: 15,
+        active: (
+          /*$editLayout_03*/
+          ctx[2]
+        ),
+        addText: "add a new Item",
+        onAdd: func_3
+      }
+    });
+    let if_block1 = (
+      /*$editLayout_03*/
+      (ctx[2] || /*$editLayout_02*/
+      ctx[3]) && create_if_block_1()
+    );
+    let each_value_2 = ensure_array_like(
+      /*column*/
+      ctx[49].data
+    );
+    const get_key = (ctx2) => (
+      /*item*/
+      ctx2[52].id
+    );
+    for (let i = 0; i < each_value_2.length; i += 1) {
+      let child_ctx = get_each_context_2(ctx, each_value_2, i);
+      let key = get_key(child_ctx);
+      each_1_lookup.set(key, each_blocks[i] = create_each_block_2(key, child_ctx));
+    }
+    function dragstart_handler_1(...args) {
+      return (
+        /*dragstart_handler_1*/
+        ctx[33](
+          /*column*/
+          ctx[49],
+          ...args
+        )
+      );
+    }
+    function dragenter_handler(...args) {
+      return (
+        /*dragenter_handler*/
+        ctx[34](
+          /*column*/
+          ctx[49],
+          ...args
+        )
+      );
+    }
+    function dragend_handler_1(...args) {
+      return (
+        /*dragend_handler_1*/
+        ctx[35](
+          /*column*/
+          ctx[49],
+          ...args
+        )
+      );
+    }
+    function drop_handler_1(...args) {
+      return (
+        /*drop_handler_1*/
+        ctx[36](
+          /*column*/
+          ctx[49],
+          ...args
+        )
+      );
+    }
+    function dragleave_handler_1(...args) {
+      return (
+        /*dragleave_handler_1*/
+        ctx[37](
+          /*column*/
+          ctx[49],
+          ...args
+        )
+      );
+    }
+    function dragover_handler_1(...args) {
+      return (
+        /*dragover_handler_1*/
+        ctx[38](
+          /*column*/
+          ctx[49],
+          ...args
+        )
+      );
+    }
+    return {
+      key: key_1,
+      first: null,
+      c() {
+        div = element("div");
+        if (if_block0) if_block0.c();
+        t0 = space();
+        create_component(rowcolumnoptions.$$.fragment);
+        t1 = space();
+        if (if_block1) if_block1.c();
+        t2 = space();
+        for (let i = 0; i < each_blocks.length; i += 1) {
+          each_blocks[i].c();
+        }
+        attr(div, "class", "Column");
+        attr(div, "data-edit", div_data_edit_value = /*$editLayout_02*/
+        ctx[3] || /*$editLayout_01*/
+        ctx[4]);
+        attr(
+          div,
+          "data-editpreview",
+          /*$editLayout_03*/
+          ctx[2]
+        );
+        attr(div, "data-itemid", div_data_itemid_value = /*column*/
+        ctx[49].id);
+        attr(
+          div,
+          "data-edit-active",
+          /*$editLayout_02*/
+          ctx[3]
+        );
+        attr(div, "data-dragging", div_data_dragging_value = /*DragColumnHandler*/
+        ctx[14].isBeingDragged(
+          /*column*/
+          ctx[49].id
+        ));
+        attr(div, "role", "none");
+        attr(div, "style", div_style_value = `
+						${/*$editLayout_02*/
+        ctx[3] || /*$editLayout_01*/
+        ctx[4] ? "margin-bottom:30px" : ""}
+					`);
+        attr(
+          div,
+          "draggable",
+          /*$editLayout_02*/
+          ctx[3]
+        );
+        this.first = div;
+      },
+      m(target, anchor) {
+        insert(target, div, anchor);
+        if (if_block0) if_block0.m(div, null);
+        append(div, t0);
+        mount_component(rowcolumnoptions, div, null);
+        append(div, t1);
+        if (if_block1) if_block1.m(div, null);
+        append(div, t2);
+        for (let i = 0; i < each_blocks.length; i += 1) {
+          if (each_blocks[i]) {
+            each_blocks[i].m(div, null);
+          }
+        }
+        current = true;
+        if (!mounted) {
+          dispose = [
+            listen(div, "dragstart", dragstart_handler_1),
+            listen(div, "dragenter", dragenter_handler),
+            listen(div, "dragend", dragend_handler_1),
+            listen(div, "drop", drop_handler_1),
+            listen(div, "dragleave", dragleave_handler_1),
+            listen(div, "dragover", dragover_handler_1)
+          ];
+          mounted = true;
+        }
+      },
+      p(new_ctx, dirty) {
+        ctx = new_ctx;
+        if (
+          /*row*/
+          ctx[46].data.length > 1
+        ) {
+          if (if_block0) {
+            if_block0.p(ctx, dirty);
+            if (dirty[0] & /*$OBJ*/
+            64) {
+              transition_in(if_block0, 1);
+            }
+          } else {
+            if_block0 = create_if_block_2(ctx);
+            if_block0.c();
+            transition_in(if_block0, 1);
+            if_block0.m(div, t0);
+          }
+        } else if (if_block0) {
+          group_outros();
+          transition_out(if_block0, 1, 1, () => {
+            if_block0 = null;
+          });
+          check_outros();
+        }
+        const rowcolumnoptions_changes = {};
+        if (dirty[0] & /*$editLayout_03*/
+        4) rowcolumnoptions_changes.active = /*$editLayout_03*/
+        ctx[2];
+        if (dirty[0] & /*$OBJ*/
+        64) rowcolumnoptions_changes.onAdd = func_3;
+        rowcolumnoptions.$set(rowcolumnoptions_changes);
+        if (
+          /*$editLayout_03*/
+          ctx[2] || /*$editLayout_02*/
+          ctx[3]
+        ) {
+          if (if_block1) ;
+          else {
+            if_block1 = create_if_block_1();
+            if_block1.c();
+            if_block1.m(div, t2);
+          }
+        } else if (if_block1) {
+          if_block1.d(1);
+          if_block1 = null;
+        }
+        if (dirty[0] & /*$editMode, $editLayout_03, $editLayout_02, $OBJ, DragItemHandler, sys, itemRequestMove, OBJ*/
+        39021) {
+          each_value_2 = ensure_array_like(
+            /*column*/
+            ctx[49].data
+          );
+          group_outros();
+          for (let i = 0; i < each_blocks.length; i += 1) each_blocks[i].r();
+          each_blocks = update_keyed_each(each_blocks, dirty, get_key, 1, ctx, each_value_2, each_1_lookup, div, fix_and_outro_and_destroy_block, create_each_block_2, null, get_each_context_2);
+          for (let i = 0; i < each_blocks.length; i += 1) each_blocks[i].a();
+          check_outros();
+        }
+        if (!current || dirty[0] & /*$editLayout_02, $editLayout_01*/
+        24 && div_data_edit_value !== (div_data_edit_value = /*$editLayout_02*/
+        ctx[3] || /*$editLayout_01*/
+        ctx[4])) {
+          attr(div, "data-edit", div_data_edit_value);
+        }
+        if (!current || dirty[0] & /*$editLayout_03*/
+        4) {
+          attr(
+            div,
+            "data-editpreview",
+            /*$editLayout_03*/
+            ctx[2]
+          );
+        }
+        if (!current || dirty[0] & /*$OBJ*/
+        64 && div_data_itemid_value !== (div_data_itemid_value = /*column*/
+        ctx[49].id)) {
+          attr(div, "data-itemid", div_data_itemid_value);
+        }
+        if (!current || dirty[0] & /*$editLayout_02*/
+        8) {
+          attr(
+            div,
+            "data-edit-active",
+            /*$editLayout_02*/
+            ctx[3]
+          );
+        }
+        if (!current || dirty[0] & /*$OBJ*/
+        64 && div_data_dragging_value !== (div_data_dragging_value = /*DragColumnHandler*/
+        ctx[14].isBeingDragged(
+          /*column*/
+          ctx[49].id
+        ))) {
+          attr(div, "data-dragging", div_data_dragging_value);
+        }
+        if (!current || dirty[0] & /*$editLayout_02, $editLayout_01*/
+        24 && div_style_value !== (div_style_value = `
+						${/*$editLayout_02*/
+        ctx[3] || /*$editLayout_01*/
+        ctx[4] ? "margin-bottom:30px" : ""}
+					`)) {
+          attr(div, "style", div_style_value);
+        }
+        if (!current || dirty[0] & /*$editLayout_02*/
+        8) {
+          attr(
+            div,
+            "draggable",
+            /*$editLayout_02*/
+            ctx[3]
+          );
+        }
+      },
+      r() {
+        rect = div.getBoundingClientRect();
+      },
+      f() {
+        fix_position(div);
+        stop_animation();
+        add_transform(div, rect);
+      },
+      a() {
+        stop_animation();
+        stop_animation = create_animation(div, rect, customFlip, { duration: ANIMATION_TIME });
+      },
+      i(local) {
+        if (current) return;
+        transition_in(if_block0);
+        transition_in(rowcolumnoptions.$$.fragment, local);
+        for (let i = 0; i < each_value_2.length; i += 1) {
+          transition_in(each_blocks[i]);
+        }
+        if (local) {
+          add_render_callback(() => {
+            if (!current) return;
+            if (!div_transition) div_transition = create_bidirectional_transition(div, fade, { duration: ANIMATION_TIME }, true);
+            div_transition.run(1);
+          });
+        }
+        current = true;
+      },
+      o(local) {
+        transition_out(if_block0);
+        transition_out(rowcolumnoptions.$$.fragment, local);
+        for (let i = 0; i < each_blocks.length; i += 1) {
+          transition_out(each_blocks[i]);
+        }
+        if (local) {
+          if (!div_transition) div_transition = create_bidirectional_transition(div, fade, { duration: ANIMATION_TIME }, false);
+          div_transition.run(0);
+        }
+        current = false;
+      },
+      d(detaching) {
+        if (detaching) {
+          detach(div);
+        }
+        if (if_block0) if_block0.d();
+        destroy_component(rowcolumnoptions);
+        if (if_block1) if_block1.d();
+        for (let i = 0; i < each_blocks.length; i += 1) {
+          each_blocks[i].d();
+        }
+        if (detaching && div_transition) div_transition.end();
+        mounted = false;
+        run_all(dispose);
+      }
+    };
+  }
+  function create_each_block(key_1, ctx) {
+    let div;
+    let rowcolumnoptions0;
+    let t0;
+    let rowcolumnoptions1;
+    let t1;
+    let each_blocks = [];
+    let each_1_lookup = /* @__PURE__ */ new Map();
+    let div_style_value;
+    let div_data_rowid_value;
+    let div_transition;
+    let rect;
+    let stop_animation = noop;
+    let current;
+    let mounted;
+    let dispose;
+    function func() {
+      return (
+        /*func*/
+        ctx[22](
+          /*row*/
+          ctx[46]
+        )
+      );
+    }
+    rowcolumnoptions0 = new RowColumnOptions({
+      props: {
+        active: (
+          /*$editLayout_02*/
+          ctx[3]
+        ),
+        onAdd: func,
+        addText: `add Column`
+      }
+    });
+    function func_1() {
+      return (
+        /*func_1*/
+        ctx[23](
+          /*row*/
+          ctx[46]
+        )
+      );
+    }
+    rowcolumnoptions1 = new RowColumnOptions({
+      props: {
+        active: (
+          /*$editLayout_01*/
+          ctx[4]
+        ),
+        onRemove: func_1,
+        remText: `remove this line`
+      }
+    });
+    let each_value_1 = ensure_array_like(
+      /*row*/
+      ctx[46].data
+    );
+    const get_key = (ctx2) => (
+      /*column*/
+      ctx2[49].id
+    );
+    for (let i = 0; i < each_value_1.length; i += 1) {
+      let child_ctx = get_each_context_1(ctx, each_value_1, i);
+      let key = get_key(child_ctx);
+      each_1_lookup.set(key, each_blocks[i] = create_each_block_1(key, child_ctx));
+    }
+    function dragstart_handler_2(...args) {
+      return (
+        /*dragstart_handler_2*/
+        ctx[39](
+          /*row*/
+          ctx[46],
+          ...args
+        )
+      );
+    }
+    function dragenter_handler_1(...args) {
+      return (
+        /*dragenter_handler_1*/
+        ctx[40](
+          /*row*/
+          ctx[46],
+          ...args
+        )
+      );
+    }
+    function dragend_handler_2(...args) {
+      return (
+        /*dragend_handler_2*/
+        ctx[41](
+          /*row*/
+          ctx[46],
+          ...args
+        )
+      );
+    }
+    function dragover_handler_2(...args) {
+      return (
+        /*dragover_handler_2*/
+        ctx[42](
+          /*row*/
+          ctx[46],
+          ...args
+        )
+      );
+    }
+    return {
+      key: key_1,
+      first: null,
+      c() {
+        div = element("div");
+        create_component(rowcolumnoptions0.$$.fragment);
+        t0 = space();
+        create_component(rowcolumnoptions1.$$.fragment);
+        t1 = space();
+        for (let i = 0; i < each_blocks.length; i += 1) {
+          each_blocks[i].c();
+        }
+        attr(div, "class", "Row");
+        attr(
+          div,
+          "data-edit",
+          /*$editLayout_01*/
+          ctx[4]
+        );
+        attr(
+          div,
+          "data-edit-active",
+          /*$editLayout_01*/
+          ctx[4]
+        );
+        attr(
+          div,
+          "data-editpreview",
+          /*$editLayout_02*/
+          ctx[3]
+        );
+        attr(div, "role", "none");
+        attr(div, "style", div_style_value = `grid-template-columns:${repeat(
+          /*row*/
+          ctx[46].data.length,
+          "1fr"
+        )}`);
+        attr(div, "data-rowid", div_data_rowid_value = /*row*/
+        ctx[46].id);
+        attr(
+          div,
+          "draggable",
+          /*$editLayout_01*/
+          ctx[4]
+        );
+        this.first = div;
+      },
+      m(target, anchor) {
+        insert(target, div, anchor);
+        mount_component(rowcolumnoptions0, div, null);
+        append(div, t0);
+        mount_component(rowcolumnoptions1, div, null);
+        append(div, t1);
+        for (let i = 0; i < each_blocks.length; i += 1) {
+          if (each_blocks[i]) {
+            each_blocks[i].m(div, null);
+          }
+        }
+        current = true;
+        if (!mounted) {
+          dispose = [
+            listen(div, "dragstart", dragstart_handler_2),
+            listen(div, "dragenter", dragenter_handler_1),
+            listen(div, "dragend", dragend_handler_2),
+            listen(div, "dragover", dragover_handler_2)
+          ];
+          mounted = true;
+        }
+      },
+      p(new_ctx, dirty) {
+        ctx = new_ctx;
+        const rowcolumnoptions0_changes = {};
+        if (dirty[0] & /*$editLayout_02*/
+        8) rowcolumnoptions0_changes.active = /*$editLayout_02*/
+        ctx[3];
+        if (dirty[0] & /*$OBJ*/
+        64) rowcolumnoptions0_changes.onAdd = func;
+        rowcolumnoptions0.$set(rowcolumnoptions0_changes);
+        const rowcolumnoptions1_changes = {};
+        if (dirty[0] & /*$editLayout_01*/
+        16) rowcolumnoptions1_changes.active = /*$editLayout_01*/
+        ctx[4];
+        if (dirty[0] & /*$OBJ*/
+        64) rowcolumnoptions1_changes.onRemove = func_1;
+        rowcolumnoptions1.$set(rowcolumnoptions1_changes);
+        if (dirty[0] & /*$editLayout_02, $editLayout_01, $editLayout_03, $OBJ, DragColumnHandler, DragItemHandler, $editMode, sys, itemRequestMove, OBJ*/
+        55421) {
+          each_value_1 = ensure_array_like(
+            /*row*/
+            ctx[46].data
+          );
+          group_outros();
+          for (let i = 0; i < each_blocks.length; i += 1) each_blocks[i].r();
+          each_blocks = update_keyed_each(each_blocks, dirty, get_key, 1, ctx, each_value_1, each_1_lookup, div, fix_and_outro_and_destroy_block, create_each_block_1, null, get_each_context_1);
+          for (let i = 0; i < each_blocks.length; i += 1) each_blocks[i].a();
+          check_outros();
+        }
+        if (!current || dirty[0] & /*$editLayout_01*/
+        16) {
+          attr(
+            div,
+            "data-edit",
+            /*$editLayout_01*/
+            ctx[4]
+          );
+        }
+        if (!current || dirty[0] & /*$editLayout_01*/
+        16) {
+          attr(
+            div,
+            "data-edit-active",
+            /*$editLayout_01*/
+            ctx[4]
+          );
+        }
+        if (!current || dirty[0] & /*$editLayout_02*/
+        8) {
+          attr(
+            div,
+            "data-editpreview",
+            /*$editLayout_02*/
+            ctx[3]
+          );
+        }
+        if (!current || dirty[0] & /*$OBJ*/
+        64 && div_style_value !== (div_style_value = `grid-template-columns:${repeat(
+          /*row*/
+          ctx[46].data.length,
+          "1fr"
+        )}`)) {
+          attr(div, "style", div_style_value);
+        }
+        if (!current || dirty[0] & /*$OBJ*/
+        64 && div_data_rowid_value !== (div_data_rowid_value = /*row*/
+        ctx[46].id)) {
+          attr(div, "data-rowid", div_data_rowid_value);
+        }
+        if (!current || dirty[0] & /*$editLayout_01*/
+        16) {
+          attr(
+            div,
+            "draggable",
+            /*$editLayout_01*/
+            ctx[4]
+          );
+        }
+      },
+      r() {
+        rect = div.getBoundingClientRect();
+      },
+      f() {
+        fix_position(div);
+        stop_animation();
+        add_transform(div, rect);
+      },
+      a() {
+        stop_animation();
+        stop_animation = create_animation(div, rect, customFlip, { duration: ANIMATION_TIME });
+      },
+      i(local) {
+        if (current) return;
+        transition_in(rowcolumnoptions0.$$.fragment, local);
+        transition_in(rowcolumnoptions1.$$.fragment, local);
+        for (let i = 0; i < each_value_1.length; i += 1) {
+          transition_in(each_blocks[i]);
+        }
+        if (local) {
+          add_render_callback(() => {
+            if (!current) return;
+            if (!div_transition) div_transition = create_bidirectional_transition(div, fly, { duration: ANIMATION_TIME, y: 100 }, true);
+            div_transition.run(1);
+          });
+        }
+        current = true;
+      },
+      o(local) {
+        transition_out(rowcolumnoptions0.$$.fragment, local);
+        transition_out(rowcolumnoptions1.$$.fragment, local);
+        for (let i = 0; i < each_blocks.length; i += 1) {
+          transition_out(each_blocks[i]);
+        }
+        if (local) {
+          if (!div_transition) div_transition = create_bidirectional_transition(div, fly, { duration: ANIMATION_TIME, y: 100 }, false);
+          div_transition.run(0);
+        }
+        current = false;
+      },
+      d(detaching) {
+        if (detaching) {
+          detach(div);
+        }
+        destroy_component(rowcolumnoptions0);
+        destroy_component(rowcolumnoptions1);
+        for (let i = 0; i < each_blocks.length; i += 1) {
+          each_blocks[i].d();
+        }
+        if (detaching && div_transition) div_transition.end();
+        mounted = false;
+        run_all(dispose);
+      }
+    };
+  }
+  function create_if_block(ctx) {
+    let div;
+    let rowcolumnoptions;
+    let current;
+    rowcolumnoptions = new RowColumnOptions({
+      props: {
+        active: (
+          /*$editLayout_01*/
+          ctx[4]
+        ),
+        onAdd: (
+          /*func_5*/
+          ctx[43]
+        ),
+        offset: 15,
+        addText: `add Line`
+      }
+    });
+    return {
+      c() {
+        div = element("div");
+        create_component(rowcolumnoptions.$$.fragment);
+        attr(div, "class", "Row");
+        set_style(div, "height", "100px");
+      },
+      m(target, anchor) {
+        insert(target, div, anchor);
+        mount_component(rowcolumnoptions, div, null);
+        current = true;
+      },
+      p(ctx2, dirty) {
+        const rowcolumnoptions_changes = {};
+        if (dirty[0] & /*$editLayout_01*/
+        16) rowcolumnoptions_changes.active = /*$editLayout_01*/
+        ctx2[4];
+        if (dirty[0] & /*$OBJ*/
+        64) rowcolumnoptions_changes.onAdd = /*func_5*/
+        ctx2[43];
+        rowcolumnoptions.$set(rowcolumnoptions_changes);
+      },
+      i(local) {
+        if (current) return;
+        transition_in(rowcolumnoptions.$$.fragment, local);
+        current = true;
+      },
+      o(local) {
+        transition_out(rowcolumnoptions.$$.fragment, local);
+        current = false;
+      },
+      d(detaching) {
+        if (detaching) {
+          detach(div);
+        }
+        destroy_component(rowcolumnoptions);
+      }
+    };
+  }
+  function create_fragment(ctx) {
+    let div3;
+    let div2;
+    let div1;
+    let div0;
+    let button0;
+    let t0_value = "Stop Edit	";
+    let t0;
+    let t1;
+    let button1;
+    let t2_value = "Layout Row	";
+    let t2;
+    let t3;
+    let button2;
+    let t4_value = "Layout Col	";
+    let t4;
+    let t5;
+    let button3;
+    let t6_value = "Layout Items";
+    let t6;
+    let div0_data_isopen_value;
+    let t7;
+    let each_blocks = [];
+    let each_1_lookup = /* @__PURE__ */ new Map();
+    let t8;
+    let current;
+    let mounted;
+    let dispose;
+    let each_value = ensure_array_like(
+      /*$OBJ*/
+      ctx[6].data
+    );
+    const get_key = (ctx2) => (
+      /*row*/
+      ctx2[46].id
+    );
+    for (let i = 0; i < each_value.length; i += 1) {
+      let child_ctx = get_each_context(ctx, each_value, i);
+      let key = get_key(child_ctx);
+      each_1_lookup.set(key, each_blocks[i] = create_each_block(key, child_ctx));
+    }
+    let if_block = (
+      /*$editLayout_01*/
+      ctx[4] && create_if_block(ctx)
+    );
+    return {
+      c() {
+        div3 = element("div");
+        div2 = element("div");
+        div1 = element("div");
+        div0 = element("div");
+        button0 = element("button");
+        t0 = text(t0_value);
+        t1 = space();
+        button1 = element("button");
+        t2 = text(t2_value);
+        t3 = space();
+        button2 = element("button");
+        t4 = text(t4_value);
+        t5 = space();
+        button3 = element("button");
+        t6 = text(t6_value);
+        t7 = space();
+        for (let i = 0; i < each_blocks.length; i += 1) {
+          each_blocks[i].c();
+        }
+        t8 = space();
+        if (if_block) if_block.c();
+        attr(
+          button0,
+          "data-active",
+          /*$editMode*/
+          ctx[5]
+        );
+        attr(
+          button1,
+          "data-active",
+          /*$editLayout_01*/
+          ctx[4]
+        );
+        attr(
+          button2,
+          "data-active",
+          /*$editLayout_02*/
+          ctx[3]
+        );
+        attr(
+          button3,
+          "data-active",
+          /*$editLayout_03*/
+          ctx[2]
+        );
+        attr(div0, "class", "SheetEditorMenu");
+        attr(div0, "data-isopen", div0_data_isopen_value = /*$editMode*/
+        ctx[5] || /*$editLayout_01*/
+        ctx[4] || /*$editLayout_02*/
+        ctx[3] || /*$editLayout_03*/
+        ctx[2]);
+        attr(div1, "class", "SheetEditorMenuContainer");
+        attr(div2, "class", "Sheet");
+        attr(div3, "class", "theme-light obsidianBody");
+      },
+      m(target, anchor) {
+        insert(target, div3, anchor);
+        append(div3, div2);
+        append(div2, div1);
+        append(div1, div0);
+        append(div0, button0);
+        append(button0, t0);
+        append(div0, t1);
+        append(div0, button1);
+        append(button1, t2);
+        append(div0, t3);
+        append(div0, button2);
+        append(button2, t4);
+        append(div0, t5);
+        append(div0, button3);
+        append(button3, t6);
+        append(div2, t7);
+        for (let i = 0; i < each_blocks.length; i += 1) {
+          if (each_blocks[i]) {
+            each_blocks[i].m(div2, null);
+          }
+        }
+        append(div2, t8);
+        if (if_block) if_block.m(div2, null);
+        current = true;
+        if (!mounted) {
+          dispose = [
+            listen(
+              button0,
+              "click",
+              /*click_handler*/
+              ctx[18]
+            ),
+            listen(
+              button1,
+              "click",
+              /*click_handler_1*/
+              ctx[19]
+            ),
+            listen(
+              button2,
+              "click",
+              /*click_handler_2*/
+              ctx[20]
+            ),
+            listen(
+              button3,
+              "click",
+              /*click_handler_3*/
+              ctx[21]
+            )
+          ];
+          mounted = true;
+        }
+      },
+      p(ctx2, dirty) {
+        if (!current || dirty[0] & /*$editMode*/
+        32) {
+          attr(
+            button0,
+            "data-active",
+            /*$editMode*/
+            ctx2[5]
+          );
+        }
+        if (!current || dirty[0] & /*$editLayout_01*/
+        16) {
+          attr(
+            button1,
+            "data-active",
+            /*$editLayout_01*/
+            ctx2[4]
+          );
+        }
+        if (!current || dirty[0] & /*$editLayout_02*/
+        8) {
+          attr(
+            button2,
+            "data-active",
+            /*$editLayout_02*/
+            ctx2[3]
+          );
+        }
+        if (!current || dirty[0] & /*$editLayout_03*/
+        4) {
+          attr(
+            button3,
+            "data-active",
+            /*$editLayout_03*/
+            ctx2[2]
+          );
+        }
+        if (!current || dirty[0] & /*$editMode, $editLayout_01, $editLayout_02, $editLayout_03*/
+        60 && div0_data_isopen_value !== (div0_data_isopen_value = /*$editMode*/
+        ctx2[5] || /*$editLayout_01*/
+        ctx2[4] || /*$editLayout_02*/
+        ctx2[3] || /*$editLayout_03*/
+        ctx2[2])) {
+          attr(div0, "data-isopen", div0_data_isopen_value);
+        }
+        if (dirty[0] & /*$editLayout_01, $editLayout_02, $OBJ, DragRowHandler, $editLayout_03, DragColumnHandler, DragItemHandler, $editMode, sys, itemRequestMove, OBJ*/
+        63613) {
+          each_value = ensure_array_like(
+            /*$OBJ*/
+            ctx2[6].data
+          );
+          group_outros();
+          for (let i = 0; i < each_blocks.length; i += 1) each_blocks[i].r();
+          each_blocks = update_keyed_each(each_blocks, dirty, get_key, 1, ctx2, each_value, each_1_lookup, div2, fix_and_outro_and_destroy_block, create_each_block, t8, get_each_context);
+          for (let i = 0; i < each_blocks.length; i += 1) each_blocks[i].a();
+          check_outros();
+        }
+        if (
+          /*$editLayout_01*/
+          ctx2[4]
+        ) {
+          if (if_block) {
+            if_block.p(ctx2, dirty);
+            if (dirty[0] & /*$editLayout_01*/
+            16) {
+              transition_in(if_block, 1);
+            }
+          } else {
+            if_block = create_if_block(ctx2);
+            if_block.c();
+            transition_in(if_block, 1);
+            if_block.m(div2, null);
+          }
+        } else if (if_block) {
+          group_outros();
+          transition_out(if_block, 1, 1, () => {
+            if_block = null;
+          });
+          check_outros();
+        }
+      },
+      i(local) {
+        if (current) return;
+        for (let i = 0; i < each_value.length; i += 1) {
+          transition_in(each_blocks[i]);
+        }
+        transition_in(if_block);
+        current = true;
+      },
+      o(local) {
+        for (let i = 0; i < each_blocks.length; i += 1) {
+          transition_out(each_blocks[i]);
+        }
+        transition_out(if_block);
+        current = false;
+      },
+      d(detaching) {
+        if (detaching) {
+          detach(div3);
+        }
+        for (let i = 0; i < each_blocks.length; i += 1) {
+          each_blocks[i].d();
+        }
+        if (if_block) if_block.d();
+        mounted = false;
+        run_all(dispose);
+      }
+    };
+  }
+  const ANIMATION_DELAY = 220;
+  const ANIMATION_TIME = 100;
+  class DragHandlerController {
+    constructor(data, state) {
+      __publicField(this, "data");
+      __publicField(this, "state");
+      __publicField(this, "layerActive");
+      __publicField(this, "isDragging", false);
+      __publicField(this, "pauseDragg", false);
+      __publicField(this, "dragID");
+      __publicField(this, "targetID");
+      this.data = data;
+      this.state = state;
+      this.layerActive = state.editLayout_01;
+    }
+    moveRow() {
+      if (!this.isDragging) {
+        return;
+      }
+      if (!this.dragID || !this.targetID || this.targetID == this.dragID) {
+        return;
+      }
+      this.data.update((list) => {
+        let a = this.findIndexOfID(this.dragID);
+        let b = this.findIndexOfID(this.targetID);
+        const temp = list.data[a];
+        this.pauseDragg = true;
+        setTimeout(
+          () => {
+            this.pauseDragg = false;
+          },
+          ANIMATION_DELAY
+        );
+        list.data[a] = list.data[b];
+        list.data[b] = temp;
+        return list;
+      });
+    }
+    onDragStart(e, id) {
+      if (!get_store_value(this.layerActive)) {
+        return;
+      }
+      const target = e.target;
+      if (!target.classList.contains("Row")) {
+        return;
+      }
+      this.isDragging = true;
+      this.dragID = id;
+      target.setAttribute("data-dragging", "true");
+    }
+    onDragOver(e, id) {
+      if (!get_store_value(this.layerActive)) {
+        return;
+      }
+      if (!this.isDragging || this.pauseDragg) {
+        return;
+      }
+      this.targetID = id;
+      this.moveRow();
+    }
+    onDragEnd(e, id) {
+      if (!get_store_value(this.layerActive)) {
+        return;
+      }
+      this.isDragging = false;
+      this.dragID = null;
+      this.targetID = null;
+      const target = e.target;
+      target.setAttribute("data-dragging", "false");
+    }
+    findIndexOfID(id) {
+      return get_store_value(this.data).data.findIndex((p) => p.id == id);
+    }
+  }
+  class DragItemHandlerController2 {
+    constructor(data, state) {
+      __publicField(this, "data");
+      __publicField(this, "state");
+      __publicField(this, "layerActive");
+      __publicField(this, "isDragging", false);
+      __publicField(this, "pauseDragg", false);
+      __publicField(this, "dragTargetElement");
+      __publicField(this, "dragID");
+      __publicField(this, "targetID");
+      __publicField(this, "lastDragId");
+      __publicField(this, "lasttargId");
+      this.data = data;
+      this.state = state;
+      this.layerActive = state.editLayout_02;
+    }
+    innerMoveItem(list, fromId, toID) {
+      let row_a;
+      let a;
+      let row_b;
+      let b;
+      [row_a, a] = this.findRowIndexOfID(fromId);
+      [row_b, b] = this.findRowIndexOfID(toID);
+      if (row_a == -1 || row_b == -1) {
+        return;
+      }
+      const oa = list.data[row_a].data[a];
+      const ob = list.data[row_b].data[b];
+      list.data[row_a].data[a] = ob;
+      list.data[row_b].data[b] = oa;
+    }
+    moveRowItem() {
+      if (!this.isDragging) {
+        return;
+      }
+      if (!this.dragID || this.targetID == this.dragID) {
+        return;
+      }
+      this.data.update((list) => {
+        if (this.dragID == this.lastDragId && this.targetID == this.lasttargId) {
+          this.innerMoveItem(list, this.lasttargId, this.lastDragId);
+          return list;
+        }
+        if (this.lastDragId && this.lasttargId) {
+          this.innerMoveItem(list, this.lastDragId, this.lasttargId);
+        }
+        if (this.targetID) {
+          this.innerMoveItem(list, this.dragID, this.targetID);
+        }
+        this.lastDragId = this.dragID;
+        this.lasttargId = this.targetID;
+        this.pauseDragg = true;
+        setTimeout(
+          () => {
+            this.pauseDragg = false;
+          },
+          ANIMATION_DELAY
+        );
+        return list;
+      });
+    }
+    onDragStart(e, id) {
+      if (!get_store_value(this.layerActive)) {
+        return;
+      }
+      const target = e.target;
+      if (!target.classList.contains("Column")) {
+        return;
+      }
+      this.dragTargetElement = target;
+      this.isDragging = true;
+      this.dragID = id;
+      this.lastDragId = null;
+      this.lasttargId = null;
+      target.setAttribute("data-dragging", "true");
+    }
+    onDragOver(e, id) {
+      var _a;
+      if (!get_store_value(this.layerActive)) {
+        return;
+      }
+      if (!this.isDragging || this.pauseDragg) {
+        return;
+      }
+      this.targetID = id;
+      this.moveRowItem();
+      (_a = this.dragTargetElement) == null ? void 0 : _a.setAttribute("data-dragging", "true");
+    }
+    onDragEnd(e, id) {
+      var _a;
+      if (!get_store_value(this.layerActive)) {
+        return;
+      }
+      this.isDragging = false;
+      this.dragID = null;
+      this.targetID = null;
+      e.target.setAttribute("data-dragging", "false");
+      (_a = this.dragTargetElement) == null ? void 0 : _a.setAttribute("data-dragging", "false");
+    }
+    onLeave(e, id) {
+      this.targetID = null;
+    }
+    findRowIndexOfID(id) {
+      let itemId = -1;
+      let rowId = get_store_value(this.data).data.findIndex((p) => {
+        let i = p.data.findIndex((j) => j.id == id);
+        if (i != -1) {
+          itemId = i;
+          return true;
+        }
+        return false;
+      });
+      return [rowId, itemId];
+    }
+    isBeingDragged(id) {
+      return this.dragID == id;
+    }
+  }
+  class DragItemHandlerController3 {
+    constructor(data, state) {
+      __publicField(this, "data");
+      __publicField(this, "state");
+      __publicField(this, "layerActive");
+      __publicField(this, "isDragging", false);
+      __publicField(this, "pauseDragg", false);
+      __publicField(this, "dragTargetElement");
+      __publicField(this, "dragID");
+      __publicField(this, "targetID");
+      __publicField(this, "targetRowId");
+      __publicField(this, "lastDragId");
+      __publicField(this, "lasttargId");
+      __publicField(this, "lasttargRowId");
+      this.data = data;
+      this.state = state;
+      this.layerActive = state.editLayout_03;
+    }
+    innerSwitchItem(list, fromId, toID) {
+      let row_a;
+      let col_a;
+      let a;
+      let row_b;
+      let col_b;
+      let b;
+      [row_a, col_a, a] = this.findIndexsOfID(fromId);
+      [row_b, col_b, b] = this.findIndexsOfID(toID);
+      if (row_a == -1 || row_b == -1 || col_a == -1 || col_b == -1 || a == -1 || b == -1) {
+        return;
+      }
+      const oa = list.data[row_a].data[col_a].data[a];
+      const ob = list.data[row_b].data[col_b].data[b];
+      list.data[row_a].data[col_a].data[a] = ob;
+      list.data[row_b].data[col_b].data[b] = oa;
+    }
+    innerMoveItem(list, fromId, toID) {
+      let row_a;
+      let col_a;
+      let a;
+      let row_b;
+      let col_b;
+      [row_a, col_a, a] = this.findIndexsOfID(fromId);
+      [row_b, col_b] = this.findColumnIndexsOfID(toID);
+      if (row_a == -1 || row_b == -1 || col_a == -1 || col_b == -1 || a == -1) {
+        return;
+      }
+      if (row_a == row_b && col_a == col_b) {
+        return;
+      }
+      let item = list.data[row_a].data[col_a].data.splice(a, 1)[0];
+      list.data[row_b].data[col_b].data.push(item);
+    }
+    moveRowItem() {
+      if (!this.isDragging) {
+        return;
+      }
+      if (!this.dragID || this.targetID == this.dragID) {
+        return;
+      }
+      if (this.targetRowId) {
+        this.data.update((list) => {
+          if (this.targetRowId) {
+            this.innerMoveItem(list, this.dragID, this.targetRowId);
+          }
+          this.lastDragId = this.dragID;
+          this.lasttargId = this.targetID;
+          this.lasttargRowId = null;
+          this.pauseDragg = true;
+          setTimeout(
+            () => {
+              this.pauseDragg = false;
+            },
+            ANIMATION_DELAY
+          );
+          return list;
+        });
+      }
+    }
+    requestMoveItemUpDown(direction, id) {
+      this.data.update((list) => {
+        let row;
+        let col;
+        let a;
+        [row, col, a] = this.findIndexsOfID(id);
+        let newID = a + direction;
+        if (newID < 0) {
+          return;
+        }
+        if (list.data[row].data[col].data.length - 1 < newID) {
+          console.error("Out of Bounds move, so did not attempt");
+          return list;
+        }
+        const item = list.data[row].data[col].data.splice(a, 1)[0];
+        list.data[row].data[col].data.splice(newID, 0, item);
+        this.pauseDragg = true;
+        setTimeout(
+          () => {
+            this.pauseDragg = false;
+          },
+          ANIMATION_DELAY
+        );
+        return list;
+      });
+    }
+    onDragStart(e, id) {
+      if (!get_store_value(this.layerActive)) {
+        return;
+      }
+      const target = e.target;
+      if (!target.classList.contains("Item")) {
+        return;
+      }
+      this.dragTargetElement = target;
+      this.isDragging = true;
+      this.dragID = id;
+      this.lastDragId = null;
+      this.lasttargId = null;
+      target.setAttribute("data-dragging", "true");
+    }
+    onDragOverColumn(e, id) {
+      var _a;
+      if (!get_store_value(this.layerActive)) {
+        return;
+      }
+      if (!this.isDragging || this.pauseDragg) {
+        return;
+      }
+      this.targetID = null;
+      this.targetRowId = id;
+      this.moveRowItem();
+      (_a = this.dragTargetElement) == null ? void 0 : _a.setAttribute("data-dragging", "true");
+    }
+    onDragEnd(e, id) {
+      var _a;
+      if (!get_store_value(this.layerActive)) {
+        return;
+      }
+      this.isDragging = false;
+      this.dragID = null;
+      this.targetID = null;
+      e.target.setAttribute("data-dragging", "false");
+      (_a = this.dragTargetElement) == null ? void 0 : _a.setAttribute("data-dragging", "false");
+    }
+    onLeave(e, id) {
+      this.targetID = null;
+    }
+    findIndexsOfID(id) {
+      let itemId = -1;
+      let columnId = -1;
+      let rowId = -1;
+      let obj = get_store_value(this.data);
+      rowId = obj.data.findIndex((p) => {
+        let resb = p.data.findIndex((q) => {
+          let resc = q.data.findIndex((j) => j.id == id);
+          if (resc != -1) {
+            itemId = resc;
+            return true;
+          }
+          return false;
+        });
+        if (resb != -1) {
+          columnId = resb;
+          return true;
+        }
+        return false;
+      });
+      return [rowId, columnId, itemId];
+    }
+    findColumnIndexsOfID(id) {
+      let columnId = -1;
+      let rowId = -1;
+      let obj = get_store_value(this.data);
+      rowId = obj.data.findIndex((p) => {
+        let resb = p.data.findIndex((q) => q.id == id);
+        if (resb != -1) {
+          columnId = resb;
+          return true;
+        }
+        return false;
+      });
+      return [rowId, columnId];
+    }
+    isBeingDragged(id) {
+      return this.dragID == id;
+    }
+  }
+  class State {
+    constructor() {
+      __publicField(this, "editMode", writable(false));
+      __publicField(this, "editLayout_01", writable(false));
+      __publicField(this, "editLayout_02", writable(false));
+      __publicField(this, "editLayout_03", writable(false));
+      this.editMode.subscribe((p) => {
+        if (p) {
+          this.editLayout_01.set(false);
+          this.editLayout_02.set(false);
+          this.editLayout_03.set(false);
+        }
+      });
+      this.editLayout_01.subscribe((p) => {
+        if (p) {
+          this.editLayout_02.set(false);
+          this.editLayout_03.set(false);
+          this.editMode.set(false);
+        }
+      });
+      this.editLayout_02.subscribe((p) => {
+        if (p) {
+          this.editLayout_01.set(false);
+          this.editLayout_03.set(false);
+          this.editMode.set(false);
+        }
+      });
+      this.editLayout_03.subscribe((p) => {
+        if (p) {
+          this.editLayout_01.set(false);
+          this.editLayout_02.set(false);
+          this.editMode.set(false);
+        }
+      });
+    }
+  }
+  function repeat(x, str, sep = " ") {
+    let _ = str;
+    for (let i = 0; i < x - 1; i++) {
+      _ += sep;
+      _ += str;
+    }
+    return _;
+  }
+  const dragover_handler = (e) => {
+    e.preventDefault();
+  };
+  function instance($$self, $$props, $$invalidate) {
+    let $editLayout_03;
+    let $editLayout_02;
+    let $editLayout_01;
+    let $editMode;
+    let $OBJ;
+    let state = new State();
+    let editMode = state.editMode;
+    component_subscribe($$self, editMode, (value) => $$invalidate(5, $editMode = value));
+    let editLayout_01 = state.editLayout_01;
+    component_subscribe($$self, editLayout_01, (value) => $$invalidate(4, $editLayout_01 = value));
+    let editLayout_02 = state.editLayout_02;
+    component_subscribe($$self, editLayout_02, (value) => $$invalidate(3, $editLayout_02 = value));
+    let editLayout_03 = state.editLayout_03;
+    component_subscribe($$self, editLayout_03, (value) => $$invalidate(2, $editLayout_03 = value));
+    let { textData } = $$props;
+    let { sys } = $$props;
+    let { writeBlock } = $$props;
+    let DATA = new SheetData(textData ?? "");
+    let OBJ = writable(DATA);
+    component_subscribe($$self, OBJ, (value) => $$invalidate(6, $OBJ = value));
+    function itemRequestMove(direction, id) {
+      DragItemHandler.requestMoveItemUpDown(direction, id);
+    }
+    onMount(() => {
+    });
+    let editWasClicked = false;
+    let DragRowHandler = new DragHandlerController(OBJ, state);
+    let DragColumnHandler = new DragItemHandlerController2(OBJ, state);
+    let DragItemHandler = new DragItemHandlerController3(OBJ, state);
+    const click_handler = () => {
+      editMode.set(!$editMode);
+      $$invalidate(1, editWasClicked = true);
+    };
+    const click_handler_1 = () => editLayout_01.set(!get_store_value(editLayout_01));
+    const click_handler_2 = () => editLayout_02.set(!get_store_value(editLayout_02));
+    const click_handler_3 = () => editLayout_03.set(!get_store_value(editLayout_03));
+    const func = (row) => {
+      row.addColumn();
+      OBJ.update((obj) => {
+        return obj;
+      });
+    };
+    const func_1 = (row) => {
+      OBJ.update((o) => {
+        o.remRow(row.id);
+        return o;
+      });
+    };
+    const func_2 = (row, column) => {
+      row.remColumn(column.id);
+      OBJ.update((o) => o);
+    };
+    const func_3 = (column) => {
+      column.addItem();
+      OBJ.update((o) => o);
+    };
+    const func_4 = (column, item) => {
+      column.remItem(item.id);
+      OBJ.update((o) => o);
+    };
+    const moveUp_handler = (e) => {
+      itemRequestMove(-1, e.detail);
+    };
+    const moveDown_handler = (e) => {
+      itemRequestMove(1, e.detail);
+    };
+    const dragstart_handler = (item, e) => {
+      DragItemHandler.onDragStart(e, item.id);
+    };
+    const dragend_handler = (item, e) => {
+      DragItemHandler.onDragEnd(e, item.id);
+    };
+    const drop_handler = (item, e) => {
+      DragItemHandler.onDragEnd(e, item.id);
+    };
+    const dragleave_handler = (item, e) => {
+      DragItemHandler.onLeave(e, item.id);
+    };
+    const dragstart_handler_1 = (column, e) => {
+      DragColumnHandler.onDragStart(e, column.id);
+    };
+    const dragenter_handler = (column, e) => {
+      DragColumnHandler.onDragOver(e, column.id);
+      DragItemHandler.onDragOverColumn(e, column.id);
+    };
+    const dragend_handler_1 = (column, e) => {
+      DragColumnHandler.onDragEnd(e, column.id);
+    };
+    const drop_handler_1 = (column, e) => {
+      DragColumnHandler.onDragEnd(e, column.id);
+    };
+    const dragleave_handler_1 = (column, e) => {
+      DragColumnHandler.onLeave(e, column.id);
+    };
+    const dragover_handler_1 = (column, e) => {
+      DragColumnHandler.onDragOver(e, column.id);
+      DragItemHandler.onDragOverColumn(e, column.id);
+      e.preventDefault();
+    };
+    const dragstart_handler_2 = (row, e) => DragRowHandler.onDragStart(e, row.id);
+    const dragenter_handler_1 = (row, e) => DragRowHandler.onDragOver(e, row.id);
+    const dragend_handler_2 = (row, e) => DragRowHandler.onDragEnd(e, row.id);
+    const dragover_handler_2 = (row, e) => {
+      DragRowHandler.onDragOver(e, row.id);
+      e.preventDefault();
+    };
+    const func_5 = () => {
+      OBJ.update((obj) => {
+        obj.addRow();
+        obj.data[$OBJ.data.length - 1].addColumn();
+        return obj;
+      });
+    };
+    $$self.$$set = ($$props2) => {
+      if ("textData" in $$props2) $$invalidate(16, textData = $$props2.textData);
+      if ("sys" in $$props2) $$invalidate(0, sys = $$props2.sys);
+      if ("writeBlock" in $$props2) $$invalidate(17, writeBlock = $$props2.writeBlock);
+    };
+    $$self.$$.update = () => {
+      if ($$self.$$.dirty[0] & /*$editMode, $editLayout_01, $editLayout_02, $editLayout_03, editWasClicked, writeBlock, sys*/
+      131135) {
+        if (!$editMode && !$editLayout_01 && !$editLayout_02 && !$editLayout_03 && editWasClicked) {
+          writeBlock(DATA, sys);
+        }
+      }
+    };
+    return [
+      sys,
+      editWasClicked,
+      $editLayout_03,
+      $editLayout_02,
+      $editLayout_01,
+      $editMode,
+      $OBJ,
+      editMode,
+      editLayout_01,
+      editLayout_02,
+      editLayout_03,
+      OBJ,
+      itemRequestMove,
+      DragRowHandler,
+      DragColumnHandler,
+      DragItemHandler,
+      textData,
+      writeBlock,
+      click_handler,
+      click_handler_1,
+      click_handler_2,
+      click_handler_3,
+      func,
+      func_1,
+      func_2,
+      func_3,
+      func_4,
+      moveUp_handler,
+      moveDown_handler,
+      dragstart_handler,
+      dragend_handler,
+      drop_handler,
+      dragleave_handler,
+      dragstart_handler_1,
+      dragenter_handler,
+      dragend_handler_1,
+      drop_handler_1,
+      dragleave_handler_1,
+      dragover_handler_1,
+      dragstart_handler_2,
+      dragenter_handler_1,
+      dragend_handler_2,
+      dragover_handler_2,
+      func_5
+    ];
+  }
+  class App extends SvelteComponent {
+    constructor(options) {
+      super();
+      init(this, options, instance, create_fragment, safe_not_equal, { textData: 16, sys: 0, writeBlock: 17 }, null, [-1, -1]);
+    }
+    get textData() {
+      return this.$$.ctx[16];
+    }
+    set textData(textData) {
+      this.$$set({ textData });
+      flush();
+    }
+    get sys() {
+      return this.$$.ctx[0];
+    }
+    set sys(sys) {
+      this.$$set({ sys });
+      flush();
+    }
+    get writeBlock() {
+      return this.$$.ctx[17];
+    }
+    set writeBlock(writeBlock) {
+      this.$$set({ writeBlock });
+      flush();
+    }
+  }
+  create_custom_element(App, { "textData": {}, "sys": {}, "writeBlock": {} }, [], [], true);
+  return App;
+});
 //# sourceMappingURL=components.umd.cjs.map

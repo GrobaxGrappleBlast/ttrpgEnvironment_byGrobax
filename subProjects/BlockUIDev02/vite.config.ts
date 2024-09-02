@@ -2,7 +2,7 @@ import { defineConfig } from 'vite'
 import { svelte } from '@sveltejs/vite-plugin-svelte'
 import autoPreprocess from 'svelte-preprocess';
 
-const productionSetting = {
+const productionDEVSetting = {
 	plugins: [
 		svelte({
 			preprocess: autoPreprocess(),  
@@ -15,7 +15,29 @@ const productionSetting = {
 		sourcemap: true, 
 		target: 'modules', // Target environment
 		//outDir: 'export', // Output directory
+		minify:false,
 		outDir:'../../Systems/grobax1/UILayouts/default',
+		emptyOutDir: true, // Clear output directory before build
+		lib: {
+			entry: 'src/index.ts',
+			name: '<<name>>',
+			fileName: 'components',
+		  },
+	},
+}
+const productionSetting = {
+	plugins: [
+		svelte({
+			preprocess: autoPreprocess(),  
+			compilerOptions: {
+				customElement: true,
+			}
+		}),
+	],
+	build: {
+		sourcemap: true, 
+		target: 'modules', // Target environment
+		outDir: 'export', // Output directory
 		emptyOutDir: true, // Clear output directory before build
 		lib: {
 			entry: 'src/index.ts',
@@ -52,7 +74,7 @@ const developmentSetting={
 export default defineConfig( ({mode}) => {
 	const isProduction = mode === 'prod';
 	if( isProduction ){
-		return productionSetting;
+		return productionDEVSetting;
 	}
   return developmentSetting;
 })

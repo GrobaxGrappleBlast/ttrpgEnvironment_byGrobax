@@ -25,7 +25,7 @@
 	async function onclick(){
 		
 		text = await exporter.createBlockUITemplatefileTEST( $system ) ?? '';
-		debugger;
+	 
 		return;
 		/*
 
