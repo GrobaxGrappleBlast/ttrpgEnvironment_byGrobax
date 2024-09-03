@@ -562,7 +562,7 @@
 
 </script>
 
-<div class="theme-light obsidianBody">
+<div>
     <div class="Sheet" >
         <div class="SheetEditorMenuContainer">
 			<div
@@ -796,7 +796,7 @@
 							on:keypress
 							role="none"
 						>
-							<span>+</span> add Column  
+                            <div data-name="columnAddText" > <p><span>+</span></p> </div>
 						</div>  
 					{/if}
 				</div>

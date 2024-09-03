@@ -1265,7 +1265,7 @@ function create_else_block$1(ctx) {
     }
   };
 }
-function create_if_block_1$6(ctx) {
+function create_if_block_1$5(ctx) {
   let div;
   let t1;
   let input;
@@ -1338,7 +1338,7 @@ function create_fragment$d(ctx) {
     if (
       /*playMode*/
       ctx2[1]
-    ) return create_if_block_1$6;
+    ) return create_if_block_1$5;
     return create_else_block$1;
   }
   let current_block_type = select_block_type(ctx);
@@ -1655,7 +1655,7 @@ function create_if_block$6(ctx) {
   }
   let if_block = (
     /*options*/
-    ctx[1].length == 0 && create_if_block_1$5()
+    ctx[1].length == 0 && create_if_block_1$4()
   );
   return {
     c() {
@@ -1723,7 +1723,7 @@ function create_if_block$6(ctx) {
       ) {
         if (if_block) ;
         else {
-          if_block = create_if_block_1$5();
+          if_block = create_if_block_1$4();
           if_block.c();
           if_block.m(div3, t2);
         }
@@ -1846,7 +1846,7 @@ function create_each_block$5(key_1, ctx) {
     }
   };
 }
-function create_if_block_1$5(ctx) {
+function create_if_block_1$4(ctx) {
   let i;
   return {
     c() {
@@ -3571,7 +3571,7 @@ class Stats extends SvelteComponent {
   }
 }
 create_custom_element(Stats, { "sys": {}, "edit": { "type": "Boolean" } }, [], [], true);
-function create_if_block_1$4(ctx) {
+function create_if_block_1$3(ctx) {
   let div;
   let mounted;
   let dispose;
@@ -3658,7 +3658,7 @@ function create_fragment$4(ctx) {
   let if_block1_anchor;
   let if_block0 = (
     /*hasUp*/
-    ctx[0] && create_if_block_1$4(ctx)
+    ctx[0] && create_if_block_1$3(ctx)
   );
   let if_block1 = (
     /*hasDown*/
@@ -3685,7 +3685,7 @@ function create_fragment$4(ctx) {
         if (if_block0) {
           if_block0.p(ctx2, dirty);
         } else {
-          if_block0 = create_if_block_1$4(ctx2);
+          if_block0 = create_if_block_1$3(ctx2);
           if_block0.c();
           if_block0.m(t.parentNode, t);
         }
@@ -4077,7 +4077,7 @@ function create_if_block_2$2(ctx) {
     }
   };
 }
-function create_if_block_1$3(ctx) {
+function create_if_block_1$2(ctx) {
   let div;
   let proficiencybonus;
   let updating_data;
@@ -4268,7 +4268,7 @@ function create_fragment$3(ctx) {
   );
   const if_block_creators = [
     create_if_block$3,
-    create_if_block_1$3,
+    create_if_block_1$2,
     create_if_block_2$2,
     create_if_block_3$1,
     create_if_block_4$1
@@ -4516,7 +4516,7 @@ function create_if_block$2(ctx) {
   );
   let if_block1 = (
     /*onRemove*/
-    ctx[2] && create_if_block_1$2(ctx)
+    ctx[2] && create_if_block_1$1(ctx)
   );
   return {
     c() {
@@ -4554,7 +4554,7 @@ function create_if_block$2(ctx) {
         if (if_block1) {
           if_block1.p(ctx2, dirty);
         } else {
-          if_block1 = create_if_block_1$2(ctx2);
+          if_block1 = create_if_block_1$1(ctx2);
           if_block1.c();
           if_block1.m(if_block1_anchor.parentNode, if_block1_anchor);
         }
@@ -4630,7 +4630,7 @@ function create_if_block_2$1(ctx) {
     }
   };
 }
-function create_if_block_1$2(ctx) {
+function create_if_block_1$1(ctx) {
   let div;
   let mounted;
   let dispose;
@@ -4827,60 +4827,19 @@ class RowColumnOptions extends SvelteComponent {
   }
 }
 create_custom_element(RowColumnOptions, { "active": {}, "addText": {}, "remText": {}, "offset": {}, "side": {}, "verti": {}, "onRemove": {}, "onAdd": {} }, [], [], true);
-function create_if_block_1$1(ctx) {
-  let div;
-  let div_transition;
-  let current;
-  return {
-    c() {
-      div = element("div");
-      div.textContent = "Saving..";
-      attr(div, "class", "spinner");
-      attr(div, "data-state", "finished");
-    },
-    m(target, anchor) {
-      insert(target, div, anchor);
-      current = true;
-    },
-    i(local) {
-      if (current) return;
-      if (local) {
-        add_render_callback(() => {
-          if (!current) return;
-          if (!div_transition) div_transition = create_bidirectional_transition(div, fly, { x: 100 }, true);
-          div_transition.run(1);
-        });
-      }
-      current = true;
-    },
-    o(local) {
-      if (local) {
-        if (!div_transition) div_transition = create_bidirectional_transition(div, fly, { x: 100 }, false);
-        div_transition.run(0);
-      }
-      current = false;
-    },
-    d(detaching) {
-      if (detaching) {
-        detach(div);
-      }
-      if (detaching && div_transition) div_transition.end();
-    }
-  };
-}
 function create_if_block$1(ctx) {
-  let div;
-  let div_transition;
+  let div1;
+  let div1_transition;
   let current;
   return {
     c() {
-      div = element("div");
-      div.textContent = "Editing..";
-      attr(div, "class", "spinner");
-      attr(div, "data-state", "ongoing");
+      div1 = element("div");
+      div1.innerHTML = `<div>Editing.. close editing to save..</div>`;
+      attr(div1, "class", "spinner");
+      attr(div1, "data-state", "ongoing");
     },
     m(target, anchor) {
-      insert(target, div, anchor);
+      insert(target, div1, anchor);
       current = true;
     },
     i(local) {
@@ -4888,47 +4847,33 @@ function create_if_block$1(ctx) {
       if (local) {
         add_render_callback(() => {
           if (!current) return;
-          if (!div_transition) div_transition = create_bidirectional_transition(div, fly, { x: 100 }, true);
-          div_transition.run(1);
+          if (!div1_transition) div1_transition = create_bidirectional_transition(div1, fly, { x: 100 }, true);
+          div1_transition.run(1);
         });
       }
       current = true;
     },
     o(local) {
       if (local) {
-        if (!div_transition) div_transition = create_bidirectional_transition(div, fly, { x: 100 }, false);
-        div_transition.run(0);
+        if (!div1_transition) div1_transition = create_bidirectional_transition(div1, fly, { x: 100 }, false);
+        div1_transition.run(0);
       }
       current = false;
     },
     d(detaching) {
       if (detaching) {
-        detach(div);
+        detach(div1);
       }
-      if (detaching && div_transition) div_transition.end();
+      if (detaching && div1_transition) div1_transition.end();
     }
   };
 }
 function create_fragment$1(ctx) {
   let div;
-  let current_block_type_index;
-  let if_block;
-  const if_block_creators = [create_if_block$1, create_if_block_1$1];
-  const if_blocks = [];
-  function select_block_type(ctx2, dirty) {
-    if (
-      /*_active*/
-      ctx2[1]
-    ) return 0;
-    if (
-      /*_subActive*/
-      ctx2[2]
-    ) return 1;
-    return -1;
-  }
-  if (~(current_block_type_index = select_block_type(ctx))) {
-    if_block = if_blocks[current_block_type_index] = if_block_creators[current_block_type_index](ctx);
-  }
+  let if_block = (
+    /*$active*/
+    ctx[1] && create_if_block$1()
+  );
   return {
     c() {
       div = element("div");
@@ -4937,32 +4882,30 @@ function create_fragment$1(ctx) {
     },
     m(target, anchor) {
       insert(target, div, anchor);
-      if (~current_block_type_index) {
-        if_blocks[current_block_type_index].m(div, null);
-      }
+      if (if_block) if_block.m(div, null);
     },
     p(ctx2, [dirty]) {
-      let previous_block_index = current_block_type_index;
-      current_block_type_index = select_block_type(ctx2);
-      if (current_block_type_index !== previous_block_index) {
+      if (
+        /*$active*/
+        ctx2[1]
+      ) {
         if (if_block) {
-          group_outros();
-          transition_out(if_blocks[previous_block_index], 1, 1, () => {
-            if_blocks[previous_block_index] = null;
-          });
-          check_outros();
-        }
-        if (~current_block_type_index) {
-          if_block = if_blocks[current_block_type_index];
-          if (!if_block) {
-            if_block = if_blocks[current_block_type_index] = if_block_creators[current_block_type_index](ctx2);
-            if_block.c();
+          if (dirty & /*$active*/
+          2) {
+            transition_in(if_block, 1);
           }
+        } else {
+          if_block = create_if_block$1();
+          if_block.c();
           transition_in(if_block, 1);
           if_block.m(div, null);
-        } else {
-          if_block = null;
         }
+      } else if (if_block) {
+        group_outros();
+        transition_out(if_block, 1, 1, () => {
+          if_block = null;
+        });
+        check_outros();
       }
     },
     i(local) {
@@ -4975,41 +4918,19 @@ function create_fragment$1(ctx) {
       if (detaching) {
         detach(div);
       }
-      if (~current_block_type_index) {
-        if_blocks[current_block_type_index].d();
-      }
+      if (if_block) if_block.d();
     }
   };
 }
 function instance$1($$self, $$props, $$invalidate) {
-  let $active, $$unsubscribe_active = noop, $$subscribe_active = () => ($$unsubscribe_active(), $$unsubscribe_active = subscribe(active2, ($$value) => $$invalidate(3, $active = $$value)), active2);
+  let $active, $$unsubscribe_active = noop, $$subscribe_active = () => ($$unsubscribe_active(), $$unsubscribe_active = subscribe(active2, ($$value) => $$invalidate(1, $active = $$value)), active2);
   $$self.$$.on_destroy.push(() => $$unsubscribe_active());
   let { active: active2 } = $$props;
   $$subscribe_active();
-  let _active;
-  let _subActive;
-  active2.subscribe((p) => {
-    if (!p) {
-      $$invalidate(1, _active = false);
-      $$invalidate(2, _subActive = true);
-      scheduleSubDeactivation();
-    } else {
-      $$invalidate(1, _active = true);
-      $$invalidate(2, _subActive = true);
-    }
-  });
-  function scheduleSubDeactivation() {
-    setTimeout(
-      () => {
-        if (!$active) $$invalidate(2, _subActive = false);
-      },
-      1e3
-    );
-  }
   $$self.$$set = ($$props2) => {
     if ("active" in $$props2) $$subscribe_active($$invalidate(0, active2 = $$props2.active));
   };
-  return [active2, _active, _subActive];
+  return [active2, $active];
 }
 class LoadingSpinner extends SvelteComponent {
   constructor(options) {
@@ -5116,7 +5037,7 @@ function create_if_block_4(ctx) {
       div1 = element("div");
       div0 = element("div");
       div0.innerHTML = ``;
-      attr(div0, "class", "remRow");
+      attr(div0, "class", "remColumn");
       attr(div0, "role", "none");
       attr(div1, "class", "manouverHeader");
     },
@@ -5941,8 +5862,8 @@ function create_each_block_1(key_1, ctx) {
   };
 }
 function create_if_block_1(ctx) {
-  let div;
-  let div_transition;
+  let div1;
+  let div1_transition;
   let current;
   let mounted;
   let dispose;
@@ -5957,20 +5878,20 @@ function create_if_block_1(ctx) {
   }
   return {
     c() {
-      div = element("div");
-      div.innerHTML = `<span>+</span> add Column`;
-      attr(div, "class", "AddColumn");
-      attr(div, "data-edit", "true");
-      attr(div, "role", "none");
+      div1 = element("div");
+      div1.innerHTML = `<div data-name="columnAddText"><p><span>+</span></p></div>`;
+      attr(div1, "class", "AddColumn");
+      attr(div1, "data-edit", "true");
+      attr(div1, "role", "none");
     },
     m(target, anchor) {
-      insert(target, div, anchor);
+      insert(target, div1, anchor);
       current = true;
       if (!mounted) {
         dispose = [
-          listen(div, "click", click_handler_8),
+          listen(div1, "click", click_handler_8),
           listen(
-            div,
+            div1,
             "keypress",
             /*keypress_handler_4*/
             ctx[19]
@@ -5987,24 +5908,24 @@ function create_if_block_1(ctx) {
       if (local) {
         add_render_callback(() => {
           if (!current) return;
-          if (!div_transition) div_transition = create_bidirectional_transition(div, fly, { duration: ANIMATION_TIME, y: 100 }, true);
-          div_transition.run(1);
+          if (!div1_transition) div1_transition = create_bidirectional_transition(div1, fly, { duration: ANIMATION_TIME, y: 100 }, true);
+          div1_transition.run(1);
         });
       }
       current = true;
     },
     o(local) {
       if (local) {
-        if (!div_transition) div_transition = create_bidirectional_transition(div, fly, { duration: ANIMATION_TIME, y: 100 }, false);
-        div_transition.run(0);
+        if (!div1_transition) div1_transition = create_bidirectional_transition(div1, fly, { duration: ANIMATION_TIME, y: 100 }, false);
+        div1_transition.run(0);
       }
       current = false;
     },
     d(detaching) {
       if (detaching) {
-        detach(div);
+        detach(div1);
       }
-      if (detaching && div_transition) div_transition.end();
+      if (detaching && div1_transition) div1_transition.end();
       mounted = false;
       run_all(dispose);
     }
@@ -6500,7 +6421,6 @@ function create_fragment(ctx) {
       ctx[2] || /*$editLayout_03*/
       ctx[1]);
       attr(div3, "class", "Sheet");
-      attr(div4, "class", "theme-light obsidianBody");
     },
     m(target, anchor) {
       insert(target, div4, anchor);

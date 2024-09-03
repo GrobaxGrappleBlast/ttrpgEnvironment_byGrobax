@@ -332,27 +332,26 @@ body, .obsidianBody {
   border-radius: 5px;
   border: 2px dashed;
   border-color: rgba(89, 191, 255, 0.268);
-  min-height: 50px;
+  min-height: 30px;
   box-shadow: rgba(0, 0, 0, 0.1) 0px 4px 12px;
 }
 .Item {
   position: relative;
   margin: 5px;
-  width: auto;
-  min-height: 50px;
+  min-height: 30px;
 }
 .Item[data-editpreview=true] {
   border-radius: 5px;
   border: 2px dashed;
   border-color: rgba(89, 191, 255, 0.268);
-  min-height: 50px;
+  min-height: 30px;
   box-shadow: rgba(0, 0, 0, 0.1) 0px 4px 12px;
 }
 .Item[draggable=true] {
   cursor: pointer;
 }
 .Item[data-edit=true] {
-  min-height: 50px;
+  min-height: 30px;
   border-radius: 5px;
   background-color: #1f262e;
 }
@@ -367,21 +366,20 @@ body, .obsidianBody {
 .Column {
   position: relative;
   margin: 5px;
-  width: auto;
-  min-height: 50px;
+  min-height: 30px;
 }
 .Column[data-editpreview=true] {
   border-radius: 5px;
   border: 2px dashed;
   border-color: rgba(89, 191, 255, 0.268);
-  min-height: 50px;
+  min-height: 30px;
   box-shadow: rgba(0, 0, 0, 0.1) 0px 4px 12px;
 }
 .Column[draggable=true] {
   cursor: pointer;
 }
 .Column[data-edit=true] {
-  min-height: 50px;
+  min-height: 30px;
   border-radius: 5px;
   background-color: #1f262e;
 }
@@ -400,21 +398,20 @@ body, .obsidianBody {
   display: grid;
   position: relative;
   margin: 5px;
-  width: auto;
-  min-height: 50px;
+  min-height: 30px;
 }
 .Row[data-editpreview=true] {
   border-radius: 5px;
   border: 2px dashed;
   border-color: rgba(89, 191, 255, 0.268);
-  min-height: 50px;
+  min-height: 30px;
   box-shadow: rgba(0, 0, 0, 0.1) 0px 4px 12px;
 }
 .Row[draggable=true] {
   cursor: pointer;
 }
 .Row[data-edit=true] {
-  min-height: 50px;
+  min-height: 30px;
   border-radius: 5px;
   background-color: #1f262e;
 }
@@ -439,23 +436,23 @@ body, .obsidianBody {
   gap: 10px;
   padding-left: 10px;
   align-items: center;
+  width: auto;
   position: relative;
   margin: 5px;
-  width: auto;
-  min-height: 50px;
+  min-height: 30px;
 }
 .AddRow[data-editpreview=true] {
   border-radius: 5px;
   border: 2px dashed;
   border-color: rgba(89, 191, 255, 0.268);
-  min-height: 50px;
+  min-height: 30px;
   box-shadow: rgba(0, 0, 0, 0.1) 0px 4px 12px;
 }
 .AddRow[draggable=true] {
   cursor: pointer;
 }
 .AddRow[data-edit=true] {
-  min-height: 50px;
+  min-height: 30px;
   border-radius: 5px;
   background-color: #556d50;
 }
@@ -471,30 +468,31 @@ body, .obsidianBody {
   font-size: 20px;
 }
 .AddColumn {
+  overflow: hidden;
   cursor: pointer;
   display: flex;
   flex-direction: row;
   gap: 10px;
-  padding-left: 10px;
   height: inherit;
   align-items: center;
+  width: 30px;
+  justify-content: center;
   position: relative;
   margin: 5px;
-  width: auto;
-  min-height: 50px;
+  min-height: 30px;
 }
 .AddColumn[data-editpreview=true] {
   border-radius: 5px;
   border: 2px dashed;
   border-color: rgba(89, 191, 255, 0.268);
-  min-height: 50px;
+  min-height: 30px;
   box-shadow: rgba(0, 0, 0, 0.1) 0px 4px 12px;
 }
 .AddColumn[draggable=true] {
   cursor: pointer;
 }
 .AddColumn[data-edit=true] {
-  min-height: 50px;
+  min-height: 30px;
   border-radius: 5px;
   background-color: #556d50;
 }
@@ -510,6 +508,7 @@ body, .obsidianBody {
   font-size: 20px;
 }
 .AddItem {
+  width: auto;
   cursor: pointer;
   display: flex;
   flex-direction: row;
@@ -518,21 +517,20 @@ body, .obsidianBody {
   align-items: center;
   position: relative;
   margin: 5px;
-  width: auto;
-  min-height: 50px;
+  min-height: 30px;
 }
 .AddItem[data-editpreview=true] {
   border-radius: 5px;
   border: 2px dashed;
   border-color: rgba(89, 191, 255, 0.268);
-  min-height: 50px;
+  min-height: 30px;
   box-shadow: rgba(0, 0, 0, 0.1) 0px 4px 12px;
 }
 .AddItem[draggable=true] {
   cursor: pointer;
 }
 .AddItem[data-edit=true] {
-  min-height: 50px;
+  min-height: 30px;
   border-radius: 5px;
   background-color: #556d50;
 }
@@ -549,28 +547,51 @@ body, .obsidianBody {
 }
 .manouverHeader {
   position: absolute;
-  right: 0px;
-  top: 0px;
+  right: 5px;
   z-index: 10000;
   display: flex;
   flex-direction: row-reverse;
   justify-content: flex-end;
-  gap: 20px;
+  gap: 10px;
+  height: 30px;
 }
 .manouverHeader .remButton, .manouverHeader .ItemManouverOption.Down, .manouverHeader .ItemManouverOption.Up, .manouverHeader .remItem, .manouverHeader .remColumn, .manouverHeader .remRow {
-  padding: 10px;
   color: rgba(255, 255, 255, 0.5333333333);
+  width: 30px;
+  height: 30px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 .manouverHeader .remButton::after, .manouverHeader .ItemManouverOption.Down::after, .manouverHeader .ItemManouverOption.Up::after, .manouverHeader .remItem::after, .manouverHeader .remColumn::after, .manouverHeader .remRow::after {
   content: "✕";
 }
+.manouverHeader .ItemManouverOption.Up {
+  width: 20px;
+  height: 20px;
+  margin: 5px;
+}
 .manouverHeader .ItemManouverOption.Up::after {
-  content: "⤴";
-  font-size: 20px;
+  content: " ";
+  display: block;
+  width: 100%;
+  height: 100%;
+  opacity: 0.5;
+  background-image: url("src/images/PilUp.svg");
+}
+.manouverHeader .ItemManouverOption.Down {
+  width: 20px;
+  height: 20px;
+  margin: 5px;
 }
 .manouverHeader .ItemManouverOption.Down::after {
-  content: "⤵";
-  font-size: 20px;
+  content: " ";
+  display: block;
+  width: 100%;
+  height: 100%;
+  opacity: 0.5;
+  background-image: url("src/images/PilUp.svg");
+  transform: rotate(180deg) scaleX(1);
 }
 .addButton:hover {
   background-color: lightgreen;
@@ -584,25 +605,33 @@ body, .obsidianBody {
 }
 .SheetEditorMenu {
   cursor: pointer;
-  width: 0px;
-  padding: 15px;
-  background-color: #556d50;
+  background-color: transparent;
   overflow: hidden;
-  transition: ease 0.5s;
+  transition: width ease 0.4s;
+  width: 50px;
   height: 30px;
-  width: 30px;
   float: left;
   display: flex;
   justify-content: flex-start;
   align-items: center;
 }
+.SheetEditorMenu::before {
+  content: "⬗";
+  width: 30px;
+  height: inherit;
+  font-size: 25px;
+  display: flex;
+  opacity: 1;
+  align-items: center;
+  justify-content: center;
+}
 .SheetEditorMenu button {
-  width: 50px;
+  width: 80px;
   float: left;
   opacity: 0;
-  transition: ease 0.5s;
 }
 .SheetEditorMenu:hover, .SheetEditorMenu[data-isOpen=true] {
+  background-color: #556d50;
   width: 100%;
 }
 .SheetEditorMenu:hover button, .SheetEditorMenu[data-isOpen=true] button {
@@ -611,7 +640,6 @@ body, .obsidianBody {
   padding: 10px;
   border-radius: 5px;
   background-color: white;
-  transition: background-color ease 0.2s;
 }
 .SheetEditorMenu:hover button:hover, .SheetEditorMenu[data-isOpen=true] button:hover {
   background-color: var(--color-yellow);
@@ -1979,12 +2007,16 @@ body, .obsidianBody {
   grid-template-rows: 1fr;
   position: relative;
 }
-.LoadingSpinner .spinner {
+.LoadingSpinner {
+  pointer-events: none;
   position: absolute;
-  top: 0;
-  right: 50%;
+  top: 38px;
+  right: 20%;
+  left: 20%;
   height: 30px;
-  width: 30px;
+}
+.LoadingSpinner .spinner {
+  height: 30px;
   margin: 0;
   margin-bottom: -60px;
   font-weight: 600;
@@ -1994,7 +2026,7 @@ body, .obsidianBody {
   justify-content: center;
 }
 .LoadingSpinner .spinner[data-state=ongoing] {
-  color: #87b1e1;
+  color: #afe5a4;
   border-radius: 100%;
 }
 .LoadingSpinner .spinner[data-state=finished] {
