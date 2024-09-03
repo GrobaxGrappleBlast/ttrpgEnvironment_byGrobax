@@ -504,6 +504,7 @@
     import { system } from "../declaration";
     import { customFlip } from "./Svelte/CustomFlip";
     import RowColumnOptions from "./Structure/RowColumnOptions.svelte";//;"./Structure/RowColumnOptions.svelte";
+	import LoadingSpinner from "./Structure/infoComponents/LoadingSpinner.svelte"
 
     let state: State = new State();
     let editMode: Writable<boolean> = state.editMode;
@@ -535,10 +536,24 @@
         
     })
  
-	let editWasClicked = false;
-	$: if(!$editMode && !$editLayout_01 && !$editLayout_02 && !$editLayout_03 && editWasClicked){
-		writeBlock(DATA,sys);
-	} 
+	let editWasClicked = writable(false);
+	function requestEvalSaveCondition(){
+	
+		const allDisabled = 
+		!$editMode		&&
+		!$editLayout_01	&&
+		!$editLayout_02	&&
+		!$editLayout_03	;
+
+		if(editWasClicked && allDisabled ){
+			writeBlock(DATA,sys);
+			editWasClicked.set(false);
+		}
+	}
+	editMode		.subscribe( requestEvalSaveCondition );
+    editLayout_01	.subscribe( requestEvalSaveCondition );
+    editLayout_02	.subscribe( requestEvalSaveCondition );
+    editLayout_03	.subscribe( requestEvalSaveCondition );
 	 
     let DragRowHandler = new DragHandlerController(OBJ, state);
     let DragColumnHandler = new DragItemHandlerController2(OBJ, state);
@@ -549,34 +564,34 @@
 <div class="theme-light obsidianBody">
     <div class="Sheet">
         <div class="SheetEditorMenuContainer">
-            <div
-                class="SheetEditorMenu"
-                data-isOpen={$editMode ||
-                    $editLayout_01 ||
-                    $editLayout_02 ||
-                    $editLayout_03}
-            >
-                <button
-                    data-active={$editMode}
-                    on:click={() =>{ editMode.set(!$editMode); editWasClicked = true}}
-                    >{"Stop Edit	"}</button
-                >
-                <button
-                    data-active={$editLayout_01}
-                    on:click={() => editLayout_01.set(!get(editLayout_01))}
-                    >{"Layout Row	"}</button
-                >
-                <button
-                    data-active={$editLayout_02}
-                    on:click={() => editLayout_02.set(!get(editLayout_02))}
-                    >{"Layout Col	"}</button
-                >
-                <button
-                    data-active={$editLayout_03}
-                    on:click={() => editLayout_03.set(!get(editLayout_03))}
-                    >{"Layout Items"}</button
-                >
-            </div>
+			<div
+				class="SheetEditorMenu"
+				data-isOpen={$editMode ||
+					$editLayout_01 ||
+					$editLayout_02 ||
+					$editLayout_03}
+			>
+				<button
+					data-active={$editMode}
+					on:click={() => {editWasClicked.set(true);editMode.set(!$editMode)}}
+					>{"Stop Edit	"}</button
+				>
+				<button
+					data-active={$editLayout_01}
+					on:click={() =>{editWasClicked.set(true);editLayout_01.set(!$editLayout_01)}}
+					>{"Layout Row	"}</button
+				>
+				<button
+					data-active={$editLayout_02}
+					on:click={() =>{editWasClicked.set(true);editLayout_02.set(!$editLayout_02)}}
+					>{"Layout Col	"}</button
+				>
+				<button
+					data-active={$editLayout_03}
+					on:click={() =>{editWasClicked.set(true);editLayout_03.set(!$editLayout_03)}}
+					>{"Layout Items"}</button
+				>
+			</div>
         </div>
 
         {#each $OBJ.data as row, i (row.id)}
@@ -598,7 +613,7 @@
                 transition:fly={{ duration: ANIMATION_TIME, y: 100 }}
                 animate:customFlip={{ duration: ANIMATION_TIME }}
                 draggable={$editLayout_01}
-            >
+            >	
                 <!-- LINE LEVEL EDITOR -->
                 <RowColumnOptions
                     active={$editLayout_02}
@@ -619,8 +634,8 @@
                         });
                     }}
                     remText={`remove this line`}
-                />
-
+                /> 
+				
                 {#each row.data as column, j (column.id)}
                     <div
                         class="Column"
@@ -747,7 +762,7 @@
                 {/each}
             </div>
         {/each}
-
+		 
         {#if $editLayout_01}
             <div class="Row" style="height:100px">
                 <RowColumnOptions
@@ -765,8 +780,11 @@
             </div>
         {/if}
     </div>
+	<LoadingSpinner 
+		active={editWasClicked}
+	/>
 </div>
-
+ 
 <!--
 	<div class="CornerItem" > 
 		<button class="addButton"  on:click={() => addRowItem(i)}>+</button>

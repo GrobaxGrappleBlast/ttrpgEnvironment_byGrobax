@@ -86,7 +86,8 @@
 			target: document.getElementById('app'),
 			props: {
 				textData:_JSON,
-				sys:sys
+				sys:sys,
+				writeBlock:(a,b)=>{console.log('SAVED')}
 			}
 		})
 		
