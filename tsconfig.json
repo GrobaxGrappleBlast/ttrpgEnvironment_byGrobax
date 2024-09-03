@@ -16,6 +16,7 @@
         "strict": false,
         "preserveValueImports":false,
         "lib": [
+			"es2021",
             "DOM",
             "ES5",
             "ES6",

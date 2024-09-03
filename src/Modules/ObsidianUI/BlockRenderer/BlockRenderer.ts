@@ -81,9 +81,65 @@ export class BlockRenderer{
 		let sys = resp2.response as TTRPGSystemJSONFormatting;
 		return sys;
 	}
-	private setSystemValuesFromBlockData( sys, blockData ){ 
-		debugger
-		console.log( sys, blockData )
+	private setSystemValuesFromBlockData( sys : TTRPGSystemJSONFormatting , blockData : BlockData){ 
+		
+
+		let commandDict = {};
+
+		// Create commands for all fixed stats, all standard values 
+		const group_key = 'fixed'; 
+		const col_keys = Object.keys(sys.fixed.collections_names)
+		for (let c = 0; c < col_keys.length; c++) {
+			const col_key = col_keys[c];
+			const col = sys.fixed.collections_names[col_key]; 
+			const node_keys = Object.keys(col.nodes_names);
+			for (let n = 0; n < node_keys.length; n++) {
+				const node_key = node_keys[n];
+				const node = col.nodes_names[node_key];
+
+				commandDict[group_key+'.'+col_key+'.'+node_key] = node.getValue() ?? 0;
+			}
+		} 
+
+		// insert Values for all specified values. 
+		let blockCommands = Object.keys(blockData.characterValues);
+		for (let c = 0; c < blockCommands.length; c++) {
+			const cmd = blockCommands[c];
+			commandDict[cmd] = blockData.characterValues[cmd];
+		}
+
+		// Run updates;
+		const commands = Object.keys(commandDict);
+		for (let c = 0; c < commands.length; c++) {
+			const cmd = commands[c];
+			const seg = cmd.split('.') as any[];
+			sys.getNode(seg[0],seg[1],seg[2])?.setValue(commandDict[cmd]);
+		}		  
+	}
+	private static getSystemValuesForBlockData( sys : TTRPGSystemJSONFormatting  ){ 
+		
+
+		let commandDict = {};
+
+		// Create commands for all fixed stats, all standard values 
+		const group_key = 'fixed'; 
+		const col_keys = Object.keys(sys.fixed.collections_names)
+		for (let c = 0; c < col_keys.length; c++) {
+			const col_key = col_keys[c];
+			const col = sys.fixed.collections_names[col_key]; 
+			const node_keys = Object.keys(col.nodes_names);
+			for (let n = 0; n < node_keys.length; n++) {
+				const node_key = node_keys[n];
+				const node = col.nodes_names[node_key];
+
+				// TODO: implement this with standard values 
+				if(node.getValue() != 0){
+					commandDict[group_key+'.'+col_key+'.'+node_key] = node.getValue();
+				}
+			}
+		} 
+		return commandDict;
+		 
 	}
 	public async render(){
  
@@ -112,8 +168,7 @@ export class BlockRenderer{
 		
 		
 		if ( blockData ){
-		 
-			let preview = blockData.systemChosen; 
+		  
 			let systemPath = path.join(PluginHandler.SYSTEMS_FOLDER_NAME, 'grobax1', PluginHandler.SYSTEM_UI_CONTAINER_FOLDER_NAME, 'default');
 			let obsidianPath = path.join(PluginHandler.self.manifest.dir as string, systemPath);
 		
@@ -125,11 +180,11 @@ export class BlockRenderer{
 				return;
 			}  
 			let container = this.element.createEl('div');
-			container.setAttr('data-hasViewActive','true');
+				container.setAttr('data-hasViewActive','true');
 			let style		= container.createEl('style');
-			style.innerHTML = CSS; 
+				style.innerHTML = CSS; 
 			let AppContainer= container.createEl('div');
-			AppContainer.id = blockData.BlockUUID; 
+				AppContainer.id = blockData.BlockUUID; 
 			let script		= container.createEl('script');
 			script.setAttribute('type','module'); 
 		  
@@ -144,24 +199,29 @@ export class BlockRenderer{
   
 			// ADD AlL UI
 			window['GrobaxTTRPGGlobalVariable'][blockData.BlockUUID] ={};
-			window['GrobaxTTRPGGlobalVariable'][blockData.BlockUUID]['sys'] = sys;
-			console.log( blockData.BlockUUID );
+			window['GrobaxTTRPGGlobalVariable'][blockData.BlockUUID]['sys'] = sys; 
 			window['GrobaxTTRPGGlobalVariable'][blockData.BlockUUID]['func'] = 
 			( layoutChange , system ) => {
 				blockData.layout = layoutChange;
-				//TODO: include Ssytem Stats settings
+				blockData.characterValues = BlockRenderer.getSystemValuesForBlockData(system); 
 				const txt = JSONHandler.serialize(blockData , BlockDataSchemes.PAGE ); 
+				window['GrobaxTTRPGGlobalVariable'][blockData.BlockUUID] = undefined;
 				this.writeBlock(txt);
+
+			
 			}; 
 			let path_JS = PluginHandler.App.vault.adapter.getResourcePath(obsidianPath + '/' +'components.js'); 
+			
+			// A Hack - because pasting the string removes the right \ symbols, so we just add an extra where it is needed.
+			const textData = JSON.stringify(blockData.layout).replaceAll('\"','\\"');
 			script.innerHTML = ` 
 				import App from '${path_JS}';	
 				let key = '${blockData.BlockUUID}';
 				const sys = window['GrobaxTTRPGGlobalVariable']['${blockData.BlockUUID}']['sys'];
 				
 				const element = document.getElementById('${blockData.BlockUUID}');
-				const textData= '${JSON.stringify(blockData.layout)}';
-				
+				const textData= '`+textData+`';
+				 
 				const app = new App({
 					target:element,
 					props: {
