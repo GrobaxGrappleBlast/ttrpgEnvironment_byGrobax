@@ -505,6 +505,7 @@
     import { customFlip } from "./Svelte/CustomFlip";
     import RowColumnOptions from "./Structure/RowColumnOptions.svelte";//;"./Structure/RowColumnOptions.svelte";
 	import LoadingSpinner from "./Structure/infoComponents/LoadingSpinner.svelte"
+    import ItemManouver from "./Structure/ItemManouver.svelte";
 
     let state: State = new State();
     let editMode: Writable<boolean> = state.editMode;
@@ -562,7 +563,7 @@
 </script>
 
 <div class="theme-light obsidianBody">
-    <div class="Sheet">
+    <div class="Sheet" >
         <div class="SheetEditorMenuContainer">
 			<div
 				class="SheetEditorMenu"
@@ -594,191 +595,232 @@
 			</div>
         </div>
 
-        {#each $OBJ.data as row, i (row.id)}
-            <div
-                class="Row"
-                data-edit={$editLayout_01}
-                data-edit-active={$editLayout_01}
-                data-editpreview={$editLayout_02}
-                role="none"
-                style={`grid-template-columns:${repeat(row.data.length, "1fr")}`}
-                data-rowId={row.id}
-                on:dragstart={(e) => DragRowHandler.onDragStart(e, row.id)}
-                on:dragenter={(e) => DragRowHandler.onDragOver(e, row.id)}
-                on:dragend={(e) => DragRowHandler.onDragEnd(e, row.id)}
-                on:dragover={(e) => {
-                    DragRowHandler.onDragOver(e, row.id);
-                    e.preventDefault();
-                }}
-                transition:fly={{ duration: ANIMATION_TIME, y: 100 }}
-                animate:customFlip={{ duration: ANIMATION_TIME }}
-                draggable={$editLayout_01}
-            >	
-                <!-- LINE LEVEL EDITOR -->
-                <RowColumnOptions
-                    active={$editLayout_02}
-                    onAdd={() => {
-                        row.addColumn();
-                        OBJ.update((obj) => {
-                            return obj;
-                        });
-                    }}
-                    addText={`add Column`}
-                />
-                <RowColumnOptions
-                    active={$editLayout_01}
-                    onRemove={() => {
-                        OBJ.update((o) => {
-                            o.remRow(row.id);
-                            return o;
-                        });
-                    }}
-                    remText={`remove this line`}
-                /> 
-				
-                {#each row.data as column, j (column.id)}
-                    <div
-                        class="Column"
-                        data-edit={$editLayout_02 || $editLayout_01}
-                        data-editpreview={$editLayout_03}
-                        data-itemId={column.id}
-                        data-edit-active={$editLayout_02}
-                        data-dragging={DragColumnHandler.isBeingDragged(
-                            column.id,
-                        )}
-                        role="none"
-                        style={`
-						${$editLayout_02 || $editLayout_01 ? "margin-bottom:30px" : ""}
-					`}
-                        transition:fade={{ duration: ANIMATION_TIME }}
-                        animate:customFlip={{ duration: ANIMATION_TIME }}
-                        on:dragstart={(e) => {
-                            DragColumnHandler.onDragStart(e, column.id);
-                        }}
-                        on:dragenter={(e) => {
-                            DragColumnHandler.onDragOver(e, column.id);
-                            DragItemHandler.onDragOverColumn(e, column.id);
-                        }}
-                        on:dragend={(e) => {
-                            DragColumnHandler.onDragEnd(e, column.id);
-                        }}
-                        on:drop={(e) => {
-                            DragColumnHandler.onDragEnd(e, column.id);
-                        }}
-                        on:dragleave={(e) => {
-                            DragColumnHandler.onLeave(e, column.id);
-                        }}
-                        on:dragover={(e) => {
-                            DragColumnHandler.onDragOver(e, column.id);
-                            DragItemHandler.onDragOverColumn(e, column.id);
-                            e.preventDefault();
-                        }}
-                        draggable={$editLayout_02}
-                    >
-                        <!-- EDIT FOR COLUMN LEVEL -->
-                        {#if row.data.length > 1}
-                            <RowColumnOptions
-                                offset={15}
-                                active={$editLayout_02}
-                                remText={"remove this column"}
-                                onRemove={() => {
-                                    row.remColumn(column.id);
-                                    OBJ.update((o) => o);
-                                }}
-                            />
-                        {/if}
-                        <RowColumnOptions
-                            offset={15}
-                            active={$editLayout_03}
-                            addText={"add a new Item"}
-                            onAdd={() => {
-                                column.addItem();
-                                OBJ.update((o) => o);
-                            }}
-                        />
-                        {#if $editLayout_03 || $editLayout_02}
-                            <div style="height:50px"></div>
-                        {/if}
+		<div
+			class="SheetInnerWrap"
+			data-editpreview={$editLayout_01 }
+			data-isEditing= {$editMode ||
+				$editLayout_01 ||
+				$editLayout_02 ||
+				$editLayout_03}
+		>
+			{#each $OBJ.data as row, i (row.id)}
+				<div
+					class="Row"
+					data-edit={$editLayout_01 }
+					data-edit-active={$editLayout_01  }
+					data-editpreview={$editLayout_02 }
+					role="none"
+					style={`grid-template-columns: ${repeat(row.data.length, "1fr")} auto`}
+					data-rowId={row.id}
+					on:dragstart={(e) => DragRowHandler.onDragStart(e, row.id)}
+					on:dragenter={(e) => DragRowHandler.onDragOver(e, row.id)}
+					on:dragend={(e) => DragRowHandler.onDragEnd(e, row.id)}
+					on:dragover={(e) => {
+						DragRowHandler.onDragOver(e, row.id);
+						e.preventDefault();
+					}}
+					transition:fly={{ duration: ANIMATION_TIME, y: 100 }}
+					animate:customFlip={{ duration: ANIMATION_TIME }}
+					draggable={$editLayout_01}
+				>	
+					{#if $editLayout_01}
+						<div class="manouverHeader" >
+							<div class="remRow" 
+								on:keypress
+								on:click={() => {
+									OBJ.update((o) => {
+										o.remRow(row.id);
+										return o;
+									});
+								}}
+								role="none"
+							>
+								
+							</div>
+						</div>
+					{/if}
+					
+					{#each row.data as column, j (column.id)}
+						<div
+							class="Column"
+							data-edit={$editLayout_02 || $editLayout_01}
+							data-editpreview={$editLayout_03}
+							data-itemId={column.id}
+							data-edit-active={$editLayout_02}
+							data-dragging={DragColumnHandler.isBeingDragged(
+								column.id,
+							)}
+							role="none"
+						
+							transition:fade={{ duration: ANIMATION_TIME }}
+							animate:customFlip={{ duration: ANIMATION_TIME }}
+							on:dragstart={(e) => {
+								DragColumnHandler.onDragStart(e, column.id);
+							}}
+							on:dragenter={(e) => {
+								DragColumnHandler.onDragOver(e, column.id);
+								DragItemHandler.onDragOverColumn(e, column.id);
+							}}
+							on:dragend={(e) => {
+								DragColumnHandler.onDragEnd(e, column.id);
+							}}
+							on:drop={(e) => {
+								DragColumnHandler.onDragEnd(e, column.id);
+							}}
+							on:dragleave={(e) => {
+								DragColumnHandler.onLeave(e, column.id);
+							}}
+							on:dragover={(e) => {
+								DragColumnHandler.onDragOver(e, column.id);
+								DragItemHandler.onDragOverColumn(e, column.id);
+								e.preventDefault();
+							}}
+							draggable={$editLayout_02}
+						>
+							
+							{#if $editLayout_02}
+								<div class="manouverHeader" >
+									<div class="remColumn" 
+										on:keypress
+										on:click={() => {
+											row.remColumn(column.id);
+											OBJ.update((o) => o);
+										}}
+										role="none"
+									>
+										
+									</div>
+								</div>
+							{/if}
+	
+						
+							{#each column.data as item, k (item.id)}
+								<div
+									class="Item"
+									data-edit={$editMode ||
+										$editLayout_03 ||
+										$editLayout_02}
+									data-itemId={item.id}
+									data-edit-active={$editLayout_03}
+									data-dragging={DragItemHandler.isBeingDragged(
+										item.id,
+									)}
+									role="none"
+									transition:fade={{ duration: ANIMATION_TIME }}
+									animate:customFlip={{
+										duration: ANIMATION_TIME,
+									}}
+									on:dragstart={(e) => {
+										DragItemHandler.onDragStart(e, item.id);
+									}}
+									on:dragend={(e) => {
+										DragItemHandler.onDragEnd(e, item.id);
+									}}
+									on:drop={(e) => {
+										DragItemHandler.onDragEnd(e, item.id);
+									}}
+									on:dragleave={(e) => {
+										DragItemHandler.onLeave(e, item.id);
+									}}
+									on:dragover={(e) => {
+										e.preventDefault();
+									}}
+									draggable={$editLayout_03}
+								>	
+									
+									{#if $editLayout_03}
+										<div class="manouverHeader" >
+											<div  
+												class="remItem" 
+												on:click	= {() => {
+													column.remItem(item.id);
+													OBJ.update((o) => o);
+												}}
+												on:keypress
+												role="none"
+											>
+											</div>
+											<ItemManouver
+												bind:data={item} 
+												hasDown	={ k != column.data.length-1 }
+												hasUp	={ k != 0 }
+												on:moveUp	={(e) => {itemRequestMove(-1, e.detail);}}		
+												on:moveDown	={(e) => {itemRequestMove(1, e.detail);}}	
+											/>
+										</div>
+									{/if} 
+									<ItemDestributor
+										data={item}
+										editMode={$editMode}
+										layoutMode={$editLayout_03}
+										{sys}
+										length={column.data.length}
+										index={k}
+										on:moveUp={(e) => {
+											itemRequestMove(-1, e.detail);
+										}}
+										on:moveDown={(e) => {
+											itemRequestMove(1, e.detail);
+										}}
+									/>
+								</div>
+							{/each}
+							{#if $editLayout_03} 
+								<div 
+									class="AddItem" 
+									data-edit="true"
+									transition:fly={{ duration: ANIMATION_TIME, y: 100 }} 
+									on:click={() => {
+										column.addItem();
+										OBJ.update((o) => o);
+									}}
+									on:keypress
+									role="none"
+								>
+									<span>+</span> add item  
+								</div>
+							{/if}
+						</div>
+					{/each} 
+					{#if $editLayout_02} 
+						<div
+							class=" AddColumn" 
+							data-edit="true"
+							transition:fly={{ duration: ANIMATION_TIME, y: 100 }} 
+							on:click={() => {
+								row.addColumn();
+								OBJ.update((obj) => {
+									return obj;
+								});
+							}}
+							on:keypress
+							role="none"
+						>
+							<span>+</span> add Column  
+						</div>  
+					{/if}
+				</div>
+			{/each} 
+			{#if $editLayout_01} 
+				<div
+					class=" AddRow" 
+					data-edit="true"
+					transition:fly={{ duration: ANIMATION_TIME, y: 100 }} 
+					on:click={() => {
+						OBJ.update((obj) => {
+							obj.addRow();
+							obj.data[$OBJ.data.length - 1].addColumn();
+							return obj;
+						});
+					}}
+					on:keypress
+					role="none"
+				>
+					<span>+</span> add Row  
+				</div>  
+			{/if}
+		</div>
 
-                        {#each column.data as item, k (item.id)}
-                            <div
-                                class="Item"
-                                data-edit={$editMode ||
-                                    $editLayout_03 ||
-                                    $editLayout_02}
-                                data-itemId={item.id}
-                                data-edit-active={$editLayout_03}
-                                data-dragging={DragItemHandler.isBeingDragged(
-                                    item.id,
-                                )}
-                                role="none"
-                                transition:fade={{ duration: ANIMATION_TIME }}
-                                animate:customFlip={{
-                                    duration: ANIMATION_TIME,
-                                }}
-                                on:dragstart={(e) => {
-                                    DragItemHandler.onDragStart(e, item.id);
-                                }}
-                                on:dragend={(e) => {
-                                    DragItemHandler.onDragEnd(e, item.id);
-                                }}
-                                on:drop={(e) => {
-                                    DragItemHandler.onDragEnd(e, item.id);
-                                }}
-                                on:dragleave={(e) => {
-                                    DragItemHandler.onLeave(e, item.id);
-                                }}
-                                on:dragover={(e) => {
-                                    e.preventDefault();
-                                }}
-                                draggable={$editLayout_03}
-                            >
-                                <RowColumnOptions
-                                    offset={15}
-                                    active={$editLayout_03}
-                                    addText={"remove"}
-                                    onRemove={() => {
-                                        column.remItem(item.id);
-                                        OBJ.update((o) => o);
-                                    }}
-                                />
-                                <ItemDestributor
-                                    data={item}
-                                    editMode={$editMode}
-                                    layoutMode={$editLayout_03}
-                                    {sys}
-                                    length={column.data.length}
-                                    index={k}
-                                    on:moveUp={(e) => {
-                                        itemRequestMove(-1, e.detail);
-                                    }}
-                                    on:moveDown={(e) => {
-                                        itemRequestMove(1, e.detail);
-                                    }}
-                                />
-                            </div>
-                        {/each}
-                    </div>
-                {/each}
-            </div>
-        {/each}
-		 
-        {#if $editLayout_01}
-            <div class="Row" style="height:100px">
-                <RowColumnOptions
-                    active={$editLayout_01}
-                    onAdd={() => {
-                        OBJ.update((obj) => {
-                            obj.addRow();
-                            obj.data[$OBJ.data.length - 1].addColumn();
-                            return obj;
-                        });
-                    }}
-                    offset={15}
-                    addText={`add Line`}
-                />
-            </div>
-        {/if}
     </div>
 	<LoadingSpinner 
 		active={editWasClicked}

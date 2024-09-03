@@ -150,13 +150,6 @@ function set_data(text2, data) {
 function set_input_value(input, value) {
   input.value = value == null ? "" : value;
 }
-function set_style(node, key, value, important) {
-  if (value == null) {
-    node.style.removeProperty(key);
-  } else {
-    node.style.setProperty(key, value, "");
-  }
-}
 function custom_event(type, detail, { bubbles = false, cancelable = false } = {}) {
   return new CustomEvent(type, { detail, bubbles, cancelable });
 }
@@ -1272,7 +1265,7 @@ function create_else_block$1(ctx) {
     }
   };
 }
-function create_if_block_1$5(ctx) {
+function create_if_block_1$6(ctx) {
   let div;
   let t1;
   let input;
@@ -1298,7 +1291,7 @@ function create_if_block_1$5(ctx) {
     }
   };
 }
-function create_if_block$6(ctx) {
+function create_if_block$7(ctx) {
   let div;
   let t1;
   let input;
@@ -1324,7 +1317,7 @@ function create_if_block$6(ctx) {
     }
   };
 }
-function create_fragment$c(ctx) {
+function create_fragment$d(ctx) {
   let div2;
   let div0;
   let t1;
@@ -1341,11 +1334,11 @@ function create_fragment$c(ctx) {
     if (
       /*editMode*/
       ctx2[0]
-    ) return create_if_block$6;
+    ) return create_if_block$7;
     if (
       /*playMode*/
       ctx2[1]
-    ) return create_if_block_1$5;
+    ) return create_if_block_1$6;
     return create_else_block$1;
   }
   let current_block_type = select_block_type(ctx);
@@ -1439,7 +1432,7 @@ function create_fragment$c(ctx) {
     }
   };
 }
-function instance$c($$self, $$props, $$invalidate) {
+function instance$d($$self, $$props, $$invalidate) {
   let { sys } = $$props;
   let { editMode } = $$props;
   let { playMode } = $$props;
@@ -1474,7 +1467,7 @@ function instance$c($$self, $$props, $$invalidate) {
 class HitPoints extends SvelteComponent {
   constructor(options) {
     super();
-    init(this, options, instance$c, create_fragment$c, safe_not_equal, {
+    init(this, options, instance$d, create_fragment$d, safe_not_equal, {
       sys: 4,
       editMode: 0,
       playMode: 1,
@@ -1633,7 +1626,7 @@ function create_key_block(ctx) {
     }
   };
 }
-function create_if_block$5(ctx) {
+function create_if_block$6(ctx) {
   let div3;
   let div1;
   let div0;
@@ -1662,7 +1655,7 @@ function create_if_block$5(ctx) {
   }
   let if_block = (
     /*options*/
-    ctx[1].length == 0 && create_if_block_1$4()
+    ctx[1].length == 0 && create_if_block_1$5()
   );
   return {
     c() {
@@ -1730,7 +1723,7 @@ function create_if_block$5(ctx) {
       ) {
         if (if_block) ;
         else {
-          if_block = create_if_block_1$4();
+          if_block = create_if_block_1$5();
           if_block.c();
           if_block.m(div3, t2);
         }
@@ -1853,7 +1846,7 @@ function create_each_block$5(key_1, ctx) {
     }
   };
 }
-function create_if_block_1$4(ctx) {
+function create_if_block_1$5(ctx) {
   let i;
   return {
     c() {
@@ -1871,7 +1864,7 @@ function create_if_block_1$4(ctx) {
     }
   };
 }
-function create_fragment$b(ctx) {
+function create_fragment$c(ctx) {
   let div1;
   let previous_key = (
     /*selected*/
@@ -1883,7 +1876,7 @@ function create_fragment$b(ctx) {
   let if_block = (
     /*isFocussed*/
     (ctx[8] || /*forceOpen*/
-    ctx[5]) && create_if_block$5(ctx)
+    ctx[5]) && create_if_block$6(ctx)
   );
   return {
     c() {
@@ -1924,7 +1917,7 @@ function create_fragment$b(ctx) {
             transition_in(if_block, 1);
           }
         } else {
-          if_block = create_if_block$5(ctx2);
+          if_block = create_if_block$6(ctx2);
           if_block.c();
           transition_in(if_block, 1);
           if_block.m(div0, null);
@@ -1953,7 +1946,7 @@ function create_fragment$b(ctx) {
   };
 }
 const svelteStandardAnimTime = 100;
-function instance$b($$self, $$props, $$invalidate) {
+function instance$c($$self, $$props, $$invalidate) {
   let dispatch2 = createEventDispatcher();
   let { options } = $$props;
   let { selected = null } = $$props;
@@ -2064,7 +2057,7 @@ function instance$b($$self, $$props, $$invalidate) {
 class CustomSelect extends SvelteComponent {
   constructor(options) {
     super();
-    init(this, options, instance$b, create_fragment$b, safe_not_equal, {
+    init(this, options, instance$c, create_fragment$c, safe_not_equal, {
       options: 1,
       selected: 0,
       unSelectedplaceholder: 2,
@@ -2163,7 +2156,7 @@ function create_each_block$4(ctx) {
     }
   };
 }
-function create_fragment$a(ctx) {
+function create_fragment$b(ctx) {
   let div2;
   let div1;
   let div0;
@@ -2255,7 +2248,7 @@ function create_fragment$a(ctx) {
     }
   };
 }
-function instance$a($$self, $$props, $$invalidate) {
+function instance$b($$self, $$props, $$invalidate) {
   let dispatch2 = createEventDispatcher();
   let { data } = $$props;
   let { editMode } = $$props;
@@ -2283,7 +2276,7 @@ function instance$a($$self, $$props, $$invalidate) {
 class ItemOptions extends SvelteComponent {
   constructor(options) {
     super();
-    init(this, options, instance$a, create_fragment$a, safe_not_equal, { data: 4, editMode: 5 });
+    init(this, options, instance$b, create_fragment$b, safe_not_equal, { data: 4, editMode: 5 });
   }
   get data() {
     return this.$$.ctx[4];
@@ -2301,7 +2294,7 @@ class ItemOptions extends SvelteComponent {
   }
 }
 create_custom_element(ItemOptions, { "data": {}, "editMode": {} }, [], [], true);
-function create_fragment$9(ctx) {
+function create_fragment$a(ctx) {
   let div1;
   let div0;
   let t1;
@@ -2376,7 +2369,7 @@ function create_fragment$9(ctx) {
     }
   };
 }
-function instance$9($$self, $$props, $$invalidate) {
+function instance$a($$self, $$props, $$invalidate) {
   let { sys } = $$props;
   let { editMode } = $$props;
   let { data } = $$props;
@@ -2409,7 +2402,7 @@ function instance$9($$self, $$props, $$invalidate) {
 class ProficiencyBonus extends SvelteComponent {
   constructor(options) {
     super();
-    init(this, options, instance$9, create_fragment$9, safe_not_equal, { sys: 3, editMode: 0, data: 4 });
+    init(this, options, instance$a, create_fragment$a, safe_not_equal, { sys: 3, editMode: 0, data: 4 });
   }
   get sys() {
     return this.$$.ctx[3];
@@ -2434,7 +2427,7 @@ class ProficiencyBonus extends SvelteComponent {
   }
 }
 create_custom_element(ProficiencyBonus, { "sys": {}, "editMode": {}, "data": {} }, [], [], true);
-function create_fragment$8(ctx) {
+function create_fragment$9(ctx) {
   let div4;
   let div1;
   let div0;
@@ -2559,7 +2552,7 @@ function create_fragment$8(ctx) {
     }
   };
 }
-function instance$8($$self, $$props, $$invalidate) {
+function instance$9($$self, $$props, $$invalidate) {
   let { edit } = $$props;
   let { name: name2 } = $$props;
   let { sys } = $$props;
@@ -2602,7 +2595,7 @@ function instance$8($$self, $$props, $$invalidate) {
 class SkillProficiency extends SvelteComponent {
   constructor(options) {
     super();
-    init(this, options, instance$8, create_fragment$8, safe_not_equal, { edit: 0, name: 1, sys: 5 });
+    init(this, options, instance$9, create_fragment$9, safe_not_equal, { edit: 0, name: 1, sys: 5 });
   }
   get edit() {
     return this.$$.ctx[0];
@@ -2683,7 +2676,7 @@ function create_each_block$3(ctx) {
     }
   };
 }
-function create_fragment$7(ctx) {
+function create_fragment$8(ctx) {
   let div;
   let current;
   let each_value = ensure_array_like(
@@ -2778,7 +2771,7 @@ function create_fragment$7(ctx) {
     }
   };
 }
-function instance$7($$self, $$props, $$invalidate) {
+function instance$8($$self, $$props, $$invalidate) {
   let { edit } = $$props;
   let { sys } = $$props;
   let { data } = $$props;
@@ -2793,7 +2786,7 @@ function instance$7($$self, $$props, $$invalidate) {
 class SkillProficiencyCollection extends SvelteComponent {
   constructor(options) {
     super();
-    init(this, options, instance$7, create_fragment$7, safe_not_equal, { edit: 0, sys: 1, data: 3 });
+    init(this, options, instance$8, create_fragment$8, safe_not_equal, { edit: 0, sys: 1, data: 3 });
   }
   get edit() {
     return this.$$.ctx[0];
@@ -2840,7 +2833,7 @@ function create_else_block(ctx) {
     }
   };
 }
-function create_if_block$4(ctx) {
+function create_if_block$5(ctx) {
   let div;
   let select;
   let mounted;
@@ -2956,7 +2949,7 @@ function create_each_block$2(ctx) {
     }
   };
 }
-function create_fragment$6(ctx) {
+function create_fragment$7(ctx) {
   let div8;
   let t0;
   let div7;
@@ -2978,7 +2971,7 @@ function create_fragment$6(ctx) {
     if (
       /*edit*/
       ctx2[0]
-    ) return create_if_block$4;
+    ) return create_if_block$5;
     return create_else_block;
   }
   let current_block_type = select_block_type(ctx);
@@ -3076,7 +3069,7 @@ function create_fragment$6(ctx) {
     }
   };
 }
-function instance$6($$self, $$props, $$invalidate) {
+function instance$7($$self, $$props, $$invalidate) {
   let { sys } = $$props;
   let { edit } = $$props;
   let { data } = $$props;
@@ -3150,7 +3143,7 @@ function instance$6($$self, $$props, $$invalidate) {
 class SpellInfo extends SvelteComponent {
   constructor(options) {
     super();
-    init(this, options, instance$6, create_fragment$6, safe_not_equal, { sys: 7, edit: 0, data: 8 });
+    init(this, options, instance$7, create_fragment$7, safe_not_equal, { sys: 7, edit: 0, data: 8 });
   }
   get sys() {
     return this.$$.ctx[7];
@@ -3175,7 +3168,7 @@ class SpellInfo extends SvelteComponent {
   }
 }
 create_custom_element(SpellInfo, { "sys": {}, "edit": {}, "data": {} }, [], [], true);
-function create_fragment$5(ctx) {
+function create_fragment$6(ctx) {
   let div4;
   let div0;
   let t0;
@@ -3295,7 +3288,7 @@ function create_fragment$5(ctx) {
     }
   };
 }
-function instance$5($$self, $$props, $$invalidate) {
+function instance$6($$self, $$props, $$invalidate) {
   let { name: name2 } = $$props;
   let { statNode } = $$props;
   let { modNode } = $$props;
@@ -3347,7 +3340,7 @@ function instance$5($$self, $$props, $$invalidate) {
 class StatValue extends SvelteComponent {
   constructor(options) {
     super();
-    init(this, options, instance$5, create_fragment$5, safe_not_equal, {
+    init(this, options, instance$6, create_fragment$6, safe_not_equal, {
       name: 0,
       statNode: 6,
       modNode: 7,
@@ -3467,7 +3460,7 @@ function create_each_block$1(ctx) {
     }
   };
 }
-function create_fragment$4(ctx) {
+function create_fragment$5(ctx) {
   let div;
   let current;
   let each_value = ensure_array_like(
@@ -3547,7 +3540,7 @@ function create_fragment$4(ctx) {
     }
   };
 }
-function instance$4($$self, $$props, $$invalidate) {
+function instance$5($$self, $$props, $$invalidate) {
   let { sys } = $$props;
   let { edit = false } = $$props;
   let stats = sys.getNodeNames("fixed", "stats");
@@ -3560,7 +3553,7 @@ function instance$4($$self, $$props, $$invalidate) {
 class Stats extends SvelteComponent {
   constructor(options) {
     super();
-    init(this, options, instance$4, create_fragment$4, safe_not_equal, { sys: 0, edit: 1 });
+    init(this, options, instance$5, create_fragment$5, safe_not_equal, { sys: 0, edit: 1 });
   }
   get sys() {
     return this.$$.ctx[0];
@@ -3578,81 +3571,15 @@ class Stats extends SvelteComponent {
   }
 }
 create_custom_element(Stats, { "sys": {}, "edit": { "type": "Boolean" } }, [], [], true);
-function create_if_block$3(ctx) {
-  let div;
-  let t;
-  let if_block0 = (
-    /*hasUp*/
-    ctx[1] && create_if_block_2$3(ctx)
-  );
-  let if_block1 = (
-    /*hasDown*/
-    ctx[2] && create_if_block_1$3(ctx)
-  );
-  return {
-    c() {
-      div = element("div");
-      if (if_block0) if_block0.c();
-      t = space();
-      if (if_block1) if_block1.c();
-      attr(div, "class", "ItemManouverOptions");
-    },
-    m(target, anchor) {
-      insert(target, div, anchor);
-      if (if_block0) if_block0.m(div, null);
-      append(div, t);
-      if (if_block1) if_block1.m(div, null);
-    },
-    p(ctx2, dirty) {
-      if (
-        /*hasUp*/
-        ctx2[1]
-      ) {
-        if (if_block0) {
-          if_block0.p(ctx2, dirty);
-        } else {
-          if_block0 = create_if_block_2$3(ctx2);
-          if_block0.c();
-          if_block0.m(div, t);
-        }
-      } else if (if_block0) {
-        if_block0.d(1);
-        if_block0 = null;
-      }
-      if (
-        /*hasDown*/
-        ctx2[2]
-      ) {
-        if (if_block1) {
-          if_block1.p(ctx2, dirty);
-        } else {
-          if_block1 = create_if_block_1$3(ctx2);
-          if_block1.c();
-          if_block1.m(div, null);
-        }
-      } else if (if_block1) {
-        if_block1.d(1);
-        if_block1 = null;
-      }
-    },
-    d(detaching) {
-      if (detaching) {
-        detach(div);
-      }
-      if (if_block0) if_block0.d();
-      if (if_block1) if_block1.d();
-    }
-  };
-}
-function create_if_block_2$3(ctx) {
+function create_if_block_1$4(ctx) {
   let div;
   let mounted;
   let dispose;
   return {
     c() {
       div = element("div");
-      div.textContent = "Up";
-      attr(div, "class", "ItemManouverOption");
+      div.innerHTML = ``;
+      attr(div, "class", "ItemManouverOption Up");
       attr(div, "role", "none");
     },
     m(target, anchor) {
@@ -3663,12 +3590,53 @@ function create_if_block_2$3(ctx) {
             div,
             "keyup",
             /*keyup_handler*/
-            ctx[7]
+            ctx[6]
           ),
           listen(
             div,
             "click",
             /*moveUp*/
+            ctx[2]
+          )
+        ];
+        mounted = true;
+      }
+    },
+    p: noop,
+    d(detaching) {
+      if (detaching) {
+        detach(div);
+      }
+      mounted = false;
+      run_all(dispose);
+    }
+  };
+}
+function create_if_block$4(ctx) {
+  let div;
+  let mounted;
+  let dispose;
+  return {
+    c() {
+      div = element("div");
+      div.innerHTML = ``;
+      attr(div, "class", "ItemManouverOption Down");
+      attr(div, "role", "none");
+    },
+    m(target, anchor) {
+      insert(target, div, anchor);
+      if (!mounted) {
+        dispose = [
+          listen(
+            div,
+            "keyup",
+            /*keyup_handler_1*/
+            ctx[5]
+          ),
+          listen(
+            div,
+            "click",
+            /*moveDown*/
             ctx[3]
           )
         ];
@@ -3685,94 +3653,77 @@ function create_if_block_2$3(ctx) {
     }
   };
 }
-function create_if_block_1$3(ctx) {
-  let div;
-  let mounted;
-  let dispose;
-  return {
-    c() {
-      div = element("div");
-      div.textContent = "Down";
-      attr(div, "class", "ItemManouverOption");
-      attr(div, "role", "none");
-    },
-    m(target, anchor) {
-      insert(target, div, anchor);
-      if (!mounted) {
-        dispose = [
-          listen(
-            div,
-            "keyup",
-            /*keyup_handler_1*/
-            ctx[6]
-          ),
-          listen(
-            div,
-            "click",
-            /*moveDown*/
-            ctx[4]
-          )
-        ];
-        mounted = true;
-      }
-    },
-    p: noop,
-    d(detaching) {
-      if (detaching) {
-        detach(div);
-      }
-      mounted = false;
-      run_all(dispose);
-    }
-  };
-}
-function create_fragment$3(ctx) {
-  let div;
-  let if_block = (
-    /*editMode*/
-    ctx[0] && create_if_block$3(ctx)
+function create_fragment$4(ctx) {
+  let t;
+  let if_block1_anchor;
+  let if_block0 = (
+    /*hasUp*/
+    ctx[0] && create_if_block_1$4(ctx)
+  );
+  let if_block1 = (
+    /*hasDown*/
+    ctx[1] && create_if_block$4(ctx)
   );
   return {
     c() {
-      div = element("div");
-      if (if_block) if_block.c();
-      attr(div, "class", "ItemManouverContainer");
+      if (if_block0) if_block0.c();
+      t = space();
+      if (if_block1) if_block1.c();
+      if_block1_anchor = empty();
     },
     m(target, anchor) {
-      insert(target, div, anchor);
-      if (if_block) if_block.m(div, null);
+      if (if_block0) if_block0.m(target, anchor);
+      insert(target, t, anchor);
+      if (if_block1) if_block1.m(target, anchor);
+      insert(target, if_block1_anchor, anchor);
     },
     p(ctx2, [dirty]) {
       if (
-        /*editMode*/
+        /*hasUp*/
         ctx2[0]
       ) {
-        if (if_block) {
-          if_block.p(ctx2, dirty);
+        if (if_block0) {
+          if_block0.p(ctx2, dirty);
         } else {
-          if_block = create_if_block$3(ctx2);
-          if_block.c();
-          if_block.m(div, null);
+          if_block0 = create_if_block_1$4(ctx2);
+          if_block0.c();
+          if_block0.m(t.parentNode, t);
         }
-      } else if (if_block) {
-        if_block.d(1);
-        if_block = null;
+      } else if (if_block0) {
+        if_block0.d(1);
+        if_block0 = null;
+      }
+      if (
+        /*hasDown*/
+        ctx2[1]
+      ) {
+        if (if_block1) {
+          if_block1.p(ctx2, dirty);
+        } else {
+          if_block1 = create_if_block$4(ctx2);
+          if_block1.c();
+          if_block1.m(if_block1_anchor.parentNode, if_block1_anchor);
+        }
+      } else if (if_block1) {
+        if_block1.d(1);
+        if_block1 = null;
       }
     },
     i: noop,
     o: noop,
     d(detaching) {
       if (detaching) {
-        detach(div);
+        detach(t);
+        detach(if_block1_anchor);
       }
-      if (if_block) if_block.d();
+      if (if_block0) if_block0.d(detaching);
+      if (if_block1) if_block1.d(detaching);
     }
   };
 }
-function instance$3($$self, $$props, $$invalidate) {
+function instance$4($$self, $$props, $$invalidate) {
   let dispatch2 = createEventDispatcher();
   let { data } = $$props;
-  let { editMode } = $$props;
   let { hasUp } = $$props;
   let { hasDown } = $$props;
   function moveUp() {
@@ -3788,63 +3739,41 @@ function instance$3($$self, $$props, $$invalidate) {
     bubble.call(this, $$self, event);
   }
   $$self.$$set = ($$props2) => {
-    if ("data" in $$props2) $$invalidate(5, data = $$props2.data);
-    if ("editMode" in $$props2) $$invalidate(0, editMode = $$props2.editMode);
-    if ("hasUp" in $$props2) $$invalidate(1, hasUp = $$props2.hasUp);
-    if ("hasDown" in $$props2) $$invalidate(2, hasDown = $$props2.hasDown);
+    if ("data" in $$props2) $$invalidate(4, data = $$props2.data);
+    if ("hasUp" in $$props2) $$invalidate(0, hasUp = $$props2.hasUp);
+    if ("hasDown" in $$props2) $$invalidate(1, hasDown = $$props2.hasDown);
   };
-  return [
-    editMode,
-    hasUp,
-    hasDown,
-    moveUp,
-    moveDown,
-    data,
-    keyup_handler_1,
-    keyup_handler
-  ];
+  return [hasUp, hasDown, moveUp, moveDown, data, keyup_handler_1, keyup_handler];
 }
 class ItemManouver extends SvelteComponent {
   constructor(options) {
     super();
-    init(this, options, instance$3, create_fragment$3, safe_not_equal, {
-      data: 5,
-      editMode: 0,
-      hasUp: 1,
-      hasDown: 2
-    });
+    init(this, options, instance$4, create_fragment$4, safe_not_equal, { data: 4, hasUp: 0, hasDown: 1 });
   }
   get data() {
-    return this.$$.ctx[5];
+    return this.$$.ctx[4];
   }
   set data(data) {
     this.$$set({ data });
     flush();
   }
-  get editMode() {
-    return this.$$.ctx[0];
-  }
-  set editMode(editMode) {
-    this.$$set({ editMode });
-    flush();
-  }
   get hasUp() {
-    return this.$$.ctx[1];
+    return this.$$.ctx[0];
   }
   set hasUp(hasUp) {
     this.$$set({ hasUp });
     flush();
   }
   get hasDown() {
-    return this.$$.ctx[2];
+    return this.$$.ctx[1];
   }
   set hasDown(hasDown) {
     this.$$set({ hasDown });
     flush();
   }
 }
-create_custom_element(ItemManouver, { "data": {}, "editMode": {}, "hasUp": {}, "hasDown": {} }, [], [], true);
-function create_if_block_6(ctx) {
+create_custom_element(ItemManouver, { "data": {}, "hasUp": {}, "hasDown": {} }, [], [], true);
+function create_if_block_5$1(ctx) {
   let itemoptions;
   let updating_data;
   let current;
@@ -3864,7 +3793,7 @@ function create_if_block_6(ctx) {
   itemoptions.$on(
     "optionSelected",
     /*updateData*/
-    ctx[6]
+    ctx[3]
   );
   return {
     c() {
@@ -3899,91 +3828,7 @@ function create_if_block_6(ctx) {
     }
   };
 }
-function create_if_block_5(ctx) {
-  let itemmanouver;
-  let updating_data;
-  let current;
-  function itemmanouver_data_binding(value) {
-    ctx[8](value);
-  }
-  let itemmanouver_props = {
-    editMode: (
-      /*layoutMode*/
-      ctx[5]
-    ),
-    hasDown: (
-      /*index*/
-      ctx[4] != /*length*/
-      ctx[3] - 1
-    ),
-    hasUp: (
-      /*index*/
-      ctx[4] != 0
-    )
-  };
-  if (
-    /*data*/
-    ctx[0] !== void 0
-  ) {
-    itemmanouver_props.data = /*data*/
-    ctx[0];
-  }
-  itemmanouver = new ItemManouver({ props: itemmanouver_props });
-  binding_callbacks.push(() => bind(itemmanouver, "data", itemmanouver_data_binding));
-  itemmanouver.$on(
-    "moveUp",
-    /*moveUp_handler*/
-    ctx[9]
-  );
-  itemmanouver.$on(
-    "moveDown",
-    /*moveDown_handler*/
-    ctx[10]
-  );
-  return {
-    c() {
-      create_component(itemmanouver.$$.fragment);
-    },
-    m(target, anchor) {
-      mount_component(itemmanouver, target, anchor);
-      current = true;
-    },
-    p(ctx2, dirty) {
-      const itemmanouver_changes = {};
-      if (dirty & /*layoutMode*/
-      32) itemmanouver_changes.editMode = /*layoutMode*/
-      ctx2[5];
-      if (dirty & /*index, length*/
-      24) itemmanouver_changes.hasDown = /*index*/
-      ctx2[4] != /*length*/
-      ctx2[3] - 1;
-      if (dirty & /*index*/
-      16) itemmanouver_changes.hasUp = /*index*/
-      ctx2[4] != 0;
-      if (!updating_data && dirty & /*data*/
-      1) {
-        updating_data = true;
-        itemmanouver_changes.data = /*data*/
-        ctx2[0];
-        add_flush_callback(() => updating_data = false);
-      }
-      itemmanouver.$set(itemmanouver_changes);
-    },
-    i(local) {
-      if (current) return;
-      transition_in(itemmanouver.$$.fragment, local);
-      current = true;
-    },
-    o(local) {
-      transition_out(itemmanouver.$$.fragment, local);
-      current = false;
-    },
-    d(detaching) {
-      destroy_component(itemmanouver, detaching);
-    }
-  };
-}
-function create_if_block_4(ctx) {
+function create_if_block_4$1(ctx) {
   let div;
   let stats;
   let div_transition;
@@ -4003,7 +3848,7 @@ function create_if_block_4(ctx) {
   stats.$on(
     "optionSelected",
     /*updateData*/
-    ctx[6]
+    ctx[3]
   );
   return {
     c() {
@@ -4054,14 +3899,14 @@ function create_if_block_4(ctx) {
     }
   };
 }
-function create_if_block_3(ctx) {
+function create_if_block_3$1(ctx) {
   let div;
   let spellinfo;
   let updating_data;
   let div_transition;
   let current;
   function spellinfo_data_binding(value) {
-    ctx[14](value);
+    ctx[11](value);
   }
   let spellinfo_props = {
     edit: (
@@ -4085,7 +3930,7 @@ function create_if_block_3(ctx) {
   spellinfo.$on(
     "optionSelected",
     /*updateData*/
-    ctx[6]
+    ctx[3]
   );
   return {
     c() {
@@ -4150,7 +3995,7 @@ function create_if_block_2$2(ctx) {
   let div_transition;
   let current;
   function skillproficiencycollection_data_binding(value) {
-    ctx[13](value);
+    ctx[10](value);
   }
   let skillproficiencycollection_props = {
     edit: (
@@ -4174,7 +4019,7 @@ function create_if_block_2$2(ctx) {
   skillproficiencycollection.$on(
     "optionSelected",
     /*updateData*/
-    ctx[6]
+    ctx[3]
   );
   return {
     c() {
@@ -4232,14 +4077,14 @@ function create_if_block_2$2(ctx) {
     }
   };
 }
-function create_if_block_1$2(ctx) {
+function create_if_block_1$3(ctx) {
   let div;
   let proficiencybonus;
   let updating_data;
   let div_transition;
   let current;
   function proficiencybonus_data_binding(value) {
-    ctx[12](value);
+    ctx[9](value);
   }
   let proficiencybonus_props = {
     sys: (
@@ -4263,7 +4108,7 @@ function create_if_block_1$2(ctx) {
   proficiencybonus.$on(
     "optionSelected",
     /*updateData*/
-    ctx[6]
+    ctx[3]
   );
   return {
     c() {
@@ -4321,14 +4166,14 @@ function create_if_block_1$2(ctx) {
     }
   };
 }
-function create_if_block$2(ctx) {
+function create_if_block$3(ctx) {
   let div;
   let hitpoints;
   let updating_data;
   let div_transition;
   let current;
   function hitpoints_data_binding(value) {
-    ctx[11](value);
+    ctx[8](value);
   }
   let hitpoints_props = {
     sys: (
@@ -4353,7 +4198,7 @@ function create_if_block$2(ctx) {
   hitpoints.$on(
     "optionSelected",
     /*updateData*/
-    ctx[6]
+    ctx[3]
   );
   return {
     c() {
@@ -4411,27 +4256,22 @@ function create_if_block$2(ctx) {
     }
   };
 }
-function create_fragment$2(ctx) {
+function create_fragment$3(ctx) {
   let div;
-  let t0;
-  let t1;
+  let t;
   let current_block_type_index;
-  let if_block2;
+  let if_block1;
   let current;
   let if_block0 = (
     /*editMode*/
-    ctx[1] && create_if_block_6(ctx)
-  );
-  let if_block1 = (
-    /*length*/
-    ctx[3] != 1 && create_if_block_5(ctx)
+    ctx[1] && create_if_block_5$1(ctx)
   );
   const if_block_creators = [
-    create_if_block$2,
-    create_if_block_1$2,
+    create_if_block$3,
+    create_if_block_1$3,
     create_if_block_2$2,
-    create_if_block_3,
-    create_if_block_4
+    create_if_block_3$1,
+    create_if_block_4$1
   ];
   const if_blocks = [];
   function select_block_type(ctx2, dirty) {
@@ -4458,25 +4298,21 @@ function create_fragment$2(ctx) {
     return -1;
   }
   if (~(current_block_type_index = select_block_type(ctx))) {
-    if_block2 = if_blocks[current_block_type_index] = if_block_creators[current_block_type_index](ctx);
+    if_block1 = if_blocks[current_block_type_index] = if_block_creators[current_block_type_index](ctx);
   }
   return {
     c() {
       div = element("div");
       if (if_block0) if_block0.c();
-      t0 = space();
+      t = space();
       if (if_block1) if_block1.c();
-      t1 = space();
-      if (if_block2) if_block2.c();
       attr(div, "data-name", "ItemDestributor");
       attr(div, "class", "itemDestributer");
     },
     m(target, anchor) {
       insert(target, div, anchor);
       if (if_block0) if_block0.m(div, null);
-      append(div, t0);
-      if (if_block1) if_block1.m(div, null);
-      append(div, t1);
+      append(div, t);
       if (~current_block_type_index) {
         if_blocks[current_block_type_index].m(div, null);
       }
@@ -4494,38 +4330,15 @@ function create_fragment$2(ctx) {
             transition_in(if_block0, 1);
           }
         } else {
-          if_block0 = create_if_block_6(ctx2);
+          if_block0 = create_if_block_5$1(ctx2);
           if_block0.c();
           transition_in(if_block0, 1);
-          if_block0.m(div, t0);
+          if_block0.m(div, t);
         }
       } else if (if_block0) {
         group_outros();
         transition_out(if_block0, 1, 1, () => {
           if_block0 = null;
-        });
-        check_outros();
-      }
-      if (
-        /*length*/
-        ctx2[3] != 1
-      ) {
-        if (if_block1) {
-          if_block1.p(ctx2, dirty);
-          if (dirty & /*length*/
-          8) {
-            transition_in(if_block1, 1);
-          }
-        } else {
-          if_block1 = create_if_block_5(ctx2);
-          if_block1.c();
-          transition_in(if_block1, 1);
-          if_block1.m(div, t1);
-        }
-      } else if (if_block1) {
-        group_outros();
-        transition_out(if_block1, 1, 1, () => {
-          if_block1 = null;
         });
         check_outros();
       }
@@ -4536,7 +4349,7 @@ function create_fragment$2(ctx) {
           if_blocks[current_block_type_index].p(ctx2, dirty);
         }
       } else {
-        if (if_block2) {
+        if (if_block1) {
           group_outros();
           transition_out(if_blocks[previous_block_index], 1, 1, () => {
             if_blocks[previous_block_index] = null;
@@ -4544,17 +4357,17 @@ function create_fragment$2(ctx) {
           check_outros();
         }
         if (~current_block_type_index) {
-          if_block2 = if_blocks[current_block_type_index];
-          if (!if_block2) {
-            if_block2 = if_blocks[current_block_type_index] = if_block_creators[current_block_type_index](ctx2);
-            if_block2.c();
+          if_block1 = if_blocks[current_block_type_index];
+          if (!if_block1) {
+            if_block1 = if_blocks[current_block_type_index] = if_block_creators[current_block_type_index](ctx2);
+            if_block1.c();
           } else {
-            if_block2.p(ctx2, dirty);
+            if_block1.p(ctx2, dirty);
           }
-          transition_in(if_block2, 1);
-          if_block2.m(div, null);
+          transition_in(if_block1, 1);
+          if_block1.m(div, null);
         } else {
-          if_block2 = null;
+          if_block1 = null;
         }
       }
     },
@@ -4562,13 +4375,11 @@ function create_fragment$2(ctx) {
       if (current) return;
       transition_in(if_block0);
       transition_in(if_block1);
-      transition_in(if_block2);
       current = true;
     },
     o(local) {
       transition_out(if_block0);
       transition_out(if_block1);
-      transition_out(if_block2);
       current = false;
     },
     d(detaching) {
@@ -4576,14 +4387,13 @@ function create_fragment$2(ctx) {
         detach(div);
       }
       if (if_block0) if_block0.d();
-      if (if_block1) if_block1.d();
       if (~current_block_type_index) {
         if_blocks[current_block_type_index].d();
       }
     }
   };
 }
-function instance$2($$self, $$props, $$invalidate) {
+function instance$3($$self, $$props, $$invalidate) {
   let { data } = $$props;
   let { editMode } = $$props;
   let { sys } = $$props;
@@ -4597,16 +4407,6 @@ function instance$2($$self, $$props, $$invalidate) {
   function itemoptions_data_binding(value) {
     data = value;
     $$invalidate(0, data);
-  }
-  function itemmanouver_data_binding(value) {
-    data = value;
-    $$invalidate(0, data);
-  }
-  function moveUp_handler(event) {
-    bubble.call(this, $$self, event);
-  }
-  function moveDown_handler(event) {
-    bubble.call(this, $$self, event);
   }
   function hitpoints_data_binding(value) {
     data = value;
@@ -4628,22 +4428,19 @@ function instance$2($$self, $$props, $$invalidate) {
     if ("data" in $$props2) $$invalidate(0, data = $$props2.data);
     if ("editMode" in $$props2) $$invalidate(1, editMode = $$props2.editMode);
     if ("sys" in $$props2) $$invalidate(2, sys = $$props2.sys);
-    if ("length" in $$props2) $$invalidate(3, length = $$props2.length);
-    if ("index" in $$props2) $$invalidate(4, index = $$props2.index);
-    if ("layoutMode" in $$props2) $$invalidate(5, layoutMode = $$props2.layoutMode);
+    if ("length" in $$props2) $$invalidate(4, length = $$props2.length);
+    if ("index" in $$props2) $$invalidate(5, index = $$props2.index);
+    if ("layoutMode" in $$props2) $$invalidate(6, layoutMode = $$props2.layoutMode);
   };
   return [
     data,
     editMode,
     sys,
+    updateData,
     length,
     index,
     layoutMode,
-    updateData,
     itemoptions_data_binding,
-    itemmanouver_data_binding,
-    moveUp_handler,
-    moveDown_handler,
     hitpoints_data_binding,
     proficiencybonus_data_binding,
     skillproficiencycollection_data_binding,
@@ -4653,13 +4450,13 @@ function instance$2($$self, $$props, $$invalidate) {
 class ItemDestributor extends SvelteComponent {
   constructor(options) {
     super();
-    init(this, options, instance$2, create_fragment$2, safe_not_equal, {
+    init(this, options, instance$3, create_fragment$3, safe_not_equal, {
       data: 0,
       editMode: 1,
       sys: 2,
-      length: 3,
-      index: 4,
-      layoutMode: 5
+      length: 4,
+      index: 5,
+      layoutMode: 6
     });
   }
   get data() {
@@ -4684,21 +4481,21 @@ class ItemDestributor extends SvelteComponent {
     flush();
   }
   get length() {
-    return this.$$.ctx[3];
+    return this.$$.ctx[4];
   }
   set length(length) {
     this.$$set({ length });
     flush();
   }
   get index() {
-    return this.$$.ctx[4];
+    return this.$$.ctx[5];
   }
   set index(index) {
     this.$$set({ index });
     flush();
   }
   get layoutMode() {
-    return this.$$.ctx[5];
+    return this.$$.ctx[6];
   }
   set layoutMode(layoutMode) {
     this.$$set({ layoutMode });
@@ -4710,51 +4507,41 @@ function customFlip(node, fromTo, params) {
   if (node.style.animation) node.style = null;
   return flip(node, fromTo, params ?? { duration: 500 });
 }
-function create_if_block$1(ctx) {
-  let div;
+function create_if_block$2(ctx) {
   let t;
-  let div_transition;
-  let current;
+  let if_block1_anchor;
   let if_block0 = (
     /*onAdd*/
-    ctx[4] && create_if_block_2$1(ctx)
+    ctx[3] && create_if_block_2$1(ctx)
   );
   let if_block1 = (
     /*onRemove*/
-    ctx[3] && create_if_block_1$1(ctx)
+    ctx[2] && create_if_block_1$2(ctx)
   );
   return {
     c() {
-      div = element("div");
       if (if_block0) if_block0.c();
       t = space();
       if (if_block1) if_block1.c();
-      attr(div, "class", "RowColumnOptions");
-      attr(
-        div,
-        "style",
-        /*cssStyle*/
-        ctx[5]
-      );
+      if_block1_anchor = empty();
     },
     m(target, anchor) {
-      insert(target, div, anchor);
-      if (if_block0) if_block0.m(div, null);
-      append(div, t);
-      if (if_block1) if_block1.m(div, null);
-      current = true;
+      if (if_block0) if_block0.m(target, anchor);
+      insert(target, t, anchor);
+      if (if_block1) if_block1.m(target, anchor);
+      insert(target, if_block1_anchor, anchor);
     },
     p(ctx2, dirty) {
       if (
         /*onAdd*/
-        ctx2[4]
+        ctx2[3]
       ) {
         if (if_block0) {
           if_block0.p(ctx2, dirty);
         } else {
           if_block0 = create_if_block_2$1(ctx2);
           if_block0.c();
-          if_block0.m(div, t);
+          if_block0.m(t.parentNode, t);
         }
       } else if (if_block0) {
         if_block0.d(1);
@@ -4762,79 +4549,65 @@ function create_if_block$1(ctx) {
       }
       if (
         /*onRemove*/
-        ctx2[3]
+        ctx2[2]
       ) {
         if (if_block1) {
           if_block1.p(ctx2, dirty);
         } else {
-          if_block1 = create_if_block_1$1(ctx2);
+          if_block1 = create_if_block_1$2(ctx2);
           if_block1.c();
-          if_block1.m(div, null);
+          if_block1.m(if_block1_anchor.parentNode, if_block1_anchor);
         }
       } else if (if_block1) {
         if_block1.d(1);
         if_block1 = null;
       }
     },
-    i(local) {
-      if (current) return;
-      if (local) {
-        add_render_callback(() => {
-          if (!current) return;
-          if (!div_transition) div_transition = create_bidirectional_transition(div, slide, {}, true);
-          div_transition.run(1);
-        });
-      }
-      current = true;
-    },
-    o(local) {
-      if (local) {
-        if (!div_transition) div_transition = create_bidirectional_transition(div, slide, {}, false);
-        div_transition.run(0);
-      }
-      current = false;
-    },
     d(detaching) {
       if (detaching) {
-        detach(div);
+        detach(t);
+        detach(if_block1_anchor);
       }
-      if (if_block0) if_block0.d();
-      if (if_block1) if_block1.d();
-      if (detaching && div_transition) div_transition.end();
+      if (if_block0) if_block0.d(detaching);
+      if (if_block1) if_block1.d(detaching);
     }
   };
 }
 function create_if_block_2$1(ctx) {
   let div;
-  let t;
+  let span;
+  let t1;
   let mounted;
   let dispose;
   return {
     c() {
       div = element("div");
-      t = text(
+      span = element("span");
+      span.textContent = "+";
+      t1 = text(
         /*addText*/
         ctx[1]
       );
-      attr(div, "class", "itemOption");
+      attr(div, "class", "itemOption add");
       attr(div, "role", "none");
     },
     m(target, anchor) {
       insert(target, div, anchor);
-      append(div, t);
+      append(div, span);
+      append(div, t1);
       if (!mounted) {
         dispose = [
           listen(
             div,
             "keyup",
             /*keyup_handler*/
-            ctx[10]
+            ctx[9]
           ),
           listen(
             div,
             "click",
             /*click_handler*/
-            ctx[11]
+            ctx[10]
           )
         ];
         mounted = true;
@@ -4843,7 +4616,7 @@ function create_if_block_2$1(ctx) {
     p(ctx2, dirty) {
       if (dirty & /*addText*/
       2) set_data(
-        t,
+        t1,
         /*addText*/
         ctx2[1]
       );
@@ -4857,50 +4630,38 @@ function create_if_block_2$1(ctx) {
     }
   };
 }
-function create_if_block_1$1(ctx) {
+function create_if_block_1$2(ctx) {
   let div;
-  let t;
   let mounted;
   let dispose;
   return {
     c() {
       div = element("div");
-      t = text(
-        /*remText*/
-        ctx[2]
-      );
+      div.textContent = "X";
       attr(div, "class", "itemOption rem");
       attr(div, "role", "none");
     },
     m(target, anchor) {
       insert(target, div, anchor);
-      append(div, t);
       if (!mounted) {
         dispose = [
           listen(
             div,
             "keyup",
             /*keyup_handler_1*/
-            ctx[9]
+            ctx[8]
           ),
           listen(
             div,
             "click",
             /*click_handler_1*/
-            ctx[12]
+            ctx[11]
           )
         ];
         mounted = true;
       }
     },
-    p(ctx2, dirty) {
-      if (dirty & /*remText*/
-      4) set_data(
-        t,
-        /*remText*/
-        ctx2[2]
-      );
-    },
+    p: noop,
     d(detaching) {
       if (detaching) {
         detach(div);
@@ -4910,11 +4671,11 @@ function create_if_block_1$1(ctx) {
     }
   };
 }
-function create_fragment$1(ctx) {
+function create_fragment$2(ctx) {
   let if_block_anchor;
   let if_block = (
     /*active*/
-    ctx[0] && create_if_block$1(ctx)
+    ctx[0] && create_if_block$2(ctx)
   );
   return {
     c() {
@@ -4932,30 +4693,18 @@ function create_fragment$1(ctx) {
       ) {
         if (if_block) {
           if_block.p(ctx2, dirty);
-          if (dirty & /*active*/
-          1) {
-            transition_in(if_block, 1);
-          }
         } else {
-          if_block = create_if_block$1(ctx2);
+          if_block = create_if_block$2(ctx2);
           if_block.c();
-          transition_in(if_block, 1);
           if_block.m(if_block_anchor.parentNode, if_block_anchor);
         }
       } else if (if_block) {
-        group_outros();
-        transition_out(if_block, 1, 1, () => {
-          if_block = null;
-        });
-        check_outros();
+        if_block.d(1);
+        if_block = null;
       }
     },
-    i(local) {
-      transition_in(if_block);
-    },
-    o(local) {
-      transition_out(if_block);
-    },
+    i: noop,
+    o: noop,
     d(detaching) {
       if (detaching) {
         detach(if_block_anchor);
@@ -4964,7 +4713,7 @@ function create_fragment$1(ctx) {
     }
   };
 }
-function instance$1($$self, $$props, $$invalidate) {
+function instance$2($$self, $$props, $$invalidate) {
   let { active: active2 } = $$props;
   let { addText = "Add Item" } = $$props;
   let { remText = "Remove This Item" } = $$props;
@@ -4973,7 +4722,6 @@ function instance$1($$self, $$props, $$invalidate) {
   let { verti = "bottom" } = $$props;
   let { onRemove = null } = $$props;
   let { onAdd = null } = $$props;
-  let cssStyle = side + ":" + offset + ";" + verti + ":" + offset + ";";
   function keyup_handler_1(event) {
     bubble.call(this, $$self, event);
   }
@@ -4985,20 +4733,19 @@ function instance$1($$self, $$props, $$invalidate) {
   $$self.$$set = ($$props2) => {
     if ("active" in $$props2) $$invalidate(0, active2 = $$props2.active);
     if ("addText" in $$props2) $$invalidate(1, addText = $$props2.addText);
-    if ("remText" in $$props2) $$invalidate(2, remText = $$props2.remText);
-    if ("offset" in $$props2) $$invalidate(6, offset = $$props2.offset);
-    if ("side" in $$props2) $$invalidate(7, side = $$props2.side);
-    if ("verti" in $$props2) $$invalidate(8, verti = $$props2.verti);
-    if ("onRemove" in $$props2) $$invalidate(3, onRemove = $$props2.onRemove);
-    if ("onAdd" in $$props2) $$invalidate(4, onAdd = $$props2.onAdd);
+    if ("remText" in $$props2) $$invalidate(4, remText = $$props2.remText);
+    if ("offset" in $$props2) $$invalidate(5, offset = $$props2.offset);
+    if ("side" in $$props2) $$invalidate(6, side = $$props2.side);
+    if ("verti" in $$props2) $$invalidate(7, verti = $$props2.verti);
+    if ("onRemove" in $$props2) $$invalidate(2, onRemove = $$props2.onRemove);
+    if ("onAdd" in $$props2) $$invalidate(3, onAdd = $$props2.onAdd);
   };
   return [
     active2,
     addText,
-    remText,
     onRemove,
     onAdd,
-    cssStyle,
+    remText,
     offset,
     side,
     verti,
@@ -5011,15 +4758,15 @@ function instance$1($$self, $$props, $$invalidate) {
 class RowColumnOptions extends SvelteComponent {
   constructor(options) {
     super();
-    init(this, options, instance$1, create_fragment$1, safe_not_equal, {
+    init(this, options, instance$2, create_fragment$2, safe_not_equal, {
       active: 0,
       addText: 1,
-      remText: 2,
-      offset: 6,
-      side: 7,
-      verti: 8,
-      onRemove: 3,
-      onAdd: 4
+      remText: 4,
+      offset: 5,
+      side: 6,
+      verti: 7,
+      onRemove: 2,
+      onAdd: 3
     });
   }
   get active() {
@@ -5037,42 +4784,42 @@ class RowColumnOptions extends SvelteComponent {
     flush();
   }
   get remText() {
-    return this.$$.ctx[2];
+    return this.$$.ctx[4];
   }
   set remText(remText) {
     this.$$set({ remText });
     flush();
   }
   get offset() {
-    return this.$$.ctx[6];
+    return this.$$.ctx[5];
   }
   set offset(offset) {
     this.$$set({ offset });
     flush();
   }
   get side() {
-    return this.$$.ctx[7];
+    return this.$$.ctx[6];
   }
   set side(side) {
     this.$$set({ side });
     flush();
   }
   get verti() {
-    return this.$$.ctx[8];
+    return this.$$.ctx[7];
   }
   set verti(verti) {
     this.$$set({ verti });
     flush();
   }
   get onRemove() {
-    return this.$$.ctx[3];
+    return this.$$.ctx[2];
   }
   set onRemove(onRemove) {
     this.$$set({ onRemove });
     flush();
   }
   get onAdd() {
-    return this.$$.ctx[4];
+    return this.$$.ctx[3];
   }
   set onAdd(onAdd) {
     this.$$set({ onAdd });
@@ -5080,101 +4827,458 @@ class RowColumnOptions extends SvelteComponent {
   }
 }
 create_custom_element(RowColumnOptions, { "active": {}, "addText": {}, "remText": {}, "offset": {}, "side": {}, "verti": {}, "onRemove": {}, "onAdd": {} }, [], [], true);
-function get_each_context(ctx, list, i) {
-  const child_ctx = ctx.slice();
-  child_ctx[46] = list[i];
-  child_ctx[48] = i;
-  return child_ctx;
-}
-function get_each_context_1(ctx, list, i) {
-  const child_ctx = ctx.slice();
-  child_ctx[49] = list[i];
-  child_ctx[51] = i;
-  return child_ctx;
-}
-function get_each_context_2(ctx, list, i) {
-  const child_ctx = ctx.slice();
-  child_ctx[52] = list[i];
-  child_ctx[54] = i;
-  return child_ctx;
-}
-function create_if_block_2(ctx) {
-  let rowcolumnoptions;
-  let current;
-  function func_2() {
-    return (
-      /*func_2*/
-      ctx[24](
-        /*row*/
-        ctx[46],
-        /*column*/
-        ctx[49]
-      )
-    );
-  }
-  rowcolumnoptions = new RowColumnOptions({
-    props: {
-      offset: 15,
-      active: (
-        /*$editLayout_02*/
-        ctx[3]
-      ),
-      remText: "remove this column",
-      onRemove: func_2
-    }
-  });
-  return {
-    c() {
-      create_component(rowcolumnoptions.$$.fragment);
-    },
-    m(target, anchor) {
-      mount_component(rowcolumnoptions, target, anchor);
-      current = true;
-    },
-    p(new_ctx, dirty) {
-      ctx = new_ctx;
-      const rowcolumnoptions_changes = {};
-      if (dirty[0] & /*$editLayout_02*/
-      8) rowcolumnoptions_changes.active = /*$editLayout_02*/
-      ctx[3];
-      if (dirty[0] & /*$OBJ*/
-      64) rowcolumnoptions_changes.onRemove = func_2;
-      rowcolumnoptions.$set(rowcolumnoptions_changes);
-    },
-    i(local) {
-      if (current) return;
-      transition_in(rowcolumnoptions.$$.fragment, local);
-      current = true;
-    },
-    o(local) {
-      transition_out(rowcolumnoptions.$$.fragment, local);
-      current = false;
-    },
-    d(detaching) {
-      destroy_component(rowcolumnoptions, detaching);
-    }
-  };
-}
-function create_if_block_1(ctx) {
+function create_if_block_1$1(ctx) {
   let div;
+  let div_transition;
+  let current;
   return {
     c() {
       div = element("div");
-      set_style(div, "height", "50px");
+      div.textContent = "Saving..";
+      attr(div, "class", "spinner");
+      attr(div, "data-state", "finished");
     },
     m(target, anchor) {
       insert(target, div, anchor);
+      current = true;
+    },
+    i(local) {
+      if (current) return;
+      if (local) {
+        add_render_callback(() => {
+          if (!current) return;
+          if (!div_transition) div_transition = create_bidirectional_transition(div, fly, { x: 100 }, true);
+          div_transition.run(1);
+        });
+      }
+      current = true;
+    },
+    o(local) {
+      if (local) {
+        if (!div_transition) div_transition = create_bidirectional_transition(div, fly, { x: 100 }, false);
+        div_transition.run(0);
+      }
+      current = false;
     },
     d(detaching) {
       if (detaching) {
         detach(div);
       }
+      if (detaching && div_transition) div_transition.end();
+    }
+  };
+}
+function create_if_block$1(ctx) {
+  let div;
+  let div_transition;
+  let current;
+  return {
+    c() {
+      div = element("div");
+      div.textContent = "Editing..";
+      attr(div, "class", "spinner");
+      attr(div, "data-state", "ongoing");
+    },
+    m(target, anchor) {
+      insert(target, div, anchor);
+      current = true;
+    },
+    i(local) {
+      if (current) return;
+      if (local) {
+        add_render_callback(() => {
+          if (!current) return;
+          if (!div_transition) div_transition = create_bidirectional_transition(div, fly, { x: 100 }, true);
+          div_transition.run(1);
+        });
+      }
+      current = true;
+    },
+    o(local) {
+      if (local) {
+        if (!div_transition) div_transition = create_bidirectional_transition(div, fly, { x: 100 }, false);
+        div_transition.run(0);
+      }
+      current = false;
+    },
+    d(detaching) {
+      if (detaching) {
+        detach(div);
+      }
+      if (detaching && div_transition) div_transition.end();
+    }
+  };
+}
+function create_fragment$1(ctx) {
+  let div;
+  let current_block_type_index;
+  let if_block;
+  const if_block_creators = [create_if_block$1, create_if_block_1$1];
+  const if_blocks = [];
+  function select_block_type(ctx2, dirty) {
+    if (
+      /*_active*/
+      ctx2[1]
+    ) return 0;
+    if (
+      /*_subActive*/
+      ctx2[2]
+    ) return 1;
+    return -1;
+  }
+  if (~(current_block_type_index = select_block_type(ctx))) {
+    if_block = if_blocks[current_block_type_index] = if_block_creators[current_block_type_index](ctx);
+  }
+  return {
+    c() {
+      div = element("div");
+      if (if_block) if_block.c();
+      attr(div, "class", "LoadingSpinner");
+    },
+    m(target, anchor) {
+      insert(target, div, anchor);
+      if (~current_block_type_index) {
+        if_blocks[current_block_type_index].m(div, null);
+      }
+    },
+    p(ctx2, [dirty]) {
+      let previous_block_index = current_block_type_index;
+      current_block_type_index = select_block_type(ctx2);
+      if (current_block_type_index !== previous_block_index) {
+        if (if_block) {
+          group_outros();
+          transition_out(if_blocks[previous_block_index], 1, 1, () => {
+            if_blocks[previous_block_index] = null;
+          });
+          check_outros();
+        }
+        if (~current_block_type_index) {
+          if_block = if_blocks[current_block_type_index];
+          if (!if_block) {
+            if_block = if_blocks[current_block_type_index] = if_block_creators[current_block_type_index](ctx2);
+            if_block.c();
+          }
+          transition_in(if_block, 1);
+          if_block.m(div, null);
+        } else {
+          if_block = null;
+        }
+      }
+    },
+    i(local) {
+      transition_in(if_block);
+    },
+    o(local) {
+      transition_out(if_block);
+    },
+    d(detaching) {
+      if (detaching) {
+        detach(div);
+      }
+      if (~current_block_type_index) {
+        if_blocks[current_block_type_index].d();
+      }
+    }
+  };
+}
+function instance$1($$self, $$props, $$invalidate) {
+  let $active, $$unsubscribe_active = noop, $$subscribe_active = () => ($$unsubscribe_active(), $$unsubscribe_active = subscribe(active2, ($$value) => $$invalidate(3, $active = $$value)), active2);
+  $$self.$$.on_destroy.push(() => $$unsubscribe_active());
+  let { active: active2 } = $$props;
+  $$subscribe_active();
+  let _active;
+  let _subActive;
+  active2.subscribe((p) => {
+    if (!p) {
+      $$invalidate(1, _active = false);
+      $$invalidate(2, _subActive = true);
+      scheduleSubDeactivation();
+    } else {
+      $$invalidate(1, _active = true);
+      $$invalidate(2, _subActive = true);
+    }
+  });
+  function scheduleSubDeactivation() {
+    setTimeout(
+      () => {
+        if (!$active) $$invalidate(2, _subActive = false);
+      },
+      1e3
+    );
+  }
+  $$self.$$set = ($$props2) => {
+    if ("active" in $$props2) $$subscribe_active($$invalidate(0, active2 = $$props2.active));
+  };
+  return [active2, _active, _subActive];
+}
+class LoadingSpinner extends SvelteComponent {
+  constructor(options) {
+    super();
+    init(this, options, instance$1, create_fragment$1, safe_not_equal, { active: 0 });
+  }
+  get active() {
+    return this.$$.ctx[0];
+  }
+  set active(active2) {
+    this.$$set({ active: active2 });
+    flush();
+  }
+}
+create_custom_element(LoadingSpinner, { "active": {} }, [], [], true);
+function get_each_context(ctx, list, i) {
+  const child_ctx = ctx.slice();
+  child_ctx[56] = list[i];
+  child_ctx[58] = i;
+  return child_ctx;
+}
+function get_each_context_1(ctx, list, i) {
+  const child_ctx = ctx.slice();
+  child_ctx[59] = list[i];
+  child_ctx[61] = i;
+  return child_ctx;
+}
+function get_each_context_2(ctx, list, i) {
+  const child_ctx = ctx.slice();
+  child_ctx[62] = list[i];
+  child_ctx[63] = list;
+  child_ctx[64] = i;
+  return child_ctx;
+}
+function create_if_block_5(ctx) {
+  let div1;
+  let div0;
+  let mounted;
+  let dispose;
+  function click_handler_4() {
+    return (
+      /*click_handler_4*/
+      ctx[28](
+        /*row*/
+        ctx[56]
+      )
+    );
+  }
+  return {
+    c() {
+      div1 = element("div");
+      div0 = element("div");
+      div0.innerHTML = ``;
+      attr(div0, "class", "remRow");
+      attr(div0, "role", "none");
+      attr(div1, "class", "manouverHeader");
+    },
+    m(target, anchor) {
+      insert(target, div1, anchor);
+      append(div1, div0);
+      if (!mounted) {
+        dispose = [
+          listen(
+            div0,
+            "keypress",
+            /*keypress_handler*/
+            ctx[23]
+          ),
+          listen(div0, "click", click_handler_4)
+        ];
+        mounted = true;
+      }
+    },
+    p(new_ctx, dirty) {
+      ctx = new_ctx;
+    },
+    d(detaching) {
+      if (detaching) {
+        detach(div1);
+      }
+      mounted = false;
+      run_all(dispose);
+    }
+  };
+}
+function create_if_block_4(ctx) {
+  let div1;
+  let div0;
+  let mounted;
+  let dispose;
+  function click_handler_5() {
+    return (
+      /*click_handler_5*/
+      ctx[29](
+        /*row*/
+        ctx[56],
+        /*column*/
+        ctx[59]
+      )
+    );
+  }
+  return {
+    c() {
+      div1 = element("div");
+      div0 = element("div");
+      div0.innerHTML = ``;
+      attr(div0, "class", "remRow");
+      attr(div0, "role", "none");
+      attr(div1, "class", "manouverHeader");
+    },
+    m(target, anchor) {
+      insert(target, div1, anchor);
+      append(div1, div0);
+      if (!mounted) {
+        dispose = [
+          listen(
+            div0,
+            "keypress",
+            /*keypress_handler_1*/
+            ctx[22]
+          ),
+          listen(div0, "click", click_handler_5)
+        ];
+        mounted = true;
+      }
+    },
+    p(new_ctx, dirty) {
+      ctx = new_ctx;
+    },
+    d(detaching) {
+      if (detaching) {
+        detach(div1);
+      }
+      mounted = false;
+      run_all(dispose);
+    }
+  };
+}
+function create_if_block_3(ctx) {
+  let div1;
+  let div0;
+  let t;
+  let itemmanouver;
+  let updating_data;
+  let current;
+  let mounted;
+  let dispose;
+  function click_handler_6() {
+    return (
+      /*click_handler_6*/
+      ctx[30](
+        /*column*/
+        ctx[59],
+        /*item*/
+        ctx[62]
+      )
+    );
+  }
+  function itemmanouver_data_binding(value) {
+    ctx[31](
+      value,
+      /*item*/
+      ctx[62],
+      /*each_value_2*/
+      ctx[63],
+      /*k*/
+      ctx[64]
+    );
+  }
+  let itemmanouver_props = {
+    hasDown: (
+      /*k*/
+      ctx[64] != /*column*/
+      ctx[59].data.length - 1
+    ),
+    hasUp: (
+      /*k*/
+      ctx[64] != 0
+    )
+  };
+  if (
+    /*item*/
+    ctx[62] !== void 0
+  ) {
+    itemmanouver_props.data = /*item*/
+    ctx[62];
+  }
+  itemmanouver = new ItemManouver({ props: itemmanouver_props });
+  binding_callbacks.push(() => bind(itemmanouver, "data", itemmanouver_data_binding));
+  itemmanouver.$on(
+    "moveUp",
+    /*moveUp_handler*/
+    ctx[32]
+  );
+  itemmanouver.$on(
+    "moveDown",
+    /*moveDown_handler*/
+    ctx[33]
+  );
+  return {
+    c() {
+      div1 = element("div");
+      div0 = element("div");
+      div0.innerHTML = ``;
+      t = space();
+      create_component(itemmanouver.$$.fragment);
+      attr(div0, "class", "remItem");
+      attr(div0, "role", "none");
+      attr(div1, "class", "manouverHeader");
+    },
+    m(target, anchor) {
+      insert(target, div1, anchor);
+      append(div1, div0);
+      append(div1, t);
+      mount_component(itemmanouver, div1, null);
+      current = true;
+      if (!mounted) {
+        dispose = [
+          listen(div0, "click", click_handler_6),
+          listen(
+            div0,
+            "keypress",
+            /*keypress_handler_2*/
+            ctx[21]
+          )
+        ];
+        mounted = true;
+      }
+    },
+    p(new_ctx, dirty) {
+      ctx = new_ctx;
+      const itemmanouver_changes = {};
+      if (dirty[0] & /*$OBJ*/
+      32) itemmanouver_changes.hasDown = /*k*/
+      ctx[64] != /*column*/
+      ctx[59].data.length - 1;
+      if (dirty[0] & /*$OBJ*/
+      32) itemmanouver_changes.hasUp = /*k*/
+      ctx[64] != 0;
+      if (!updating_data && dirty[0] & /*$OBJ*/
+      32) {
+        updating_data = true;
+        itemmanouver_changes.data = /*item*/
+        ctx[62];
+        add_flush_callback(() => updating_data = false);
+      }
+      itemmanouver.$set(itemmanouver_changes);
+    },
+    i(local) {
+      if (current) return;
+      transition_in(itemmanouver.$$.fragment, local);
+      current = true;
+    },
+    o(local) {
+      transition_out(itemmanouver.$$.fragment, local);
+      current = false;
+    },
+    d(detaching) {
+      if (detaching) {
+        detach(div1);
+      }
+      destroy_component(itemmanouver);
+      mounted = false;
+      run_all(dispose);
     }
   };
 }
 function create_each_block_2(key_1, ctx) {
   let div;
-  let rowcolumnoptions;
   let t;
   let itemdestributor;
   let div_data_edit_value;
@@ -5186,41 +5290,23 @@ function create_each_block_2(key_1, ctx) {
   let current;
   let mounted;
   let dispose;
-  function func_4() {
-    return (
-      /*func_4*/
-      ctx[26](
-        /*column*/
-        ctx[49],
-        /*item*/
-        ctx[52]
-      )
-    );
-  }
-  rowcolumnoptions = new RowColumnOptions({
-    props: {
-      offset: 15,
-      active: (
-        /*$editLayout_03*/
-        ctx[2]
-      ),
-      addText: "remove",
-      onRemove: func_4
-    }
-  });
+  let if_block = (
+    /*$editLayout_03*/
+    ctx[1] && create_if_block_3(ctx)
+  );
   itemdestributor = new ItemDestributor({
     props: {
       data: (
         /*item*/
-        ctx[52]
+        ctx[62]
       ),
       editMode: (
         /*$editMode*/
-        ctx[5]
+        ctx[4]
       ),
       layoutMode: (
         /*$editLayout_03*/
-        ctx[2]
+        ctx[1]
       ),
       sys: (
         /*sys*/
@@ -5228,30 +5314,30 @@ function create_each_block_2(key_1, ctx) {
       ),
       length: (
         /*column*/
-        ctx[49].data.length
+        ctx[59].data.length
       ),
       index: (
         /*k*/
-        ctx[54]
+        ctx[64]
       )
     }
   });
   itemdestributor.$on(
     "moveUp",
-    /*moveUp_handler*/
-    ctx[27]
+    /*moveUp_handler_1*/
+    ctx[34]
   );
   itemdestributor.$on(
     "moveDown",
-    /*moveDown_handler*/
-    ctx[28]
+    /*moveDown_handler_1*/
+    ctx[35]
   );
   function dragstart_handler(...args) {
     return (
       /*dragstart_handler*/
-      ctx[29](
+      ctx[36](
         /*item*/
-        ctx[52],
+        ctx[62],
         ...args
       )
     );
@@ -5259,9 +5345,9 @@ function create_each_block_2(key_1, ctx) {
   function dragend_handler(...args) {
     return (
       /*dragend_handler*/
-      ctx[30](
+      ctx[37](
         /*item*/
-        ctx[52],
+        ctx[62],
         ...args
       )
     );
@@ -5269,9 +5355,9 @@ function create_each_block_2(key_1, ctx) {
   function drop_handler(...args) {
     return (
       /*drop_handler*/
-      ctx[31](
+      ctx[38](
         /*item*/
-        ctx[52],
+        ctx[62],
         ...args
       )
     );
@@ -5279,9 +5365,9 @@ function create_each_block_2(key_1, ctx) {
   function dragleave_handler(...args) {
     return (
       /*dragleave_handler*/
-      ctx[32](
+      ctx[39](
         /*item*/
-        ctx[52],
+        ctx[62],
         ...args
       )
     );
@@ -5291,39 +5377,39 @@ function create_each_block_2(key_1, ctx) {
     first: null,
     c() {
       div = element("div");
-      create_component(rowcolumnoptions.$$.fragment);
+      if (if_block) if_block.c();
       t = space();
       create_component(itemdestributor.$$.fragment);
       attr(div, "class", "Item");
       attr(div, "data-edit", div_data_edit_value = /*$editMode*/
-      ctx[5] || /*$editLayout_03*/
-      ctx[2] || /*$editLayout_02*/
-      ctx[3]);
+      ctx[4] || /*$editLayout_03*/
+      ctx[1] || /*$editLayout_02*/
+      ctx[2]);
       attr(div, "data-itemid", div_data_itemid_value = /*item*/
-      ctx[52].id);
+      ctx[62].id);
       attr(
         div,
         "data-edit-active",
         /*$editLayout_03*/
-        ctx[2]
+        ctx[1]
       );
       attr(div, "data-dragging", div_data_dragging_value = /*DragItemHandler*/
       ctx[15].isBeingDragged(
         /*item*/
-        ctx[52].id
+        ctx[62].id
       ));
       attr(div, "role", "none");
       attr(
         div,
         "draggable",
         /*$editLayout_03*/
-        ctx[2]
+        ctx[1]
       );
       this.first = div;
     },
     m(target, anchor) {
       insert(target, div, anchor);
-      mount_component(rowcolumnoptions, div, null);
+      if (if_block) if_block.m(div, null);
       append(div, t);
       mount_component(itemdestributor, div, null);
       current = true;
@@ -5340,69 +5426,85 @@ function create_each_block_2(key_1, ctx) {
     },
     p(new_ctx, dirty) {
       ctx = new_ctx;
-      const rowcolumnoptions_changes = {};
-      if (dirty[0] & /*$editLayout_03*/
-      4) rowcolumnoptions_changes.active = /*$editLayout_03*/
-      ctx[2];
-      if (dirty[0] & /*$OBJ*/
-      64) rowcolumnoptions_changes.onRemove = func_4;
-      rowcolumnoptions.$set(rowcolumnoptions_changes);
+      if (
+        /*$editLayout_03*/
+        ctx[1]
+      ) {
+        if (if_block) {
+          if_block.p(ctx, dirty);
+          if (dirty[0] & /*$editLayout_03*/
+          2) {
+            transition_in(if_block, 1);
+          }
+        } else {
+          if_block = create_if_block_3(ctx);
+          if_block.c();
+          transition_in(if_block, 1);
+          if_block.m(div, t);
+        }
+      } else if (if_block) {
+        group_outros();
+        transition_out(if_block, 1, 1, () => {
+          if_block = null;
+        });
+        check_outros();
+      }
       const itemdestributor_changes = {};
       if (dirty[0] & /*$OBJ*/
-      64) itemdestributor_changes.data = /*item*/
-      ctx[52];
+      32) itemdestributor_changes.data = /*item*/
+      ctx[62];
       if (dirty[0] & /*$editMode*/
-      32) itemdestributor_changes.editMode = /*$editMode*/
-      ctx[5];
+      16) itemdestributor_changes.editMode = /*$editMode*/
+      ctx[4];
       if (dirty[0] & /*$editLayout_03*/
-      4) itemdestributor_changes.layoutMode = /*$editLayout_03*/
-      ctx[2];
+      2) itemdestributor_changes.layoutMode = /*$editLayout_03*/
+      ctx[1];
       if (dirty[0] & /*sys*/
       1) itemdestributor_changes.sys = /*sys*/
       ctx[0];
       if (dirty[0] & /*$OBJ*/
-      64) itemdestributor_changes.length = /*column*/
-      ctx[49].data.length;
+      32) itemdestributor_changes.length = /*column*/
+      ctx[59].data.length;
       if (dirty[0] & /*$OBJ*/
-      64) itemdestributor_changes.index = /*k*/
-      ctx[54];
+      32) itemdestributor_changes.index = /*k*/
+      ctx[64];
       itemdestributor.$set(itemdestributor_changes);
       if (!current || dirty[0] & /*$editMode, $editLayout_03, $editLayout_02*/
-      44 && div_data_edit_value !== (div_data_edit_value = /*$editMode*/
-      ctx[5] || /*$editLayout_03*/
-      ctx[2] || /*$editLayout_02*/
-      ctx[3])) {
+      22 && div_data_edit_value !== (div_data_edit_value = /*$editMode*/
+      ctx[4] || /*$editLayout_03*/
+      ctx[1] || /*$editLayout_02*/
+      ctx[2])) {
         attr(div, "data-edit", div_data_edit_value);
       }
       if (!current || dirty[0] & /*$OBJ*/
-      64 && div_data_itemid_value !== (div_data_itemid_value = /*item*/
-      ctx[52].id)) {
+      32 && div_data_itemid_value !== (div_data_itemid_value = /*item*/
+      ctx[62].id)) {
         attr(div, "data-itemid", div_data_itemid_value);
       }
       if (!current || dirty[0] & /*$editLayout_03*/
-      4) {
+      2) {
         attr(
           div,
           "data-edit-active",
           /*$editLayout_03*/
-          ctx[2]
+          ctx[1]
         );
       }
       if (!current || dirty[0] & /*$OBJ*/
-      64 && div_data_dragging_value !== (div_data_dragging_value = /*DragItemHandler*/
+      32 && div_data_dragging_value !== (div_data_dragging_value = /*DragItemHandler*/
       ctx[15].isBeingDragged(
         /*item*/
-        ctx[52].id
+        ctx[62].id
       ))) {
         attr(div, "data-dragging", div_data_dragging_value);
       }
       if (!current || dirty[0] & /*$editLayout_03*/
-      4) {
+      2) {
         attr(
           div,
           "draggable",
           /*$editLayout_03*/
-          ctx[2]
+          ctx[1]
         );
       }
     },
@@ -5420,7 +5522,7 @@ function create_each_block_2(key_1, ctx) {
     },
     i(local) {
       if (current) return;
-      transition_in(rowcolumnoptions.$$.fragment, local);
+      transition_in(if_block);
       transition_in(itemdestributor.$$.fragment, local);
       if (local) {
         add_render_callback(() => {
@@ -5432,7 +5534,7 @@ function create_each_block_2(key_1, ctx) {
       current = true;
     },
     o(local) {
-      transition_out(rowcolumnoptions.$$.fragment, local);
+      transition_out(if_block);
       transition_out(itemdestributor.$$.fragment, local);
       if (local) {
         if (!div_transition) div_transition = create_bidirectional_transition(div, fade, { duration: ANIMATION_TIME }, false);
@@ -5444,8 +5546,78 @@ function create_each_block_2(key_1, ctx) {
       if (detaching) {
         detach(div);
       }
-      destroy_component(rowcolumnoptions);
+      if (if_block) if_block.d();
       destroy_component(itemdestributor);
+      if (detaching && div_transition) div_transition.end();
+      mounted = false;
+      run_all(dispose);
+    }
+  };
+}
+function create_if_block_2(ctx) {
+  let div;
+  let div_transition;
+  let current;
+  let mounted;
+  let dispose;
+  function click_handler_7() {
+    return (
+      /*click_handler_7*/
+      ctx[40](
+        /*column*/
+        ctx[59]
+      )
+    );
+  }
+  return {
+    c() {
+      div = element("div");
+      div.innerHTML = `<span>+</span> add item`;
+      attr(div, "class", "AddItem");
+      attr(div, "data-edit", "true");
+      attr(div, "role", "none");
+    },
+    m(target, anchor) {
+      insert(target, div, anchor);
+      current = true;
+      if (!mounted) {
+        dispose = [
+          listen(div, "click", click_handler_7),
+          listen(
+            div,
+            "keypress",
+            /*keypress_handler_3*/
+            ctx[20]
+          )
+        ];
+        mounted = true;
+      }
+    },
+    p(new_ctx, dirty) {
+      ctx = new_ctx;
+    },
+    i(local) {
+      if (current) return;
+      if (local) {
+        add_render_callback(() => {
+          if (!current) return;
+          if (!div_transition) div_transition = create_bidirectional_transition(div, fly, { duration: ANIMATION_TIME, y: 100 }, true);
+          div_transition.run(1);
+        });
+      }
+      current = true;
+    },
+    o(local) {
+      if (local) {
+        if (!div_transition) div_transition = create_bidirectional_transition(div, fly, { duration: ANIMATION_TIME, y: 100 }, false);
+        div_transition.run(0);
+      }
+      current = false;
+    },
+    d(detaching) {
+      if (detaching) {
+        detach(div);
+      }
       if (detaching && div_transition) div_transition.end();
       mounted = false;
       run_all(dispose);
@@ -5455,15 +5627,12 @@ function create_each_block_2(key_1, ctx) {
 function create_each_block_1(key_1, ctx) {
   let div;
   let t0;
-  let rowcolumnoptions;
-  let t1;
-  let t2;
   let each_blocks = [];
   let each_1_lookup = /* @__PURE__ */ new Map();
+  let t1;
   let div_data_edit_value;
   let div_data_itemid_value;
   let div_data_dragging_value;
-  let div_style_value;
   let div_transition;
   let rect;
   let stop_animation = noop;
@@ -5471,53 +5640,32 @@ function create_each_block_1(key_1, ctx) {
   let mounted;
   let dispose;
   let if_block0 = (
-    /*row*/
-    ctx[46].data.length > 1 && create_if_block_2(ctx)
-  );
-  function func_3() {
-    return (
-      /*func_3*/
-      ctx[25](
-        /*column*/
-        ctx[49]
-      )
-    );
-  }
-  rowcolumnoptions = new RowColumnOptions({
-    props: {
-      offset: 15,
-      active: (
-        /*$editLayout_03*/
-        ctx[2]
-      ),
-      addText: "add a new Item",
-      onAdd: func_3
-    }
-  });
-  let if_block1 = (
-    /*$editLayout_03*/
-    (ctx[2] || /*$editLayout_02*/
-    ctx[3]) && create_if_block_1()
+    /*$editLayout_02*/
+    ctx[2] && create_if_block_4(ctx)
   );
   let each_value_2 = ensure_array_like(
     /*column*/
-    ctx[49].data
+    ctx[59].data
   );
   const get_key = (ctx2) => (
     /*item*/
-    ctx2[52].id
+    ctx2[62].id
   );
   for (let i = 0; i < each_value_2.length; i += 1) {
     let child_ctx = get_each_context_2(ctx, each_value_2, i);
     let key = get_key(child_ctx);
     each_1_lookup.set(key, each_blocks[i] = create_each_block_2(key, child_ctx));
   }
+  let if_block1 = (
+    /*$editLayout_03*/
+    ctx[1] && create_if_block_2(ctx)
+  );
   function dragstart_handler_1(...args) {
     return (
       /*dragstart_handler_1*/
-      ctx[33](
+      ctx[41](
         /*column*/
-        ctx[49],
+        ctx[59],
         ...args
       )
     );
@@ -5525,9 +5673,9 @@ function create_each_block_1(key_1, ctx) {
   function dragenter_handler(...args) {
     return (
       /*dragenter_handler*/
-      ctx[34](
+      ctx[42](
         /*column*/
-        ctx[49],
+        ctx[59],
         ...args
       )
     );
@@ -5535,9 +5683,9 @@ function create_each_block_1(key_1, ctx) {
   function dragend_handler_1(...args) {
     return (
       /*dragend_handler_1*/
-      ctx[35](
+      ctx[43](
         /*column*/
-        ctx[49],
+        ctx[59],
         ...args
       )
     );
@@ -5545,9 +5693,9 @@ function create_each_block_1(key_1, ctx) {
   function drop_handler_1(...args) {
     return (
       /*drop_handler_1*/
-      ctx[36](
+      ctx[44](
         /*column*/
-        ctx[49],
+        ctx[59],
         ...args
       )
     );
@@ -5555,9 +5703,9 @@ function create_each_block_1(key_1, ctx) {
   function dragleave_handler_1(...args) {
     return (
       /*dragleave_handler_1*/
-      ctx[37](
+      ctx[45](
         /*column*/
-        ctx[49],
+        ctx[59],
         ...args
       )
     );
@@ -5565,9 +5713,9 @@ function create_each_block_1(key_1, ctx) {
   function dragover_handler_1(...args) {
     return (
       /*dragover_handler_1*/
-      ctx[38](
+      ctx[46](
         /*column*/
-        ctx[49],
+        ctx[59],
         ...args
       )
     );
@@ -5579,47 +5727,40 @@ function create_each_block_1(key_1, ctx) {
       div = element("div");
       if (if_block0) if_block0.c();
       t0 = space();
-      create_component(rowcolumnoptions.$$.fragment);
-      t1 = space();
-      if (if_block1) if_block1.c();
-      t2 = space();
       for (let i = 0; i < each_blocks.length; i += 1) {
         each_blocks[i].c();
       }
+      t1 = space();
+      if (if_block1) if_block1.c();
       attr(div, "class", "Column");
       attr(div, "data-edit", div_data_edit_value = /*$editLayout_02*/
-      ctx[3] || /*$editLayout_01*/
-      ctx[4]);
+      ctx[2] || /*$editLayout_01*/
+      ctx[3]);
       attr(
         div,
         "data-editpreview",
         /*$editLayout_03*/
-        ctx[2]
+        ctx[1]
       );
       attr(div, "data-itemid", div_data_itemid_value = /*column*/
-      ctx[49].id);
+      ctx[59].id);
       attr(
         div,
         "data-edit-active",
         /*$editLayout_02*/
-        ctx[3]
+        ctx[2]
       );
       attr(div, "data-dragging", div_data_dragging_value = /*DragColumnHandler*/
       ctx[14].isBeingDragged(
         /*column*/
-        ctx[49].id
+        ctx[59].id
       ));
       attr(div, "role", "none");
-      attr(div, "style", div_style_value = `
-						${/*$editLayout_02*/
-      ctx[3] || /*$editLayout_01*/
-      ctx[4] ? "margin-bottom:30px" : ""}
-					`);
       attr(
         div,
         "draggable",
         /*$editLayout_02*/
-        ctx[3]
+        ctx[2]
       );
       this.first = div;
     },
@@ -5627,15 +5768,13 @@ function create_each_block_1(key_1, ctx) {
       insert(target, div, anchor);
       if (if_block0) if_block0.m(div, null);
       append(div, t0);
-      mount_component(rowcolumnoptions, div, null);
-      append(div, t1);
-      if (if_block1) if_block1.m(div, null);
-      append(div, t2);
       for (let i = 0; i < each_blocks.length; i += 1) {
         if (each_blocks[i]) {
           each_blocks[i].m(div, null);
         }
       }
+      append(div, t1);
+      if (if_block1) if_block1.m(div, null);
       current = true;
       if (!mounted) {
         dispose = [
@@ -5652,114 +5791,99 @@ function create_each_block_1(key_1, ctx) {
     p(new_ctx, dirty) {
       ctx = new_ctx;
       if (
-        /*row*/
-        ctx[46].data.length > 1
+        /*$editLayout_02*/
+        ctx[2]
       ) {
         if (if_block0) {
           if_block0.p(ctx, dirty);
-          if (dirty[0] & /*$OBJ*/
-          64) {
-            transition_in(if_block0, 1);
-          }
         } else {
-          if_block0 = create_if_block_2(ctx);
+          if_block0 = create_if_block_4(ctx);
           if_block0.c();
-          transition_in(if_block0, 1);
           if_block0.m(div, t0);
         }
       } else if (if_block0) {
-        group_outros();
-        transition_out(if_block0, 1, 1, () => {
-          if_block0 = null;
-        });
-        check_outros();
-      }
-      const rowcolumnoptions_changes = {};
-      if (dirty[0] & /*$editLayout_03*/
-      4) rowcolumnoptions_changes.active = /*$editLayout_03*/
-      ctx[2];
-      if (dirty[0] & /*$OBJ*/
-      64) rowcolumnoptions_changes.onAdd = func_3;
-      rowcolumnoptions.$set(rowcolumnoptions_changes);
-      if (
-        /*$editLayout_03*/
-        ctx[2] || /*$editLayout_02*/
-        ctx[3]
-      ) {
-        if (if_block1) ;
-        else {
-          if_block1 = create_if_block_1();
-          if_block1.c();
-          if_block1.m(div, t2);
-        }
-      } else if (if_block1) {
-        if_block1.d(1);
-        if_block1 = null;
+        if_block0.d(1);
+        if_block0 = null;
       }
       if (dirty[0] & /*$editMode, $editLayout_03, $editLayout_02, $OBJ, DragItemHandler, sys, itemRequestMove, OBJ*/
-      39021) {
+      35895) {
         each_value_2 = ensure_array_like(
           /*column*/
-          ctx[49].data
+          ctx[59].data
         );
         group_outros();
         for (let i = 0; i < each_blocks.length; i += 1) each_blocks[i].r();
-        each_blocks = update_keyed_each(each_blocks, dirty, get_key, 1, ctx, each_value_2, each_1_lookup, div, fix_and_outro_and_destroy_block, create_each_block_2, null, get_each_context_2);
+        each_blocks = update_keyed_each(each_blocks, dirty, get_key, 1, ctx, each_value_2, each_1_lookup, div, fix_and_outro_and_destroy_block, create_each_block_2, t1, get_each_context_2);
         for (let i = 0; i < each_blocks.length; i += 1) each_blocks[i].a();
         check_outros();
       }
+      if (
+        /*$editLayout_03*/
+        ctx[1]
+      ) {
+        if (if_block1) {
+          if_block1.p(ctx, dirty);
+          if (dirty[0] & /*$editLayout_03*/
+          2) {
+            transition_in(if_block1, 1);
+          }
+        } else {
+          if_block1 = create_if_block_2(ctx);
+          if_block1.c();
+          transition_in(if_block1, 1);
+          if_block1.m(div, null);
+        }
+      } else if (if_block1) {
+        group_outros();
+        transition_out(if_block1, 1, 1, () => {
+          if_block1 = null;
+        });
+        check_outros();
+      }
       if (!current || dirty[0] & /*$editLayout_02, $editLayout_01*/
-      24 && div_data_edit_value !== (div_data_edit_value = /*$editLayout_02*/
-      ctx[3] || /*$editLayout_01*/
-      ctx[4])) {
+      12 && div_data_edit_value !== (div_data_edit_value = /*$editLayout_02*/
+      ctx[2] || /*$editLayout_01*/
+      ctx[3])) {
         attr(div, "data-edit", div_data_edit_value);
       }
       if (!current || dirty[0] & /*$editLayout_03*/
-      4) {
+      2) {
         attr(
           div,
           "data-editpreview",
           /*$editLayout_03*/
-          ctx[2]
+          ctx[1]
         );
       }
       if (!current || dirty[0] & /*$OBJ*/
-      64 && div_data_itemid_value !== (div_data_itemid_value = /*column*/
-      ctx[49].id)) {
+      32 && div_data_itemid_value !== (div_data_itemid_value = /*column*/
+      ctx[59].id)) {
         attr(div, "data-itemid", div_data_itemid_value);
       }
       if (!current || dirty[0] & /*$editLayout_02*/
-      8) {
+      4) {
         attr(
           div,
           "data-edit-active",
           /*$editLayout_02*/
-          ctx[3]
+          ctx[2]
         );
       }
       if (!current || dirty[0] & /*$OBJ*/
-      64 && div_data_dragging_value !== (div_data_dragging_value = /*DragColumnHandler*/
+      32 && div_data_dragging_value !== (div_data_dragging_value = /*DragColumnHandler*/
       ctx[14].isBeingDragged(
         /*column*/
-        ctx[49].id
+        ctx[59].id
       ))) {
         attr(div, "data-dragging", div_data_dragging_value);
       }
-      if (!current || dirty[0] & /*$editLayout_02, $editLayout_01*/
-      24 && div_style_value !== (div_style_value = `
-						${/*$editLayout_02*/
-      ctx[3] || /*$editLayout_01*/
-      ctx[4] ? "margin-bottom:30px" : ""}
-					`)) {
-        attr(div, "style", div_style_value);
-      }
       if (!current || dirty[0] & /*$editLayout_02*/
-      8) {
+      4) {
         attr(
           div,
           "draggable",
           /*$editLayout_02*/
-          ctx[3]
+          ctx[2]
         );
       }
     },
@@ -5777,11 +5901,10 @@ function create_each_block_1(key_1, ctx) {
     },
     i(local) {
       if (current) return;
-      transition_in(if_block0);
-      transition_in(rowcolumnoptions.$$.fragment, local);
       for (let i = 0; i < each_value_2.length; i += 1) {
         transition_in(each_blocks[i]);
       }
+      transition_in(if_block1);
       if (local) {
         add_render_callback(() => {
           if (!current) return;
@@ -5792,11 +5915,10 @@ function create_each_block_1(key_1, ctx) {
       current = true;
     },
     o(local) {
-      transition_out(if_block0);
-      transition_out(rowcolumnoptions.$$.fragment, local);
       for (let i = 0; i < each_blocks.length; i += 1) {
         transition_out(each_blocks[i]);
       }
+      transition_out(if_block1);
       if (local) {
         if (!div_transition) div_transition = create_bidirectional_transition(div, fade, { duration: ANIMATION_TIME }, false);
         div_transition.run(0);
@@ -5808,10 +5930,79 @@ function create_each_block_1(key_1, ctx) {
         detach(div);
       }
       if (if_block0) if_block0.d();
-      destroy_component(rowcolumnoptions);
-      if (if_block1) if_block1.d();
       for (let i = 0; i < each_blocks.length; i += 1) {
         each_blocks[i].d();
+      }
+      if (if_block1) if_block1.d();
+      if (detaching && div_transition) div_transition.end();
+      mounted = false;
+      run_all(dispose);
+    }
+  };
+}
+function create_if_block_1(ctx) {
+  let div;
+  let div_transition;
+  let current;
+  let mounted;
+  let dispose;
+  function click_handler_8() {
+    return (
+      /*click_handler_8*/
+      ctx[47](
+        /*row*/
+        ctx[56]
+      )
+    );
+  }
+  return {
+    c() {
+      div = element("div");
+      div.innerHTML = `<span>+</span> add Column`;
+      attr(div, "class", "AddColumn");
+      attr(div, "data-edit", "true");
+      attr(div, "role", "none");
+    },
+    m(target, anchor) {
+      insert(target, div, anchor);
+      current = true;
+      if (!mounted) {
+        dispose = [
+          listen(div, "click", click_handler_8),
+          listen(
+            div,
+            "keypress",
+            /*keypress_handler_4*/
+            ctx[19]
+          )
+        ];
+        mounted = true;
+      }
+    },
+    p(new_ctx, dirty) {
+      ctx = new_ctx;
+    },
+    i(local) {
+      if (current) return;
+      if (local) {
+        add_render_callback(() => {
+          if (!current) return;
+          if (!div_transition) div_transition = create_bidirectional_transition(div, fly, { duration: ANIMATION_TIME, y: 100 }, true);
+          div_transition.run(1);
+        });
+      }
+      current = true;
+    },
+    o(local) {
+      if (local) {
+        if (!div_transition) div_transition = create_bidirectional_transition(div, fly, { duration: ANIMATION_TIME, y: 100 }, false);
+        div_transition.run(0);
+      }
+      current = false;
+    },
+    d(detaching) {
+      if (detaching) {
+        detach(div);
       }
       if (detaching && div_transition) div_transition.end();
       mounted = false;
@@ -5821,12 +6012,10 @@ function create_each_block_1(key_1, ctx) {
 }
 function create_each_block(key_1, ctx) {
   let div;
-  let rowcolumnoptions0;
   let t0;
-  let rowcolumnoptions1;
-  let t1;
   let each_blocks = [];
   let each_1_lookup = /* @__PURE__ */ new Map();
+  let t1;
   let div_style_value;
   let div_data_rowid_value;
   let div_transition;
@@ -5835,63 +6024,33 @@ function create_each_block(key_1, ctx) {
   let current;
   let mounted;
   let dispose;
-  function func() {
-    return (
-      /*func*/
-      ctx[22](
-        /*row*/
-        ctx[46]
-      )
-    );
-  }
-  rowcolumnoptions0 = new RowColumnOptions({
-    props: {
-      active: (
-        /*$editLayout_02*/
-        ctx[3]
-      ),
-      onAdd: func,
-      addText: `add Column`
-    }
-  });
-  function func_1() {
-    return (
-      /*func_1*/
-      ctx[23](
-        /*row*/
-        ctx[46]
-      )
-    );
-  }
-  rowcolumnoptions1 = new RowColumnOptions({
-    props: {
-      active: (
-        /*$editLayout_01*/
-        ctx[4]
-      ),
-      onRemove: func_1,
-      remText: `remove this line`
-    }
-  });
+  let if_block0 = (
+    /*$editLayout_01*/
+    ctx[3] && create_if_block_5(ctx)
+  );
   let each_value_1 = ensure_array_like(
     /*row*/
-    ctx[46].data
+    ctx[56].data
   );
   const get_key = (ctx2) => (
     /*column*/
-    ctx2[49].id
+    ctx2[59].id
   );
   for (let i = 0; i < each_value_1.length; i += 1) {
     let child_ctx = get_each_context_1(ctx, each_value_1, i);
     let key = get_key(child_ctx);
     each_1_lookup.set(key, each_blocks[i] = create_each_block_1(key, child_ctx));
   }
+  let if_block1 = (
+    /*$editLayout_02*/
+    ctx[2] && create_if_block_1(ctx)
+  );
   function dragstart_handler_2(...args) {
     return (
       /*dragstart_handler_2*/
-      ctx[39](
+      ctx[48](
         /*row*/
-        ctx[46],
+        ctx[56],
         ...args
       )
     );
@@ -5899,9 +6058,9 @@ function create_each_block(key_1, ctx) {
   function dragenter_handler_1(...args) {
     return (
       /*dragenter_handler_1*/
-      ctx[40](
+      ctx[49](
         /*row*/
-        ctx[46],
+        ctx[56],
         ...args
       )
     );
@@ -5909,9 +6068,9 @@ function create_each_block(key_1, ctx) {
   function dragend_handler_2(...args) {
     return (
       /*dragend_handler_2*/
-      ctx[41](
+      ctx[50](
         /*row*/
-        ctx[46],
+        ctx[56],
         ...args
       )
     );
@@ -5919,9 +6078,9 @@ function create_each_block(key_1, ctx) {
   function dragover_handler_2(...args) {
     return (
       /*dragover_handler_2*/
-      ctx[42](
+      ctx[51](
         /*row*/
-        ctx[46],
+        ctx[56],
         ...args
       )
     );
@@ -5931,59 +6090,59 @@ function create_each_block(key_1, ctx) {
     first: null,
     c() {
       div = element("div");
-      create_component(rowcolumnoptions0.$$.fragment);
+      if (if_block0) if_block0.c();
       t0 = space();
-      create_component(rowcolumnoptions1.$$.fragment);
-      t1 = space();
       for (let i = 0; i < each_blocks.length; i += 1) {
         each_blocks[i].c();
       }
+      t1 = space();
+      if (if_block1) if_block1.c();
       attr(div, "class", "Row");
       attr(
         div,
         "data-edit",
         /*$editLayout_01*/
-        ctx[4]
+        ctx[3]
       );
       attr(
         div,
         "data-edit-active",
         /*$editLayout_01*/
-        ctx[4]
+        ctx[3]
       );
       attr(
         div,
         "data-editpreview",
         /*$editLayout_02*/
-        ctx[3]
+        ctx[2]
       );
       attr(div, "role", "none");
-      attr(div, "style", div_style_value = `grid-template-columns:${repeat(
+      attr(div, "style", div_style_value = `grid-template-columns: ${repeat(
         /*row*/
-        ctx[46].data.length,
+        ctx[56].data.length,
         "1fr"
-      )}`);
+      )} auto`);
       attr(div, "data-rowid", div_data_rowid_value = /*row*/
-      ctx[46].id);
+      ctx[56].id);
       attr(
         div,
         "draggable",
         /*$editLayout_01*/
-        ctx[4]
+        ctx[3]
       );
       this.first = div;
     },
     m(target, anchor) {
       insert(target, div, anchor);
-      mount_component(rowcolumnoptions0, div, null);
+      if (if_block0) if_block0.m(div, null);
       append(div, t0);
-      mount_component(rowcolumnoptions1, div, null);
-      append(div, t1);
       for (let i = 0; i < each_blocks.length; i += 1) {
         if (each_blocks[i]) {
           each_blocks[i].m(div, null);
         }
       }
+      append(div, t1);
+      if (if_block1) if_block1.m(div, null);
       current = true;
       if (!mounted) {
         dispose = [
@@ -5997,79 +6156,103 @@ function create_each_block(key_1, ctx) {
     },
     p(new_ctx, dirty) {
       ctx = new_ctx;
-      const rowcolumnoptions0_changes = {};
-      if (dirty[0] & /*$editLayout_02*/
-      8) rowcolumnoptions0_changes.active = /*$editLayout_02*/
-      ctx[3];
-      if (dirty[0] & /*$OBJ*/
-      64) rowcolumnoptions0_changes.onAdd = func;
-      rowcolumnoptions0.$set(rowcolumnoptions0_changes);
-      const rowcolumnoptions1_changes = {};
-      if (dirty[0] & /*$editLayout_01*/
-      16) rowcolumnoptions1_changes.active = /*$editLayout_01*/
-      ctx[4];
-      if (dirty[0] & /*$OBJ*/
-      64) rowcolumnoptions1_changes.onRemove = func_1;
-      rowcolumnoptions1.$set(rowcolumnoptions1_changes);
-      if (dirty[0] & /*$editLayout_02, $editLayout_01, $editLayout_03, $OBJ, DragColumnHandler, DragItemHandler, $editMode, sys, itemRequestMove, OBJ*/
-      55421) {
+      if (
+        /*$editLayout_01*/
+        ctx[3]
+      ) {
+        if (if_block0) {
+          if_block0.p(ctx, dirty);
+        } else {
+          if_block0 = create_if_block_5(ctx);
+          if_block0.c();
+          if_block0.m(div, t0);
+        }
+      } else if (if_block0) {
+        if_block0.d(1);
+        if_block0 = null;
+      }
+      if (dirty[0] & /*$editLayout_02, $editLayout_01, $editLayout_03, $OBJ, DragColumnHandler, DragItemHandler, OBJ, $editMode, sys, itemRequestMove*/
+      52287) {
         each_value_1 = ensure_array_like(
           /*row*/
-          ctx[46].data
+          ctx[56].data
         );
         group_outros();
         for (let i = 0; i < each_blocks.length; i += 1) each_blocks[i].r();
-        each_blocks = update_keyed_each(each_blocks, dirty, get_key, 1, ctx, each_value_1, each_1_lookup, div, fix_and_outro_and_destroy_block, create_each_block_1, null, get_each_context_1);
+        each_blocks = update_keyed_each(each_blocks, dirty, get_key, 1, ctx, each_value_1, each_1_lookup, div, fix_and_outro_and_destroy_block, create_each_block_1, t1, get_each_context_1);
         for (let i = 0; i < each_blocks.length; i += 1) each_blocks[i].a();
         check_outros();
       }
+      if (
+        /*$editLayout_02*/
+        ctx[2]
+      ) {
+        if (if_block1) {
+          if_block1.p(ctx, dirty);
+          if (dirty[0] & /*$editLayout_02*/
+          4) {
+            transition_in(if_block1, 1);
+          }
+        } else {
+          if_block1 = create_if_block_1(ctx);
+          if_block1.c();
+          transition_in(if_block1, 1);
+          if_block1.m(div, null);
+        }
+      } else if (if_block1) {
+        group_outros();
+        transition_out(if_block1, 1, 1, () => {
+          if_block1 = null;
+        });
+        check_outros();
+      }
       if (!current || dirty[0] & /*$editLayout_01*/
-      16) {
+      8) {
         attr(
           div,
           "data-edit",
           /*$editLayout_01*/
-          ctx[4]
+          ctx[3]
         );
       }
       if (!current || dirty[0] & /*$editLayout_01*/
-      16) {
+      8) {
         attr(
           div,
           "data-edit-active",
           /*$editLayout_01*/
-          ctx[4]
+          ctx[3]
         );
       }
       if (!current || dirty[0] & /*$editLayout_02*/
-      8) {
+      4) {
         attr(
           div,
           "data-editpreview",
           /*$editLayout_02*/
-          ctx[3]
+          ctx[2]
         );
       }
       if (!current || dirty[0] & /*$OBJ*/
-      64 && div_style_value !== (div_style_value = `grid-template-columns:${repeat(
+      32 && div_style_value !== (div_style_value = `grid-template-columns: ${repeat(
         /*row*/
-        ctx[46].data.length,
+        ctx[56].data.length,
         "1fr"
-      )}`)) {
+      )} auto`)) {
         attr(div, "style", div_style_value);
       }
       if (!current || dirty[0] & /*$OBJ*/
-      64 && div_data_rowid_value !== (div_data_rowid_value = /*row*/
-      ctx[46].id)) {
+      32 && div_data_rowid_value !== (div_data_rowid_value = /*row*/
+      ctx[56].id)) {
         attr(div, "data-rowid", div_data_rowid_value);
       }
       if (!current || dirty[0] & /*$editLayout_01*/
-      16) {
+      8) {
         attr(
           div,
           "draggable",
           /*$editLayout_01*/
-          ctx[4]
+          ctx[3]
         );
       }
     },
@@ -6087,11 +6270,10 @@ function create_each_block(key_1, ctx) {
     },
     i(local) {
       if (current) return;
-      transition_in(rowcolumnoptions0.$$.fragment, local);
-      transition_in(rowcolumnoptions1.$$.fragment, local);
       for (let i = 0; i < each_value_1.length; i += 1) {
         transition_in(each_blocks[i]);
       }
+      transition_in(if_block1);
       if (local) {
         add_render_callback(() => {
           if (!current) return;
@@ -6102,11 +6284,10 @@ function create_each_block(key_1, ctx) {
       current = true;
     },
     o(local) {
-      transition_out(rowcolumnoptions0.$$.fragment, local);
-      transition_out(rowcolumnoptions1.$$.fragment, local);
       for (let i = 0; i < each_blocks.length; i += 1) {
         transition_out(each_blocks[i]);
       }
+      transition_out(if_block1);
       if (local) {
         if (!div_transition) div_transition = create_bidirectional_transition(div, fly, { duration: ANIMATION_TIME, y: 100 }, false);
         div_transition.run(0);
@@ -6117,11 +6298,11 @@ function create_each_block(key_1, ctx) {
       if (detaching) {
         detach(div);
       }
-      destroy_component(rowcolumnoptions0);
-      destroy_component(rowcolumnoptions1);
+      if (if_block0) if_block0.d();
       for (let i = 0; i < each_blocks.length; i += 1) {
         each_blocks[i].d();
       }
+      if (if_block1) if_block1.d();
       if (detaching && div_transition) div_transition.end();
       mounted = false;
       run_all(dispose);
@@ -6130,64 +6311,73 @@ function create_each_block(key_1, ctx) {
 }
 function create_if_block(ctx) {
   let div;
-  let rowcolumnoptions;
+  let div_transition;
   let current;
-  rowcolumnoptions = new RowColumnOptions({
-    props: {
-      active: (
-        /*$editLayout_01*/
-        ctx[4]
-      ),
-      onAdd: (
-        /*func_5*/
-        ctx[43]
-      ),
-      offset: 15,
-      addText: `add Line`
-    }
-  });
+  let mounted;
+  let dispose;
   return {
     c() {
       div = element("div");
-      create_component(rowcolumnoptions.$$.fragment);
-      attr(div, "class", "Row");
-      set_style(div, "height", "100px");
+      div.innerHTML = `<span>+</span> add Row`;
+      attr(div, "class", "AddRow");
+      attr(div, "data-edit", "true");
+      attr(div, "role", "none");
     },
     m(target, anchor) {
       insert(target, div, anchor);
-      mount_component(rowcolumnoptions, div, null);
       current = true;
+      if (!mounted) {
+        dispose = [
+          listen(
+            div,
+            "click",
+            /*click_handler_9*/
+            ctx[52]
+          ),
+          listen(
+            div,
+            "keypress",
+            /*keypress_handler_5*/
+            ctx[18]
+          )
+        ];
+        mounted = true;
+      }
     },
-    p(ctx2, dirty) {
-      const rowcolumnoptions_changes = {};
-      if (dirty[0] & /*$editLayout_01*/
-      16) rowcolumnoptions_changes.active = /*$editLayout_01*/
-      ctx2[4];
-      if (dirty[0] & /*$OBJ*/
-      64) rowcolumnoptions_changes.onAdd = /*func_5*/
-      ctx2[43];
-      rowcolumnoptions.$set(rowcolumnoptions_changes);
+    p(new_ctx, dirty) {
+      ctx = new_ctx;
     },
     i(local) {
       if (current) return;
-      transition_in(rowcolumnoptions.$$.fragment, local);
+      if (local) {
+        add_render_callback(() => {
+          if (!current) return;
+          if (!div_transition) div_transition = create_bidirectional_transition(div, fly, { duration: ANIMATION_TIME, y: 100 }, true);
+          div_transition.run(1);
+        });
+      }
       current = true;
     },
     o(local) {
-      transition_out(rowcolumnoptions.$$.fragment, local);
+      if (local) {
+        if (!div_transition) div_transition = create_bidirectional_transition(div, fly, { duration: ANIMATION_TIME, y: 100 }, false);
+        div_transition.run(0);
+      }
       current = false;
     },
     d(detaching) {
       if (detaching) {
         detach(div);
       }
-      destroy_component(rowcolumnoptions);
+      if (detaching && div_transition) div_transition.end();
+      mounted = false;
+      run_all(dispose);
     }
   };
 }
 function create_fragment(ctx) {
+  let div4;
   let div3;
-  let div2;
   let div1;
   let div0;
   let button0;
@@ -6207,19 +6397,23 @@ function create_fragment(ctx) {
   let t6;
   let div0_data_isopen_value;
   let t7;
+  let div2;
   let each_blocks = [];
   let each_1_lookup = /* @__PURE__ */ new Map();
   let t8;
+  let div2_data_isediting_value;
+  let t9;
+  let loadingspinner;
   let current;
   let mounted;
   let dispose;
   let each_value = ensure_array_like(
     /*$OBJ*/
-    ctx[6].data
+    ctx[5].data
   );
   const get_key = (ctx2) => (
     /*row*/
-    ctx2[46].id
+    ctx2[56].id
   );
   for (let i = 0; i < each_value.length; i += 1) {
     let child_ctx = get_each_context(ctx, each_value, i);
@@ -6228,12 +6422,18 @@ function create_fragment(ctx) {
   }
   let if_block = (
     /*$editLayout_01*/
-    ctx[4] && create_if_block(ctx)
+    ctx[3] && create_if_block(ctx)
   );
+  loadingspinner = new LoadingSpinner({
+    props: { active: (
+      /*editWasClicked*/
+      ctx[12]
+    ) }
+  });
   return {
     c() {
+      div4 = element("div");
       div3 = element("div");
-      div2 = element("div");
       div1 = element("div");
       div0 = element("div");
       button0 = element("button");
@@ -6248,49 +6448,64 @@ function create_fragment(ctx) {
       button3 = element("button");
       t6 = text(t6_value);
       t7 = space();
+      div2 = element("div");
       for (let i = 0; i < each_blocks.length; i += 1) {
         each_blocks[i].c();
       }
       t8 = space();
       if (if_block) if_block.c();
+      t9 = space();
+      create_component(loadingspinner.$$.fragment);
       attr(
         button0,
         "data-active",
         /*$editMode*/
-        ctx[5]
+        ctx[4]
       );
       attr(
         button1,
         "data-active",
         /*$editLayout_01*/
-        ctx[4]
+        ctx[3]
       );
       attr(
         button2,
         "data-active",
         /*$editLayout_02*/
-        ctx[3]
+        ctx[2]
       );
       attr(
         button3,
         "data-active",
         /*$editLayout_03*/
-        ctx[2]
+        ctx[1]
       );
       attr(div0, "class", "SheetEditorMenu");
       attr(div0, "data-isopen", div0_data_isopen_value = /*$editMode*/
-      ctx[5] || /*$editLayout_01*/
-      ctx[4] || /*$editLayout_02*/
-      ctx[3] || /*$editLayout_03*/
-      ctx[2]);
+      ctx[4] || /*$editLayout_01*/
+      ctx[3] || /*$editLayout_02*/
+      ctx[2] || /*$editLayout_03*/
+      ctx[1]);
       attr(div1, "class", "SheetEditorMenuContainer");
-      attr(div2, "class", "Sheet");
-      attr(div3, "class", "theme-light obsidianBody");
+      attr(div2, "class", "SheetInnerWrap");
+      attr(
+        div2,
+        "data-editpreview",
+        /*$editLayout_01*/
+        ctx[3]
+      );
+      attr(div2, "data-isediting", div2_data_isediting_value = /*$editMode*/
+      ctx[4] || /*$editLayout_01*/
+      ctx[3] || /*$editLayout_02*/
+      ctx[2] || /*$editLayout_03*/
+      ctx[1]);
+      attr(div3, "class", "Sheet");
+      attr(div4, "class", "theme-light obsidianBody");
     },
     m(target, anchor) {
-      insert(target, div3, anchor);
-      append(div3, div2);
-      append(div2, div1);
+      insert(target, div4, anchor);
+      append(div4, div3);
+      append(div3, div1);
       append(div1, div0);
       append(div0, button0);
       append(button0, t0);
@@ -6303,7 +6518,8 @@ function create_fragment(ctx) {
       append(div0, t5);
       append(div0, button3);
       append(button3, t6);
-      append(div2, t7);
+      append(div3, t7);
+      append(div3, div2);
       for (let i = 0; i < each_blocks.length; i += 1) {
         if (each_blocks[i]) {
           each_blocks[i].m(div2, null);
@@ -6311,6 +6527,8 @@ function create_fragment(ctx) {
       }
       append(div2, t8);
       if (if_block) if_block.m(div2, null);
+      append(div4, t9);
+      mount_component(loadingspinner, div4, null);
       current = true;
       if (!mounted) {
         dispose = [
@@ -6318,25 +6536,25 @@ function create_fragment(ctx) {
             button0,
             "click",
             /*click_handler*/
-            ctx[18]
+            ctx[24]
           ),
           listen(
             button1,
             "click",
             /*click_handler_1*/
-            ctx[19]
+            ctx[25]
           ),
           listen(
             button2,
             "click",
             /*click_handler_2*/
-            ctx[20]
+            ctx[26]
           ),
           listen(
             button3,
             "click",
             /*click_handler_3*/
-            ctx[21]
+            ctx[27]
           )
         ];
         mounted = true;
@@ -6344,54 +6562,54 @@ function create_fragment(ctx) {
     },
     p(ctx2, dirty) {
       if (!current || dirty[0] & /*$editMode*/
-      32) {
+      16) {
         attr(
           button0,
           "data-active",
           /*$editMode*/
-          ctx2[5]
+          ctx2[4]
         );
       }
       if (!current || dirty[0] & /*$editLayout_01*/
-      16) {
+      8) {
         attr(
           button1,
           "data-active",
           /*$editLayout_01*/
-          ctx2[4]
+          ctx2[3]
         );
       }
       if (!current || dirty[0] & /*$editLayout_02*/
-      8) {
+      4) {
         attr(
           button2,
           "data-active",
           /*$editLayout_02*/
-          ctx2[3]
+          ctx2[2]
         );
       }
       if (!current || dirty[0] & /*$editLayout_03*/
-      4) {
+      2) {
         attr(
           button3,
           "data-active",
           /*$editLayout_03*/
-          ctx2[2]
+          ctx2[1]
         );
       }
       if (!current || dirty[0] & /*$editMode, $editLayout_01, $editLayout_02, $editLayout_03*/
-      60 && div0_data_isopen_value !== (div0_data_isopen_value = /*$editMode*/
-      ctx2[5] || /*$editLayout_01*/
-      ctx2[4] || /*$editLayout_02*/
-      ctx2[3] || /*$editLayout_03*/
-      ctx2[2])) {
+      30 && div0_data_isopen_value !== (div0_data_isopen_value = /*$editMode*/
+      ctx2[4] || /*$editLayout_01*/
+      ctx2[3] || /*$editLayout_02*/
+      ctx2[2] || /*$editLayout_03*/
+      ctx2[1])) {
         attr(div0, "data-isopen", div0_data_isopen_value);
       }
-      if (dirty[0] & /*$editLayout_01, $editLayout_02, $OBJ, DragRowHandler, $editLayout_03, DragColumnHandler, DragItemHandler, $editMode, sys, itemRequestMove, OBJ*/
-      63613) {
+      if (dirty[0] & /*$editLayout_01, $editLayout_02, $OBJ, DragRowHandler, OBJ, $editLayout_03, DragColumnHandler, DragItemHandler, $editMode, sys, itemRequestMove*/
+      60479) {
         each_value = ensure_array_like(
           /*$OBJ*/
-          ctx2[6].data
+          ctx2[5].data
         );
         group_outros();
         for (let i = 0; i < each_blocks.length; i += 1) each_blocks[i].r();
@@ -6401,12 +6619,12 @@ function create_fragment(ctx) {
       }
       if (
         /*$editLayout_01*/
-        ctx2[4]
+        ctx2[3]
       ) {
         if (if_block) {
           if_block.p(ctx2, dirty);
           if (dirty[0] & /*$editLayout_01*/
-          16) {
+          8) {
             transition_in(if_block, 1);
           }
         } else {
@@ -6422,6 +6640,23 @@ function create_fragment(ctx) {
         });
         check_outros();
       }
+      if (!current || dirty[0] & /*$editLayout_01*/
+      8) {
+        attr(
+          div2,
+          "data-editpreview",
+          /*$editLayout_01*/
+          ctx2[3]
+        );
+      }
+      if (!current || dirty[0] & /*$editMode, $editLayout_01, $editLayout_02, $editLayout_03*/
+      30 && div2_data_isediting_value !== (div2_data_isediting_value = /*$editMode*/
+      ctx2[4] || /*$editLayout_01*/
+      ctx2[3] || /*$editLayout_02*/
+      ctx2[2] || /*$editLayout_03*/
+      ctx2[1])) {
+        attr(div2, "data-isediting", div2_data_isediting_value);
+      }
     },
     i(local) {
       if (current) return;
@@ -6429,6 +6664,7 @@ function create_fragment(ctx) {
         transition_in(each_blocks[i]);
       }
       transition_in(if_block);
+      transition_in(loadingspinner.$$.fragment, local);
       current = true;
     },
     o(local) {
@@ -6436,16 +6672,18 @@ function create_fragment(ctx) {
         transition_out(each_blocks[i]);
       }
       transition_out(if_block);
+      transition_out(loadingspinner.$$.fragment, local);
       current = false;
     },
     d(detaching) {
       if (detaching) {
-        detach(div3);
+        detach(div4);
       }
       for (let i = 0; i < each_blocks.length; i += 1) {
         each_blocks[i].d();
       }
       if (if_block) if_block.d();
+      destroy_component(loadingspinner);
       mounted = false;
       run_all(dispose);
     }
@@ -6884,63 +7122,101 @@ function instance($$self, $$props, $$invalidate) {
   let $OBJ;
   let state = new State();
   let editMode = state.editMode;
-  component_subscribe($$self, editMode, (value) => $$invalidate(5, $editMode = value));
+  component_subscribe($$self, editMode, (value) => $$invalidate(4, $editMode = value));
   let editLayout_01 = state.editLayout_01;
-  component_subscribe($$self, editLayout_01, (value) => $$invalidate(4, $editLayout_01 = value));
+  component_subscribe($$self, editLayout_01, (value) => $$invalidate(3, $editLayout_01 = value));
   let editLayout_02 = state.editLayout_02;
-  component_subscribe($$self, editLayout_02, (value) => $$invalidate(3, $editLayout_02 = value));
+  component_subscribe($$self, editLayout_02, (value) => $$invalidate(2, $editLayout_02 = value));
   let editLayout_03 = state.editLayout_03;
-  component_subscribe($$self, editLayout_03, (value) => $$invalidate(2, $editLayout_03 = value));
+  component_subscribe($$self, editLayout_03, (value) => $$invalidate(1, $editLayout_03 = value));
   let { textData } = $$props;
   let { sys } = $$props;
   let { writeBlock } = $$props;
   let DATA = new SheetData(textData ?? "");
   let OBJ = writable(DATA);
-  component_subscribe($$self, OBJ, (value) => $$invalidate(6, $OBJ = value));
+  component_subscribe($$self, OBJ, (value) => $$invalidate(5, $OBJ = value));
   function itemRequestMove(direction, id) {
     DragItemHandler.requestMoveItemUpDown(direction, id);
   }
   onMount(() => {
   });
-  let editWasClicked = false;
+  let editWasClicked = writable(false);
+  function requestEvalSaveCondition() {
+    const allDisabled = !$editMode && !$editLayout_01 && !$editLayout_02 && !$editLayout_03;
+    if (editWasClicked && allDisabled) {
+      writeBlock(DATA, sys);
+      editWasClicked.set(false);
+    }
+  }
+  editMode.subscribe(requestEvalSaveCondition);
+  editLayout_01.subscribe(requestEvalSaveCondition);
+  editLayout_02.subscribe(requestEvalSaveCondition);
+  editLayout_03.subscribe(requestEvalSaveCondition);
   let DragRowHandler = new DragHandlerController(OBJ, state);
   let DragColumnHandler = new DragItemHandlerController2(OBJ, state);
   let DragItemHandler = new DragItemHandlerController3(OBJ, state);
+  function keypress_handler_5(event) {
+    bubble.call(this, $$self, event);
+  }
+  function keypress_handler_4(event) {
+    bubble.call(this, $$self, event);
+  }
+  function keypress_handler_3(event) {
+    bubble.call(this, $$self, event);
+  }
+  function keypress_handler_2(event) {
+    bubble.call(this, $$self, event);
+  }
+  function keypress_handler_1(event) {
+    bubble.call(this, $$self, event);
+  }
+  function keypress_handler(event) {
+    bubble.call(this, $$self, event);
+  }
   const click_handler = () => {
+    editWasClicked.set(true);
     editMode.set(!$editMode);
-    $$invalidate(1, editWasClicked = true);
   };
-  const click_handler_1 = () => editLayout_01.set(!get_store_value(editLayout_01));
-  const click_handler_2 = () => editLayout_02.set(!get_store_value(editLayout_02));
-  const click_handler_3 = () => editLayout_03.set(!get_store_value(editLayout_03));
-  const func = (row) => {
-    row.addColumn();
-    OBJ.update((obj) => {
-      return obj;
-    });
+  const click_handler_1 = () => {
+    editWasClicked.set(true);
+    editLayout_01.set(!$editLayout_01);
   };
-  const func_1 = (row) => {
+  const click_handler_2 = () => {
+    editWasClicked.set(true);
+    editLayout_02.set(!$editLayout_02);
+  };
+  const click_handler_3 = () => {
+    editWasClicked.set(true);
+    editLayout_03.set(!$editLayout_03);
+  };
+  const click_handler_4 = (row) => {
     OBJ.update((o) => {
       o.remRow(row.id);
       return o;
     });
   };
-  const func_2 = (row, column) => {
+  const click_handler_5 = (row, column) => {
     row.remColumn(column.id);
     OBJ.update((o) => o);
   };
-  const func_3 = (column) => {
-    column.addItem();
-    OBJ.update((o) => o);
-  };
-  const func_4 = (column, item) => {
+  const click_handler_6 = (column, item) => {
     column.remItem(item.id);
     OBJ.update((o) => o);
   };
+  function itemmanouver_data_binding(value, item, each_value_2, k) {
+    each_value_2[k] = value;
+    OBJ.set($OBJ);
+  }
   const moveUp_handler = (e) => {
     itemRequestMove(-1, e.detail);
   };
   const moveDown_handler = (e) => {
+    itemRequestMove(1, e.detail);
+  };
+  const moveUp_handler_1 = (e) => {
+    itemRequestMove(-1, e.detail);
+  };
+  const moveDown_handler_1 = (e) => {
     itemRequestMove(1, e.detail);
   };
   const dragstart_handler = (item, e) => {
@@ -6954,6 +7230,10 @@ function instance($$self, $$props, $$invalidate) {
   };
   const dragleave_handler = (item, e) => {
     DragItemHandler.onLeave(e, item.id);
+  };
+  const click_handler_7 = (column) => {
+    column.addItem();
+    OBJ.update((o) => o);
   };
   const dragstart_handler_1 = (column, e) => {
     DragColumnHandler.onDragStart(e, column.id);
@@ -6976,6 +7256,12 @@ function instance($$self, $$props, $$invalidate) {
     DragItemHandler.onDragOverColumn(e, column.id);
     e.preventDefault();
   };
+  const click_handler_8 = (row) => {
+    row.addColumn();
+    OBJ.update((obj) => {
+      return obj;
+    });
+  };
   const dragstart_handler_2 = (row, e) => DragRowHandler.onDragStart(e, row.id);
   const dragenter_handler_1 = (row, e) => DragRowHandler.onDragOver(e, row.id);
   const dragend_handler_2 = (row, e) => DragRowHandler.onDragEnd(e, row.id);
@@ -6983,7 +7269,7 @@ function instance($$self, $$props, $$invalidate) {
     DragRowHandler.onDragOver(e, row.id);
     e.preventDefault();
   };
-  const func_5 = () => {
+  const click_handler_9 = () => {
     OBJ.update((obj) => {
       obj.addRow();
       obj.data[$OBJ.data.length - 1].addColumn();
@@ -6995,17 +7281,8 @@ function instance($$self, $$props, $$invalidate) {
     if ("sys" in $$props2) $$invalidate(0, sys = $$props2.sys);
     if ("writeBlock" in $$props2) $$invalidate(17, writeBlock = $$props2.writeBlock);
   };
-  $$self.$$.update = () => {
-    if ($$self.$$.dirty[0] & /*$editMode, $editLayout_01, $editLayout_02, $editLayout_03, editWasClicked, writeBlock, sys*/
-    131135) {
-      if (!$editMode && !$editLayout_01 && !$editLayout_02 && !$editLayout_03 && editWasClicked) {
-        writeBlock(DATA, sys);
-      }
-    }
-  };
   return [
     sys,
-    editWasClicked,
     $editLayout_03,
     $editLayout_02,
     $editLayout_01,
@@ -7017,43 +7294,53 @@ function instance($$self, $$props, $$invalidate) {
     editLayout_03,
     OBJ,
     itemRequestMove,
+    editWasClicked,
     DragRowHandler,
     DragColumnHandler,
     DragItemHandler,
     textData,
     writeBlock,
+    keypress_handler_5,
+    keypress_handler_4,
+    keypress_handler_3,
+    keypress_handler_2,
+    keypress_handler_1,
+    keypress_handler,
     click_handler,
     click_handler_1,
     click_handler_2,
     click_handler_3,
-    func,
-    func_1,
-    func_2,
-    func_3,
-    func_4,
+    click_handler_4,
+    click_handler_5,
+    click_handler_6,
+    itemmanouver_data_binding,
     moveUp_handler,
     moveDown_handler,
+    moveUp_handler_1,
+    moveDown_handler_1,
     dragstart_handler,
     dragend_handler,
     drop_handler,
     dragleave_handler,
+    click_handler_7,
     dragstart_handler_1,
     dragenter_handler,
     dragend_handler_1,
     drop_handler_1,
     dragleave_handler_1,
     dragover_handler_1,
+    click_handler_8,
     dragstart_handler_2,
     dragenter_handler_1,
     dragend_handler_2,
     dragover_handler_2,
-    func_5
+    click_handler_9
   ];
 }
 class App extends SvelteComponent {
   constructor(options) {
     super();
-    init(this, options, instance, create_fragment, safe_not_equal, { textData: 16, sys: 0, writeBlock: 17 }, null, [-1, -1]);
+    init(this, options, instance, create_fragment, safe_not_equal, { textData: 16, sys: 0, writeBlock: 17 }, null, [-1, -1, -1]);
   }
   get textData() {
     return this.$$.ctx[16];

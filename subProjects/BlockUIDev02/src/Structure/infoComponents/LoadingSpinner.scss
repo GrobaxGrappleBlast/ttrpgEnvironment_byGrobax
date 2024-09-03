@@ -1,5 +1,10 @@
 
-@import './../../SystemStandards.scss';
+@import './../../SystemStandards.scss'; 
+
+$opacWhite : #3e4d5e ; 
+$opacWhite_B :saturate(lighten($opacWhite,  40 ),40);
+$greenColor : #556d50;
+$greenColor_B :saturate(lighten($greenColor,  40 ),40);
 .LoadingSpinner{ 
 	margin:0; 
 	display: grid;
@@ -7,28 +12,43 @@
 	grid-template-rows: 1fr;
 	position: relative
 }
+
+$size:30px;
 .LoadingSpinner{
+	
+	position:absolute;
+	top:5px;
+	right:40%;
+	left:40%;
+	
+
 	.spinner{
-		position:absolute;
-		top:-60px;
-		right:0;
-		height:50px;
-		width:50px;
+		
+		height:$size; 
 		margin:0;
 		margin-bottom: -60px;
-		border:4px solid white;
+		
 		font-weight: 600;
-		border-radius: 100%;
+		font-size: 12px;
+	
 		display:flex;
 		align-items: center;
     	justify-content: center;
-		background-color: gray;
-
+		   
+ 
 		&[data-state="ongoing"]{
-			background-color: $blue;
+			//border:2px dashed white;
+			//border-color:$opacWhite_B;
+			color:		$greenColor_B;
+			//color:		$opacWhite_B;
+			//background-color: $opacWhite;
+			border-radius: 100%;
 		}
 		&[data-state="finished"]{
-			background-color: $green;
+			//border:2px dashed white;
+			//border-color:$greenColor_B;
+			color:		$greenColor_B;
+			//background-color: $greenColor;
 		}
 	}
 }

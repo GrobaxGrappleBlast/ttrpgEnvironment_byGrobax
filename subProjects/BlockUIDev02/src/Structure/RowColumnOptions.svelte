@@ -15,23 +15,26 @@
     let cssStyle = side + ":" + offset + ";" + verti + ":" + offset + ";";
 </script>
 
-{#if active}
-    <div transition:slide class="RowColumnOptions" style={cssStyle}>
-        {#if onAdd}<div
-                class="itemOption"
+{#if active} 
+        {#if onAdd}
+			<div
+                class="itemOption add"
                 role="none"
                 on:keyup
                 on:click={() => onAdd()}
             >
-                {addText}
-            </div>{/if}
-        {#if onRemove}<div
+            	<span>+</span>{addText}
+            </div>
+		{/if}
+        {#if onRemove}
+			<div
                 class="itemOption rem"
                 role="none"
                 on:keyup
                 on:click={() => onRemove()}
             >
-                {remText}
-            </div>{/if}
-    </div>
+             X
+            </div>
+		{/if}
+ 
 {/if}

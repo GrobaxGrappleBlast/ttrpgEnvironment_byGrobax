@@ -35,16 +35,7 @@
 				on:optionSelected={updateData}
 			/>
 		{/if}
-		{#if length != 1}
-			<ItemManouver
-				bind:data={data}
-				editMode={layoutMode} 
-				hasDown	={ index != length-1 }
-				hasUp	={ index != 0 }
-				on:moveUp		
-				on:moveDown	
-			/>
-		{/if}
+		 
 		{#if data.type == viewNameIndex.HitPoints		}
 			<div transition:slide  >
 				<HitPoints 

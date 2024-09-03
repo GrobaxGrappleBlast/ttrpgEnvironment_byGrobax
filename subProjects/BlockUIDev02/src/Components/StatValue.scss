@@ -1,4 +1,4 @@
-
+@import '../SystemStandards.scss';
 .StatsRow {
 	 
 	display: flex;
@@ -18,7 +18,7 @@
 }
 
 .BoxValue {
-	border-radius: 5px;
+	border-radius: $borderRad;
 	border: 1px solid black;
 	background-color: lightgray;
 	 

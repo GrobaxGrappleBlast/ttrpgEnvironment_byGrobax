@@ -1,4 +1,4 @@
-
+@import '../../SystemStandards.scss';
 $backgroundStandard : var(--background-primary);
 $color_error    : tomato ;//var(--background-modifier-error);
 $color_success  : green ;//var(--background-modifier-success) ;
@@ -8,7 +8,7 @@ $color_verbose	: blue ;//var(--color-blue);
 	position: absolute; 
 	color: #fff;
 	padding: 5px;
-	border-radius: 3px;
+	border-radius: $borderRad;
 	z-index: 1000;
 	white-space: nowrap; 
 }

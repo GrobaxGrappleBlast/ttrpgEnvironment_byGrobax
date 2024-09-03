@@ -14,18 +14,20 @@
 	-webkit-font-smoothing: antialiased;
 	-moz-osx-font-smoothing: grayscale;
 	-webkit-text-size-adjust: 100%;
+	--translucentEditingColor:#40597e10;
+ 
 }
   
 
 .standardBorderClassDef{
-	border-radius: 5px;
+	border-radius: $borderRad;
 	border:2px solid white;
 }
 .standard10Button{
 	width :30px;
 	height:30px;
 	background-color:gray;
-	border-radius: 5px;
+	border-radius: $borderRad;
 	color:white;
 	text-align: center
 }
@@ -33,62 +35,167 @@
 
 
 
-.Sheet{
-	min-height:400px;
-	background-color: rgba(211, 211, 211, 0.077);
-}
 
 $borderThickess: 2px;
-@mixin createItemClass($standardColor, $editColor, $editColorHover , $previewColor ) {
+$DragDropMinHeight:30px;
+$opacWhite : #1f262e ;
+$translucentEditingColor : var(--translucentEditingColor);
+$greenColor : #556d50;
+@mixin createItemClass($standardColor, $editColor   ) {
 	
 		position:relative;
-		margin:0;//$standard_padding_large;
-		width: auto;
-		
-		//min-height: 100px;
-
+		margin:5px;
+		width: auto; 
+		min-height: $DragDropMinHeight; 
+		// Drop Zone Styling
 		&[data-editpreview='true']{
-			border-radius: 5px;
-			border:$borderThickess dashed;
-			border-color: $previewColor;
-			min-height: 100px;
-			margin:$standard_padding_large;
+			border-radius: $borderRad;
+			border:$borderThickess dashed; 
+			border-color:   rgba(89, 191, 255, 0.268) ;
+			min-height: $DragDropMinHeight;
+			box-shadow: rgba(0, 0, 0, 0.1) 0px 4px 12px; 
 		}
 
 		&[draggable="true"]{
 			cursor: pointer;
 		}
-
+		// is editing Color. 
 		&[data-edit="true"] {
-			min-height: 30px;
-			border-radius: 5px;
-			border:$borderThickess solid;
-			border-color: $standardColor;
-			
-			&:hover {
-				border-color:  $standardColor;
-			}
-
-			&[data-edit-active="true"]{
-				border-color: $editColor;
+			min-height:$DragDropMinHeight;
+			border-radius: $borderRad; 
+			background-color:$standardColor  ;   
+			&[data-edit-active="true"]{ 
+				border:$borderThickess dashed; 
+				border-color:transparentize( $editColor , 0.5 );
 				&:hover {
-					border-color:  $editColorHover;
+					transition:border-color 0.1s ease;
+					border-color: $editColor;
 				}
 			}
 		}
 	
+} 
+.SheetInnerWrap{
+	min-height:400px; 
+	&[data-isEditing="true"]{ 
+		background-color: $translucentEditingColor;
+	}
+
+	&[data-editpreview='true']{
+		border-radius: $borderRad;
+		border:$borderThickess dashed;
+		border-color:   rgba(89, 191, 255, 0.268) ;
+		min-height: $DragDropMinHeight;
+		box-shadow: rgba(0, 0, 0, 0.1) 0px 4px 12px; 
+	}
 }
-$opacWhite : #fff1;
+
 .Item{ 
-	@include createItemClass($opacWhite,palegoldenrod,orange, white);
+	@include createItemClass($opacWhite,$greenColor );
+}
+.Column{
+	@include  createItemClass( $opacWhite,$greenColor  );
+	
+	&[data-edit="true"] > .Item{
+		background-color: $translucentEditingColor;
+	}
 }
 .Row{ 
 	display: grid;
-	@include createItemClass( $opacWhite,Skyblue,royalBlue, rgba(89, 191, 255, 0.468));	
+	@include createItemClass( $opacWhite,$greenColor  );	
+
+	&[data-edit="true"] > .Column{
+		background-color: $translucentEditingColor;
+
+		&[data-edit="true"] > .Item{
+			background-color: $translucentEditingColor;
+		}
+	}
 }
-.Column{
-	@include  createItemClass( $opacWhite,palegreen,green, rgba(89, 191, 255, 0.468));	
+.AddRow{ 
+	cursor: pointer;
+	display: flex;
+	flex-direction: row;
+	gap:10px;
+	padding-left:10px; 
+	align-items: center;
+	@include createItemClass( #556d50 ,Skyblue );	
+	&>span{
+		font-size: 20px;
+	} 
 }
+.AddColumn{
+	cursor: pointer;
+	display: flex;
+	flex-direction: row;
+	gap:10px;
+	padding-left:10px;
+	height:inherit;
+	align-items: center;
+	@include createItemClass( #556d50 ,Skyblue  );	
+	&>span{
+		font-size: 20px;
+	} 
+}
+.AddItem{
+	cursor: pointer;
+	display: flex;
+	flex-direction: row;
+	gap:10px;
+	padding-left:10px; 
+	align-items: center;
+	@include createItemClass( #556d50 ,Skyblue  );	
+	&>span{
+		font-size: 20px;
+	} 
+}
+.manouverHeader{
+	position:absolute;
+	right:0px;
+	top:-7px;
+	z-index: 10000;
+	display: flex;
+    flex-direction: row-reverse;
+    justify-content: flex-end;
+	gap:20px;
+	height:$DragDropMinHeight; 
+  
+	.remButton{ 
+		padding:10px; 
+		color:#fff8;
+		&::after{
+			content:'\2715';
+		}
+	}
+	.remRow{ 
+		@extend .remButton;
+	}
+	.remColumn{ 
+		@extend .remButton;
+	}
+	.remItem{ 
+		@extend .remButton;
+	} 
+	.ItemManouverOption.Up{
+		@extend .remButton;
+		&::after{
+			content:'\2934'; 
+			font-size: 20px;
+		}
+	}
+	.ItemManouverOption.Down{
+		@extend .remButton;
+		&::after{
+			content:'\2935';
+			font-size: 20px;
+		}
+	}
+}
+
+
+
+
+
 
 .addButton{
 
@@ -110,23 +217,18 @@ $opacWhite : #fff1;
 
 .SheetEditorMenu{
 	
-	cursor: pointer;
-	width:0px;
-	padding:$standard_padding_large;
-	background-color: #576b69;
+	cursor: pointer; 
+	 
+	background-color: #556d50;
 	overflow: hidden;
 	transition: ease 0.5s;
 	
-	height:30px;
-	width:30px;
-	float:left;
-	
-	
-
+	height:30px; 
+	float:left; 
 	display: flex;
     justify-content: flex-start;
     align-items: center;
-
+ 
 	button {
 		width:50px;
 		float:left;
@@ -140,7 +242,7 @@ $opacWhite : #fff1;
 			opacity: 1; 
 			cursor: pointer;
 			padding:10px;
-			border-radius: 5px;
+			border-radius: $borderRad;
 			background-color: white;
 			transition:background-color ease 0.2s;
 
@@ -204,3 +306,4 @@ $opacWhite : #fff1;
   @import './Components/SkillProficiency.scss'; 
   @import './Components/ProficiencyBonus.scss'; 
   @import './Structure/ItemOptions.scss';
+  @import './Structure/infoComponents/LoadingSpinner.scss';
