@@ -6321,6 +6321,7 @@ var __publicField = (obj, key, value) => __defNormalProp(obj, typeof key !== "sy
     let t6_value = "Layout Items";
     let t6;
     let div0_data_isopen_value;
+    let div1_data_isopen_value;
     let t7;
     let div2;
     let each_blocks = [];
@@ -6412,6 +6413,11 @@ var __publicField = (obj, key, value) => __defNormalProp(obj, typeof key !== "sy
         ctx[2] || /*$editLayout_03*/
         ctx[1]);
         attr(div1, "class", "SheetEditorMenuContainer");
+        attr(div1, "data-isopen", div1_data_isopen_value = /*$editMode*/
+        ctx[4] || /*$editLayout_01*/
+        ctx[3] || /*$editLayout_02*/
+        ctx[2] || /*$editLayout_03*/
+        ctx[1]);
         attr(div2, "class", "SheetInnerWrap");
         attr(
           div2,
@@ -6528,6 +6534,14 @@ var __publicField = (obj, key, value) => __defNormalProp(obj, typeof key !== "sy
         ctx2[2] || /*$editLayout_03*/
         ctx2[1])) {
           attr(div0, "data-isopen", div0_data_isopen_value);
+        }
+        if (!current || dirty[0] & /*$editMode, $editLayout_01, $editLayout_02, $editLayout_03*/
+        30 && div1_data_isopen_value !== (div1_data_isopen_value = /*$editMode*/
+        ctx2[4] || /*$editLayout_01*/
+        ctx2[3] || /*$editLayout_02*/
+        ctx2[2] || /*$editLayout_03*/
+        ctx2[1])) {
+          attr(div1, "data-isopen", div1_data_isopen_value);
         }
         if (dirty[0] & /*$editLayout_01, $editLayout_02, $OBJ, DragRowHandler, OBJ, $editLayout_03, DragColumnHandler, DragItemHandler, $editMode, sys, itemRequestMove*/
         60479) {

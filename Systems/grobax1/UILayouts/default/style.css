@@ -600,8 +600,12 @@ body, .obsidianBody {
 }
 .SheetEditorMenuContainer {
   width: inherit;
-  height: 60px;
+  height: 30px;
   position: relative;
+  transition: height ease 0.5s;
+}
+.SheetEditorMenuContainer[data-isOpen=true] {
+  height: 60px;
 }
 .SheetEditorMenu {
   cursor: pointer;

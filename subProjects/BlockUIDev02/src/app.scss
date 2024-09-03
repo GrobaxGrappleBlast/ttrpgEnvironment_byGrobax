@@ -241,8 +241,13 @@ $greenColor : #556d50;
 
 .SheetEditorMenuContainer{
 	width: inherit; 
-	height:$standard_padding_large * 2 + 30px;
+	height:$standard_padding_large * 2 + 0px;
 	position: relative;
+	transition:height ease 0.5s;
+
+	&[data-isOpen="true"]{	
+		height:$standard_padding_large * 2 + 30px;
+	}
 }
 
 .SheetEditorMenu{

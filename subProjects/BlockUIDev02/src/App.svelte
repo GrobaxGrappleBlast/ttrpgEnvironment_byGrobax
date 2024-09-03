@@ -564,7 +564,12 @@
 
 <div>
     <div class="Sheet" >
-        <div class="SheetEditorMenuContainer">
+        <div class="SheetEditorMenuContainer"
+            data-isOpen={$editMode ||
+                $editLayout_01 ||
+                $editLayout_02 ||
+                $editLayout_03}
+            >
 			<div
 				class="SheetEditorMenu"
 				data-isOpen={$editMode ||
