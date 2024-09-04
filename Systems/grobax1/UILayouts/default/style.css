@@ -1328,7 +1328,7 @@ body, .obsidianBody {
 }
 .skillproficiencyMarkParent {
   width: 40px;
-  height: 40px;
+  height: 20px;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -1347,6 +1347,7 @@ body, .obsidianBody {
 .skillproficiencyContainer {
   display: flex;
   align-items: center;
+  height: 40px;
 }
 .skillproficiencyContainer[data-edit=true] .skillproficiencyMark:hover {
   padding: 5px;

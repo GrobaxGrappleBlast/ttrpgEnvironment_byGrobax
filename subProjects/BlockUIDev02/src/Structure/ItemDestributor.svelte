@@ -14,8 +14,6 @@
 	export let data			: CNode		;
 	export let editMode 	: boolean	;
 	export let sys			: system	; 
-	export let length		: number	; 
-	export let index		: number	;
 	export let layoutMode	: boolean = false;
 	let redrawIndex = 0;
 
@@ -28,7 +26,7 @@
 </script>
 <div data-name="ItemDestributor" class="itemDestributer" >
 	
-		{#if editMode}
+		{#if layoutMode}
 			<ItemOptions 
 				bind:data={data}
 				editMode={true}

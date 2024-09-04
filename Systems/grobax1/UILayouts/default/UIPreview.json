@@ -1,0 +1,8 @@
+{
+	"author":"Grobax",
+	"version":"0.0.1a",
+	"name":"default",
+	"main-style":"style.css",
+	"main-js"	:"components.js",
+	"resources"	:[]
+}
