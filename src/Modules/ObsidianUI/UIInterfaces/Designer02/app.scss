@@ -1,0 +1,33 @@
+@import './SystemStandards.scss';
+@import './appBaseStyles.scss';
+
+
+pre { 
+	max-width: inherit;
+    white-space: pre-line;
+}
+
+.table			{
+	width: 100%;
+	height: fit-content;
+	display: table	
+}
+.tableRow		{
+	width: 100%;
+	height: fit-content;
+	display: table-row;	
+}
+.tableRowColumn	{
+	min-width: fit-content;
+	height: fit-content;
+	display: table-cell;
+}
+
+
+
+
+@import './Views/Menu/Menu.scss';
+@import './Views/Page/page.scss';
+@import './Components/editAbleList/EditAbleList.scss';
+@import './Components/Messages/toolTip.scss';
+@import './Components/Messages/StaticMessageHandler.scss';

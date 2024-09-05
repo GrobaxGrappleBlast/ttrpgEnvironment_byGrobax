@@ -1,0 +1,93 @@
+
+
+
+.Menu{
+	background-color: $background02; 
+	height:fit-content; 
+}
+.MenuTitle{
+	padding: $standardPadding;
+}
+.MenuBtnContainer {
+	display: flex;
+	flex-direction: row; 
+	gap: 0px;
+	position: relative;
+}
+
+
+.MenuBtn{
+	@include btnN;
+	height:fit-content;  
+	width: 70px;  
+	border-radius: 0;
+	display: grid;
+	grid-template-columns: 70px 0px;
+	overflow: hidden;
+	background-color: transparent;
+
+	transition:ease 0.2s;
+	&[data-active="true"], &:hover{
+		width: 270px;
+		grid-template-columns: 70px 200px;
+	}
+	.MenuBtnIcon{ 
+		display: flex;
+		align-items: center;
+    	justify-content: center;
+	}
+	.MenuBtnText{
+		width: 200px;
+		h4{
+			margin:0;
+			//height		: calc( 1.5 * $lineheight );
+			//font-size	: calc( 1.5 * $lineheight );
+			//line-height	: calc( 1.5 * $lineheight );
+		}
+		p {
+			margin:0;
+			//height: $lineheight;
+			//font-size: $lineheight;
+			//line-height: $lineheight;
+		}
+	}
+}
+
+
+.MenuSBtn{
+	@include btnS;
+	height:fit-content;  
+	width: 70px;  
+	padding-top:$lineheight;
+	padding-bottom:$lineheight; 
+	border-radius: 0;
+	display: grid;
+	grid-template-columns: 70px 0px;
+	overflow: hidden; 
+	transition:ease 0.2s;
+	&[data-active="true"], &:hover{
+		width: 270px;
+		grid-template-columns: 70px 200px;
+	}
+	.MenuBtnIcon{ 
+		display: flex;
+		align-items: center;
+    	justify-content: center;
+	}
+	.MenuBtnText{
+		width: 200px;
+		h4{
+			margin:0;
+			height		: calc( 1.5 * $lineheight );
+			font-size	: calc( 1.5 * $lineheight );
+			line-height	: calc( 1.5 * $lineheight );
+		}
+		p {
+			margin:0;
+			height: $lineheight;
+			font-size: $lineheight;
+			line-height: $lineheight;
+		}
+	}
+}
+

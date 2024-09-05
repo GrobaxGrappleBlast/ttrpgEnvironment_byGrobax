@@ -8,6 +8,7 @@
     import SystemDesignerContainer from "./SystemDesigner/SystemDesignerContainer.svelte";
     import { slide } from 'svelte/transition';
     import MainMenuButton from './Menu/MainMenuButton.svelte';
+    import { TTRPGSystemJSONFormatting } from '../../../../../src/Modules/Designer';
  
 
 	
@@ -18,10 +19,10 @@
 	}
 	let state = SystemEditorStates.selector;
 
-
+	
 	// data from subviews
 	let selectedSystemPreview	: Writable<SystemPreview> = writable();
-	let selectedSystem		 	: Writable<TTRPGSystem> = writable();
+	let selectedSystem		 	: Writable<TTRPGSystemJSONFormatting> = writable();
 	
 	async function onPreviewSelected( preview : SystemPreview ){
 		selectedSystemPreview.set( preview );

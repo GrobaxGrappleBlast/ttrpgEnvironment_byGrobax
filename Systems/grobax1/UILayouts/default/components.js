@@ -40,6 +40,9 @@ function get_store_value(store) {
 function component_subscribe(component, store, callback) {
   component.$$.on_destroy.push(subscribe(store, callback));
 }
+function action_destroyer(action_result) {
+  return action_result && is_function(action_result.destroy) ? action_result.destroy : noop;
+}
 function split_css_unit(value) {
   const split = typeof value === "string" && value.match(/^\s*(-?[\d.]+)([^\s]*)\s*$/);
   return split ? [parseFloat(split[1]), split[2] || "px"] : [
@@ -1291,7 +1294,7 @@ function create_if_block_1$5(ctx) {
     }
   };
 }
-function create_if_block$7(ctx) {
+function create_if_block$8(ctx) {
   let div;
   let t1;
   let input;
@@ -1317,7 +1320,7 @@ function create_if_block$7(ctx) {
     }
   };
 }
-function create_fragment$d(ctx) {
+function create_fragment$e(ctx) {
   let div2;
   let div0;
   let t1;
@@ -1334,7 +1337,7 @@ function create_fragment$d(ctx) {
     if (
       /*editMode*/
       ctx2[0]
-    ) return create_if_block$7;
+    ) return create_if_block$8;
     if (
       /*playMode*/
       ctx2[1]
@@ -1432,7 +1435,7 @@ function create_fragment$d(ctx) {
     }
   };
 }
-function instance$d($$self, $$props, $$invalidate) {
+function instance$e($$self, $$props, $$invalidate) {
   let { sys } = $$props;
   let { editMode } = $$props;
   let { playMode } = $$props;
@@ -1467,7 +1470,7 @@ function instance$d($$self, $$props, $$invalidate) {
 class HitPoints extends SvelteComponent {
   constructor(options) {
     super();
-    init(this, options, instance$d, create_fragment$d, safe_not_equal, {
+    init(this, options, instance$e, create_fragment$e, safe_not_equal, {
       sys: 4,
       editMode: 0,
       playMode: 1,
@@ -1626,7 +1629,7 @@ function create_key_block(ctx) {
     }
   };
 }
-function create_if_block$6(ctx) {
+function create_if_block$7(ctx) {
   let div3;
   let div1;
   let div0;
@@ -1864,7 +1867,7 @@ function create_if_block_1$4(ctx) {
     }
   };
 }
-function create_fragment$c(ctx) {
+function create_fragment$d(ctx) {
   let div1;
   let previous_key = (
     /*selected*/
@@ -1876,7 +1879,7 @@ function create_fragment$c(ctx) {
   let if_block = (
     /*isFocussed*/
     (ctx[8] || /*forceOpen*/
-    ctx[5]) && create_if_block$6(ctx)
+    ctx[5]) && create_if_block$7(ctx)
   );
   return {
     c() {
@@ -1917,7 +1920,7 @@ function create_fragment$c(ctx) {
             transition_in(if_block, 1);
           }
         } else {
-          if_block = create_if_block$6(ctx2);
+          if_block = create_if_block$7(ctx2);
           if_block.c();
           transition_in(if_block, 1);
           if_block.m(div0, null);
@@ -1946,7 +1949,7 @@ function create_fragment$c(ctx) {
   };
 }
 const svelteStandardAnimTime = 100;
-function instance$c($$self, $$props, $$invalidate) {
+function instance$d($$self, $$props, $$invalidate) {
   let dispatch2 = createEventDispatcher();
   let { options } = $$props;
   let { selected = null } = $$props;
@@ -2057,7 +2060,7 @@ function instance$c($$self, $$props, $$invalidate) {
 class CustomSelect extends SvelteComponent {
   constructor(options) {
     super();
-    init(this, options, instance$c, create_fragment$c, safe_not_equal, {
+    init(this, options, instance$d, create_fragment$d, safe_not_equal, {
       options: 1,
       selected: 0,
       unSelectedplaceholder: 2,
@@ -2156,7 +2159,7 @@ function create_each_block$4(ctx) {
     }
   };
 }
-function create_fragment$b(ctx) {
+function create_fragment$c(ctx) {
   let div2;
   let div1;
   let div0;
@@ -2248,7 +2251,7 @@ function create_fragment$b(ctx) {
     }
   };
 }
-function instance$b($$self, $$props, $$invalidate) {
+function instance$c($$self, $$props, $$invalidate) {
   let dispatch2 = createEventDispatcher();
   let { data } = $$props;
   let { editMode } = $$props;
@@ -2276,7 +2279,7 @@ function instance$b($$self, $$props, $$invalidate) {
 class ItemOptions extends SvelteComponent {
   constructor(options) {
     super();
-    init(this, options, instance$b, create_fragment$b, safe_not_equal, { data: 4, editMode: 5 });
+    init(this, options, instance$c, create_fragment$c, safe_not_equal, { data: 4, editMode: 5 });
   }
   get data() {
     return this.$$.ctx[4];
@@ -2294,7 +2297,7 @@ class ItemOptions extends SvelteComponent {
   }
 }
 create_custom_element(ItemOptions, { "data": {}, "editMode": {} }, [], [], true);
-function create_fragment$a(ctx) {
+function create_fragment$b(ctx) {
   let div1;
   let div0;
   let t1;
@@ -2369,7 +2372,7 @@ function create_fragment$a(ctx) {
     }
   };
 }
-function instance$a($$self, $$props, $$invalidate) {
+function instance$b($$self, $$props, $$invalidate) {
   let { sys } = $$props;
   let { editMode } = $$props;
   let { data } = $$props;
@@ -2402,7 +2405,7 @@ function instance$a($$self, $$props, $$invalidate) {
 class ProficiencyBonus extends SvelteComponent {
   constructor(options) {
     super();
-    init(this, options, instance$a, create_fragment$a, safe_not_equal, { sys: 3, editMode: 0, data: 4 });
+    init(this, options, instance$b, create_fragment$b, safe_not_equal, { sys: 3, editMode: 0, data: 4 });
   }
   get sys() {
     return this.$$.ctx[3];
@@ -2427,7 +2430,7 @@ class ProficiencyBonus extends SvelteComponent {
   }
 }
 create_custom_element(ProficiencyBonus, { "sys": {}, "editMode": {}, "data": {} }, [], [], true);
-function create_fragment$9(ctx) {
+function create_fragment$a(ctx) {
   let div4;
   let div1;
   let div0;
@@ -2552,7 +2555,7 @@ function create_fragment$9(ctx) {
     }
   };
 }
-function instance$9($$self, $$props, $$invalidate) {
+function instance$a($$self, $$props, $$invalidate) {
   let { edit } = $$props;
   let { name: name2 } = $$props;
   let { sys } = $$props;
@@ -2595,7 +2598,7 @@ function instance$9($$self, $$props, $$invalidate) {
 class SkillProficiency extends SvelteComponent {
   constructor(options) {
     super();
-    init(this, options, instance$9, create_fragment$9, safe_not_equal, { edit: 0, name: 1, sys: 5 });
+    init(this, options, instance$a, create_fragment$a, safe_not_equal, { edit: 0, name: 1, sys: 5 });
   }
   get edit() {
     return this.$$.ctx[0];
@@ -2676,7 +2679,7 @@ function create_each_block$3(ctx) {
     }
   };
 }
-function create_fragment$8(ctx) {
+function create_fragment$9(ctx) {
   let div;
   let current;
   let each_value = ensure_array_like(
@@ -2771,7 +2774,7 @@ function create_fragment$8(ctx) {
     }
   };
 }
-function instance$8($$self, $$props, $$invalidate) {
+function instance$9($$self, $$props, $$invalidate) {
   let { edit } = $$props;
   let { sys } = $$props;
   let { data } = $$props;
@@ -2786,7 +2789,7 @@ function instance$8($$self, $$props, $$invalidate) {
 class SkillProficiencyCollection extends SvelteComponent {
   constructor(options) {
     super();
-    init(this, options, instance$8, create_fragment$8, safe_not_equal, { edit: 0, sys: 1, data: 3 });
+    init(this, options, instance$9, create_fragment$9, safe_not_equal, { edit: 0, sys: 1, data: 3 });
   }
   get edit() {
     return this.$$.ctx[0];
@@ -2833,7 +2836,7 @@ function create_else_block(ctx) {
     }
   };
 }
-function create_if_block$5(ctx) {
+function create_if_block$6(ctx) {
   let div;
   let select;
   let mounted;
@@ -2949,7 +2952,7 @@ function create_each_block$2(ctx) {
     }
   };
 }
-function create_fragment$7(ctx) {
+function create_fragment$8(ctx) {
   let div8;
   let t0;
   let div7;
@@ -2971,7 +2974,7 @@ function create_fragment$7(ctx) {
     if (
       /*edit*/
       ctx2[0]
-    ) return create_if_block$5;
+    ) return create_if_block$6;
     return create_else_block;
   }
   let current_block_type = select_block_type(ctx);
@@ -3069,7 +3072,7 @@ function create_fragment$7(ctx) {
     }
   };
 }
-function instance$7($$self, $$props, $$invalidate) {
+function instance$8($$self, $$props, $$invalidate) {
   let { sys } = $$props;
   let { edit } = $$props;
   let { data } = $$props;
@@ -3143,7 +3146,7 @@ function instance$7($$self, $$props, $$invalidate) {
 class SpellInfo extends SvelteComponent {
   constructor(options) {
     super();
-    init(this, options, instance$7, create_fragment$7, safe_not_equal, { sys: 7, edit: 0, data: 8 });
+    init(this, options, instance$8, create_fragment$8, safe_not_equal, { sys: 7, edit: 0, data: 8 });
   }
   get sys() {
     return this.$$.ctx[7];
@@ -3168,7 +3171,7 @@ class SpellInfo extends SvelteComponent {
   }
 }
 create_custom_element(SpellInfo, { "sys": {}, "edit": {}, "data": {} }, [], [], true);
-function create_fragment$6(ctx) {
+function create_fragment$7(ctx) {
   let div4;
   let div0;
   let t0;
@@ -3288,7 +3291,7 @@ function create_fragment$6(ctx) {
     }
   };
 }
-function instance$6($$self, $$props, $$invalidate) {
+function instance$7($$self, $$props, $$invalidate) {
   let { name: name2 } = $$props;
   let { statNode } = $$props;
   let { modNode } = $$props;
@@ -3340,7 +3343,7 @@ function instance$6($$self, $$props, $$invalidate) {
 class StatValue extends SvelteComponent {
   constructor(options) {
     super();
-    init(this, options, instance$6, create_fragment$6, safe_not_equal, {
+    init(this, options, instance$7, create_fragment$7, safe_not_equal, {
       name: 0,
       statNode: 6,
       modNode: 7,
@@ -3460,7 +3463,7 @@ function create_each_block$1(ctx) {
     }
   };
 }
-function create_fragment$5(ctx) {
+function create_fragment$6(ctx) {
   let div;
   let current;
   let each_value = ensure_array_like(
@@ -3540,7 +3543,7 @@ function create_fragment$5(ctx) {
     }
   };
 }
-function instance$5($$self, $$props, $$invalidate) {
+function instance$6($$self, $$props, $$invalidate) {
   let { sys } = $$props;
   let { edit = false } = $$props;
   let stats = sys.getNodeNames("fixed", "stats");
@@ -3553,7 +3556,7 @@ function instance$5($$self, $$props, $$invalidate) {
 class Stats extends SvelteComponent {
   constructor(options) {
     super();
-    init(this, options, instance$5, create_fragment$5, safe_not_equal, { sys: 0, edit: 1 });
+    init(this, options, instance$6, create_fragment$6, safe_not_equal, { sys: 0, edit: 1 });
   }
   get sys() {
     return this.$$.ctx[0];
@@ -3612,7 +3615,7 @@ function create_if_block_1$3(ctx) {
     }
   };
 }
-function create_if_block$4(ctx) {
+function create_if_block$5(ctx) {
   let div;
   let mounted;
   let dispose;
@@ -3653,7 +3656,7 @@ function create_if_block$4(ctx) {
     }
   };
 }
-function create_fragment$4(ctx) {
+function create_fragment$5(ctx) {
   let t;
   let if_block1_anchor;
   let if_block0 = (
@@ -3662,7 +3665,7 @@ function create_fragment$4(ctx) {
   );
   let if_block1 = (
     /*hasDown*/
-    ctx[1] && create_if_block$4(ctx)
+    ctx[1] && create_if_block$5(ctx)
   );
   return {
     c() {
@@ -3700,7 +3703,7 @@ function create_fragment$4(ctx) {
         if (if_block1) {
           if_block1.p(ctx2, dirty);
         } else {
-          if_block1 = create_if_block$4(ctx2);
+          if_block1 = create_if_block$5(ctx2);
           if_block1.c();
           if_block1.m(if_block1_anchor.parentNode, if_block1_anchor);
         }
@@ -3721,7 +3724,7 @@ function create_fragment$4(ctx) {
     }
   };
 }
-function instance$4($$self, $$props, $$invalidate) {
+function instance$5($$self, $$props, $$invalidate) {
   let dispatch2 = createEventDispatcher();
   let { data } = $$props;
   let { hasUp } = $$props;
@@ -3748,7 +3751,7 @@ function instance$4($$self, $$props, $$invalidate) {
 class ItemManouver extends SvelteComponent {
   constructor(options) {
     super();
-    init(this, options, instance$4, create_fragment$4, safe_not_equal, { data: 4, hasUp: 0, hasDown: 1 });
+    init(this, options, instance$5, create_fragment$5, safe_not_equal, { data: 4, hasUp: 0, hasDown: 1 });
   }
   get data() {
     return this.$$.ctx[4];
@@ -3778,7 +3781,7 @@ function create_if_block_5$1(ctx) {
   let updating_data;
   let current;
   function itemoptions_data_binding(value) {
-    ctx[7](value);
+    ctx[5](value);
   }
   let itemoptions_props = { editMode: true };
   if (
@@ -3793,7 +3796,7 @@ function create_if_block_5$1(ctx) {
   itemoptions.$on(
     "optionSelected",
     /*updateData*/
-    ctx[3]
+    ctx[4]
   );
   return {
     c() {
@@ -3848,7 +3851,7 @@ function create_if_block_4$1(ctx) {
   stats.$on(
     "optionSelected",
     /*updateData*/
-    ctx[3]
+    ctx[4]
   );
   return {
     c() {
@@ -3906,7 +3909,7 @@ function create_if_block_3$1(ctx) {
   let div_transition;
   let current;
   function spellinfo_data_binding(value) {
-    ctx[11](value);
+    ctx[9](value);
   }
   let spellinfo_props = {
     edit: (
@@ -3930,7 +3933,7 @@ function create_if_block_3$1(ctx) {
   spellinfo.$on(
     "optionSelected",
     /*updateData*/
-    ctx[3]
+    ctx[4]
   );
   return {
     c() {
@@ -3995,7 +3998,7 @@ function create_if_block_2$2(ctx) {
   let div_transition;
   let current;
   function skillproficiencycollection_data_binding(value) {
-    ctx[10](value);
+    ctx[8](value);
   }
   let skillproficiencycollection_props = {
     edit: (
@@ -4019,7 +4022,7 @@ function create_if_block_2$2(ctx) {
   skillproficiencycollection.$on(
     "optionSelected",
     /*updateData*/
-    ctx[3]
+    ctx[4]
   );
   return {
     c() {
@@ -4084,7 +4087,7 @@ function create_if_block_1$2(ctx) {
   let div_transition;
   let current;
   function proficiencybonus_data_binding(value) {
-    ctx[9](value);
+    ctx[7](value);
   }
   let proficiencybonus_props = {
     sys: (
@@ -4108,7 +4111,7 @@ function create_if_block_1$2(ctx) {
   proficiencybonus.$on(
     "optionSelected",
     /*updateData*/
-    ctx[3]
+    ctx[4]
   );
   return {
     c() {
@@ -4166,14 +4169,14 @@ function create_if_block_1$2(ctx) {
     }
   };
 }
-function create_if_block$3(ctx) {
+function create_if_block$4(ctx) {
   let div;
   let hitpoints;
   let updating_data;
   let div_transition;
   let current;
   function hitpoints_data_binding(value) {
-    ctx[8](value);
+    ctx[6](value);
   }
   let hitpoints_props = {
     sys: (
@@ -4198,7 +4201,7 @@ function create_if_block$3(ctx) {
   hitpoints.$on(
     "optionSelected",
     /*updateData*/
-    ctx[3]
+    ctx[4]
   );
   return {
     c() {
@@ -4256,18 +4259,18 @@ function create_if_block$3(ctx) {
     }
   };
 }
-function create_fragment$3(ctx) {
+function create_fragment$4(ctx) {
   let div;
   let t;
   let current_block_type_index;
   let if_block1;
   let current;
   let if_block0 = (
-    /*editMode*/
-    ctx[1] && create_if_block_5$1(ctx)
+    /*layoutMode*/
+    ctx[3] && create_if_block_5$1(ctx)
   );
   const if_block_creators = [
-    create_if_block$3,
+    create_if_block$4,
     create_if_block_1$2,
     create_if_block_2$2,
     create_if_block_3$1,
@@ -4320,13 +4323,13 @@ function create_fragment$3(ctx) {
     },
     p(ctx2, [dirty]) {
       if (
-        /*editMode*/
-        ctx2[1]
+        /*layoutMode*/
+        ctx2[3]
       ) {
         if (if_block0) {
           if_block0.p(ctx2, dirty);
-          if (dirty & /*editMode*/
-          2) {
+          if (dirty & /*layoutMode*/
+          8) {
             transition_in(if_block0, 1);
           }
         } else {
@@ -4393,12 +4396,10 @@ function create_fragment$3(ctx) {
     }
   };
 }
-function instance$3($$self, $$props, $$invalidate) {
+function instance$4($$self, $$props, $$invalidate) {
   let { data } = $$props;
   let { editMode } = $$props;
   let { sys } = $$props;
-  let { length } = $$props;
-  let { index } = $$props;
   let { layoutMode = false } = $$props;
   function updateData(v) {
     console.log(data);
@@ -4428,18 +4429,14 @@ function instance$3($$self, $$props, $$invalidate) {
     if ("data" in $$props2) $$invalidate(0, data = $$props2.data);
     if ("editMode" in $$props2) $$invalidate(1, editMode = $$props2.editMode);
     if ("sys" in $$props2) $$invalidate(2, sys = $$props2.sys);
-    if ("length" in $$props2) $$invalidate(4, length = $$props2.length);
-    if ("index" in $$props2) $$invalidate(5, index = $$props2.index);
-    if ("layoutMode" in $$props2) $$invalidate(6, layoutMode = $$props2.layoutMode);
+    if ("layoutMode" in $$props2) $$invalidate(3, layoutMode = $$props2.layoutMode);
   };
   return [
     data,
     editMode,
     sys,
-    updateData,
-    length,
-    index,
     layoutMode,
+    updateData,
     itemoptions_data_binding,
     hitpoints_data_binding,
     proficiencybonus_data_binding,
@@ -4450,13 +4447,11 @@ function instance$3($$self, $$props, $$invalidate) {
 class ItemDestributor extends SvelteComponent {
   constructor(options) {
     super();
-    init(this, options, instance$3, create_fragment$3, safe_not_equal, {
+    init(this, options, instance$4, create_fragment$4, safe_not_equal, {
       data: 0,
       editMode: 1,
       sys: 2,
-      length: 4,
-      index: 5,
-      layoutMode: 6
+      layoutMode: 3
     });
   }
   get data() {
@@ -4480,34 +4475,20 @@ class ItemDestributor extends SvelteComponent {
     this.$$set({ sys });
     flush();
   }
-  get length() {
-    return this.$$.ctx[4];
-  }
-  set length(length) {
-    this.$$set({ length });
-    flush();
-  }
-  get index() {
-    return this.$$.ctx[5];
-  }
-  set index(index) {
-    this.$$set({ index });
-    flush();
-  }
   get layoutMode() {
-    return this.$$.ctx[6];
+    return this.$$.ctx[3];
   }
   set layoutMode(layoutMode) {
     this.$$set({ layoutMode });
     flush();
   }
 }
-create_custom_element(ItemDestributor, { "data": {}, "editMode": {}, "sys": {}, "length": {}, "index": {}, "layoutMode": { "type": "Boolean" } }, [], [], true);
+create_custom_element(ItemDestributor, { "data": {}, "editMode": {}, "sys": {}, "layoutMode": { "type": "Boolean" } }, [], [], true);
 function customFlip(node, fromTo, params) {
   if (node.style.animation) node.style = null;
   return flip(node, fromTo, params ?? { duration: 500 });
 }
-function create_if_block$2(ctx) {
+function create_if_block$3(ctx) {
   let t;
   let if_block1_anchor;
   let if_block0 = (
@@ -4671,11 +4652,11 @@ function create_if_block_1$1(ctx) {
     }
   };
 }
-function create_fragment$2(ctx) {
+function create_fragment$3(ctx) {
   let if_block_anchor;
   let if_block = (
     /*active*/
-    ctx[0] && create_if_block$2(ctx)
+    ctx[0] && create_if_block$3(ctx)
   );
   return {
     c() {
@@ -4694,7 +4675,7 @@ function create_fragment$2(ctx) {
         if (if_block) {
           if_block.p(ctx2, dirty);
         } else {
-          if_block = create_if_block$2(ctx2);
+          if_block = create_if_block$3(ctx2);
           if_block.c();
           if_block.m(if_block_anchor.parentNode, if_block_anchor);
         }
@@ -4713,7 +4694,7 @@ function create_fragment$2(ctx) {
     }
   };
 }
-function instance$2($$self, $$props, $$invalidate) {
+function instance$3($$self, $$props, $$invalidate) {
   let { active: active2 } = $$props;
   let { addText = "Add Item" } = $$props;
   let { remText = "Remove This Item" } = $$props;
@@ -4758,7 +4739,7 @@ function instance$2($$self, $$props, $$invalidate) {
 class RowColumnOptions extends SvelteComponent {
   constructor(options) {
     super();
-    init(this, options, instance$2, create_fragment$2, safe_not_equal, {
+    init(this, options, instance$3, create_fragment$3, safe_not_equal, {
       active: 0,
       addText: 1,
       remText: 4,
@@ -4827,7 +4808,7 @@ class RowColumnOptions extends SvelteComponent {
   }
 }
 create_custom_element(RowColumnOptions, { "active": {}, "addText": {}, "remText": {}, "offset": {}, "side": {}, "verti": {}, "onRemove": {}, "onAdd": {} }, [], [], true);
-function create_if_block$1(ctx) {
+function create_if_block$2(ctx) {
   let div1;
   let div1_transition;
   let current;
@@ -4868,11 +4849,11 @@ function create_if_block$1(ctx) {
     }
   };
 }
-function create_fragment$1(ctx) {
+function create_fragment$2(ctx) {
   let div;
   let if_block = (
     /*$active*/
-    ctx[1] && create_if_block$1()
+    ctx[1] && create_if_block$2()
   );
   return {
     c() {
@@ -4895,7 +4876,159 @@ function create_fragment$1(ctx) {
             transition_in(if_block, 1);
           }
         } else {
-          if_block = create_if_block$1();
+          if_block = create_if_block$2();
+          if_block.c();
+          transition_in(if_block, 1);
+          if_block.m(div, null);
+        }
+      } else if (if_block) {
+        group_outros();
+        transition_out(if_block, 1, 1, () => {
+          if_block = null;
+        });
+        check_outros();
+      }
+    },
+    i(local) {
+      transition_in(if_block);
+    },
+    o(local) {
+      transition_out(if_block);
+    },
+    d(detaching) {
+      if (detaching) {
+        detach(div);
+      }
+      if (if_block) if_block.d();
+    }
+  };
+}
+function instance$2($$self, $$props, $$invalidate) {
+  let $active, $$unsubscribe_active = noop, $$subscribe_active = () => ($$unsubscribe_active(), $$unsubscribe_active = subscribe(active2, ($$value) => $$invalidate(1, $active = $$value)), active2);
+  $$self.$$.on_destroy.push(() => $$unsubscribe_active());
+  let { active: active2 } = $$props;
+  $$subscribe_active();
+  $$self.$$set = ($$props2) => {
+    if ("active" in $$props2) $$subscribe_active($$invalidate(0, active2 = $$props2.active));
+  };
+  return [active2, $active];
+}
+class LoadingSpinner extends SvelteComponent {
+  constructor(options) {
+    super();
+    init(this, options, instance$2, create_fragment$2, safe_not_equal, { active: 0 });
+  }
+  get active() {
+    return this.$$.ctx[0];
+  }
+  set active(active2) {
+    this.$$set({ active: active2 });
+    flush();
+  }
+}
+create_custom_element(LoadingSpinner, { "active": {} }, [], [], true);
+function create_if_block$1(ctx) {
+  let div;
+  let div_transition;
+  let current;
+  return {
+    c() {
+      div = element("div");
+      attr(div, "class", "tooltipInnerBox");
+      attr(
+        div,
+        "data-type",
+        /*type*/
+        ctx[3]
+      );
+    },
+    m(target, anchor) {
+      insert(target, div, anchor);
+      div.innerHTML = /*text*/
+      ctx[0];
+      current = true;
+    },
+    p(new_ctx, dirty) {
+      ctx = new_ctx;
+      if (!current || dirty & /*text*/
+      1) div.innerHTML = /*text*/
+      ctx[0];
+      if (!current || dirty & /*type*/
+      8) {
+        attr(
+          div,
+          "data-type",
+          /*type*/
+          ctx[3]
+        );
+      }
+    },
+    i(local) {
+      if (current) return;
+      if (local) {
+        add_render_callback(() => {
+          if (!current) return;
+          if (!div_transition) div_transition = create_bidirectional_transition(div, fly, { x: (
+            /*animX*/
+            ctx[1]
+          ), y: (
+            /*animY*/
+            ctx[2]
+          ) }, true);
+          div_transition.run(1);
+        });
+      }
+      current = true;
+    },
+    o(local) {
+      if (local) {
+        if (!div_transition) div_transition = create_bidirectional_transition(div, fly, { x: (
+          /*animX*/
+          ctx[1]
+        ), y: (
+          /*animY*/
+          ctx[2]
+        ) }, false);
+        div_transition.run(0);
+      }
+      current = false;
+    },
+    d(detaching) {
+      if (detaching) {
+        detach(div);
+      }
+      if (detaching && div_transition) div_transition.end();
+    }
+  };
+}
+function create_fragment$1(ctx) {
+  let div;
+  let if_block = (
+    /*mounted*/
+    ctx[4] && create_if_block$1(ctx)
+  );
+  return {
+    c() {
+      div = element("div");
+      if (if_block) if_block.c();
+    },
+    m(target, anchor) {
+      insert(target, div, anchor);
+      if (if_block) if_block.m(div, null);
+    },
+    p(ctx2, [dirty]) {
+      if (
+        /*mounted*/
+        ctx2[4]
+      ) {
+        if (if_block) {
+          if_block.p(ctx2, dirty);
+          if (dirty & /*mounted*/
+          16) {
+            transition_in(if_block, 1);
+          }
+        } else {
+          if_block = create_if_block$1(ctx2);
           if_block.c();
           transition_in(if_block, 1);
           if_block.m(div, null);
@@ -4923,29 +5056,105 @@ function create_fragment$1(ctx) {
   };
 }
 function instance$1($$self, $$props, $$invalidate) {
-  let $active, $$unsubscribe_active = noop, $$subscribe_active = () => ($$unsubscribe_active(), $$unsubscribe_active = subscribe(active2, ($$value) => $$invalidate(1, $active = $$value)), active2);
-  $$self.$$.on_destroy.push(() => $$unsubscribe_active());
-  let { active: active2 } = $$props;
-  $$subscribe_active();
+  let { text: text2 } = $$props;
+  let { animX = 20 } = $$props;
+  let { animY = 0 } = $$props;
+  let { type } = $$props;
+  let mounted = false;
+  onMount(() => {
+    setTimeout(
+      () => {
+        $$invalidate(4, mounted = true);
+      },
+      100
+    );
+  });
   $$self.$$set = ($$props2) => {
-    if ("active" in $$props2) $$subscribe_active($$invalidate(0, active2 = $$props2.active));
+    if ("text" in $$props2) $$invalidate(0, text2 = $$props2.text);
+    if ("animX" in $$props2) $$invalidate(1, animX = $$props2.animX);
+    if ("animY" in $$props2) $$invalidate(2, animY = $$props2.animY);
+    if ("type" in $$props2) $$invalidate(3, type = $$props2.type);
   };
-  return [active2, $active];
+  return [text2, animX, animY, type, mounted];
 }
-class LoadingSpinner extends SvelteComponent {
+class ToolTip extends SvelteComponent {
   constructor(options) {
     super();
-    init(this, options, instance$1, create_fragment$1, safe_not_equal, { active: 0 });
+    init(this, options, instance$1, create_fragment$1, safe_not_equal, { text: 0, animX: 1, animY: 2, type: 3 });
   }
-  get active() {
+  get text() {
     return this.$$.ctx[0];
   }
-  set active(active2) {
-    this.$$set({ active: active2 });
+  set text(text2) {
+    this.$$set({ text: text2 });
+    flush();
+  }
+  get animX() {
+    return this.$$.ctx[1];
+  }
+  set animX(animX) {
+    this.$$set({ animX });
+    flush();
+  }
+  get animY() {
+    return this.$$.ctx[2];
+  }
+  set animY(animY) {
+    this.$$set({ animY });
+    flush();
+  }
+  get type() {
+    return this.$$.ctx[3];
+  }
+  set type(type) {
+    this.$$set({ type });
     flush();
   }
 }
-create_custom_element(LoadingSpinner, { "active": {} }, [], [], true);
+create_custom_element(ToolTip, { "text": {}, "animX": {}, "animY": {}, "type": {} }, [], [], true);
+function tooltip(node, { text: text2, type = "none", animX = 20, animY = 0, Xoffset = 0, Yoffset = 0 }) {
+  let tooltipElement;
+  let tooltipComponent;
+  function showTooltip() {
+    tooltipElement = document.createElement("div");
+    tooltipElement.style.position = "absolute";
+    tooltipElement.style.zIndex = "2000";
+    tooltipComponent = new ToolTip({
+      target: tooltipElement,
+      props: { text: text2, type, animX, animY }
+    });
+    document.body.appendChild(tooltipElement);
+    const { top, left, width, height } = node.getBoundingClientRect();
+    tooltipElement.style.top = `${top + height + window.scrollY + Yoffset}px`;
+    tooltipElement.style.left = `${left + width / 2 - tooltipElement.offsetWidth / 2 + window.scrollX + Xoffset}px`;
+  }
+  function hideTooltip() {
+    if (tooltipComponent) {
+      tooltipComponent.$destroy();
+      tooltipComponent = null;
+    }
+    if (tooltipElement) {
+      tooltipElement.remove();
+      tooltipElement = null;
+    }
+  }
+  node.addEventListener("mouseenter", showTooltip);
+  node.addEventListener("mouseleave", hideTooltip);
+  return {
+    update({ text: text3, type: type2 = "none", animX: animX2 = 20, animY: animY2 = 0, Xoffset: Xoffset2 = 0, Yoffset: Yoffset2 = 0 }) {
+      if (tooltipComponent) {
+        tooltipComponent.$set({ text: text3, type: type2, animX: animX2, animY: animY2 });
+      }
+    },
+    destroy() {
+      node.removeEventListener("mouseenter", showTooltip);
+      node.removeEventListener("mouseleave", hideTooltip);
+      if (tooltipComponent) {
+        tooltipComponent.$destroy();
+      }
+    }
+  };
+}
 function get_each_context(ctx, list, i) {
   const child_ctx = ctx.slice();
   child_ctx[56] = list[i];
@@ -5232,14 +5441,6 @@ function create_each_block_2(key_1, ctx) {
       sys: (
         /*sys*/
         ctx[0]
-      ),
-      length: (
-        /*column*/
-        ctx[59].data.length
-      ),
-      index: (
-        /*k*/
-        ctx[64]
       )
     }
   });
@@ -5383,12 +5584,6 @@ function create_each_block_2(key_1, ctx) {
       if (dirty[0] & /*sys*/
       1) itemdestributor_changes.sys = /*sys*/
       ctx[0];
-      if (dirty[0] & /*$OBJ*/
-      32) itemdestributor_changes.length = /*column*/
-      ctx[59].data.length;
-      if (dirty[0] & /*$OBJ*/
-      32) itemdestributor_changes.index = /*k*/
-      ctx[64];
       itemdestributor.$set(itemdestributor_changes);
       if (!current || dirty[0] & /*$editMode, $editLayout_03, $editLayout_02*/
       22 && div_data_edit_value !== (div_data_edit_value = /*$editMode*/
@@ -6298,37 +6493,43 @@ function create_if_block(ctx) {
 }
 function create_fragment(ctx) {
   let div4;
+  let loadingspinner;
+  let t0;
   let div3;
   let div1;
   let div0;
   let button0;
-  let t0_value = "Stop Edit	";
-  let t0;
+  let t1_value = "Stop Edit	";
   let t1;
-  let button1;
-  let t2_value = "Layout Row	";
   let t2;
+  let button1;
+  let t3_value = "Layout Row	";
   let t3;
-  let button2;
-  let t4_value = "Layout Col	";
   let t4;
+  let button2;
+  let t5_value = "Layout Col	";
   let t5;
-  let button3;
-  let t6_value = "Layout Items";
   let t6;
+  let button3;
+  let t7_value = "Layout Items";
+  let t7;
   let div0_data_isopen_value;
   let div1_data_isopen_value;
-  let t7;
+  let t8;
   let div2;
   let each_blocks = [];
   let each_1_lookup = /* @__PURE__ */ new Map();
-  let t8;
-  let div2_data_isediting_value;
   let t9;
-  let loadingspinner;
+  let div2_data_isediting_value;
   let current;
   let mounted;
   let dispose;
+  loadingspinner = new LoadingSpinner({
+    props: { active: (
+      /*editWasClicked*/
+      ctx[12]
+    ) }
+  });
   let each_value = ensure_array_like(
     /*$OBJ*/
     ctx[5].data
@@ -6346,38 +6547,32 @@ function create_fragment(ctx) {
     /*$editLayout_01*/
     ctx[3] && create_if_block(ctx)
   );
-  loadingspinner = new LoadingSpinner({
-    props: { active: (
-      /*editWasClicked*/
-      ctx[12]
-    ) }
-  });
   return {
     c() {
       div4 = element("div");
+      create_component(loadingspinner.$$.fragment);
+      t0 = space();
       div3 = element("div");
       div1 = element("div");
       div0 = element("div");
       button0 = element("button");
-      t0 = text(t0_value);
-      t1 = space();
+      t1 = text(t1_value);
+      t2 = space();
       button1 = element("button");
-      t2 = text(t2_value);
-      t3 = space();
+      t3 = text(t3_value);
+      t4 = space();
       button2 = element("button");
-      t4 = text(t4_value);
-      t5 = space();
+      t5 = text(t5_value);
+      t6 = space();
       button3 = element("button");
-      t6 = text(t6_value);
-      t7 = space();
+      t7 = text(t7_value);
+      t8 = space();
       div2 = element("div");
       for (let i = 0; i < each_blocks.length; i += 1) {
         each_blocks[i].c();
       }
-      t8 = space();
-      if (if_block) if_block.c();
       t9 = space();
-      create_component(loadingspinner.$$.fragment);
+      if (if_block) if_block.c();
       attr(
         button0,
         "data-active",
@@ -6430,31 +6625,31 @@ function create_fragment(ctx) {
     },
     m(target, anchor) {
       insert(target, div4, anchor);
+      mount_component(loadingspinner, div4, null);
+      append(div4, t0);
       append(div4, div3);
       append(div3, div1);
       append(div1, div0);
       append(div0, button0);
-      append(button0, t0);
-      append(div0, t1);
+      append(button0, t1);
+      append(div0, t2);
       append(div0, button1);
-      append(button1, t2);
-      append(div0, t3);
+      append(button1, t3);
+      append(div0, t4);
       append(div0, button2);
-      append(button2, t4);
-      append(div0, t5);
+      append(button2, t5);
+      append(div0, t6);
       append(div0, button3);
-      append(button3, t6);
-      append(div3, t7);
+      append(button3, t7);
+      append(div3, t8);
       append(div3, div2);
       for (let i = 0; i < each_blocks.length; i += 1) {
         if (each_blocks[i]) {
           each_blocks[i].m(div2, null);
         }
       }
-      append(div2, t8);
+      append(div2, t9);
       if (if_block) if_block.m(div2, null);
-      append(div4, t9);
-      mount_component(loadingspinner, div4, null);
       current = true;
       if (!mounted) {
         dispose = [
@@ -6464,24 +6659,40 @@ function create_fragment(ctx) {
             /*click_handler*/
             ctx[24]
           ),
+          action_destroyer(tooltip.call(null, button0, {
+            text: "Editmode, allows in View Edits",
+            type: "verbose"
+          })),
           listen(
             button1,
             "click",
             /*click_handler_1*/
             ctx[25]
           ),
+          action_destroyer(tooltip.call(null, button1, {
+            text: "Create Rows that stack vertically<br> you can drag and drop them to switch places of Rows",
+            type: "verbose"
+          })),
           listen(
             button2,
             "click",
             /*click_handler_2*/
             ctx[26]
           ),
+          action_destroyer(tooltip.call(null, button2, {
+            text: "Create Columns in your rows<br> Columns stack horizontally<br> you can drag and drop them to switch places",
+            type: "verbose"
+          })),
           listen(
             button3,
             "click",
             /*click_handler_3*/
             ctx[27]
-          )
+          ),
+          action_destroyer(tooltip.call(null, button3, {
+            text: "Create items in your Columns<br>Items Stack vertically in a Column<br> when you drag an item you change what Column they belong to<br> to change vertical order use buttons",
+            type: "verbose"
+          }))
         ];
         mounted = true;
       }
@@ -6547,7 +6758,7 @@ function create_fragment(ctx) {
         );
         group_outros();
         for (let i = 0; i < each_blocks.length; i += 1) each_blocks[i].r();
-        each_blocks = update_keyed_each(each_blocks, dirty, get_key, 1, ctx2, each_value, each_1_lookup, div2, fix_and_outro_and_destroy_block, create_each_block, t8, get_each_context);
+        each_blocks = update_keyed_each(each_blocks, dirty, get_key, 1, ctx2, each_value, each_1_lookup, div2, fix_and_outro_and_destroy_block, create_each_block, t9, get_each_context);
         for (let i = 0; i < each_blocks.length; i += 1) each_blocks[i].a();
         check_outros();
       }
@@ -6594,30 +6805,30 @@ function create_fragment(ctx) {
     },
     i(local) {
       if (current) return;
+      transition_in(loadingspinner.$$.fragment, local);
       for (let i = 0; i < each_value.length; i += 1) {
         transition_in(each_blocks[i]);
       }
       transition_in(if_block);
-      transition_in(loadingspinner.$$.fragment, local);
       current = true;
     },
     o(local) {
+      transition_out(loadingspinner.$$.fragment, local);
       for (let i = 0; i < each_blocks.length; i += 1) {
         transition_out(each_blocks[i]);
       }
       transition_out(if_block);
-      transition_out(loadingspinner.$$.fragment, local);
       current = false;
     },
     d(detaching) {
       if (detaching) {
         detach(div4);
       }
+      destroy_component(loadingspinner);
       for (let i = 0; i < each_blocks.length; i += 1) {
         each_blocks[i].d();
       }
       if (if_block) if_block.d();
-      destroy_component(loadingspinner);
       mounted = false;
       run_all(dispose);
     }

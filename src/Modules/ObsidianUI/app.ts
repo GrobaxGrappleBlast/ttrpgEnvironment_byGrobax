@@ -1,5 +1,5 @@
 import { App, ItemView, Modal, Platform, Plugin, PluginSettingTab, Setting, TFile, WorkspaceLeaf, parseYaml } from 'obsidian';
-import  SvelteApp from './UIInterfaces/Designer01/app.svelte';
+import  SvelteApp from './UIInterfaces/Designer02/app.svelte';
 import { BlockRenderer } from './BlockRenderer/BlockRenderer';
  
 
