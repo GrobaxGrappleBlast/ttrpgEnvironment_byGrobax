@@ -27,8 +27,8 @@
 		}
 	})
 
-	export let onSelect: ( d: any ) => boolean;
-	export let onAdd:(() => any) | null = null; 
+	export let onSelect		: ( d: any ) => boolean;
+	export let onAdd		: (() => any) | null = null; 
 	const dispatch = createEventDispatcher();
 
 	interface IViewElement{

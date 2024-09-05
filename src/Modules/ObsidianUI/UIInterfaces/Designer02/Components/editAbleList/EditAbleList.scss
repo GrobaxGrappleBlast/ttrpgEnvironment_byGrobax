@@ -30,7 +30,7 @@
 // Color Specifications
 .Editable_row{
 	width: 100%;
-	@include editForm;
+	
 	
 	&:not([data-isEdit="true"]){
 		&[data-can-hover="true"]{

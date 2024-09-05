@@ -1,11 +1,12 @@
 .MainAppContainerPages{
 	position: relative;
 	& > div {
-		width: inherit;
+		width: 100%;
 		position:absolute;
 	}
 }
 .MainAppContainerPage{
+	width: 100%; 
 	& > section {
 		border-top:1px solid gray;
 		padding:25px;
@@ -30,4 +31,33 @@
 	width: 100%;
 	border-radius:3px;
 	background-color: gray;
+}
+
+// --- --- --- --- --- --- --- --- --- --- --- ---
+// SYSTEM!!!! 
+// --- --- --- --- --- --- --- --- --- --- --- ---
+.MainAppContainerPageSystem{
+
+	.PageSystemList{
+		@include editForm;
+		min-height:150px;
+		padding:0;
+		overflow:hidden;
+		overflow-y:scroll;
+	}
+	
+	.SystemPreviewer{
+		.tableRow{
+			.tableRowColumn {
+				&:nth-child(1){ 
+				}
+				&:nth-child(2){
+					width:250px;
+					div{
+
+					}
+				}
+			}
+		}
+	}
 }

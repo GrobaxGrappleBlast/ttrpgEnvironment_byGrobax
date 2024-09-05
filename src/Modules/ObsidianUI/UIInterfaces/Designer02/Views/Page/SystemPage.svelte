@@ -8,6 +8,7 @@
     import { SystemPreview } from "../../../../../../../src/Modules/ObsidianUICore/model/systemPreview";
     import { Writable, writable } from "svelte/store";
     import { TTRPGSystemJSONFormatting } from "../../../../../../../src/Modules/Designer";
+    import { fade, slide } from "svelte/transition";
 
 	//let messageHandler : StaticMessageHandler;
 	export let activeSystem : TTRPGSystemJSONFormatting = new TTRPGSystemJSONFormatting();
@@ -16,6 +17,7 @@
 	let activePreview: SystemPreview = nullpreview;
 	let unknownString = 'unknown';
 
+ 
 	onMount( async () => {
 		let req = await ObsidianUICoreAPI.getInstance().systemDefinition.getAllSystems();
 		if(req.responseCode != 200){
@@ -41,10 +43,13 @@
 	function loadPreview(preview){
 		activePreview = preview
 	}
+	function unloadPreview(){
+		activePreview = nullpreview
+	}
 	function onSelectSystem( d ){
 
 		const pre = $availSystems.find( p => p.systemCodeName == d);
-
+		console.log(pre);
 		if(activePreview == pre){
 			activePreview = nullpreview;
 			return false;
@@ -54,21 +59,15 @@
 		return true;
 	}
 
+	//@ts-ignore This is for rendering the unknown strnig
+	nullpreview.isEditable = null;
+
 </script>
 
-<div class="MainAppContainerPage">
+<div class="MainAppContainerPage MainAppContainerPageSystem">
 	 
 	<section>
-		<!-- System Selector -->
-		<div>	
-			<EditAbleList 
-				isEditableContainer={false}
-				collection= { $availSystems?.map( p => {return { key : p.systemCodeName , value : p.systemName}}) ?? [] }
-				onSelect={ onSelectSystem } 
-				on:onDeSelect={ () => { }}
-			/> 
-		</div> 
-		<div class="table" data-is-edit={ false } >
+		<div class="table SystemPreviewer" data-is-edit={ false } transition:fade>
 			<div class="tableRow">
 				<div class="tableRowColumn">Author</div> 
 				<div class="tableRowColumn" >{activePreview?.author ?? unknownString}</div>
@@ -94,5 +93,16 @@
 				<div class="tableRowColumn" >{activePreview?.folderName ?? unknownString}</div>
 			</div>
 		</div>
+
+		<br>
+		<!-- System Selector -->
+		<div class="PageSystemList" >	
+			<EditAbleList 
+				isEditableContainer={false}
+				collection= { $availSystems?.map( p => {return { key : p.systemCodeName , value : p.systemName}}) ?? [] }
+				onSelect={ onSelectSystem } 
+				on:onDeSelect={ unloadPreview }
+			/> 
+		</div> 
 	</section>
 </div>
