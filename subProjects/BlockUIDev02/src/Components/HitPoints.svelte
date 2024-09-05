@@ -1,7 +1,6 @@
 <script lang="ts">
     import { onDestroy, onMount } from "svelte";
-    import { system, TNode } from "../../declaration";
-    import ItemOptions from "../Structure/ItemOptions.svelte";
+    import { system, TNode } from "../../declaration"; 
     import { CNode, keyManager } from "../Structure/ComponentNode";
  
 	
@@ -11,7 +10,7 @@
 	export let playMode:boolean;
 	export let data :CNode;
 	
-	let node=sys.fixed.generic["Hit Points"];
+	let node = sys.getNode('fixed','generic','Hit Points') ;
 	let v = node.getValue();
 	const KEY = keyManager.getNewKey();
 

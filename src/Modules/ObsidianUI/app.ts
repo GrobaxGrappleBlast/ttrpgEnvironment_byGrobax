@@ -1,10 +1,7 @@
 import { App, ItemView, Modal, Platform, Plugin, PluginSettingTab, Setting, TFile, WorkspaceLeaf, parseYaml } from 'obsidian';
 import  SvelteApp from './UIInterfaces/Designer01/app.svelte';
 import { BlockRenderer } from './BlockRenderer/BlockRenderer';
-import {
-	dirname,
-	join
-  } from "path";
+ 
 
 const VIEW_TYPE = "svelte-view";    
 interface MyPluginSettings {
@@ -26,8 +23,11 @@ export default class PluginHandler extends Plugin {
 	public static SYSTEM_UI_CONTAINER_FOLDER_NAME	: string;
 	public static SYSTEM_UI_LAYOUTFILENAME	: string;
 	public static SYSTEM_LAYOUT_BLOCKNAME :string;
+	public static GLOBAL_SYSTEM_PASSER :string;
 
-	public static self			: PluginHandler;  
+	public static self			: PluginHandler; 
+	
+	//@ts-ignore
 	settings: MyPluginSettings;  
 
 	public static uuidv4() {
@@ -53,7 +53,8 @@ export default class PluginHandler extends Plugin {
 		PluginHandler.SYSTEM_UI_CONTAINER_FOLDER_NAME 	= 'UILayouts';
 		PluginHandler.SYSTEM_UI_LAYOUTFILENAME 			= "UIPreview.json"
 
-		// Get Folders 
+		// Strings used for global variables 
+		PluginHandler.GLOBAL_SYSTEM_PASSER				= 'GrobaxTTRPGGlobalVariable';
 		
 
 		PluginHandler.SYSTEM_LAYOUT_BLOCKNAME 			= "TTRPG";	
@@ -68,10 +69,18 @@ export default class PluginHandler extends Plugin {
 		this.addSettingTab(new SampleSettingTab(this.app, this));
 
 		this.registerMarkdownCodeBlockProcessor(PluginHandler.SYSTEM_LAYOUT_BLOCKNAME, (source, el, ctx) => {
-			
 			const renderer = new BlockRenderer(source,el,ctx);
 			renderer.render(); 
 		});
+
+		this.registerEvent(
+			this.app.workspace.on('active-leaf-change', (leaf) => {
+				if (leaf) {
+					window[PluginHandler.GLOBAL_SYSTEM_PASSER] = {};
+				}
+			})
+		);
+	  
 		
 	} 
 	onLayoutReady(): void {

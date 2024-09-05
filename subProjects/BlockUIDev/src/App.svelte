@@ -514,15 +514,13 @@
 	import "./app.scss";
 	 
     import { onMount } from "svelte";
-    import { CNode, SheetData, keyManager } from "./Structure/ComponentNode";  
+    import { SheetData } from "./Structure/ComponentNode";  
     
     import { get, type Writable, writable } from 'svelte/store';
-    import { fade, fly } from "svelte/transition";
-	import { flip } from 'svelte/animate'; 
+    import { fade, fly } from "svelte/transition"; 
     import ItemDestributor from "./Structure/ItemDestributor.svelte";
     import { system } from "../declaration";
-    import { customFlip } from "./Svelte/CustomFlip";
-    import ItemManouver from "./Structure/ItemManouver.svelte";
+    import { customFlip } from "./Svelte/CustomFlip"; 
     import RowColumnOptions from "./Structure/RowColumnOptions.svelte";
 	
 	

@@ -1,12 +1,12 @@
-import { GrobDerivedNode, TTRPGSystem, type GrobNodeType } from "../../../../Designer"; 
+import { GrobJDerivedNode, TTRPGSystemJSONFormatting, type  GrobJNodeType } from "../../../../Designer/index"; 
 import { writable, type Writable, get } from 'svelte/store';  
  
 type StaticMessageHandler = any
-export type originRowData = {key: string, segments:(string|null)[] , active :boolean , testValue :number, inCalc:boolean, target: GrobNodeType  | null , isSelectAllTarget:boolean };
+export type originRowData = {key: string, segments:(string|null)[] , active :boolean , testValue :number, inCalc:boolean, target: GrobJNodeType  | null , isSelectAllTarget:boolean };
 export const selAllInCollectionString = '- - Select all - -';
 export class DerivedCollectionController {
 	 
-	public system:TTRPGSystem | null	= null ;
+	public system:TTRPGSystemJSONFormatting | null	= null ;
 	public messageHandler: StaticMessageHandler | null;
 
 	public name 		: Writable<string>			= writable(''); 
@@ -68,8 +68,8 @@ export class DerivedCollectionController {
 		let out = (key,msg,error) => { if(output){ messageHandler?.addMessageManual(key,msg,error) }}
 
 		
-		let symbolsCalc = GrobDerivedNode.staticParseCalculationToOrigins( calc 	); 
-		let symbolsName = GrobDerivedNode.staticParseCalculationToOrigins( nameCalc ) 
+		let symbolsCalc = GrobJDerivedNode.staticParseCalculationToOrigins( calc 	); 
+		let symbolsName = GrobJDerivedNode.staticParseCalculationToOrigins( nameCalc ) 
 		symbolsName = symbolsName.filter( p => symbolsCalc.includes(p) );
 
 		let symbolsMissing = symbolsCalc.filter( p => !nameCalc.includes(p))
@@ -96,7 +96,7 @@ export class DerivedCollectionController {
 		 
 		return isValid;
 	} 
-	private validateOrigins(  mappedOrigins:originRowData[], calc:string ,  system:TTRPGSystem , messageHandler: StaticMessageHandler | null = null , output:boolean    ){
+	private validateOrigins(  mappedOrigins:originRowData[], calc:string ,  system:TTRPGSystemJSONFormatting , messageHandler: StaticMessageHandler | null = null , output:boolean    ){
 		let out = (key,msg,error) => { if(output){ messageHandler?.addMessageManual(key,msg,error) }}
 
 		// validate that all inCalc are finished
@@ -161,7 +161,7 @@ export class DerivedCollectionController {
 		let o = {};
 		let mappedKeys : string[] = [];
 		mappedOrigins.forEach( p => { o[p.key]= p.testValue ; mappedKeys.push(p.key) } );
-		let calcres = GrobDerivedNode.testCalculate( calc , o );
+		let calcres = GrobJDerivedNode.testCalculate( calc , o );
 		
 		let succes= calcres.success;
 		let value = calcres.value;
@@ -182,7 +182,7 @@ export class DerivedCollectionController {
 	private validateCalculationOrigins( calc:string , mappedOrigins:originRowData[],  messageHandler: StaticMessageHandler | null = null , output :boolean ){
 		let out = (key,msg,error) => { if(output){ messageHandler?.addMessageManual(key,msg,error) }}
 
-		let symbols = GrobDerivedNode.staticParseCalculationToOrigins(calc);
+		let symbols = GrobJDerivedNode.staticParseCalculationToOrigins(calc);
 		mappedOrigins.forEach( o  => {  
 			const index = symbols.indexOf( o.key );
 			if (index !== -1) {
@@ -243,7 +243,7 @@ export class DerivedCollectionController {
 		else {
 			try {
 				// type declaration
-				type resDataPoint = {name:string, deps:Record<string,GrobNodeType> }
+				type resDataPoint = {name:string, deps:Record<string,GrobJNodeType> }
 
 				// Attempt Save
 				let colName = get(this.name);
@@ -254,7 +254,7 @@ export class DerivedCollectionController {
 				nodesToCreate.forEach( node => {
 
 					// Create
-					let createdNode = this.system?.createDerivedNode( colName , node.name ) as GrobDerivedNode;
+					let createdNode = this.system?.createDerivedNode( colName , node.name ) as GrobJDerivedNode;
 					let calc = get(this.calc);
 					createdNode?.setCalc(calc);
 
@@ -325,7 +325,7 @@ export class DerivedCollectionController {
 		let o = {}; 
 		get(this.mappedOrigins).forEach( p => { o[p.key]= p.testValue; } );
 		let calc = get(this.calc) ; 
-		let res = GrobDerivedNode.testCalculate( calc , o );
+		let res = GrobJDerivedNode.testCalculate( calc , o );
 
 		// save and proccess values 
 		this.resultValue	.set(res.value);
@@ -333,7 +333,7 @@ export class DerivedCollectionController {
 
 		/// Handle Add Origins. 
 		// calculate the symbols
-		let symbols = GrobDerivedNode.staticParseCalculationToOrigins( calc );
+		let symbols = GrobJDerivedNode.staticParseCalculationToOrigins( calc );
 
 		//remove keys that already exists from the array. and leave a pure toAdd list.
 		this.mappedOrigins.update( mappedOrigins =>{
@@ -370,14 +370,14 @@ export class DerivedCollectionController {
 			let origins = get(this.mappedOrigins);
 			let nameCalc = get(this.nameCalc);			
 
-			type resDataPoint = {name:string, deps: Record<string,GrobNodeType>  }
+			type resDataPoint = {name:string, deps: Record<string,GrobJNodeType>  }
 			type result = { data : resDataPoint[] }
 			let res : result = { data : [] };
-			function recursiveNameFinder( self, nameCalc : string, index : number = 0 ,arr : originRowData[] , res : result , deps : Record<string,GrobNodeType> ){
+			function recursiveNameFinder( self, nameCalc : string, index : number = 0 ,arr : originRowData[] , res : result , deps : Record<string,GrobJNodeType> ){
 				 
 				// ge values, and copy nameCalc by value (not reference). 
 				let currentName = nameCalc;
-				let nodes:GrobNodeType[];
+				let nodes:GrobJNodeType[];
 				let curr = arr[index];
 
 				// if we are done, return result
@@ -391,17 +391,17 @@ export class DerivedCollectionController {
 
 				// if this is a Select All Segment then get
 				if (curr.segments[2] == selAllInCollectionString){
-					const sys = (self.system as TTRPGSystem);  
+					const sys = (self.system as TTRPGSystemJSONFormatting);  
 					let collection = sys.getCollection((curr.segments[0] as any),(curr.segments[1] as any));
-					let n : GrobNodeType[] = collection?.getNodes() ?? [];
+					let n : GrobJNodeType[] = collection?.getNodes() ?? [];
 					nodes = n;
 				}
 
 				// else just add this name to the arr
 				else {
-					const sys = (self.system as TTRPGSystem);  
+					const sys = (self.system as TTRPGSystemJSONFormatting);  
 					let collection = sys.getCollection((curr.segments[0] as any),(curr.segments[1] as any));
-					let n : GrobNodeType | undefined = collection?.getNode(curr.segments[2]);
+					let n : GrobJNodeType | undefined = collection?.getNode(curr.segments[2]);
 					nodes = n ? [ n ] : [];
 				}
 				

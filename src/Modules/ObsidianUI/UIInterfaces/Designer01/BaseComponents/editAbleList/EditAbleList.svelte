@@ -1,9 +1,8 @@
 <script lang="ts">
 
-	import Image_tras from "../buttons/minus.svelte";
-	import Image_plus from "../buttons/plus.svelte";
-    import Image_edit from "../buttons/edit.svelte"; 
-    import { fade, slide } from "svelte/transition";
+
+	import Image_plus from "../buttons/plus.svelte"; 
+    import {   slide } from "svelte/transition";
     import { createEventDispatcher, onMount } from "svelte"; 
     import { writable , type  Writable } from 'svelte/store';
 

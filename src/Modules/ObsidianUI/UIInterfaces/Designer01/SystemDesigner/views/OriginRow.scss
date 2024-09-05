@@ -41,10 +41,11 @@
 }
 .derivedOriginRowInteractionField{
 	@extend .derivedOriginRowItem;
+	background-color: $backgroundInput ;
 	
 	&[data-color="error"]{
 		background-color: $color_error ;
 		cursor: pointer;
 	}
-	background-color: $backgroundInput ;
+	
 }

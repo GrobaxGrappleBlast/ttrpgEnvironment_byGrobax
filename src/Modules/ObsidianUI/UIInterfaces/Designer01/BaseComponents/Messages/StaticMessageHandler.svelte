@@ -7,11 +7,11 @@
 	export type MessageTypeTypes = keyof typeof MessageTypes;
 </script> 
 <script lang="ts">
-    import { slide } from "svelte/transition";
-	import './StaticMessageHandler.scss'; 
-    import { ok } from "assert"; 
-    import { writable, type Writable } from "svelte/store";
-    import { flip } from "svelte/animate";
+ 
+	import './StaticMessageHandler.scss';  
+	import { slide } from "svelte/transition"; 
+    import { writable , type  Writable } from 'svelte/store';
+    import { flip } from 'svelte/animate';
 
 	let messages : Writable<Record<any,{msg:string, type : MessageTypeTypes}>> = writable({});
 	let messagesLength =  Object.entries(messages).length;
@@ -55,12 +55,12 @@
 		}) 
 	}
 	export function removeAllMessages(  ){ 
-		messages.update( r => {
+		messages.update( () => {
 			return {};
 		})
 	}
 
-	function onclick(type,key){ 
+	function onclick(type:any,key:any){ 
 		
 		let a = true;
 		if (overrideClick)
@@ -81,7 +81,7 @@
 				<div 
 				transition:slide|local
 				animate:flip
-
+				role="none"
 				class={ 
 					(obj.type == MessageTypes.error) ? "ErrorHandlerSign" : 
 					(obj.type == MessageTypes.verbose) ?  "VerboseHandlerSign" : 

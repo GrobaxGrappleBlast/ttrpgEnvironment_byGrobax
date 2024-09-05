@@ -1,18 +1,13 @@
 <script lang="ts">
-	import SystemExporter from './SystemExporter/SystemExporter.svelte';
-	
-    import { onMount } from "svelte"; 
-    
+	import SystemExporter from './SystemExporter/SystemExporter.svelte'; 
 	import SystemSelector from "./SystemSelector/SystemSelector.svelte";
 	import './app.scss' 
     import { ObsidianUICoreAPI } from "../../../../../src/Modules/ObsidianUICore/API";
-    import StaticMessageHandler from "./BaseComponents/Messages/StaticMessageHandler.svelte";
-    import { SystemPreview } from "../../../../../src/Modules/ObsidianUICore/model/systemPreview"; 
-    import MainMenuButton from "./Menu/MainMenuButton.svelte"; 
+    import { SystemPreview } from "../../../../../src/Modules/ObsidianUICore/model/systemPreview";  
     import { writable, type Writable } from "svelte/store";
     import SystemDesignerContainer from "./SystemDesigner/SystemDesignerContainer.svelte";
-    import { TTRPGSystem } from "../../../../../src/Modules/Designer";
     import { slide } from 'svelte/transition';
+    import MainMenuButton from './Menu/MainMenuButton.svelte';
  
 
 	

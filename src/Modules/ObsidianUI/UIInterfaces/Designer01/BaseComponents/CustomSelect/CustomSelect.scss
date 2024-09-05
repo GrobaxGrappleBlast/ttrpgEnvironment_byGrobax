@@ -10,11 +10,13 @@
 	color: white; 
 	background-color: $backgroundInput;
 	
+	cursor: pointer;
+	
 	&::after{
 		background-color:white;
 	}
 	
-	cursor: pointer;
+	
 	&[disabled="true"]{
 		cursor:default;
 	}

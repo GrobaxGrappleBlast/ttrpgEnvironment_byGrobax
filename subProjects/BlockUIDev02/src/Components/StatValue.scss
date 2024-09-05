@@ -1,41 +1,54 @@
-$padding : 10px;
-
-.StatsRow{
-
-	display:flex;
+@import '../SystemStandards.scss';
+.StatsRow {
+	 
+	display: flex;
 	justify-content: space-between;
-	gap:20px;
+	padding-right:10px; 
 }
-.StatValue{
-	width:100%;
+.statTitle{
+	width:calc( 100% + 10px );
+	display: flex;
+    justify-content: center;
 }
-.BoxValue{
-	border-radius: 5px;
-	border:1px solid black;
-	background-color: lightgray; 
-	width: 100%;
-	height: 100%;
+
+.StatValue { 
+	height:70px;
+	width: 80px;
+	padding-right:10px; 
+}
+
+.BoxValue {
+	border-radius: $borderRad;
+	border: 1px solid black;
+	background-color: lightgray;
+	 
 	display: flex;
 	align-items: center;
-    justify-content: center;
+	justify-content: center; 
+	outline: none;
+	text-align: center;
+	margin: 0;
 
-	&[data-editmode="true"]{
+	&[data-editmode="true"] {
 		background-color: palegoldenrod;
 	}
-	outline: none;
-	text-align: center;  
-	margin: 0; 
-} 
-
-.LargeValue{
-	height	:50px;
-	width: calc(100% - $padding); 
 }
 
-.SmallValue{
-	width	:30px;
-	height	:30px;
-	float: right;  
-	margin-top:-20px;
-	margin-right:-10px;
+.LargeValue {
+	height: 30px;
+	width:calc( 100% );
+	& > input{
+		height:100%;  
+		width: 100%; 
+		padding:0;
+	}
+}
+
+.SmallValue {
+	width: 30px;
+	height: 10px;
+	float: right;
+	margin-top: -10px;
+	margin-right: -10px;
+	color:black;
 }

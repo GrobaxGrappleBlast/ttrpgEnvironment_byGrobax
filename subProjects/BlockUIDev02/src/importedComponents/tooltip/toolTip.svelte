@@ -18,7 +18,7 @@
 <div>
 	{#if mounted}
 		<div class="tooltipInnerBox" data-type={type} transition:fly={{x:animX, y:animY }} >
-			{text}
+			{@html text}
 		</div>
 	{/if}
 </div>

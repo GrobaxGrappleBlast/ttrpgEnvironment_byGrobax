@@ -5,7 +5,7 @@
 	import Image_plus from "../buttons/plus.svelte";
     import Image_edit from "../buttons/edit.svelte"; 
 	import Image_save from "../buttons/download.svelte"; 
-    import { fade, slide } from "svelte/transition";
+    import { slide } from "svelte/transition";
     import { createEventDispatcher, onMount } from "svelte"; 
     import { writable , type  Writable } from 'svelte/store'; 
 	import './EditAbleList.scss'; 
@@ -168,7 +168,7 @@
 		});
 		onDeleteItem(element.name);
 	} 
-	function onEditFocus( row ){
+	function onEditFocus( row : any ){
 		const element = row.target;
 		const range = document.createRange();
 		const selection = window.getSelection();
@@ -203,6 +203,7 @@
 								on:click={ onEditClicked }
 								on:keyup={ onEditClicked }
 								transition:slide|local
+								role="none"
 								use:tooltip={{ text: 'Turn on Edit mode', type:'verbose' }} 
 							>
 								<Image_edit color={ 'white'} />
@@ -213,6 +214,7 @@
 								on:click={ onEditClicked }
 								on:keyup={ onEditClicked }
 								transition:slide|local
+								role="none"
 								use:tooltip={{ text: 'Turn off Edit mode', type:'verbose' }} 
 							>
 								<Image_edit color={ 'white'} />
@@ -221,6 +223,7 @@
 								on:click={ onEditSaved }
 								on:keyup={ onEditSaved }
 								transition:slide|local
+								role="none"
 								use:tooltip={{ text: 'Save changes made', type:'verbose' }} 
 							>
 								<Image_save color={ 'white'} />
@@ -230,6 +233,7 @@
 								on:click={ onEditCancel }
 								on:keyup={ onEditCancel }
 								transition:slide|local
+								role="none"
 								use:tooltip={{ text: 'Discard Changes', type:'verbose' }} 
 							>
 								<Image_minus color={ 'white'} />
@@ -240,9 +244,10 @@
 					<!-- Add -->
 					{#if onAdd != null }
 						<imageContainer 
-							on:click={ () => _onAdd() }
-							on:keyup={ () => _onAdd() }
+							on:click={ () =>{if(_onAdd){ _onAdd()}} }
+							on:keyup 
 							transition:slide|local
+							role="none"
 							use:tooltip={{ text: 'Add To List', type:'verbose' }} 
 						>
 							<Image_plus color={ 'white'} />
@@ -252,9 +257,10 @@
 					<!-- Add Special -->
 					{#if onSpecialAdd != null }
 						<imageContainer 
-							on:click={ () => onSpecialAdd() }
-							on:keyup={ () => onSpecialAdd() }
+							on:click={ () => {if(onSpecialAdd){onSpecialAdd()}} }
+							on:keyup 
 							transition:slide|local
+							role="none"
 							use:tooltip={{ text: 'Add Entire collection', type:'verbose' }} 
 						>
 							<Image_plus color={ 'yellow'} />
@@ -277,13 +283,15 @@
 							tabindex="-1" 
 							contenteditable="false" 
 							on:click={ () => { if( disabled ){ return }  _onSelect(element)} }
-							on:keyup={ () => { if( disabled ){ return }  _onSelect(element)} }
+							on:keyup 
+							role="none"
 						>  
 							{ element.name } 
 						</div>
 					{:else}
 						<div
 							tabindex="1" 
+							role="cell"
 							contenteditable="true"
 							on:focus={ onEditFocus }
 							bind:textContent={ element.nameEdit } 
@@ -296,7 +304,8 @@
 						{#if deleteIsAllowed } 
 							<imageContainer  
 								on:click={ () => onDelete( element ) }
-								on:keyup={ () => onDelete( element ) }
+								on:keyup 
+								role="none"
 								transition:slide|local
 								use:tooltip={{ text: 'Delete item', type:'verbose' , }}
 							>
@@ -305,7 +314,8 @@
 						{:else if editIsActive && element.name != element.nameEdit }
 							<imageContainer  
 								on:click={ () => onEditCancelSingle(element) }
-								on:keyup={ () => onEditCancelSingle(element) }
+								on:keyup 
+								role="none"
 								transition:slide|local
 								use:tooltip={{ text: 'Delete item', type:'verbose' , }}
 							>

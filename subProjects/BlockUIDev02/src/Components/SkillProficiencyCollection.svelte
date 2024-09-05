@@ -9,7 +9,8 @@
 	export let sys:system;
 	export let data :CNode; 
 
-	let names = Object.keys(sys.fixed.SkillProficiencies);
+
+	let names = sys.getNodeNames('fixed','SkillProficiencies');
 
 </script>
 

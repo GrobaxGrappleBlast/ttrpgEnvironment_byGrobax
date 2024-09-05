@@ -8,11 +8,11 @@
 	export let statNode:TNode; 
 	export let modNode:TNode; 
 	export let editmode = false;  
-	
-
+	 
 	let nodeValue = statNode.getValue();
 	let modNodeValue = modNode.getValue();
-	const KEY = keyManager.getNewKey();
+	const KEY = keyManager.getNewKey(); 
+
 	onMount( () => {
 		statNode.addUpdateListener('onDerivedNodeUpdate' + KEY, onDerivedOrFixedNodeUpdate )
 		modNode.addUpdateListener('onDerivedNodeUpdate' + KEY, onDerivedOrFixedNodeUpdate )
@@ -38,7 +38,7 @@
 
 <div class="StatValue" >
 
-	<div> 
+	<div class="statTitle" > 
 		{name}
 	</div> 
 

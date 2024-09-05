@@ -8,7 +8,6 @@
 	bottom:0; 
 }
 .ItemOptions{ 
-	padding:10px;
 	display: flex;
 	flex-direction: row;
 	overflow:hidden;
@@ -16,50 +15,48 @@
 	z-index: 100;
 }
 .ItemOptionBtn{
-	padding:10px;
+	padding:5px;
 	width:100%;
-	border-radius: 5px;
-	background-color: $blue;
-}
-
-
-
-.ItemManouverContainer{
-	@extend .ItemOptionsContainer;
-
-	.ItemManouverOptions{
-		position:absolute;
-		top:0;
-		right:0;
-		z-index: 100;
-
-		.ItemManouverOption{
-			background-color: $blue;
-			width: 40px;
-			height:40px;
-			border-radius: 5px;
-			cursor: pointer;
-		}
-	}
-}
-
-
+	border-radius: $borderRad;
+	background-color:#556d50;
+} 
+  
 .RowColumnOptions{
-	position:absolute; 
+	position:absolute;
 	display: flex;
 	z-index: 100;
 
 	.itemOption{
 		pointer-events: unset;
 		cursor: pointer; 
-		height:30px;
-		min-width: 30px;
-		background-color: $blue;
-		padding:10px;
-
-		
+		min-width: 15px;
+	  
+		padding:3px;
+		border-radius: $borderRad;
 	}  
 	.rem{
-		background-color: $red;
+		position:absolute;
+		top:0;
+		right:15px; 
+		color:#6b7d8f;
+	} 
+	.add{
+		width: 100%;
+		background-color: #556d50;
+		margin: 5px;
+		color: #aab0a4;
+		display: flex;
+		align-items: center;
+		gap: 10px;
+		height:30px;
+
+		& > span {
+			font-size: 24px;
+		}
 	}
+}
+
+.itemDestributer{
+	display: flex;
+	flex-direction: column; 
 }

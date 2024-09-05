@@ -1,0 +1,55 @@
+
+@import './../../SystemStandards.scss'; 
+
+$opacWhite : #3e4d5e ; 
+$opacWhite_B :saturate(lighten($opacWhite,  40 ),40);
+$greenColor : #556d50;
+$greenColor_B :saturate(lighten($greenColor,  40 ),40);
+.LoadingSpinner{ 
+	margin:0; 
+	display: grid;
+	grid-template-columns: 1fr;
+	grid-template-rows: 1fr;
+	position: relative
+}
+
+$size:30px;
+.LoadingSpinner{
+	pointer-events: none;
+    position: absolute;
+    top: 38px;
+    right: 20%;
+    left: 20%;
+    height: 30px;
+	
+
+	.spinner{
+		
+		height:$size; 
+		margin:0;
+		margin-bottom: -60px;
+		
+		font-weight: 600;
+		font-size: 12px;
+	
+		display:flex;
+		align-items: center;
+    	justify-content: center;
+		   
+ 
+		&[data-state="ongoing"]{
+			//border:2px dashed white;
+			//border-color:$opacWhite_B;
+			color:		$greenColor_B;
+			//color:		$opacWhite_B;
+			//background-color: $opacWhite;
+			border-radius: 100%;
+		}
+		&[data-state="finished"]{
+			//border:2px dashed white;
+			//border-color:$greenColor_B;
+			color:		$greenColor_B;
+			//background-color: $greenColor;
+		}
+	}
+}

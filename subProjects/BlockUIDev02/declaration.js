@@ -53,42 +53,86 @@ export class TNode {
 }
 export class system {
     constructor() { this.init(); }
-    fixed = {
-        stats: {
-            strength: new TNode(1, ''), dexterity: new TNode(1, ''), constitution: new TNode(1, ''), wisdom: new TNode(1, ''), intelligence: new TNode(1, ''), charisma: new TNode(1, '')
-        }, SkillProficiencies: {
-            Athletics: new TNode(0, ''), Acrobatics: new TNode(0, ''), 'Sleight of Hand': new TNode(0, ''), Arcana: new TNode(0, ''), History: new TNode(0, ''), Investigation: new TNode(0, ''), Nature: new TNode(0, ''), Religion: new TNode(0, ''), 'Animal Handling': new TNode(0, ''), Insight: new TNode(0, ''), Medicine: new TNode(0, ''), Perception: new TNode(0, ''), Survival: new TNode(0, ''), Deception: new TNode(0, ''), Intimidation: new TNode(0, ''), Performance: new TNode(0, ''), Persuasion: new TNode(0, '')
-        }, generic: {
-            'Proficiency Bonus': new TNode(1, ''), 'Hit Points': new TNode(1, '')
-        }
-    };
-    derived = {
-        modifiers: {
-            strength: new TNode(NaN, 'Math.floor((@a-10)/2)'), dexterity: new TNode(NaN, 'Math.floor((@a-10)/2)'), constitution: new TNode(NaN, 'Math.floor((@a-10)/2)'), wisdom: new TNode(NaN, 'Math.floor((@a-10)/2)'), intelligence: new TNode(NaN, 'Math.floor((@a-10)/2)'), charisma: new TNode(NaN, 'Math.floor((@a-10)/2)')
-        }, skillproficiencyBonus: {
-            Athletics: new TNode(NaN, '@a * @c + @d'), Acrobatics: new TNode(NaN, '@a * @c + @d'), 'Sleight of Hand': new TNode(NaN, '@a * @c + @d'), Arcana: new TNode(NaN, '@a * @c + @d'), History: new TNode(NaN, '@a * @c + @d'), Investigation: new TNode(NaN, '@a * @c + @d'), Nature: new TNode(NaN, '@a * @c + @d'), Religion: new TNode(NaN, '@a * @c + @d'), 'Animal Handling': new TNode(NaN, '@a * @c + @d'), Insight: new TNode(NaN, '@a * @c + @d'), Medicine: new TNode(NaN, '@a * @c + @d'), Perception: new TNode(NaN, '@a * @c + @d'), Survival: new TNode(NaN, '@a * @c + @d'), Deception: new TNode(NaN, '@a * @c + @d'), Intimidation: new TNode(NaN, '@a * @c + @d'), Performance: new TNode(NaN, '@a * @c + @d'), Persuasion: new TNode(NaN, '@a * @c + @d')
-        }, 'Spell Bonus': {
-            strength: new TNode(NaN, '@a + @b'), dexterity: new TNode(NaN, '@a + @b'), constitution: new TNode(NaN, '@a + @b'), wisdom: new TNode(NaN, '@a + @b'), intelligence: new TNode(NaN, '@a + @b'), charisma: new TNode(NaN, '@a + @b')
-        }, 'Spell DC': {
-            strength: new TNode(NaN, '8 + @a + @b'), dexterity: new TNode(NaN, '8 + @a + @b'), constitution: new TNode(NaN, '8 + @a + @b'), wisdom: new TNode(NaN, '8 + @a + @b'), intelligence: new TNode(NaN, '8 + @a + @b'), charisma: new TNode(NaN, '8 + @a + @b')
-        }, generic: {
-            'armor class': new TNode(NaN, '12 + @d')
+    data = {
+        fixed: {
+            collections_names: {
+                stats: {
+                    nodes_names: { strength: new TNode(1, ''), dexterity: new TNode(1, ''), constitution: new TNode(1, ''), wisdom: new TNode(1, ''), intelligence: new TNode(1, ''), charisma: new TNode(1, '')
+                    }
+                },
+                SkillProficiencies: {
+                    nodes_names: { Athletics: new TNode(0, ''), Acrobatics: new TNode(0, ''), 'Sleight of Hand': new TNode(0, ''), Arcana: new TNode(0, ''), History: new TNode(0, ''), Investigation: new TNode(0, ''), Nature: new TNode(0, ''), Religion: new TNode(0, ''), 'Animal Handling': new TNode(0, ''), Insight: new TNode(0, ''), Medicine: new TNode(0, ''), Perception: new TNode(0, ''), Survival: new TNode(0, ''), Deception: new TNode(0, ''), Intimidation: new TNode(0, ''), Performance: new TNode(0, ''), Persuasion: new TNode(0, '')
+                    }
+                },
+                generic: {
+                    nodes_names: { 'Proficiency Bonus': new TNode(1, ''), 'Hit Points': new TNode(1, '')
+                    }
+                }
+            }
+        },
+        derived: {
+            collections_names: {
+                modifiers: {
+                    nodes_names: { strength: new TNode(NaN, 'Math.floor((@a-10)/2)'), dexterity: new TNode(NaN, 'Math.floor((@a-10)/2)'), constitution: new TNode(NaN, 'Math.floor((@a-10)/2)'), wisdom: new TNode(NaN, 'Math.floor((@a-10)/2)'), intelligence: new TNode(NaN, 'Math.floor((@a-10)/2)'), charisma: new TNode(NaN, 'Math.floor((@a-10)/2)')
+                    }
+                },
+                skillproficiencyBonus: {
+                    nodes_names: { Athletics: new TNode(NaN, '@a * @c + @d'), Acrobatics: new TNode(NaN, '@a * @c + @d'), 'Sleight of Hand': new TNode(NaN, '@a * @c + @d'), Arcana: new TNode(NaN, '@a * @c + @d'), History: new TNode(NaN, '@a * @c + @d'), Investigation: new TNode(NaN, '@a * @c + @d'), Nature: new TNode(NaN, '@a * @c + @d'), Religion: new TNode(NaN, '@a * @c + @d'), 'Animal Handling': new TNode(NaN, '@a * @c + @d'), Insight: new TNode(NaN, '@a * @c + @d'), Medicine: new TNode(NaN, '@a * @c + @d'), Perception: new TNode(NaN, '@a * @c + @d'), Survival: new TNode(NaN, '@a * @c + @d'), Deception: new TNode(NaN, '@a * @c + @d'), Intimidation: new TNode(NaN, '@a * @c + @d'), Performance: new TNode(NaN, '@a * @c + @d'), Persuasion: new TNode(NaN, '@a * @c + @d')
+                    }
+                },
+                'Spell Bonus': {
+                    nodes_names: { strength: new TNode(NaN, '@a + @b'), dexterity: new TNode(NaN, '@a + @b'), constitution: new TNode(NaN, '@a + @b'), wisdom: new TNode(NaN, '@a + @b'), intelligence: new TNode(NaN, '@a + @b'), charisma: new TNode(NaN, '@a + @b')
+                    }
+                },
+                'Spell DC': {
+                    nodes_names: { strength: new TNode(NaN, '8 + @a + @b'), dexterity: new TNode(NaN, '8 + @a + @b'), constitution: new TNode(NaN, '8 + @a + @b'), wisdom: new TNode(NaN, '8 + @a + @b'), intelligence: new TNode(NaN, '8 + @a + @b'), charisma: new TNode(NaN, '8 + @a + @b')
+                    }
+                },
+                generic: {
+                    nodes_names: { 'armor class': new TNode(NaN, '12 + @d')
+                    }
+                }
+            }
         }
     };
     getNode(group, collection, item) {
-        if (!this[group] || !this[group][collection] || !this[group][collection][item]) {
+        if (!this.data[group] || !this.data[group].collections_names[collection] || !this.data[group].collections_names[collection].nodes_names[item]) {
             return null;
         }
-        return this[group][collection][item];
+        return this.data[group].collections_names[collection].nodes_names[item];
+    }
+    getNodeNames(group, collection) {
+        if (!this.data[group] || !this.data[group].collections_names[collection]) {
+            return [];
+        }
+        return Object.keys(this.data[group].collections_names[collection].nodes_names);
+    }
+    hasNode(group, collection, item) {
+        if (!this.data[group] || !this.data[group].collections_names[collection] || !this.data[group].collections_names[collection].nodes_names[item]) {
+            return false;
+        }
+        return true;
+    }
+    getCollectionNames(group) {
+        if (!this.data[group]) {
+            return [];
+        }
+        return Object.keys(this.data[group].collections_names);
+    }
+    hasCollection(group, collection) {
+        if (!this.data[group] || !this.data[group].collections_names[collection]) {
+            return false;
+        }
+        return true;
     }
     declareDependency(Parentgroup, Parentcollection, Parentitem, symbol, Depgroup, depcollection, depitem) {
         let parent = this.getNode(Parentgroup, Parentcollection, Parentitem);
         let dep = this.getNode(Depgroup, depcollection, depitem);
         if (!dep || !parent) {
             console.error(`
-		Error at declareDependency
-		${Parentgroup}, ${Parentcollection}, ${Parentitem}, ${symbol}, ${Depgroup}, ${depcollection}, ${depitem}
-		`);
+				Error at declareDependency
+				${Parentgroup}, ${Parentcollection}, ${Parentitem}, ${symbol}, ${Depgroup}, ${depcollection}, ${depitem}
+				`);
             return;
         }
         parent.addDependency(symbol, dep);

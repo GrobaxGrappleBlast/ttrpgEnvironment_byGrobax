@@ -5,7 +5,7 @@ import { StringFunctions } from "../ObsidianUI/UIInterfaces/Designer01/BaseFunct
 import type { APIReturnModel } from "./APIReturnModel"; 
 import { SystemPreview } from "./model/systemPreview";
 import { FileContext } from '../../../src/Modules/ObsidianUICore/fileContext';
-import { TTRPGSystem } from "../Designer";
+import { TTRPGSystemJSONFormatting } from "../Designer/index";
 
 
 // todo add convert code to message
@@ -213,7 +213,7 @@ class SystemDefinitionManagement{
 }
 
 class SystemFactory{
-	public async getOrCreateSystemFactory( preview : SystemPreview ) : Promise<APIReturnModel<TTRPGSystem|null>> {
+	public async getOrCreateSystemFactory( preview : SystemPreview ) : Promise<APIReturnModel<TTRPGSystemJSONFormatting|null>> {
 		
 		if (!preview.folderPath){
 			return createResponse(406,null,createMessage('getOrCreateSystemFactory1','systemPreview was invalid', 'error'));
@@ -226,7 +226,7 @@ class SystemFactory{
 		}
 		return createResponse(500, null , createMessage('getOrCreateSystemFactory','Something went wrong loading the file','error') );
 	}
-	public async saveSystemDesigner( preview : SystemPreview , designer : TTRPGSystem ){
+	public async saveSystemDesigner( preview : SystemPreview , designer : TTRPGSystemJSONFormatting ){
 
 		if (!preview.folderPath){
 			return createResponse(406,null,createMessage('saveSystemFactory1','systemPreview was invalid', 'error'));

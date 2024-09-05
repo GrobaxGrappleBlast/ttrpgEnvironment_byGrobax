@@ -13,9 +13,10 @@
         "isolatedModules": true,
         "strictNullChecks": true,
         "importsNotUsedAsValues":"remove", 
-        "types": ["svelte", "jest","node"],
-        
+        "strict": false,
+        "preserveValueImports":false,
         "lib": [
+			"es2021",
             "DOM",
             "ES5",
             "ES6",
@@ -27,10 +28,11 @@
         "**/globals.d.ts"   ,
         "**/*.js"           ,
         "**/*.svelte"       ,
-        "**/*.ts"],
+        "**/*.ts"            ],
     "exclude": [
         "node_modules",
         "**/*.test.ts",
-        "subProjects"
+        "subProjects",
+        "**/dist/*"
     ]
 }   

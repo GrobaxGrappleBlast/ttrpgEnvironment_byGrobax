@@ -1,11 +1,11 @@
 <script context="module"  lang="ts">
 
-	type originRowData = {key: string, segments:(string|null)[] , active :boolean , testValue :number, inCalc:boolean, target: GrobNodeType | null , isSelectAllTarget: boolean };
+	type originRowData = {key: string, segments:(string|null)[] , active :boolean , testValue :number, inCalc:boolean, target: GrobJNodeType | null , isSelectAllTarget: boolean };
 	
 	export class DerivedItemController{
 		
-		public node:GrobFixedNode | null	= null ;
-		public system:TTRPGSystem | null	= null ;
+		public node:GrobJFixedNode | null	= null ;
+		public system:TTRPGSystemJSONFormatting | null	= null ;
 		public messageHandler: StaticMessageHandler | null;
 
 		public name 		: Writable<string>	= writable(''); 
@@ -22,7 +22,7 @@
 		}
 		  
 
-		private validateName( name , node:GrobFixedNode , messageHandler: StaticMessageHandler | null = null , output:boolean ){
+		private validateName( name , node:GrobJFixedNode , messageHandler: StaticMessageHandler | null = null , output:boolean ){
 			let out = (key,msg,error) => { if(output){ messageHandler?.addMessageManual(key,msg,error) }}
 
 			let isValid = true ; 
@@ -43,7 +43,7 @@
 			}
 			return isValid;
 		} 
-		private validateValue( value , node:GrobFixedNode , messageHandler: StaticMessageHandler | null = null , output:boolean ){
+		private validateValue( value , node:GrobJFixedNode , messageHandler: StaticMessageHandler | null = null , output:boolean ){
 			let out = (key,msg,error) => { if(output){ messageHandler?.addMessageManual(key,msg,error) }}
 
 			let isValid = true ;  
@@ -123,13 +123,14 @@
 </script> 
 <script lang="ts">
 	import { get, writable, type Writable } from 'svelte/store'; 
-    import { GrobFixedNode, TTRPGSystem, type GrobNodeType } from "../../../../../../src/Modules/Designer";
+	
+    import { GrobJFixedNode, TTRPGSystemJSONFormatting, type GrobJNodeType } from "../../../../../../src/Modules/Designer/index";
     import StaticMessageHandler from "../BaseComponents/Messages/StaticMessageHandler.svelte";
 	import './ItemDesigner.scss'
     import { createEventDispatcher, onMount } from "svelte";
 
-	export let node : Writable<GrobFixedNode|null>;
-	export let system : Writable<TTRPGSystem|null>; 
+	export let node : Writable<GrobJFixedNode|null>;
+	export let system : Writable<TTRPGSystemJSONFormatting|null>; 
 	export let secondSlideInReady = false;
 	export let goodTitle = "No Error";
 	export let badTitle = "Error"

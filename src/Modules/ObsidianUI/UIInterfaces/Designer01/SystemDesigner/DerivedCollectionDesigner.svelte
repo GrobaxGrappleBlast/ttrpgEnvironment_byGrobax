@@ -3,7 +3,7 @@
 	import {DerivedCollectionController , selAllInCollectionString , originRowData} from './DerivedCollectionDesignerController';
 </script> 
 <script lang="ts"> 
-    import { GrobDerivedNode, TTRPGSystem, type GrobNodeType } from "../../../../Designer";
+    import { TTRPGSystemJSONFormatting } from "../../../../Designer/index";
     import StaticMessageHandler from "../BaseComponents/Messages/StaticMessageHandler.svelte";
 	import './ItemDesigner.scss' 
     import { writable, type Writable, get } from 'svelte/store'; 
@@ -14,7 +14,7 @@
     import { DerivedItemController } from "./DerivedItemDesigner.svelte";
 	const dispatch = createEventDispatcher();  
 
-	export let system : Writable<TTRPGSystem|null>; 
+	export let system : Writable<TTRPGSystemJSONFormatting|null>; 
 	export let secondSlideInReady = false;
 	export let goodTitle = "No Error";
 	export let badTitle  = "Error"

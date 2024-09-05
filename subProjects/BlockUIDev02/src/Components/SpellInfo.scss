@@ -1,7 +1,9 @@
+@import '../SystemStandards.scss';
 .spellDCContainer{
-	border-radius: 5px;
+	border-radius: $borderRad;
 	background-color: lightgray; 
 	border:1px solid black; 
+	color:black;
 	padding:10px;
 	cursor: pointer;
 }

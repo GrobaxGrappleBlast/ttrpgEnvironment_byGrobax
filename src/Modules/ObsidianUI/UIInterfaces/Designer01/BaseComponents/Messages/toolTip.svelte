@@ -1,10 +1,10 @@
 <script lang="ts">
     import { onMount } from "svelte";
-	import { fade, slide,blur,fly } from "svelte/transition";
+	import {  fly } from "svelte/transition";
 	import './toolTip.scss'
 
 
-	export let text;
+	export let text : string ;
 	export let animX = 20;
 	export let animY = 0;
 	export let type : "error" | "verbose" | "good" | "none";

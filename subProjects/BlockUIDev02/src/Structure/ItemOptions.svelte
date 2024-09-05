@@ -1,8 +1,7 @@
 <script lang="ts">
-    import { slide } from "svelte/transition";
-
-    import { createEventDispatcher, onMount } from "svelte";
-    import { CNode } from "./ComponentNode";
+  
+    import { createEventDispatcher  } from "svelte";
+    import { type CNode } from "./ComponentNode";
     import { viewNameIndex } from "./ViewNameIndex";
     import CustomSelect from "../importedComponents/CustomSelect/CustomSelect.svelte";
 	let dispatch = createEventDispatcher();
@@ -11,25 +10,29 @@
 	export let editMode:boolean;
 	let options = Object.keys(viewNameIndex)
 	let selected = data.type;
+	let tab : HTMLSelectElement;
 
- 	function selectOption(a){
-		let option = a.detail;
-		
-		data.type = option;
-		dispatch('optionSelected');
-		console.log('optionSelected' + option)
-		 
+ 	function selectOption(){
+		let v = tab.value;
+		data.type = v;
+		dispatch('optionSelected'); 
 	}
 </script>
 <div  class="ItemOptionsContainer" >
+	<!--CustomSelect 
+		options={options}
+		selected={selected}
+		on:onSelect={  selectOption }
+		unSelectedplaceholder={(!data.type || data.type == 'NONE') ? 'Select View Type' : 'Select a new Type '} 
+	/-->
 	<div class="ItemOptions" >
 		<div class="ItemOptionBtn "> 
-			<CustomSelect 
-				options={options}
-				selected={selected}
-				on:onSelect={  selectOption }
-				unSelectedplaceholder={(!data.type || data.type == 'NONE') ? 'Select View Type' : 'Select a new Type '} 
-			/>
+			<select on:change={selectOption} bind:this={tab} >
+				<option value={ null }> choose component </option> 
+				{#each options as opt}
+					<option value={opt} selected={selected == opt}> {opt} </option> 
+				{/each}
+			</select>		
 		</div>
 	</div>
 </div>

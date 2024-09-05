@@ -1,10 +1,10 @@
 <script context="module"  lang="ts">
 
-	type originRowData = {key: string, segments:(string|null)[] , active :boolean , testValue :number, inCalc:boolean, target: GrobNodeType | null , isSelectAllTarget: boolean };
+	type originRowData = {key: string, segments:(string|null)[] , active :boolean , testValue :number, inCalc:boolean, target: GrobJNodeType | null , isSelectAllTarget: boolean };
 	export class DerivedItemController{
 		
-		public node:GrobDerivedNode | null	= null ;
-		public system:TTRPGSystem | null	= null ;
+		public node:GrobJDerivedNode | null	= null ;
+		public system:TTRPGSystemJSONFormatting | null	= null ;
 		public messageHandler: StaticMessageHandler | null;
 
 		public name 		: Writable<string>	= writable(''); 
@@ -31,7 +31,7 @@
 		}
 		  
 
-		private validateName( name , node:GrobDerivedNode , messageHandler: StaticMessageHandler | null = null , output:boolean ){
+		private validateName( name , node:GrobJDerivedNode , messageHandler: StaticMessageHandler | null = null , output:boolean ){
 			let out = (key,msg,error) => { if(output){ messageHandler?.addMessageManual(key,msg,error) }}
 
 			let isValid = true ; 
@@ -52,7 +52,7 @@
 			}
 			return isValid;
 		} 
-		private validateOrigins(  mappedOrigins:originRowData[], calc:string ,  system:TTRPGSystem , messageHandler: StaticMessageHandler | null = null , output:boolean    ){
+		private validateOrigins(  mappedOrigins:originRowData[], calc:string ,  system:TTRPGSystemJSONFormatting , messageHandler: StaticMessageHandler | null = null , output:boolean    ){
 			let out = (key,msg,error) => { if(output){ messageHandler?.addMessageManual(key,msg,error) }}
 
 			// validate that all inCalc are finished
@@ -101,7 +101,7 @@
 			let o = {};
 			let mappedKeys : string[] = [];
 			mappedOrigins.forEach( p => { o[p.key]= p.testValue ; mappedKeys.push(p.key) } );
-			let calcres = GrobDerivedNode.testCalculate( calc , o );
+			let calcres = GrobJDerivedNode.testCalculate( calc , o );
 			
 			let succes= calcres.success;
 			let value = calcres.value;
@@ -122,7 +122,7 @@
 		private validateCalculationOrigins( calc:string , mappedOrigins:originRowData[],  messageHandler: StaticMessageHandler | null = null , output :boolean ){
 			let out = (key,msg,error) => { if(output){ messageHandler?.addMessageManual(key,msg,error) }}
 
-			let symbols = GrobDerivedNode.staticParseCalculationToOrigins(calc);
+			let symbols = GrobJDerivedNode.staticParseCalculationToOrigins(calc);
 			mappedOrigins.forEach( o  => {
 				symbols.remove( o.key ); 
 				messageHandler?.removeError( o.key + 'missing' )
@@ -263,7 +263,7 @@
 			let o = {}; 
 			get(this.mappedOrigins).forEach( p => { o[p.key]= p.testValue; } );
 			let calc = get(this.calc) ; 
-			let res = GrobDerivedNode.testCalculate( calc , o );
+			let res = GrobJDerivedNode.testCalculate( calc , o );
 
 			// save and proccess values 
 			this.resultValue	.set(res.value);
@@ -271,7 +271,7 @@
 
 			/// Handle Add Origins. 
 			// calculate the symbols
-			let symbols = GrobDerivedNode.staticParseCalculationToOrigins( calc );
+			let symbols = GrobJDerivedNode.staticParseCalculationToOrigins( calc );
   
 			//remove keys that already exists from the array. and leave a pure toAdd list.
 			this.mappedOrigins.update( mappedOrigins =>{
@@ -300,7 +300,7 @@
 
 </script> 
 <script lang="ts"> 
-    import { GrobDerivedNode, TTRPGSystem, type GrobNodeType } from "../../../../Designer";
+    import { GrobJDerivedNode,TTRPGSystemJSONFormatting, type GrobJNodeType } from "../../../../Designer/index";
     import StaticMessageHandler from "../BaseComponents/Messages/StaticMessageHandler.svelte";
 	import './ItemDesigner.scss' 
     import { writable, type Writable, get } from 'svelte/store'; 
@@ -309,8 +309,8 @@
     import { flip } from 'svelte/animate';  
     import { createEventDispatcher , onMount } from "svelte";
 
-	export let node : Writable<GrobDerivedNode|null>;
-	export let system : Writable<TTRPGSystem|null>; 
+	export let node : Writable<GrobJDerivedNode|null>;
+	export let system : Writable<TTRPGSystemJSONFormatting|null>; 
 	let secondSlideInReady = false;
 	export let goodTitle = "No Error";
 	export let badTitle = "Error"

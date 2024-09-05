@@ -1,4 +1,4 @@
-import { keyManagerInstance } from "../../../../src/Modules/Designer/Abstractions/KeyManager";
+import { keyManagerInstance } from "ttrpg-system-graph";
 
  
  

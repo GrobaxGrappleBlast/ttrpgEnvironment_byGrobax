@@ -1,12 +1,8 @@
 <script lang="ts">
-	
-	import { SystemPreview } from "../../../../../../src/Modules/ObsidianUICore/model/systemPreview";
-	import ToogleSection from "../BaseComponents/ToogleSection/ToogleSection.svelte";
-	import EditableList from "../BaseComponents/editAbleList/EditAbleList.svelte";
+
 	import { createEventDispatcher, onMount } from "svelte";
-	import { get, writable, type Writable } from "svelte/store";
-	import {ObsidianUICoreAPI} from '../../../../../../src/Modules/ObsidianUICore/API'
-	import { GrobCollection, GrobDerivedNode, GrobDerivedOrigin, GrobFixedNode, GrobGroup, TTRPGSystem, type GrobNodeType } from "../../../../../../src/Modules/Designer";
+	import { get, writable, type Writable } from "svelte/store"; 
+	import {TTRPGSystemJSONFormatting } from "../../../../../../src/Modules/Designer/index";
 	import StaticMessageHandler from "../BaseComponents/Messages/StaticMessageHandler.svelte";
 	import "./SystemDesigner.scss";
 	import EditAbleListWritable from "../BaseComponents/editAbleList/EditAbleListWritable.svelte";
@@ -18,7 +14,7 @@
 		isSelected:boolean; 
 	}
  
-	export let designer : Writable<TTRPGSystem>;
+	export let designer : Writable<TTRPGSystemJSONFormatting>;
 	export let messageHandler : StaticMessageHandler ;
 	export let type : 'derived' | 'fixed';
 	export let onSpecialAdd : (() => any) | null = null ;
@@ -82,6 +78,7 @@
 
 	// Collection Functions 
 	export function selectCollection ( collection:string , allowDeselect = true , dispatchEvent = true ){ 
+ 
 		// deSelectItem
 		deSelectCollectionItem();
 
@@ -99,12 +96,12 @@
 		} 
 
 		// map the names to IViewItems.
-		let collectionInstance = ($designer as TTRPGSystem).getCollection(type,collection);  
+		let collectionInstance = ($designer as TTRPGSystemJSONFormatting).getCollection(type,collection);  
 		let names = collectionInstance?.getNodeNames() ?? [];
 		let mapped = names.map( p => {
 			return nameToIViewItem(p, p == selectedCollectionName ) 
 		} )
-
+ 
 		selectedCollectionData.set(mapped);
 		selectedCollectionName = collection;
 			

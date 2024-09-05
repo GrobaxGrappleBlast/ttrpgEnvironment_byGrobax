@@ -1,9 +1,10 @@
 import JSZip from "jszip";
-import { TTRPGSystem, type groupKeyType } from "../../../../../../src/Modules/Designer";
+import { TTRPGSystemJSONFormatting} from "../../../../../../src/Modules/Designer/index";
+import { type groupKeyType } from "ttrpg-system-graph";
 import { ObsidianUICoreAPI } from "../../../../../../src/Modules/ObsidianUICore/API";
 
 export class SystemExporterMethods { 
-	public convertToTTRPGSystemToGUIBuilderPreview( system : TTRPGSystem ){
+	public convertToTTRPGSystemToGUIBuilderPreview( system : TTRPGSystemJSONFormatting ){
 		
 		let result = 
 			`export class TNode {  
@@ -74,115 +75,161 @@ export class SystemExporterMethods {
 		result +=`
 			export class system {
 				public constructor(){this.init()}
-				`;
 
-		for (let g = 0; g < groups.length; g++) {
-			const currGroup = groups[g]; 
-			result += `
-				${currGroup} = {`;
-			
-				let GroupNames = system.getCollectionNames(currGroup);
-				for (let i = 0; i < GroupNames.length; i++) {
-					
-					const currColName = GroupNames[i];
-					const currCol = system.getCollection(currGroup,currColName);
-					if (!currCol){continue;}
-
-					const currColNames = currCol.getNodeNames();
-					
-					let parsedColName = currColName;
-					if ( currColName.includes(' ')){
-						parsedColName = `'${parsedColName}'`;
-					}
-
-					result += `${ i != 0 ? ',':''} ${parsedColName} : {`
-
-					for (let j = 0; j < currColNames.length; j++) {
-						const currItemName = currColNames[j];
-						const currItem = system.getNode(currGroup,currColName,currItemName);
-						
-						if(!currItem){
-							continue;
-						}
-
-						let parsedItemName = currItemName;
-						if ( currItemName.includes(' ')){
-							parsedItemName = `'${parsedItemName}'`;
-						}
-
-						result+= `${ j != 0 ? ',':''} ${parsedItemName} : new TNode(${currItem?.getValue()}, '${currItem['calc'] ?? ''}')`;
-					}
-
-					result += `
-					}` 
-				}
-						
-			result +=`
-				}`;
-		}
-
-		result += ` 
-		public getNode(group, collection, item) {
-			if ( !this[group] || !this[group][collection] || !this[group][collection][item] ){
-				return null;
-			}
-			return this[group][collection][item];
-		}`
-
-		result += `	
-		private declareDependency(Parentgroup, Parentcollection, Parentitem, symbol, Depgroup, depcollection, depitem) {
-			let parent	= this.getNode(Parentgroup, Parentcollection, Parentitem);
-			let dep		= this.getNode(Depgroup, depcollection, depitem);
-			
-			if ( !dep || !parent ){
-				console.error(\`
-					Error at declareDependency
-					\${Parentgroup}, \${Parentcollection}, \${Parentitem}, \${symbol}, \${Depgroup}, \${depcollection}, \${depitem}
-					\`
-				)
-				return ;
-			}
-			parent.addDependency(symbol,dep);
-		}`
-
-		// Create The Graph Setup, using Dependents
-		result += ` 
-		private init(){
-		`;
-			
-			const currGroup = 'derived'
-			let GroupNames = system.getCollectionNames(currGroup);
-			
-			for (let i = 0; i < GroupNames.length; i++) {
+			`;
 				
-				const currColName = GroupNames[i];
-				const currCol = system.getCollection(currGroup,currColName);
-				if (!currCol){continue;}
-				const currColNames = currCol.getNodeNames();
+				result += `
+				data={
+				`
+						for (let g = 0; g < groups.length; g++) {
+							const currGroup = groups[g]; 
+							result += `
+								${g!=0 ? ',':''}
+								${currGroup} : { 
+									collections_names:{`;
+							
+									let GroupNames = system.getCollectionNames(currGroup);
+									for (let i = 0; i < GroupNames.length; i++) {
+										
+										const currColName = GroupNames[i];
+										const currCol = system.getCollection(currGroup,currColName);
+										if (!currCol){continue;}
 
-				for (let j = 0; j < currColNames.length; j++) { 
-					const currItemName = currColNames[j];
-					const currItem = system.getNode(currGroup,currColName,currItemName);
-					
-					if(!currItem)
-						continue;
+										const currColNames = currCol.getNodeNames();
+										
+										let parsedColName = currColName;
+										if ( currColName.includes(' ')){
+											parsedColName = `'${parsedColName}'`;
+										}
 
-					for (let o = 0; o < (currItem['origins']?.length) ?? 0; o++) {
-						const origin = currItem['origins'][o];
-						let originPathSegments = origin.originKey.split('.');
-						result += `
-						this.declareDependency('${currGroup}','${currColName}','${currItemName}','${origin.symbol}','${originPathSegments[0]}','${originPathSegments[1]}','${originPathSegments[2]}')`;
+										result += `
+										${ i != 0 ? ',':''} ${parsedColName} : 
+										{
+											nodes_names:{`
+											for (let j = 0; j < currColNames.length; j++) {
+												const currItemName = currColNames[j];
+												const currItem = system.getNode(currGroup,currColName,currItemName);
+												
+												if(!currItem){
+													continue;
+												}
+
+												let parsedItemName = currItemName;
+												if ( currItemName.includes(' ')){
+													parsedItemName = `'${parsedItemName}'`;
+												}
+
+												result+= `${ j != 0 ? ',':''} ${parsedItemName} : new TNode(${currItem?.getValue()}, '${currItem['calc'] ?? ''}')`;
+											}
+
+											result += `
+											}
+										}` 
+									}
+											
+							result +=`
+								}
+							}`;
+						}
+				result += `
+				}
+				`
+
+				result += ` 
+				public getNode(group, collection, item) {
+					if ( !this.data[group] || !this.data[group].collections_names[collection] || !this.data[group].collections_names[collection].nodes_names[item] ){
+						return null;
 					}
-					console.log(currItem);
+					return this.data[group].collections_names[collection].nodes_names[item];
+				}`
 
-				} 
-			} 
-			
-		result +=
-			`
-		}`
+				result += ` 
+				public getNodeNames(group, collection ) {
+					if ( !this.data[group] || !this.data[group].collections_names[collection] ){
+						return [];
+					}
+					return Object.keys( this.data[group].collections_names[collection].nodes_names );
+				}`
 
-		result += `
+				result += ` 
+				public hasNode(group, collection, item) {
+					if ( !this.data[group] || !this.data[group].collections_names[collection] || !this.data[group].collections_names[collection].nodes_names[item] ){
+						return false;
+					}
+					return true;
+				}`
+
+				result += ` 
+				public getCollectionNames( group ) {
+					if ( !this.data[group] ){
+						return [];
+					}
+					return Object.keys( this.data[group].collections_names );
+				}`
+
+				result += ` 
+				public hasCollection(group, collection ) {
+					if ( !this.data[group] || !this.data[group].collections_names[collection] ){
+						return false;
+					}
+					return true;
+				}`
+
+
+
+
+				result += `	
+				private declareDependency(Parentgroup, Parentcollection, Parentitem, symbol, Depgroup, depcollection, depitem) {
+					let parent	= this.getNode(Parentgroup, Parentcollection, Parentitem);
+					let dep		= this.getNode(Depgroup, depcollection, depitem);
+					
+					if ( !dep || !parent ){
+						console.error(\`
+							Error at declareDependency
+							\${Parentgroup}, \${Parentcollection}, \${Parentitem}, \${symbol}, \${Depgroup}, \${depcollection}, \${depitem}
+							\`
+						)
+						return ;
+					}
+					parent.addDependency(symbol,dep);
+				}`
+
+				// Create The Graph Setup, using Dependents
+				result += ` 
+				private init(){
+				`;
+					
+					const currGroup = 'derived'
+					let GroupNames = system.getCollectionNames(currGroup);
+					
+					for (let i = 0; i < GroupNames.length; i++) {
+						
+						const currColName = GroupNames[i];
+						const currCol = system.getCollection(currGroup,currColName);
+						if (!currCol){continue;}
+						const currColNames = currCol.getNodeNames();
+
+						for (let j = 0; j < currColNames.length; j++) { 
+							const currItemName = currColNames[j];
+							const currItem = system.getNode(currGroup,currColName,currItemName);
+							
+							if(!currItem)
+								continue;
+
+							for (let o = 0; o < (currItem['origins']?.length); o++) {
+								const origin = currItem['origins'][o];
+								let originPathSegments = origin.originKey.split('.');
+								result += `
+								this.declareDependency('${currGroup}','${currColName}','${currItemName}','${origin.symbol}','${originPathSegments[0]}','${originPathSegments[1]}','${originPathSegments[2]}')`;
+							}
+						} 
+					} 
+					
+				result +=
+					`
+				}`
+
+				result += `
 			}`; 
 		
 		return result;
@@ -200,8 +247,7 @@ export class SystemExporterMethods {
 	//		} 
 	//	}
 
-	public async createBlockUITemplatefile( system:TTRPGSystem ): Promise<Blob | null > {
-		
+	public async createBlockUITemplatefile( system:TTRPGSystemJSONFormatting ): Promise<Blob | null > {
 		let resp =  await ( ObsidianUICoreAPI.getInstance()).UIImportExport.loadBlockUIForExport();  
 		if (resp.responseCode != 200){
 			return null;
@@ -234,8 +280,11 @@ export class SystemExporterMethods {
 
 		const content = await zip.generateAsync({ type: 'blob' });
 		return content;		 
- 
+	}
 
-		
+	
+	public async createBlockUITemplatefileTEST( system:TTRPGSystemJSONFormatting ): Promise<string | null > {
+		let a =  await this.convertToTTRPGSystemToGUIBuilderPreview(system);
+		return a;
 	}
 }

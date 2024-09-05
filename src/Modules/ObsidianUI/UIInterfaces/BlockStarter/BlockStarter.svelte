@@ -1,14 +1,14 @@
 <script lang="ts">
 	import { BlockData, BlockDataSchemes } from '../../../../../src/Modules/ObsidianUI/BlockRenderer/BlockData';
 	import { fly, slide } from 'svelte/transition';
-	import { JSONHandler } from '../../../../../src/Modules/JSONModules/JsonHandler';
+	import { JSONHandler } from 'grobax-json-handler';
 	import { UILayoutModel } from '../../../../../src/Modules/ObsidianUICore/model/UILayoutModel';
 	import { onMount } from 'svelte';
 	import { SystemPreview } from '../../../../../src/Modules/ObsidianUICore/model/systemPreview';
 	import StaticMessageHandler from './../Designer01/BaseComponents/Messages/StaticMessageHandler.svelte';
     import { ObsidianUICoreAPI } from "../../../../../src/Modules/ObsidianUICore/API";
 	import './BlockStarter.scss'
-    import { TTRPG_SCHEMES, TTRPGSystemJSONFormatting } from '../../../../../src/Modules/Designer/JsonModuleImplementation/TTRPGSystemJSONFormatting.js';
+	import {TTRPG_SCHEMES , TTRPGSystemJSONFormatting} from '../../../../../src/Modules/Designer/index';
     import { SheetData } from '../../BlockRenderer/ComponentNode';
 	
 	export let WriteDown : (txt : string) => any;
@@ -144,7 +144,7 @@
 		out.systemChosen = JSONHandler.deserialize(SystemPreview, (JSONHandler.serialize(systemObj,TTRPG_SCHEMES.PREVIEW)));
 		out.LayoutChosen = selectedLayout;
 		 
-		WriteDown( JSONHandler.serializePretty(out , BlockDataSchemes.PAGE ) );
+		WriteDown( JSONHandler.serialize(out , BlockDataSchemes.PAGE ) );
 	}
 	let PREJSON = "";
 </script>

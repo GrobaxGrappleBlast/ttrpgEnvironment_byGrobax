@@ -16,8 +16,7 @@
 		let option = a.detail;
 		
 		data.type = option;
-		dispatch('optionSelected');
-		console.log('optionSelected' + option)
+		dispatch('optionSelected'); 
 		 
 	}
 </script>

@@ -14,18 +14,20 @@
 	-webkit-font-smoothing: antialiased;
 	-moz-osx-font-smoothing: grayscale;
 	-webkit-text-size-adjust: 100%;
+	--translucentEditingColor:#40597e10;
+ 
 }
   
 
 .standardBorderClassDef{
-	border-radius: 5px;
+	border-radius: $borderRad;
 	border:2px solid white;
 }
 .standard10Button{
 	width :30px;
 	height:30px;
 	background-color:gray;
-	border-radius: 5px;
+	border-radius: $borderRad;
 	color:white;
 	text-align: center
 }
@@ -33,60 +35,195 @@
 
 
 
-.Sheet{
-	min-width:800px;
-	min-height:400px;
-	background-color: rgba(211, 211, 211, 0.077);
-}
 
-@mixin createItemClass($standardColor, $editColor, $editColorHover , $previewColor ) {
+$borderThickess: 2px;
+$DragDropMinHeight:30px;
+$opacWhite : #1f262e ;
+$translucentEditingColor : var(--translucentEditingColor);
+$greenColor : #556d50;
+@mixin createItemClass($standardColor, $editColor   ) {
 	
 		position:relative;
-		margin:$standard_padding_large;
-		width: auto;
-		//min-height: 100px;
-
+		margin:5px;
+		min-height: $DragDropMinHeight; 
+		// Drop Zone Styling
 		&[data-editpreview='true']{
-			border-radius: 5px;
-			border:4px dashed;
-			border-color: $previewColor;
-			min-height: 100px;
+			border-radius: $borderRad;
+			border:$borderThickess dashed; 
+			border-color:   rgba(89, 191, 255, 0.268) ;
+			min-height: $DragDropMinHeight;
+			box-shadow: rgba(0, 0, 0, 0.1) 0px 4px 12px; 
 		}
 
 		&[draggable="true"]{
 			cursor: pointer;
 		}
-
+		// is editing Color. 
 		&[data-edit="true"] {
-			min-height: 100px;
-			border-radius: 5px;
-			border:2px solid;
-			border-color: $standardColor;
-			
-			&:hover {
-				border-color:  $standardColor;
-			}
-
-			&[data-edit-active="true"]{
-				border-color: $editColor;
+			min-height:$DragDropMinHeight;
+			border-radius: $borderRad; 
+			background-color:$standardColor  ;   
+			&[data-edit-active="true"]{ 
+				border:$borderThickess dashed; 
+				border-color:transparentize( $editColor , 0.5 );
 				&:hover {
-					border-color:  $editColorHover;
+					transition:border-color 0.1s ease;
+					border-color: $editColor;
 				}
 			}
 		}
 	
+} 
+.SheetInnerWrap{
+	min-height:400px; 
+	&[data-isEditing="true"]{ 
+		background-color: $translucentEditingColor;
+	}
+
+	&[data-editpreview='true']{
+		border-radius: $borderRad;
+		border:$borderThickess dashed;
+		border-color:   rgba(89, 191, 255, 0.268) ;
+		min-height: $DragDropMinHeight;
+		box-shadow: rgba(0, 0, 0, 0.1) 0px 4px 12px; 
+	}
 }
-$opacWhite : #fff1;
+
 .Item{ 
-	@include createItemClass($opacWhite,palegoldenrod,orange, white);
+	@include createItemClass($opacWhite,$greenColor );
+}
+.Column{
+	@include  createItemClass( $opacWhite,$greenColor  );
+	
+	&[data-edit="true"] > .Item{
+		background-color: $translucentEditingColor;
+	}
 }
 .Row{ 
 	display: grid;
-	@include createItemClass( $opacWhite,Skyblue,royalBlue, rgba(89, 191, 255, 0.468));	
+	@include createItemClass( $opacWhite,$greenColor  );	
+
+	&[data-edit="true"] > .Column{
+		background-color: $translucentEditingColor;
+
+		&[data-edit="true"] > .Item{
+			background-color: $translucentEditingColor;
+		}
+	}
 }
-.Column{
-	@include  createItemClass( $opacWhite,palegreen,green, rgba(89, 191, 255, 0.468));	
+.AddRow{ 
+	cursor: pointer;
+	display: flex;
+	flex-direction: row;
+	gap:10px;
+	padding-left:10px; 
+	align-items: center;
+	width: auto; 
+	@include createItemClass( #556d50 ,Skyblue );	
+	&>span{
+		font-size: 20px;
+	} 
 }
+.AddColumn{
+	overflow: hidden;
+	cursor: pointer;
+	display: flex;
+	flex-direction: row;
+	gap:10px;
+	height:inherit;
+	align-items: center;
+	width:30px;
+	justify-content: center;
+	@include createItemClass( #556d50 ,Skyblue  );	
+	
+	&>span{
+		font-size: 20px;
+	}  
+ 
+}
+.AddItem{
+	width: auto; 
+	cursor: pointer;
+	display: flex;
+	flex-direction: row;
+	gap:10px;
+	padding-left:10px; 
+	align-items: center;
+	@include createItemClass( #556d50 ,Skyblue  );	
+	&>span{
+		font-size: 20px;
+	} 
+}
+
+
+
+
+
+.manouverHeader{
+	position:absolute;
+	right:5px;
+	z-index: 10000;
+	display: flex;
+    flex-direction: row-reverse;
+    justify-content: flex-end;
+	gap:10px;
+	height:$DragDropMinHeight; 
+  
+	.remButton{ 
+		 
+		color:#fff8;
+		width: 30px; 	
+		height: 30px; 	
+		display: flex;
+		justify-content: center;
+		align-items: center;
+
+		&::after{
+			content:'\2715';
+		}
+	}
+	.remRow{ 
+		@extend .remButton;
+	}
+	.remColumn{ 
+		@extend .remButton;
+	}
+	.remItem{ 
+		@extend .remButton;
+	} 
+	.ItemManouverOption.Up{
+		@extend .remButton;
+		width	: 20px; 	
+		height	: 20px; 	
+		margin	: 5px;
+		&::after{
+			content:'\2000';
+			display: block; 
+			width	: 100%; 	
+			height	: 100%; 	
+			opacity: 0.5;
+			background-image: url('src/images/PilUp.svg');
+		}
+	}
+	.ItemManouverOption.Down{
+		@extend .remButton;
+		width	: 20px; 	
+		height	: 20px; 	
+		margin	: 5px;
+		&::after{
+			content:'\2000';
+			display: block; 
+			width	: 100%; 	
+			height	: 100%; 	
+			opacity: 0.5;
+			background-image: url('src/images/PilUp.svg');
+			transform: rotate(180deg) scaleX(1);
+		}
+	}
+}
+
+
+
 
 
 
@@ -104,48 +241,55 @@ $opacWhite : #fff1;
 
 .SheetEditorMenuContainer{
 	width: inherit; 
-	height:$standard_padding_large * 2 + 30px;
+	height:$standard_padding_large * 2 + 0px;
 	position: relative;
+	transition:height ease 0.5s;
+
+	&[data-isOpen="true"]{	
+		height:$standard_padding_large * 2 + 30px;
+	}
 }
 
 .SheetEditorMenu{
-	
-	cursor: pointer;
-	width:0px;
-	padding:$standard_padding_large;
-	background-color: $blue;
+	cursor: pointer; 
+	background-color: transparent;
 	overflow: hidden;
-	transition: ease 0.5s;
-	
-	height:30px;
-	width:30px;
-	float:right;
-	
+	transition: width ease 0.4s;
+	width: 50px;
+	height:30px; 
+	float:left; 
 	display: flex;
-    justify-content: flex-end;
+    justify-content: flex-start;
     align-items: center;
 
+	&::before{
+		content:'\2B17';
+		width: 30px; 
+		height:inherit;
+		font-size: 25px;
+		display: flex;
+		opacity: 1;
+		align-items: center;
+    	justify-content: center;
+	}
+
 	button {
-		width:125px;
-		float:right;
-		opacity: 0; 
-		transition: ease 0.5s;
+		width:80px;
+		float:left;
+		opacity: 0;  
 	}
 	&:hover , &[data-isOpen='true'] {
-		
+		background-color: #556d50;
 		width:100%;
 		button{
 			opacity: 1; 
 			cursor: pointer;
 			padding:10px;
-			border-radius: 5px;
+			border-radius: $borderRad;
 			background-color: white;
-			transition:background-color ease 0.2s;
-
 			&:hover{
 				background-color: $yellow;
 			}
-
 			&[data-active='true']{
 				background-color: $green;
 			}
@@ -202,3 +346,4 @@ $opacWhite : #fff1;
   @import './Components/SkillProficiency.scss'; 
   @import './Components/ProficiencyBonus.scss'; 
   @import './Structure/ItemOptions.scss';
+  @import './Structure/infoComponents/LoadingSpinner.scss';
