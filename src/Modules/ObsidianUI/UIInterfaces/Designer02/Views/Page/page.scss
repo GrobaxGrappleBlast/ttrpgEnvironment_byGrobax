@@ -1,0 +1,33 @@
+.MainAppContainerPages{
+	position: relative;
+	& > div {
+		width: inherit;
+		position:absolute;
+	}
+}
+.MainAppContainerPage{
+	& > section {
+		border-top:1px solid gray;
+		padding:25px;
+	}	
+}
+
+.SettingsTable{
+	background-color: red;
+}
+
+.MainAppContainerPageTextImageSection{
+	width: 100%;
+	display: grid;
+	grid-template-columns: 1fr 1fr;
+	gap:50px;
+	
+}
+
+.MainAppContainerPageTextImageSectionImage{
+	border:2px dashed white;
+	height:100%;
+	width: 100%;
+	border-radius:3px;
+	background-color: gray;
+}

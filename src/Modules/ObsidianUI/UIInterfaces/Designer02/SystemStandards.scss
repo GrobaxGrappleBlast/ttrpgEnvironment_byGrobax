@@ -1,0 +1,13 @@
+
+$lineheight:var(--font-text-size);
+
+$background01 :var(--background-primary);
+$background02 :var(--background-secondary);
+$standardPadding:15px;
+
+
+$stripedBackground_StripeThickness : 4px;
+@function StrippedBackground($color1 , $color2) {
+	@return repeating-linear-gradient(-45deg, $color1 , $color1  $stripedBackground_StripeThickness , $color2 $stripedBackground_StripeThickness , $color2 10px);
+}
+ 

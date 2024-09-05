@@ -27,7 +27,7 @@
         "builtin-modules": "3.3.0",
         "jest": "^29.7.0",
         "obsidian": "latest",
-        "sass": "^1.60.0",
+        "sass": "^1.32.0",
         "svelte": "^3.49.0",
         "svelte-check": "^2.8.0",
         "svelte-preprocess": "^4.10.7",
