@@ -1,4 +1,9 @@
 ﻿<Project Sdk="MSTest.Sdk/3.5.1"> 
+	
+	<ItemGroup>
+	  <ProjectReference Include="..\main\fileServer.csproj" />
+	</ItemGroup> 
+
 	<PropertyGroup>
 		<TargetFramework>net8.0</TargetFramework>
 		<LangVersion>latest</LangVersion>
@@ -11,5 +16,11 @@
 		-->
 		<TestingPlatformShowTestsFailure>true</TestingPlatformShowTestsFailure>
 	</PropertyGroup>
+	
+	<ItemGroup>
+		<PackageReference Include="MSTest.TestAdapter" Version="3.6.0" />
+		<PackageReference Include="MSTest.TestFramework" Version="3.6.0" />
+	</ItemGroup>
  
+
 </Project>

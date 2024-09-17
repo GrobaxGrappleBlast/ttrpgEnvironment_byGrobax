@@ -1,7 +1,8 @@
-namespace Tests;
+using srcServer.core.fileHandler;
+namespace tests;
  
 [TestClass]
-public class fileHandler
+public class fileHandlerTests
 {
     [TestMethod]
     public void TestMethod1()
