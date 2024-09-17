@@ -243,7 +243,6 @@ class SystemFactory{
 		}
 		return createResponse(500, null , createMessage('saveSystemFactory1','Something went wrong loading the file','error') );
 	}
-
 	public async deleteSystemFactory(){}
 }
 
@@ -274,9 +273,7 @@ class UIImporterExpoter{
 			messages['exception'] = {msg:e.message , type:'error'};
 			return createResponse(500,null,messages );
 		} 
-	}
-
-
+	} 
 }
 
 

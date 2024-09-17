@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\Dnd\\Documents\\CodeProjects\\ObsidianDndImporter\\DndImporter\\.obsidian\\plugins\\ttrpgEnvironment_byGrobax\\srcFileServer\\fileServer\\fileServer.csproj": {}
+    "C:\\Users\\Dnd\\Documents\\CodeProjects\\ObsidianDndImporter\\DndImporter\\.obsidian\\plugins\\ttrpgEnvironment_byGrobax\\srcFileServer\\fileServer.csproj": {}
   },
   "projects": {
-    "C:\\Users\\Dnd\\Documents\\CodeProjects\\ObsidianDndImporter\\DndImporter\\.obsidian\\plugins\\ttrpgEnvironment_byGrobax\\srcFileServer\\fileServer\\fileServer.csproj": {
+    "C:\\Users\\Dnd\\Documents\\CodeProjects\\ObsidianDndImporter\\DndImporter\\.obsidian\\plugins\\ttrpgEnvironment_byGrobax\\srcFileServer\\fileServer.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\Dnd\\Documents\\CodeProjects\\ObsidianDndImporter\\DndImporter\\.obsidian\\plugins\\ttrpgEnvironment_byGrobax\\srcFileServer\\fileServer\\fileServer.csproj",
+        "projectUniqueName": "C:\\Users\\Dnd\\Documents\\CodeProjects\\ObsidianDndImporter\\DndImporter\\.obsidian\\plugins\\ttrpgEnvironment_byGrobax\\srcFileServer\\fileServer.csproj",
         "projectName": "fileServer",
-        "projectPath": "C:\\Users\\Dnd\\Documents\\CodeProjects\\ObsidianDndImporter\\DndImporter\\.obsidian\\plugins\\ttrpgEnvironment_byGrobax\\srcFileServer\\fileServer\\fileServer.csproj",
+        "projectPath": "C:\\Users\\Dnd\\Documents\\CodeProjects\\ObsidianDndImporter\\DndImporter\\.obsidian\\plugins\\ttrpgEnvironment_byGrobax\\srcFileServer\\fileServer.csproj",
         "packagesPath": "C:\\Users\\Dnd\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\Dnd\\Documents\\CodeProjects\\ObsidianDndImporter\\DndImporter\\.obsidian\\plugins\\ttrpgEnvironment_byGrobax\\srcFileServer\\fileServer\\obj\\",
+        "outputPath": "C:\\Users\\Dnd\\Documents\\CodeProjects\\ObsidianDndImporter\\DndImporter\\.obsidian\\plugins\\ttrpgEnvironment_byGrobax\\srcFileServer\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
           "C:\\Users\\Dnd\\AppData\\Roaming\\NuGet\\NuGet.Config"
