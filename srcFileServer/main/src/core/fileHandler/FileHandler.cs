@@ -2,37 +2,50 @@ using Microsoft.AspNetCore.Mvc;
 
 
 namespace srcServer.core.fileHandler {
+
+	public class ls {
+		public string[] folders	{ get; set; }
+		public string[] files	{ get; set; }
+	}
 	public class FileHandler{
 
-		public static string getSystemsPath(){
-			
-			string path = Path.Combine(Directory.GetCurrentDirectory(), "../Systems");
-			string fullPath = Path.GetFullPath(path);
-
-			return fullPath;
+		public static string combineStringPath( params string[] args ){
+			return string.Join("\\", args);
 		}
-		public static string getSystemsPath( string path ){
+		public static string getSystemsPath( ){
 			
 			string _path = "";
-			string[] segs = FileHandler.getSystemsPath().Split("\\");
-			for (int i = 0; i < segs.Length ; i++)
-			{
-				string curr = segs[i];
-				if ( curr == "ttrpgEnvironment_byGrobax" ){
+			
+			
+			#if DEBUG 
 
-					int depth = segs.Length - (i+1);
-					string acom = "";
-					for (int j = 0; j < depth; j++)
-					{
-						acom += "..\\";
+				string[] segs = Directory.GetCurrentDirectory().Split("\\");
+				for (int i = 0; i < segs.Length ; i++)
+				{
+					string curr = segs[i];
+					if ( curr == "ttrpgEnvironment_byGrobax" ){
+
+						int depth = segs.Length - (i+1);
+						string acom = "";
+						for (int j = 0; j < depth; j++)
+						{
+							acom += "..\\";
+						}
+						_path = Path.Combine( Directory.GetCurrentDirectory(), acom );
+						string c = Path.GetFullPath(_path);
+						return c;
 					}
-					_path = Path.Combine( FileHandler.getSystemsPath(), acom );
-					_path = Path.Combine( _path , path );
-					return Path.GetFullPath(_path);
 				}
-			}
-	
-			_path = Path.Combine( FileHandler.getSystemsPath(), path );
+
+			#endif
+
+			_path = Directory.GetCurrentDirectory() ;
+			string fullPath = Path.GetFullPath(_path);
+			return fullPath;
+			
+		}
+		public static string getSystemsPath( string path ){
+			string _path = Path.Combine(FileHandler.getSystemsPath() , path);
 			string fullPath = Path.GetFullPath(_path);
 			return fullPath;
 		}
@@ -48,7 +61,7 @@ namespace srcServer.core.fileHandler {
 		}
 		public async static Task<bool> rmdir( string path){ 
 			string _path = FileHandler.getSystemsPath(path);
-			Directory.Delete(_path);
+			Directory.Delete(_path,true);
 			if ( Directory.Exists(_path) ){
 				return false;
 			}
@@ -57,13 +70,19 @@ namespace srcServer.core.fileHandler {
 
 
 		// Path commands
-		public async static Task<string[][]> lsdir( string path ){
+		public async static Task<ls> lsdir( string path ){
 
 			string _path = FileHandler.getSystemsPath( path );
-			string[] folders = Directory.GetDirectories(_path);
-			string[] files 	= Directory.GetFiles(_path);
+			string[] folders 	= Directory.GetDirectories(_path);
+			string[] files 		= Directory.GetFiles(_path);
 	
-			return [folders,files];
+			string[] folders2	= folders	.Select( p => p.Split("\\").Last() ).ToArray();
+			string[] files2		= files		.Select( p => p.Split("\\").Last() ).ToArray();
+			return new ls
+			{ 
+				folders	= folders2 ,
+				files	= files2
+			};
 		}
 		public async static Task<bool> exists( string path ) {
 			
@@ -83,9 +102,14 @@ namespace srcServer.core.fileHandler {
 		}
 	
 		public async static Task<bool> rm( string path ){ 
-			string _path = FileHandler.getSystemsPath( path ); 
-			Directory.Delete(_path);
-			File.Delete(_path);
+			string _path = FileHandler.getSystemsPath( path );
+			try {
+				if(File.Exists(_path)){
+					File.Delete(_path);
+				}else{
+					Directory.Delete(_path,true);
+				}
+			}catch(Exception e){}
 			return await FileHandler.exists(_path);
 		}
 
