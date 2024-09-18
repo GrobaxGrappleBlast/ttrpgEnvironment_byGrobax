@@ -2,26 +2,44 @@ using Microsoft.AspNetCore.Mvc;
 
 
 namespace srcServer.core.fileHandler {
-	class FileHandler{
+	public class FileHandler{
 
-		private static string getSystemsPath(){
+		public static string getSystemsPath(){
 			
 			string path = Path.Combine(Directory.GetCurrentDirectory(), "../Systems");
 			string fullPath = Path.GetFullPath(path);
 
 			return fullPath;
 		}
-		private static string getExtendedFilePath( string path ){
+		public static string getSystemsPath( string path ){
 			
-			string _path = Path.Combine( FileHandler.getSystemsPath(), path );
-			string fullPath = Path.GetFullPath(_path);
+			string _path = "";
+			string[] segs = FileHandler.getSystemsPath().Split("\\");
+			for (int i = 0; i < segs.Length ; i++)
+			{
+				string curr = segs[i];
+				if ( curr == "ttrpgEnvironment_byGrobax" ){
 
+					int depth = segs.Length - (i+1);
+					string acom = "";
+					for (int j = 0; j < depth; j++)
+					{
+						acom += "..\\";
+					}
+					_path = Path.Combine( FileHandler.getSystemsPath(), acom );
+					_path = Path.Combine( _path , path );
+					return Path.GetFullPath(_path);
+				}
+			}
+	
+			_path = Path.Combine( FileHandler.getSystemsPath(), path );
+			string fullPath = Path.GetFullPath(_path);
 			return fullPath;
 		}
 		
 		// Folder Handling
 		public async static Task<bool> mkdir ( string path ){
-			string _path = FileHandler.getExtendedFilePath(path);
+			string _path = FileHandler.getSystemsPath(path);
 			Directory.CreateDirectory(_path);
 			if ( Directory.Exists(_path) ){
 				return true;
@@ -29,7 +47,7 @@ namespace srcServer.core.fileHandler {
 			return false;
 		}
 		public async static Task<bool> rmdir( string path){ 
-			string _path = FileHandler.getExtendedFilePath(path);
+			string _path = FileHandler.getSystemsPath(path);
 			Directory.Delete(_path);
 			if ( Directory.Exists(_path) ){
 				return false;
@@ -41,7 +59,7 @@ namespace srcServer.core.fileHandler {
 		// Path commands
 		public async static Task<string[][]> lsdir( string path ){
 
-			string _path = FileHandler.getExtendedFilePath( path );
+			string _path = FileHandler.getSystemsPath( path );
 			string[] folders = Directory.GetDirectories(_path);
 			string[] files 	= Directory.GetFiles(_path);
 	
@@ -49,23 +67,23 @@ namespace srcServer.core.fileHandler {
 		}
 		public async static Task<bool> exists( string path ) {
 			
-			string _path = FileHandler.getExtendedFilePath( path );
+			string _path = FileHandler.getSystemsPath( path );
 			return Directory.Exists( _path ) || File.Exists(_path);
 	
 		}
 
 		// File Commands 
 		public async static Task saveFile( string path , string fileContent ){ 
-			string _path = FileHandler.getExtendedFilePath( path );
+			string _path = FileHandler.getSystemsPath( path );
 			File.WriteAllText(_path, fileContent); 
 		}	
 		public async static Task<string> readFile( string path ){ 
-			string _path = FileHandler.getExtendedFilePath( path ); 
+			string _path = FileHandler.getSystemsPath( path ); 
 			return File.ReadAllText(_path);
 		}
 	
 		public async static Task<bool> rm( string path ){ 
-			string _path = FileHandler.getExtendedFilePath( path ); 
+			string _path = FileHandler.getSystemsPath( path ); 
 			Directory.Delete(_path);
 			File.Delete(_path);
 			return await FileHandler.exists(_path);
@@ -73,8 +91,8 @@ namespace srcServer.core.fileHandler {
 
 		public async static Task copy( string path , string newPath ){ 
 
-			string _path1 = FileHandler.getExtendedFilePath( path ); 
-			string _path2 = FileHandler.getExtendedFilePath( newPath ); 
+			string _path1 = FileHandler.getSystemsPath( path ); 
+			string _path2 = FileHandler.getSystemsPath( newPath ); 
 
 			bool isFile = false;
 			if ( path.Contains('.') ){
