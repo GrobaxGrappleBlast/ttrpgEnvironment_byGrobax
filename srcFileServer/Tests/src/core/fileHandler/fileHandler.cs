@@ -153,8 +153,8 @@ public class fileHandlerTests
 
 		// folder level 2
 		string folder2 = FileHandler.combineStringPath(testFolder,"copy", "folder1", "folder2");
-		string file_21  = FileHandler.combineStringPath(testFolder,"copy", "folder1", "folder2", "file_1");
-		string file_22  = FileHandler.combineStringPath(testFolder,"copy", "folder1", "folder2", "file_2");
+		string file_21 = FileHandler.combineStringPath(testFolder,"copy", "folder1", "folder2", "file_1");
+		string file_22 = FileHandler.combineStringPath(testFolder,"copy", "folder1", "folder2", "file_2");
 		string file_21_content = "file21Content";
 		string file_22_content = "file22Content";
 
@@ -162,17 +162,29 @@ public class fileHandlerTests
 		await FileHandler.saveFile	( file_21 , file_21_content );
 		await FileHandler.saveFile	( file_22 , file_22_content );
 
-		string newTarget = "";
-		FileHandler.copy(folder1)
+		string target_folder1 = FileHandler.combineStringPath(testFolder,"copy", "target");
+		string target_file_1  = FileHandler.combineStringPath(testFolder,"copy", "target", "file_1");
+		string target_file_2  = FileHandler.combineStringPath(testFolder,"copy", "target", "file_2");
+		string target_folder2 = FileHandler.combineStringPath(testFolder,"copy", "target", "folder2");
+		string target_file_21 = FileHandler.combineStringPath(testFolder,"copy", "target", "folder2", "file_1");
+		string target_file_22 = FileHandler.combineStringPath(testFolder,"copy", "target", "folder2", "file_2");
+		
+		// COPY 
+		await FileHandler.copy(folder1,target_folder1);
+		
+		// ensure folders exists
+		Assert.IsTrue	( await FileHandler.exists(target_folder1) );
+		Assert.IsTrue	( await FileHandler.exists(target_folder2) );
+		// ensure that files exists and that contents are equivalent. 		
+		Assert.AreEqual	( await FileHandler.readFile(target_file_1 ) , file_1_content );
+		Assert.AreEqual	( await FileHandler.readFile(target_file_2 ) , file_2_content ); 
+		Assert.AreEqual	( await FileHandler.readFile(target_file_21) , file_21_content );
+		Assert.AreEqual	( await FileHandler.readFile(target_file_22) , file_22_content ); 
 
-
+		await FileHandler.rm(target_folder1);
+		await FileHandler.rm(folder1);
+		await FileHandler.rm( FileHandler.combineStringPath(testFolder,"copy"));
 	}
-
-	[TestMethod]
-	public async Task TESTWORK			(){
-		string a = FileHandler.getSystemsPath("folder");
-	}
-		 
 		
 }
  
