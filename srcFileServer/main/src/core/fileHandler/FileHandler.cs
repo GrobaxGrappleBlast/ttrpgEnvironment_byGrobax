@@ -9,7 +9,7 @@ namespace srcServer.core.fileHandler {
 	}
 	public class FileHandler{
 
-		public static string combineStringPath( params string[] args ){
+		public static string Combine( params string[] args ){
 			return string.Join("\\", args);
 		}
 		public static string getSystemsPath( ){
