@@ -15,10 +15,15 @@ namespace srcServer.core.fileHandler {
 		public static readonly string systemPreview	= "index.json"	;
 		public static readonly string systemDesigner= "designer.json"	; 
 	}
+	public class Message{
+		string key	{get;set;}
+		string msg	{get;set;}
+		string type	{get;set;} 
+	}
 
 	public class FileContext{
 		private static Mutex mutex = new Mutex();
-		
+		private static Dictionary<SystemPreview,string> dict = new Dictionary<SystemPreview,string>();
 		public static async Task<string[]> getAllSystems(){
 			
 			// search the folder
@@ -28,7 +33,6 @@ namespace srcServer.core.fileHandler {
 			string[] systemPreviews = new string[ls.folders.Length + 1]; 
 			
 			// For each sub folder see if there is a good system inside.
-			SystemPreview obj;
 			for (int i = 0; i < ls.folders.Length; i++)
 			{
 				
@@ -43,7 +47,9 @@ namespace srcServer.core.fileHandler {
 				string file = await FileHandler.readFile(path);
 				
 				try{
-				 	obj = JsonSerializer.Deserialize<SystemPreview>(file);
+					// try to deserialize it. 
+				 	SystemPreview obj = JsonSerializer.Deserialize<SystemPreview>(file);
+					FileContext.dict[obj] = path;
 					systemPreviews[i] = file; 
 				}catch(Exception e){
 					await FileHandler.rm( FileHandler.Combine( FolderNames.Systems , ls.folders[i]) );
@@ -55,5 +61,11 @@ namespace srcServer.core.fileHandler {
 			string[] ou = systemPreviews.Where(item => item != null).ToArray();
 			return ou;
 		}
+	
+		public static async Task<bool> createNewSystem( SystemPreview system , Message[] messages ){
+
+		}
+
+	
 	}
 }

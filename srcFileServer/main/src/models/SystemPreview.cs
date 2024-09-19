@@ -4,4 +4,5 @@ public class SystemPreview {
 	public string version			{get;set;}
 	public string systemCodeName	{get;set;}
 	public string systemName		{get;set;}
+ 
 }
