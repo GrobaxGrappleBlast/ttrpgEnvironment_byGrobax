@@ -1,0 +1,28 @@
+
+// builder 
+docker build -t my_db .
+
+
+// Delete 
+docker rmi -f image_id_or_name
+
+// Se all running
+docker ps
+
+docker images
+
+//stop something running
+docker stop container_id_or_name
+
+
+// run interactive
+docker run -it image_id_or_name 
+
+
+//// docker image 
+// install 
+docker pull postgres:17rc1-alpine3.20
+
+// run 
+docker run  --name my_postgres  -p 9001:5432 -e POSTGRES_PASSWORD=admin postgres
+docker run  --name my_postgres  postgres

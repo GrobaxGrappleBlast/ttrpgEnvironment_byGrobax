@@ -50,6 +50,7 @@ namespace srcServer.core.fileHandler {
 					// try to deserialize it. 
 				 	SystemPreview obj = JsonSerializer.Deserialize<SystemPreview>(file);
 					FileContext.dict[obj] = path;
+	
 					systemPreviews[i] = file; 
 				}catch(Exception e){
 					await FileHandler.rm( FileHandler.Combine( FolderNames.Systems , ls.folders[i]) );
@@ -62,9 +63,7 @@ namespace srcServer.core.fileHandler {
 			return ou;
 		}
 	
-		public static async Task<bool> createNewSystem( SystemPreview system , Message[] messages ){
-
-		}
+	 
 
 	
 	}
