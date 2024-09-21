@@ -1,45 +1,91 @@
 using Microsoft.AspNetCore.Mvc;
+using srcServer.core.fileHandler;
 
 namespace srcServer.Controllers
 {
 	[ApiController]
-	[Route("api/systemDefinitions")]
+	[Route("api")]
 	public class SystemDefinitions : ControllerBase
 	{
-		[HttpGet]
-		[Route("allSystems")]
-		public IActionResult GetAllSystems()
-		{
-			return Ok( "" );
+
+		private DAO _dao;
+		public SystemDefinitions( DAO dao){
+			_dao = dao;
 		}
 
 		[HttpGet]
 		[Route("system")]
-		public IActionResult getOrCreateSystem()
+		public async Task<IActionResult> GetAllSystems()
 		{
-			return Ok( "" );
+			try {
+				var systems = _dao.LoadAllAvailableSystems();
+				return Ok( systems );
+			} catch(Exception e){
+				return NotFound("");
+			}
 		}
 
 		[HttpPut]
 		[Route("system")]
-		public IActionResult EditSystem()
+		public async Task<IActionResult> EditSystem( SystemDefinitionDTO update )
 		{
-			return Ok( "" );
+			try {
+				var systems = await _dao.updateSystem(update);
+				return Ok( systems );
+			} catch(Exception e){
+				return NotFound("");
+			}
 		}
 
 		[HttpDelete]
 		[Route("system")]
-		public IActionResult DeleteSystem()
+		public async Task<IActionResult> DeleteSystem( SystemDefinitionDTO system )
 		{
-			return Ok( "" );
+			try {
+				var systems = await _dao.deleteSystem(system);
+				return Ok( systems );
+			} catch(Exception e){
+				return NotFound("");
+			}
 		}
 
 		[HttpPut]
 		[Route("system/copy")]
-		public IActionResult CopySystem()
+		public async Task<IActionResult> CopySystem( SystemDefinitionDTO system )
 		{
-			return Ok( "" );
+			try {
+				var systems = await _dao.copySystem(system);
+				return Ok( systems );
+			} catch(Exception e){
+				return NotFound("");
+			}
 		}
+
+
+		[HttpGet] 
+		[Route("factory")]
+		public async Task<IActionResult> getSystemFactory( int definition )
+		{
+			try {
+				var systems = await _dao.getFactory(definition);
+				return Ok( systems );
+			} catch(Exception e){
+				return NotFound("");
+			}
+		}
+
+		[HttpPut] 
+		[Route("factory")]
+		public async Task<IActionResult> supdateSystemFactory( int definition , string JSON )
+		{
+			try {
+				var systems = await _dao.updateFactory( definition , JSON );
+				return Ok( systems );
+			} catch(Exception e){
+				return NotFound("");
+			}
+		}
+
 
 	}
 }

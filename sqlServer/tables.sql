@@ -5,7 +5,7 @@ CREATE TABLE `TTPRPGSystem`.definition (
 	`name` 			varchar(100) CHARACTER SET armscii8 COLLATE armscii8_general_ci NOT NULL,
 	`code` 			uuid DEFAULT UUID() NOT NULL,
 	`author` 		varchar(100) NOT NULL,
-	`version`		varchar(10) NULL,
+	`version`		varchar(10) NULL DEFAULT '0.0.1a',
 	CONSTRAINT index_pk PRIMARY KEY (id),
 	CONSTRAINT index_unique UNIQUE KEY (code)
 )
