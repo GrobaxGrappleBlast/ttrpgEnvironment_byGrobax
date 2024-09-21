@@ -2,6 +2,8 @@
 // builder 
 docker build -t my_db .
 
+// run 
+docker run -it -p 9001:3306 my_db  
 
 // Delete 
 docker rmi -f image_id_or_name
@@ -26,3 +28,4 @@ docker pull postgres:17rc1-alpine3.20
 // run 
 docker run  --name my_postgres  -p 9001:5432 -e POSTGRES_PASSWORD=admin postgres
 docker run  --name my_postgres  postgres
+
