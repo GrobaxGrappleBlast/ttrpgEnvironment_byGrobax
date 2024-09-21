@@ -7,7 +7,10 @@
 		<GenerateAssemblyInfo>false</GenerateAssemblyInfo>
 	</PropertyGroup>
  
-	<PropertyGroup>
-		<DatabaseConnectionString>Server=localhost:9001;Database=TTRPGSystem;User Id=root;Password=passwd;</DatabaseConnectionString>
-	</PropertyGroup>
+	<ItemGroup>
+	  <PackageReference Include="Dapper" Version="2.1.35" />
+	  <PackageReference Include="MySql.Data" Version="9.0.0" />
+	  <PackageReference Include="MySqlConnector" Version="2.3.7" /> 
+	  <PackageReference Include="System.Data.SqlClient" Version="4.8.6" />
+	</ItemGroup>
 </Project>

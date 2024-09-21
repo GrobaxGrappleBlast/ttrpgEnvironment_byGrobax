@@ -10,34 +10,57 @@ namespace srcServer.core.fileHandler {
 	public class FileHandler{
 
 		public static string Combine( params string[] args ){
-			return string.Join("\\", args);
+			string path = string.Join("\\", args);
+			path = path.Replace("\\\\","\\");
+			return path;
+		}
+
+		public static string getOutOfNetBuildFolder(){
+			
+			string _path = "";
+			string[] segs = Directory.GetCurrentDirectory().Split("\\");
+			for (int i = 0; i < segs.Length ; i++)
+			{
+				string curr = segs[i];
+				if ( curr == "ttrpgEnvironment_byGrobax" ){
+
+					int depth = segs.Length - (i+1);
+					string acom = "";
+					for (int j = 0; j < depth; j++)
+					{
+						acom += "..\\";
+					}
+					return acom;
+				}
+			}
+			return "";
 		}
 		public static string getSystemsPath( ){
 			
 			string _path = "";
 			
 			
-			#if DEBUG 
+			 
 
-				string[] segs = Directory.GetCurrentDirectory().Split("\\");
-				for (int i = 0; i < segs.Length ; i++)
-				{
-					string curr = segs[i];
-					if ( curr == "ttrpgEnvironment_byGrobax" ){
+			string[] segs = Directory.GetCurrentDirectory().Split("\\");
+			for (int i = 0; i < segs.Length ; i++)
+			{
+				string curr = segs[i];
+				if ( curr == "ttrpgEnvironment_byGrobax" ){
 
-						int depth = segs.Length - (i+1);
-						string acom = "";
-						for (int j = 0; j < depth; j++)
-						{
-							acom += "..\\";
-						}
-						_path = Path.Combine( Directory.GetCurrentDirectory(), acom );
-						string c = Path.GetFullPath(_path);
-						return c;
+					int depth = segs.Length - (i+1);
+					string acom = "";
+					for (int j = 0; j < depth; j++)
+					{
+						acom += "..\\";
 					}
+					_path = Path.Combine( Directory.GetCurrentDirectory(), acom );
+					string c = Path.GetFullPath(_path);
+					return c;
 				}
+			}
 
-			#endif
+			 
 
 			_path = Directory.GetCurrentDirectory() ;
 			string fullPath = Path.GetFullPath(_path);

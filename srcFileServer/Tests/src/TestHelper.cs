@@ -16,7 +16,17 @@ public class TestHelper
 
 		// Create a new service collection for dependency injection (like in your Main project)
 		var services = new ServiceCollection();
-		IConfiguration configuration = new ConfigurationBuilder().Build();
+
+
+		string path = AppContext.BaseDirectory;
+		string appsettings = FileHandler.getSystemsPath();//"appsettings.json");
+
+		
+		IConfiguration configuration = new ConfigurationBuilder()
+			//.SetBasePath(appsettings)  // Set the base path where the appsettings.json file is located
+			.AddJsonFile("appsettings.json", optional: false, reloadOnChange: true)  // Specify appsettings.json
+			.Build();
+
 		services.AddSingleton<IConfiguration>(configuration);
 		services.AddSingleton<DAO, DAO>();  
 		services.AddControllers();  

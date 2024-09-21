@@ -10,6 +10,6 @@ public class DAOTests
 	public async Task getAllSystems (){ 
 		ServiceProvider s = TestHelper.get();
 		DAO dao = s.GetService<DAO>(); //new DAO();
-		await dao.LoadData();
+		var result = await dao.LoadAllAvailableSystems();
 	} 
 }
