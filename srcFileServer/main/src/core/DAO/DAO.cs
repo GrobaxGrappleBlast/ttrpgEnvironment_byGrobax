@@ -60,7 +60,7 @@ namespace srcServer.core.fileHandler {
 				string sql = $"UPDATE TTPRPGSystem.definition SET `name` = '{system.name}', `author` = '{system.author}' , `version` = '{system.version}' WHERE code = '{system.code}' ";
 				var affedtedRows = await connection.ExecuteAsync( sql	);
 				if(affedtedRows == 0){
-					throw new Exception($"No Systems Updated, no Match with code = '{system.code}'");
+					throw new TTRPGSystemException($"No Systems Updated, no Match with code = '{system.code}'");
 				}
 
 				// Query the inserted row
@@ -82,7 +82,7 @@ namespace srcServer.core.fileHandler {
 				string sql = $"DELETE FROM TTPRPGSystem.definition WHERE code = '{system.code}' ";
 				var affedtedRows = await connection.ExecuteAsync( sql	);
 				if(affedtedRows == 0){
-					throw new Exception($"No Systems deleted, no Match with code = '{system.code}'");
+					throw new TTRPGSystemException($"No Systems deleted, no Match with code = '{system.code}'");
 				}
 				
 				return true;
@@ -102,7 +102,7 @@ namespace srcServer.core.fileHandler {
 						$"SELECT * FROM TTPRPGSystem.definition WHERE code = '{system.code}';"
 					);
 					if (!(sys!=null)){
-						throw new Exception("No System to copy with this code");
+						throw new TTRPGSystemException("No System to copy with this code");
 					}
 					// copy definition.
 					var lastInsertedId = connection.ExecuteScalar<int>(

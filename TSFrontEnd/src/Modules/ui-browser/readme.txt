@@ -1,0 +1,1 @@
+This folder and its contets are for development using the browser. 

@@ -10,7 +10,19 @@ IConfiguration configuration = new ConfigurationBuilder()
 builder.Services.AddSingleton<IConfiguration>(configuration);
 builder.Services.AddSingleton<DAO, DAO>();  // Custom service
 
+builder.Services.AddCors(options =>
+{
+	options.AddPolicy("AllowFrontendDev",
+		builder => builder
+			.WithOrigins("http://localhost:5173")  // Frontend origin with port
+			.AllowAnyMethod()
+			.AllowAnyHeader()
+			.AllowCredentials());
+});
+
+
 var app = builder.Build(); 
+app.UseCors("AllowFrontendDev");  
 app.MapControllers();
 app.MapGet("/", () => "Welcome to the Web API, for the file storage");
 app.Run();

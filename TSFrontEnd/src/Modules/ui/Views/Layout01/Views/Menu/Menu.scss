@@ -1,0 +1,171 @@
+
+.Menu{
+	background-color: $background02;
+	font-family: $fontFamily;
+	font-variant: petite-caps;
+}
+.MenuBtnContainer {
+	display: flex;
+	flex-direction: row; 
+	gap: $standardPadding;
+	position: relative;
+}
+.MenuBtn{
+	@include btnN;
+	height:$lineheight ;  
+	width: 70px;  
+	border-radius: 0;
+	display: grid;
+	grid-template-columns: 70px 0px;
+	overflow: hidden;
+	background-color: transparent;
+
+	transition:cubic-bezier(0.06, 0.32, 0.58, 1) 0.1s;
+	&:hover{
+		width: 270px;
+		background-color:transparent;
+	}
+	&[data-active="true"], &:hover{
+		width: 270px;
+		grid-template-columns: 70px 200px;
+	}
+	.MenuBtnIcon{ 
+		display: flex;
+		align-items: center;
+    	justify-content: center;
+	}
+	.MenuBtnText{
+		width: 200px;
+		display: flex;
+		height: 100%;
+		align-items: center;
+		
+		h4{
+			margin:0;
+			//height		: calc( 1.5 * $lineheight );
+			//font-size	: calc( 1.5 * $lineheight );
+			//line-height	: calc( 1.5 * $lineheight );
+		}
+		p {
+			margin:0;
+			//height: $lineheight;
+			//font-size: $lineheight;
+			//line-height: $lineheight;
+		}
+	}
+}
+.MenuTitle{
+	padding: $standardPadding;
+}
+
+
+.colorscheme{
+	& > div:nth-child(1){background-color:$COLOR1;}
+	& > div:nth-child(2){background-color:$COLOR2;}
+	& > div:nth-child(3){background-color:$COLOR3;}
+	& > div:nth-child(4){background-color:$COLOR4;}
+	& > div:nth-child(5){background-color:$COLOR5;}
+	& > div{
+		width:25px;
+		height:25px;
+	}
+	display:flex;
+}	
+/*
+.Menu{
+	//background-color: $background02; 
+	height:fit-content; 
+}
+.MenuTitle{
+	padding: $standardPadding;
+}
+.MenuBtnContainer {
+	display: flex;
+	flex-direction: row; 
+	gap: 0px;
+	position: relative;
+}
+
+
+.MenuBtn{
+	@include btnN;
+	height:$lineheight ;  
+	width: 70px;  
+	border-radius: 0;
+	display: grid;
+	grid-template-columns: 70px 0px;
+	overflow: hidden;
+	background-color: transparent;
+
+	transition:ease 0.2s;
+	&[data-active="true"], &:hover{
+		width: 270px;
+		grid-template-columns: 70px 200px;
+	}
+	.MenuBtnIcon{ 
+		display: flex;
+		align-items: center;
+    	justify-content: center;
+	}
+	.MenuBtnText{
+		width: 200px;
+		display: flex;
+		height: 100%;
+		align-items: center;
+		
+		h4{
+			margin:0;
+			//height		: calc( 1.5 * $lineheight );
+			//font-size	: calc( 1.5 * $lineheight );
+			//line-height	: calc( 1.5 * $lineheight );
+		}
+		p {
+			margin:0;
+			//height: $lineheight;
+			//font-size: $lineheight;
+			//line-height: $lineheight;
+		}
+	}
+}
+
+
+.MenuSBtn{
+	
+	@include btnS;
+	height:fit-content;  
+	width: 70px;  
+	padding-top:$lineheight;
+	padding-bottom:$lineheight; 
+	border-radius: 0;
+	display: grid;
+	grid-template-columns: 70px 0px;
+	overflow: hidden; 
+	transition:ease 0.2s;
+
+	&[data-active="true"], &:hover{
+		width: 270px;
+		grid-template-columns: 70px 200px;
+	}
+	.MenuBtnIcon{ 
+		display: flex;
+		align-items: center;
+    	justify-content: center;
+	}
+	.MenuBtnText{
+		width: 200px;
+		h4{
+			margin:0;
+			height		: calc( 1.5 * $lineheight );
+			font-size	: calc( 1.5 * $lineheight );
+			line-height	: calc( 1.5 * $lineheight );
+		}
+		p {
+			margin:0;
+			height: $lineheight;
+			font-size: $lineheight;
+			line-height: $lineheight;
+		}
+	}
+}
+*/
+

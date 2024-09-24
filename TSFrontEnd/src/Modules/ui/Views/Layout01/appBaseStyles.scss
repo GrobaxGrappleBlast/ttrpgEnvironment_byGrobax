@@ -1,0 +1,99 @@
+
+
+$fontFamily : sans-serif;
+$fontVariant: petite-caps;
+
+$COLOR1:#2C3A40;
+$COLOR2:#BF3F3F;
+$COLOR3:#A63737;
+$COLOR4:#D9D9D9;
+$COLOR5:#8C8C8C;
+
+$background01 	:$COLOR4;
+$background02 	:$COLOR5;
+$fontColor		:$COLOR1;
+
+$Inputbackground:$COLOR1;
+$InputFontColor :$COLOR4;
+
+
+
+$color_error    : var(--background-modifier-error);
+$color_success  : var(--background-modifier-success) ;
+$color_verbose	: var(--color-blue);
+
+
+
+
+
+$backgroundStandard : var(--background-primary);
+$backgroundInput    : var(--background-modifier-form-field);
+$textColor          : var(--text-normal);
+
+$lineheight : 24px; 
+
+
+$standardPadding:15px;
+
+$stripedBackground_StripeThickness : 4px;
+@function StrippedBackground($color1 , $color2) {
+	@return repeating-linear-gradient(-45deg, $color1 , $color1  $stripedBackground_StripeThickness , $color2 $stripedBackground_StripeThickness , $color2 10px);
+}
+ 
+
+$interactiveSColor		: var(--interactive-accent);
+$interactiveSColorHover	: var(--interactive-accent-hover);
+
+$interactiveColor		: var(--interactive-normal	);
+$interactiveColorHover	: var(--interactive-hover	);
+
+$navigationBackgroundActive			:var(--color-green);//var(--interactive-accent);
+$navigationBackgroundActiveHover	:var(--color-cyan);//var(--interactive-accent-hover);
+$navigationSBackgroundActive		:var(--color-green);
+$navigationSBackgroundActiveHover	:var(--color-cyan);
+
+
+$red  :var(--color-red);
+$standardBorderRadius:var(--radius-s);
+@mixin btnN{
+	cursor: pointer;
+	border: 0;
+	outline: none;
+	
+	border-radius: $standardBorderRadius;
+	background-color: $interactiveColor;
+	&:hover{
+		background-color: $interactiveColorHover;
+	}
+	&[data-active="true"]{
+		background-color:$navigationBackgroundActive;
+		&:hover{
+			background-color: $navigationBackgroundActiveHover;
+		}
+	}
+}
+@mixin btnS{ 
+	cursor: pointer;
+	border: 0;
+	outline: none;
+	background-color: $interactiveSColor;
+	&:hover{
+		background-color: $interactiveSColorHover;
+	}
+	&[data-active="true"]{
+		background-color:$navigationBackgroundActive;
+		&:hover{
+			background-color: $navigationBackgroundActiveHover;
+		}
+	}
+}
+@mixin editForm {
+
+	border: var(--input-border-width) solid var(--background-modifier-border);
+	background: var(--background-secondary);
+	border-radius: var(--input-radius);
+	font-size: var(--font-ui-small);
+	padding: var(--size-4-1) var(--size-4-2);
+	font-family: inherit;
+	color: var(--text-normal);
+}

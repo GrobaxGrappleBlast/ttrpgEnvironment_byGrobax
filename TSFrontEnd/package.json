@@ -5,13 +5,11 @@
     "main": "main.js",
     "type": "module",
     "scripts": {
-        "style": "sass ./modules/styles.scss styles.css",
-        "lint": "eslint . --ext .ts",
-        "dev": "vite build --watch",
-        "vite": "vite build --watch",
-        "build": "vite build",
-        "bumpversion": "node version-bump.mjs && git add manifest.json versions.json",
-        "test": "jest --coverage"
+        "dev2"  : "vite -- --platform=web",
+        "dev"   : "vite build -- --platform=obsidian",
+        "vite"  : "vite build --watch",
+        "build" : "vite build -- --platform=obsidian ",
+        "bumpversion": "node version-bump.mjs && git add manifest.json versions.json"
     },
     "keywords": [],
     "author": "Grobax",

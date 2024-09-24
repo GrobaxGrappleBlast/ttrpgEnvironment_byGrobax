@@ -1,3 +1,4 @@
+using System.Text.Json;
 using Microsoft.AspNetCore.Mvc;
 using srcServer.core.fileHandler;
 
@@ -7,7 +8,6 @@ namespace srcServer.Controllers
 	[Route("api")]
 	public class SystemDefinitions : ControllerBase
 	{
-
 		private DAO _dao;
 		public SystemDefinitions( DAO dao){
 			_dao = dao;
@@ -17,11 +17,17 @@ namespace srcServer.Controllers
 		[Route("system")]
 		public async Task<IActionResult> GetAllSystems()
 		{
+
 			try {
-				var systems = _dao.LoadAllAvailableSystems();
-				return Ok( systems );
-			} catch(Exception e){
-				return NotFound("");
+				var systems = await _dao.LoadAllAvailableSystems();
+				return Ok(systems);
+			} 	
+			catch(TTRPGSystemException e){
+				return BadRequest(e.Message );
+			}
+			catch(Exception e){
+				Logger.LogError(e);
+				return BadRequest("Something went wrong");
 			}
 		}
 
@@ -32,8 +38,13 @@ namespace srcServer.Controllers
 			try {
 				var systems = await _dao.updateSystem(update);
 				return Ok( systems );
-			} catch(Exception e){
-				return NotFound("");
+			} 
+			catch(TTRPGSystemException e){
+				return BadRequest(e.Message );
+			}
+			catch(Exception e){
+				Logger.LogError(e, $"input: { JsonSerializer.Serialize(update) } " );
+				return BadRequest("Something went wrong");
 			}
 		}
 
@@ -44,8 +55,13 @@ namespace srcServer.Controllers
 			try {
 				var systems = await _dao.deleteSystem(system);
 				return Ok( systems );
-			} catch(Exception e){
-				return NotFound("");
+			} 	
+			catch(TTRPGSystemException e){
+				return BadRequest(e.Message );
+			}
+			catch(Exception e){
+				Logger.LogError(e, $"input: { JsonSerializer.Serialize(system) } " );
+				return BadRequest("Something went wrong");
 			}
 		}
 
@@ -56,11 +72,15 @@ namespace srcServer.Controllers
 			try {
 				var systems = await _dao.copySystem(system);
 				return Ok( systems );
-			} catch(Exception e){
-				return NotFound("");
+			} 	
+			catch(TTRPGSystemException e){
+				return BadRequest(e.Message );
+			}
+			catch(Exception e){
+				Logger.LogError(e, $"input: { JsonSerializer.Serialize(system) } " );
+				return BadRequest("Something went wrong");
 			}
 		}
-
 
 		[HttpGet] 
 		[Route("factory")]
@@ -69,8 +89,13 @@ namespace srcServer.Controllers
 			try {
 				var systems = await _dao.getFactory(definition);
 				return Ok( systems );
-			} catch(Exception e){
-				return NotFound("");
+			} 	
+			catch(TTRPGSystemException e){
+				return BadRequest(e.Message );
+			}
+			catch(Exception e){
+				Logger.LogError(e, $"input: definition={ definition } " );
+				return BadRequest("Something went wrong");
 			}
 		}
 
@@ -81,8 +106,13 @@ namespace srcServer.Controllers
 			try {
 				var systems = await _dao.updateFactory( definition , JSON );
 				return Ok( systems );
-			} catch(Exception e){
-				return NotFound("");
+			} 	
+			catch(TTRPGSystemException e){
+				return BadRequest(e.Message );
+			}
+			catch(Exception e){
+				Logger.LogError(e, $"input: definition={definition} JSON={JSON}" );
+				return BadRequest("Something went wrong");
 			}
 		}
 
