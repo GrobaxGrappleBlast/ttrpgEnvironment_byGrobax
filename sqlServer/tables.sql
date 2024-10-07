@@ -1,4 +1,4 @@
-CREATE DATABASE `TTPRPGSystem`;  
+CREATE DATABASE IF NOT EXISTS `TTPRPGSystem`;  
 
 CREATE TABLE `TTPRPGSystem`.definition (
 	`id` 			INT auto_increment NOT NULL,
@@ -53,3 +53,6 @@ DEFAULT CHARSET=utf8mb3
 COLLATE=utf8mb3_general_ci
 AUTO_INCREMENT=1;
 
+
+GRANT ALL PRIVILEGES ON *.* TO 'user'@'%' IDENTIFIED BY 'passwd';
+FLUSH PRIVILEGES;

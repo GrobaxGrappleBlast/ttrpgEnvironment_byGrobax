@@ -166,17 +166,16 @@ namespace srcServer.core.fileHandler {
 			using (var connection = new MySqlConnection(_connectionString))
 			{
 				connection.Open();
-				
-				 
+
 				var factory = connection.QueryFirstOrDefault<SystemFactoryDTO>(
-					$"SELECT * FROM TTPRPGSystem.definition WHERE definition = {definition};"
+					$"SELECT * FROM TTPRPGSystem.factory WHERE definition = {definition};"
 				);
 				if (factory == null){
 					var lastInsertedId = connection.ExecuteScalar<int>(
 						$"INSERT INTO TTPRPGSystem.factory (`definition`) VALUES ('{definition}');"
 					);
 					factory = connection.QueryFirstOrDefault<SystemFactoryDTO>(
-						$"SELECT * FROM TTPRPGSystem.definition WHERE definition = {definition};"
+						$"SELECT * FROM TTPRPGSystem.factory WHERE definition = {definition};"
 					);
 				}
 				

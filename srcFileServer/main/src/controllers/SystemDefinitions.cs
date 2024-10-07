@@ -1,3 +1,4 @@
+using System;
 using System.Text.Json;
 using Microsoft.AspNetCore.Mvc;
 using srcServer.core.fileHandler;
@@ -83,19 +84,19 @@ namespace srcServer.Controllers
 		}
 
 		[HttpGet] 
-		[Route("factory")]
+		[Route("factory/{definition}")]
 		public async Task<IActionResult> getSystemFactory( int definition )
 		{
 			try {
 				var systems = await _dao.getFactory(definition);
-				return Ok( systems );
+				return Ok( systems.JSON );
 			} 	
 			catch(TTRPGSystemException e){
 				return BadRequest(e.Message );
 			}
 			catch(Exception e){
 				Logger.LogError(e, $"input: definition={ definition } " );
-				return BadRequest("Something went wrong");
+				return BadRequest("Something went wrong2");
 			}
 		}
 

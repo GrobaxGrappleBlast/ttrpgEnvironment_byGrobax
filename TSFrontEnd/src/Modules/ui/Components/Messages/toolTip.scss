@@ -9,15 +9,15 @@
 }
 
 .tooltipInnerBox {
-	background-color: $backgroundStandard ;
+	background-color: gray;
 	&[data-type="error"]{
-		background-color: $color_error;
+		background-color: red;
 	}
 	&[data-type="verbose"]{
-		background-color: $color_verbose;
+		background-color: blue;
 	}
 	&[data-type="good"]{
-		background-color: $color_success;
+		background-color: green;
 	} 
 }
  

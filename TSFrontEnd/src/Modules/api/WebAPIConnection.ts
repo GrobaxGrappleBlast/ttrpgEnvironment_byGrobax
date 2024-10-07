@@ -1,6 +1,7 @@
 import { JSONHandler } from "grobax-json-handler"; 
 import { APIReturnModel, IAPI } from "./IAPI";
 import { SystemPreview } from "../core/model/systemPreview";
+import { TTRPGSystemJSONFormatting } from "../graphDesigner";
 
 export interface Message{
 	msg	:string;
@@ -54,10 +55,31 @@ class Server{
 }
 
 export class WebApiConnection implements IAPI{
+	getSystemUIs(preview: SystemPreview) {
+		throw new Error("Method not implemented.");
+	}
+	public async getFactory(preview: SystemPreview) : Promise<APIReturnModel<TTRPGSystemJSONFormatting>> { 
+		let serverResp = await Server.get("api/factory/" + preview.id );
+		if(serverResp.status == 200){ 
+			let json = await serverResp.text();
+			let objs : TTRPGSystemJSONFormatting = JSONHandler.deserialize(TTRPGSystemJSONFormatting,json);
+			let response = {
+				responseCode : serverResp.status,
+				messages : [serverResp.statusText],
+				response: objs
+			} as APIReturnModel<TTRPGSystemJSONFormatting>
+			return response;
+		} else {
+			let response = {
+				responseCode : serverResp.status,
+				messages : [serverResp.statusText]
+			} as APIReturnModel<TTRPGSystemJSONFormatting>
+			return response;
+		} 
+	}
 	public async getAllSystems() : Promise<APIReturnModel<SystemPreview[]>>{
 	
 		let serverResp = await Server.get("api/system");
-		
 		if(serverResp.status == 200){
 
 			let json = await serverResp.text();
@@ -66,7 +88,7 @@ export class WebApiConnection implements IAPI{
 				responseCode : serverResp.status,
 				messages : [serverResp.statusText],
 				response: objs
-			} as APIReturnModel<SystemPreview[]>
+			} as APIReturnModel<SystemPreview[]> 
 			return response;
 		} else {
 			let response = {

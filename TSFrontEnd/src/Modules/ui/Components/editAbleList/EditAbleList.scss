@@ -1,4 +1,6 @@
 
+$lineheight : 20px;
+
 .editableTable{
 	height: 100%; 
 }
@@ -35,18 +37,18 @@
 	&:not([data-isEdit="true"]){
 		&[data-can-hover="true"]{
 			&:hover{
-				background: $navigationBackgroundActiveHover  ; 
+				background: lightpink  ; 
 				&[data-selected="true"]{
-					background: StrippedBackground($navigationBackgroundActive	 , $navigationBackgroundActiveHover);
+					background: StrippedBackground(white	 , lightpink);
 				}
 			}
 		}
 		&[data-selected="true"]{
-			background: $navigationBackgroundActive	 ;
+			background: tomato	 ;
 		}
 	}
 	&[data-isEdit="true"]{
-		background: $navigationBackgroundActiveHover ; 
+		background: palegoldenrod ; 
 	}
 	
 }

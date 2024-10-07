@@ -32,6 +32,7 @@ pre {
 
 @import './Views/Menu/Menu.scss';
 @import './Views/Page/page.scss';
-@import './Components/editAbleList/EditAbleList.scss';
-@import './Components/Messages/toolTip.scss';
-@import './Components/Messages/StaticMessageHandler.scss';
+
+@import '../../Components/editAbleList/EditAbleList.scss';
+@import '../../Components/Messages/toolTip.scss';
+@import '../../Components/Messages/StaticMessageHandler.scss';

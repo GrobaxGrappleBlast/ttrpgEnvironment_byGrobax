@@ -1,4 +1,4 @@
-import { BASE_SCHEME } from "grobax-json-handler";
+import { BASE_SCHEME, JsonNumber } from "grobax-json-handler";
 import { keyManagerInstance } from "ttrpg-system-graph";
 import { JsonBoolean, JsonObject, JsonProperty, JsonString } from "grobax-json-handler";
 
@@ -9,13 +9,13 @@ export class SystemPreviewSchemes{
 }
 
 @JsonObject({
-	onAfterDeSerialization:(self:SystemPreview, ...args )=>{
-		self.id = keyManagerInstance.getNewKey();
-	}
+	
 })
 export class SystemPreview {
 
-	public id : string = keyManagerInstance.getNewKey();
+
+	@JsonNumber({scheme:[SystemPreviewSchemes.BASE , SystemPreviewSchemes.PAGE]})
+	public id : number ;
 	public filePath:string ;
 
 	public constructor(){
@@ -23,7 +23,7 @@ export class SystemPreview {
 	}
 	public init(){
 		this.author = "grobax";
-		this.version = "0.0.1";
+		this.version = "0.0.1";	
 		this.code = "grobdnd";
 		this.name = "Grobax' DnD TTPRPG";
 	}

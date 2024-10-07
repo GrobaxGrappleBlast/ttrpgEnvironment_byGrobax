@@ -1,10 +1,9 @@
 <script lang="ts"> 
 	import { fly, slide } from 'svelte/transition';
-    import './app.scss'  
+    import './Designer.scss'  
     import HomePage from './Views/Page/HomePage.svelte';
     import SystemPage from './Views/Page/SystemPage.svelte';
     import { writable } from 'svelte/store';
-	import { SystemPreview } from '../../core/model/systemPreview';
 	import Menu from './Views/Menu/Menu.svelte';
     import { Layout01Context } from './context';
 
