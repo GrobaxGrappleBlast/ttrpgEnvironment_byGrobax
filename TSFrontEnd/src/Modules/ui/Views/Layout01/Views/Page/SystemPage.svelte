@@ -54,7 +54,7 @@
 		// request the factory;
 		let response = await context.API.getFactory( activePreview );
 		factory = response.response;
-		debugger
+		
 		return true;
 	}
 

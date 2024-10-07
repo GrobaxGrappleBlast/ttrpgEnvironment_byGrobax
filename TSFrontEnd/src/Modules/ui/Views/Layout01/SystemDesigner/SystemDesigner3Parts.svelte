@@ -14,22 +14,22 @@
 
 
 
-	function grpSelect( grp :  UIGroup		|null){
+	function grpSelect( grp :  UIGroup		|null|any){
 		colSelect(null);
 		grpSel = grp;
 	}
-	function colSelect( col :  UICollection	|null){
+	function colSelect( col :  UICollection	|null|any){
 		nodSelect(null);
 		colSel = col;
 	}
-	function nodSelect( nod :  UINode		|null){
+	function nodSelect( nod :  UINode		|null|any){
 		nodSel = nod;
 	}
 
 
 
 </script>
-<div>
+<div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;" >
 	<EditAbleList2 
 		collection={ uiSystem.groups }
 		onSelect    	={ (e) => { grpSelect(e); return true }}

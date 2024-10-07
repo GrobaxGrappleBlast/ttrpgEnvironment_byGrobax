@@ -8,7 +8,7 @@
     import { slide } from "svelte/transition";
     import { createEventDispatcher, onMount } from "svelte"; 
     import { writable , type  Writable } from 'svelte/store'; 
-	import './EditAbleList.scss'; 
+	
 	import { tooltip } from '../Messages/toolTip.js';
 
 	type updateItem = { oldName : string , newName: string};

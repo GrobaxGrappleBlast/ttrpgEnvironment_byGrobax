@@ -7,7 +7,7 @@
 	import Image_save from "../buttons/download.svelte"; 
     import { slide } from "svelte/transition";
     import { createEventDispatcher, onMount } from "svelte";  
-	import './EditAbleList.scss'; 
+	
 	import { tooltip } from '../Messages/toolTip.js';
     import { IViewElement } from "../../Views/Layout01/SystemDesigner/UIGraphItems";
 

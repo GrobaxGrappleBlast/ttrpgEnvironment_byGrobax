@@ -1,5 +1,6 @@
 @import './appBaseStyles.scss';
 
+
 body {
 	padding:0px;
 	margin:0px;
@@ -29,6 +30,10 @@ pre {
 	display: table-cell;
 }
 
+imagecontainer{
+	height:20px;
+	width: 20px;
+}
 
 @import './Views/Menu/Menu.scss';
 @import './Views/Page/page.scss';
