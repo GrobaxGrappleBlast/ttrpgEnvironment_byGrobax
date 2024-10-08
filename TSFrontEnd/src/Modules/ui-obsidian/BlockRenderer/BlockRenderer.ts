@@ -51,7 +51,7 @@ export class BlockRenderer{
 		vault.modify(file,page);
 	} 
 
-
+	/*
 	private async getSystem( tag, blockData ){
 		// get the right System Preview
 		let resp = await ObsidianUICoreAPI.getInstance().systemDefinition.getAllSystems();
@@ -238,5 +238,5 @@ export class BlockRenderer{
 				}
 			});
 		} 
-	}
+	}*/
 }

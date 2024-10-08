@@ -11,8 +11,7 @@
 	}
 	let dispatch = createEventDispatcher();
 	
-	function onClick(){
-		console.log('clickyy')
+	function onClick(){ 
 		dispatch('click')
 	}
 </script>

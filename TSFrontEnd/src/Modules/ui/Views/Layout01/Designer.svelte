@@ -11,8 +11,7 @@
 	export let context	: Layout01Context; 
 	
 	function changePage( event ){
-		page.set(event.detail); 
-		console.log('changePage ' + page);
+		page.set(event.detail);  
 	}
 
  </script>

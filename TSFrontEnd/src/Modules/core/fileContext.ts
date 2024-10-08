@@ -1,29 +1,40 @@
 import { Mutex } from "async-mutex";
 import { FileHandler } from "./fileHandler";
-import { JSONHandler } from 'grobax-json-handler';
-import { TTRPGSystemJSONFormatting, TTRPG_SCHEMES } from "../GraphDesigner/index";
+import { JSONHandler } from 'grobax-json-handler'; 
 import { SystemPreview } from "./model/systemPreview";
-import type { Message, messageList } from "../ObsidianUI/UIInterfaces/Designer01/BaseComponents/Messages/message";
-import PluginHandler from "../ObsidianUI/app";
 import { folder } from "jszip";
 import { UILayoutModel } from "./model/UILayoutModel";
+import PluginHandler from "../ui-obsidian/app";
+import { TTRPGSystemJSONFormatting } from "../graphDesigner";
 
 type command = { command:'file'|'folder' , path:string, content:string }
+type messageList = Record<string,any>;
+
+
 export class FileContext {
 
 	private static mutex:Mutex = new Mutex();
 	private path : string ; 
-
+	private pluginHandler;
 	// singleton implementation
 	private static instance:FileContext;
-	private constructor(){
+	private constructor(pluginHandler? : PluginHandler){
+		
+		if (!this.pluginHandler && !pluginHandler){
+			console.error('First get instance of FileContext, must include a plugin handler')
+		} 
+		this.pluginHandler = pluginHandler;
+	
 		this.path = PluginHandler.PLUGIN_ROOT + '/' +
 					PluginHandler.SYSTEMS_FOLDER_NAME; + '/' ;
 	}
-	public static getInstance(){ 
+	public static getInstance( pluginHandler? : PluginHandler ){ 
+		
 		if(!FileContext.instance){
-			FileContext.instance = new FileContext();
-		} 
+			FileContext.instance = new FileContext(pluginHandler);
+		}
+		
+
 		return FileContext.instance; 
 	}
 

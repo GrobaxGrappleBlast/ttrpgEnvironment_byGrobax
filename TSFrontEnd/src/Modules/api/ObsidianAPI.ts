@@ -1,17 +1,27 @@
 
 import { FileContext } from "../core/fileContext";
-import { SystemPreview } from "../core/model/systemPreview";
-import { TTRPGSystemJSONFormatting } from "../graphDesigner/index";
+import { SystemPreview } from "../core/model/systemPreview"; 
+import PluginHandler from "../ui-obsidian/app";
 import { APIReturnModel, IAPI } from "./IAPI";
 
 
 export class ObsidianAPI implements IAPI{
 
-	public constructor(){}
+	pluginHandler : PluginHandler;
+	public constructor(pluginHandler : PluginHandler ){
+		this.pluginHandler = pluginHandler;
+	}
+
+	getSystemUIs(preview: SystemPreview) {
+		throw new Error("Method not implemented.");
+	}
+	getFactory(preview: SystemPreview) {
+		throw new Error("Method not implemented.");
+	}
 	public async getAllSystems() : Promise<APIReturnModel<SystemPreview[]>>{
 		let messages = []
 		try{
-			let fileContext = FileContext.getInstance();
+			let fileContext = FileContext.getInstance( this.pluginHandler );
 			await fileContext.loadAllAvailableFiles( messages ); 
 			let previews = fileContext.availableSystems ?? [];	
 			let response = {

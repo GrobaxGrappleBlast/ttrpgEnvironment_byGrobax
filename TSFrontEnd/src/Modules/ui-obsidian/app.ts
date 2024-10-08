@@ -1,5 +1,5 @@
 import { App, ItemView, Modal, Platform, Plugin, PluginSettingTab, Setting, TFile, WorkspaceLeaf, parseYaml } from 'obsidian';
-import  SvelteApp from './UIInterfaces/Designer02/app.svelte';
+import  SvelteApp from './app.svelte';
 import { BlockRenderer } from './BlockRenderer/BlockRenderer';
  
 
@@ -70,7 +70,7 @@ export default class PluginHandler extends Plugin {
 
 		this.registerMarkdownCodeBlockProcessor(PluginHandler.SYSTEM_LAYOUT_BLOCKNAME, (source, el, ctx) => {
 			const renderer = new BlockRenderer(source,el,ctx);
-			renderer.render(); 
+			//renderer.render(); 
 		});
 
 		this.registerEvent(

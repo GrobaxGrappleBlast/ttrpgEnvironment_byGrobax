@@ -1,8 +1,8 @@
 import { JsonArrayClassTyped, JsonBoolean, JsonClassTyped, JsonProperty, JsonString } from "grobax-json-handler";
 import PluginHandler from "../app"; 
 import { BASE_SCHEME } from "grobax-json-handler";
-import { SystemPreview } from "src/Modules/core/model/systemPreview";
-import { UILayoutModel } from "src/Modules/core/model/UILayoutModel";
+import { SystemPreview } from "../../../../src/Modules/core/model/systemPreview";
+import { UILayoutModel } from "../../../../src/Modules/core/model/UILayoutModel";
 
 export class BlockDataSchemes{ 
 	static BASE = BASE_SCHEME;

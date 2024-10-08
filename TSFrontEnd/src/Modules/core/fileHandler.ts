@@ -1,4 +1,4 @@
-import PluginHandler from "../ObsidianUI/app";
+import PluginHandler from "../ui-obsidian/app";
 
 export class FileHandler{
 
