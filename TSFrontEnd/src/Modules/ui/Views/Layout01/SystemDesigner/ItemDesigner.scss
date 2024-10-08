@@ -1,5 +1,5 @@
-@import '../app.scss' ;
-@import '../../SystemStandards.scss' ;
+//@import '../app.scss' ;
+//@import '../../SystemStandards.scss' ;
 
 .ItemDesigner_TwoColumnData{
 	display: grid;
@@ -8,7 +8,7 @@
 }
 
 .ItemDesignerInput{
-	@extend .GrobsInteractiveContainer;
+	//@extend .GrobsInteractiveContainer;
 	padding-left:10px;
 }
 
@@ -23,13 +23,13 @@
 	padding-top: 20px;
 
 	*[data-succes="true"]{
-		background-color: $color_success;
+		background-color: green ;
 	}
 	*[data-succes="false"]{
-		background-color: $color_error;
+		background-color: red ;
 	}
 	*[data-succes=NaN]{
-		background-color: $color_verbose;
+		background-color: blue;
 	}
 }
 

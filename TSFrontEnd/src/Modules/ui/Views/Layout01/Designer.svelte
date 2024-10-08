@@ -6,6 +6,7 @@
     import { writable } from 'svelte/store';
 	import Menu from './Views/Menu/Menu.svelte';
     import { Layout01Context } from './context';
+	import {slidefade} from '../../../../../src/Modules/ui/Components/Transitions/SlideFly.js';
 
 	let page = writable( 'system');
 	export let context	: Layout01Context; 
@@ -26,11 +27,11 @@
 	
 	<section class="MainAppContainerPages">
 		{#if 		$page == 'home'}
-			<div in:fly={{x:100}} out:fly={{x:-100}} >
+			<div in:slidefade={{x:100}} out:slidefade={{x:-100}} >
 				<!--HomePage /-->
 			</div>
 		{:else if	$page == 'system'}
-			<div in:fly={{x:100}} out:fly={{x:-100}} >
+			<div in:slidefade={{x:100}} out:slidefade={{x:-100}} >
 				<SystemPage
 					context = {context}
 				/>

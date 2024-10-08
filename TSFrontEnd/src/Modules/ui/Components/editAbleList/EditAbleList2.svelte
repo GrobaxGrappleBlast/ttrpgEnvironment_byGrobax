@@ -6,30 +6,34 @@
     import Image_edit from "../buttons/edit.svelte"; 
 	import Image_save from "../buttons/download.svelte"; 
     import { slide } from "svelte/transition";
-    import { createEventDispatcher, onMount } from "svelte";  
+    import { createEventDispatcher, onDestroy, onMount } from "svelte";  
 	
 	import { tooltip } from '../Messages/toolTip.js';
-    import { IViewElement } from "../../Views/Layout01/SystemDesigner/UIGraphItems";
+    import { IViewElementUpdateable } from "../../Views/Layout01/SystemDesigner/UIGraphItems";
+    
+    import { StringFunctions } from "../../../../../src/Modules/core/BaseFunctions/stringfunctions";
 
 
 	export let isEditableContainer:boolean = true;
-    export let collection: IViewElement[] = [];
-	export let onSelect		: ( d: IViewElement ) => boolean;
+    export let collection: IViewElementUpdateable[] = [];
+	export let onSelect		: ( d: IViewElementUpdateable ) => boolean;
 	export let onAdd		:(() => any) | null = null; 
 	export let onSpecialAdd	:(() => any) | null = null;  
-	export let onUpdateItem	:( (item:IViewElement[])=>any) | null;
-	export let onDeleteItem	:( (item:IViewElement)=>any) | null;
+	export let onUpdateItem	:( (item:IViewElementUpdateable[])=>any) | null;
+	export let onDeleteItem	:( (item:IViewElementUpdateable)=>any) | null;
 	export let disabled : boolean = false;
 	const dispatch = createEventDispatcher();
 
-	let selected : IViewElement | null = null; 
-	let editIsActive = false; 
-	
+	let selected : IViewElementUpdateable | null = null; 
+	let editIsActive = false;  
+
 	onMount(()=>{ 
-		Mount();
+	 
 	})
 	
-	function Mount(){}
+	onDestroy(()=>{
+		
+	})
  
 	export function deselect(){
 		if(!selected)
@@ -38,9 +42,8 @@
 		selected = null;
 		dispatch('onDeSelect')
 	}
-
 	export function select( key : string ){
-		debugger
+		
 		let item = collection.find( p => p.key == key );
 		if ( item?.key == selected?.key){
 			deselect();
@@ -52,8 +55,7 @@
 			_onSelect( item );
 		}
 	}
-	 
-	function _onSelect(item : IViewElement){ 
+	function _onSelect(item : IViewElementUpdateable){ 
 
 		// ensure that a Click on the same item is a deselect
 		if ( item.key == selected?.key ){
@@ -69,7 +71,6 @@
 		}
  
 	}
-
 	function _onAdd(){
 		if(!onAdd)
 			return;	
@@ -93,18 +94,15 @@
 		onUpdateItem( collection );  
 		editIsActive = !editIsActive; 
 	} 
-
-	function onEditCancelSingle( item : IViewElement ){ 
+	function onEditCancelSingle( item : IViewElementUpdateable ){ 
 		item.nameEdit = item.name; 
 	}
-	function onDelete( item : IViewElement ){ 
+	function onDelete( item : IViewElementUpdateable ){ 
 		if ( !onDeleteItem) {
 			return;
 		}
 		onDeleteItem( item );
 	} 
-	
-	
 	function onEditFocus( row : any ){
 		const element = row.target;
 		const range = document.createRange();
@@ -260,8 +258,7 @@
 							</imageContainer>   
 						{:else}
 							<imageContainer > </imageContainer> 
-						{/if}
-						
+						{/if} 
 					</div> 
 				</div>
 			{/each}

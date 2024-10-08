@@ -1,11 +1,13 @@
 <script lang="ts">
-
-	import CustomSelect from "../../BaseComponents/CustomSelect/CustomSelect.svelte";
+   
 	import './OriginRow.scss';
-	import { TTRPGSystemJSONFormatting, type  GrobJNodeType } from "../../../../../Designer/index";
-	import Trash from '../../BaseComponents/buttons/trash.svelte';
     import { createEventDispatcher, onMount } from "svelte";  
     import { slide } from "svelte/transition";
+    import CustomSelect						from '../../../../../../../src/Modules/ui/Components/CustomSelect/CustomSelect.svelte';
+    import Trash							from '../../../../../../../src/Modules/ui/Components/buttons/trash.svelte';
+	import { GrobJNodeType, TTRPGSystemJSONFormatting }	from '../../../../../../../src/Modules/graphDesigner';	
+
+
 	
 	export let system:TTRPGSystemJSONFormatting; 
 	type originRowData = {key: string, segments:(string|null)[] , active :boolean , testValue :number, inCalc:boolean, target: GrobJNodeType  | null , isSelectAllTarget:boolean };

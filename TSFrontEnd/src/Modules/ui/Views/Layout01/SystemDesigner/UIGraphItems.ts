@@ -10,6 +10,14 @@ export interface IViewElement{
 	nameEdit:string; 
 	valid	:boolean;
 }
+
+export interface IViewElementUpdateable  extends UpdateListener {
+	key		:string;
+	name	:string; 
+	nameEdit:string; 
+	valid	:boolean;
+}
+
 class UpdateListener{
 
 	protected guid = StringFunctions.uuidv4();
@@ -114,7 +122,7 @@ export class UISystem extends UpdateListener{
 
 
 }
-export class UIGroup extends UpdateListener implements IViewElement{
+export class UIGroup extends UpdateListener implements IViewElementUpdateable{
 
 
 	sys			: UISystem;
@@ -190,7 +198,7 @@ export class UIGroup extends UpdateListener implements IViewElement{
 		this.collections = [];
 	}
 }
-export class UICollection extends UpdateListener implements IViewElement{
+export class UICollection extends UpdateListener implements IViewElementUpdateable{
 
 	sys	 	: UISystem;
 	link	: GrobCollection<GrobNodeType>;
@@ -270,7 +278,7 @@ export class UICollection extends UpdateListener implements IViewElement{
 
 
 }
-export class UINode extends UpdateListener implements IViewElement{
+export class UINode extends UpdateListener implements IViewElementUpdateable{
 
 	sys		: UISystem;
 	link	: GrobNodeType;
@@ -292,7 +300,7 @@ export class UINode extends UpdateListener implements IViewElement{
 		this.link.addUpdateListener( this.key , this.update.bind(this) );
 	}
 
-	update(){
+	update(){ 
 		let validOrig = this.valid;
 
 		this.key		= this.link.getKey();

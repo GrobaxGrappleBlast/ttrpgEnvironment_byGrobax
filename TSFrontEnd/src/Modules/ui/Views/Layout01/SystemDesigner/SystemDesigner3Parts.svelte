@@ -3,6 +3,10 @@
     import { UICollection, UIGroup, UINode, UISystem } from "./UIGraphItems";
     import EditAbleList2 from "../../../../../../src/Modules/ui/Components/editAbleList/EditAbleList2.svelte";
     import ToogleSection from "../../../../../../src/Modules/ui/Components/toogleSection/toogleSection.svelte";
+    import { slide } from "svelte/transition";
+    import FixedItemDesigner from "./FixedItemDesigner.svelte";
+	import StaticMessageHandler from '../../../../../../src/Modules/ui/Components/Messages/StaticMessageHandler.svelte'
+    import { writable } from "svelte/store";
 
     
     export let system : TTRPGSystemJSONFormatting;
@@ -54,8 +58,14 @@
 		}
 	}
 
+	let messageHandler : StaticMessageHandler;
+
 </script>
 <div>
+	<StaticMessageHandler 
+		bind:this={messageHandler}
+	/>
+	
 	<ToogleSection 
 		title="fixed"
 	>
@@ -72,7 +82,7 @@
 				onAdd       	={ ( ) => { return true }}
 				onUpdateItem	={ ( ) => { return true }}
 				onDeleteItem	={ (e) => { return true }} 
-				on:onDeSelect	={ ( ) => { }}
+				on:onDeSelect	={ ( ) => { _colSelect('fixed',null); }}
 			/>
 			<EditAbleList2 
 				collection={ fixedCol?.nodes ?? [] }
@@ -80,9 +90,21 @@
 				onAdd       	={ ( ) => { return true }}
 				onUpdateItem	={ ( ) => { return true }}
 				onDeleteItem	={ (e) => { return true }} 
-				on:onDeSelect	={ ( ) => { _colSelect('fixed',null);}}
+				on:onDeSelect	={ ( ) => { _nodSelect('fixed',null);}}
 			/>
 		</div>
+		{#if fixedNod}
+			<div transition:slide|local >
+				<FixedItemDesigner 
+					node={writable(fixedNod.link)}
+					system = {writable(system)}
+					on:save={(e)=>{ 
+						const data = e.detail;  
+						system.renameItem('fixed',fixedCol?.name?? '',data.oldName, data.newName);
+					}}
+				/>
+			</div>
+		{/if}
 	</ToogleSection>
 
 	<ToogleSection 

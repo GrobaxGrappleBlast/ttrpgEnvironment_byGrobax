@@ -31,7 +31,7 @@
 				isValid = false;
 				out('name','The name cannot be empty', 'error')
 			}
-			else if (name.contains('.')){
+			else if (name.includes('.')){
 				isValid = false;
 				out('name','The name cannot contain "."', 'error')
 			}
@@ -39,7 +39,7 @@
 				isValid = false;
 				out('name','The name is already in use, in the same collection', 'error')
 			}else{
-				messageHandler?.removeError('name');
+				//messageHandler?.removeError('name');
 			}
 			return isValid;
 		} 
@@ -68,7 +68,7 @@
 		}
 		public checkIsValid( output = true ){  
 			 
-			this.messageHandler?.removeAllMessages(); 
+			//this.messageHandler?.removeAllMessages(); 
 			let valid = this._checkIsValid( output ); 
 			this.isValid.set( valid ); 
 			return valid;
@@ -104,10 +104,10 @@
  
 			// User information
 			if (success){
-				this.messageHandler?.addMessageManual('save','Saved Node', 'good');
+				//this.messageHandler?.addMessageManual('save','Saved Node', 'good');
 				return true;
 			} else {
-				this.messageHandler?.addMessageManual('save','Exception while trying to save Node in UI', 'error');
+				//this.messageHandler?.addMessageManual('save','Exception while trying to save Node in UI', 'error');
 				return false;
 			} 
 			
@@ -124,10 +124,11 @@
 <script lang="ts">
 	import { get, writable, type Writable } from 'svelte/store'; 
 	
-    import { GrobJFixedNode, TTRPGSystemJSONFormatting, type GrobJNodeType } from "../../../../../../src/Modules/Designer/index";
-    import StaticMessageHandler from "../BaseComponents/Messages/StaticMessageHandler.svelte";
+
 	import './ItemDesigner.scss'
     import { createEventDispatcher, onMount } from "svelte";
+    import { GrobJFixedNode, GrobJNodeType, TTRPGSystemJSONFormatting } from '../../../../../../src/Modules/graphDesigner';
+	import StaticMessageHandler from '../../../../../../src/Modules/ui/Components/Messages/StaticMessageHandler.svelte'
 
 	export let node : Writable<GrobJFixedNode|null>;
 	export let system : Writable<TTRPGSystemJSONFormatting|null>; 
@@ -135,12 +136,11 @@
 	export let goodTitle = "No Error";
 	export let badTitle = "Error"
 
-	let messageHandler: StaticMessageHandler;
 	const dispatch = createEventDispatcher(); 
 
 	let controller : DerivedItemController = new DerivedItemController();
 	$: controller.setControllerDeps($node,$system)
-	$: controller.messageHandler = messageHandler; 
+	//$: controller.messageHandler = messageHandler; 
 	let flash = false;	
 	 
 	let controllerName			: Writable<string>;
@@ -152,26 +152,26 @@
 
 
 	function onNameInput ( event : any  ){  
-		messageHandler?.removeError('save');
+		//messageHandler?.removeError('save');
 		let name = event.target.value;
 		controller.name.set( name);
 		controller.checkIsValid( );  
 	}
 	function onStandardValueInput ( event : any  ){  
-		messageHandler?.removeError('save');
+		//messageHandler?.removeError('save');
 		let name = event.target.value;
 		controller.name.set( name);
 		controller.checkIsValid( );  
 	}
 	 
 	function onDeleteClicked(e){
-		messageHandler?.removeError('save');
+		//messageHandler?.removeError('save');
 		controller.onKeyDelete(e); 
 		controller.checkIsValid( );  
 	} 
 	function onSave(){ 
- 
-		messageHandler?.removeError('save');
+  
+		//messageHandler?.removeError('save');
 		if ( controller.saveNodeChanges() ){
 			const oldName = origName;
 			const newName = get(controller.name); 
@@ -200,11 +200,6 @@
 
 </script>
 <div class="GrobsInteractiveColoredBorder" data-state={ flash ? 'flash' : $controllerIsValid ? 'good' : 'error' } data-state-text={'hej hans'}>
-	<div>
-		<StaticMessageHandler 
-			bind:this={ messageHandler }
-		/>
-	</div>
 	<div>
 		<p>
 			Editing node.

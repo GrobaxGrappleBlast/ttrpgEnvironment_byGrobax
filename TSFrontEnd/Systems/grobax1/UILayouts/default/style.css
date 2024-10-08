@@ -516,7 +516,7 @@ body, .obsidianBody {
   padding-left: 10px;
   align-items: center;
   position: relative;
-  margin: 5px;
+  
   min-height: 30px;
 }
 .AddItem[data-editpreview=true] {
