@@ -40,8 +40,15 @@
 	}
 
 	export function select( key : string ){
+		debugger
 		let item = collection.find( p => p.key == key );
-		if ( item ){
+		if ( item?.key == selected?.key){
+			deselect();
+			return;
+		}
+		
+		
+		else if ( item ){
 			_onSelect( item );
 		}
 	}
@@ -50,7 +57,7 @@
 
 		// ensure that a Click on the same item is a deselect
 		if ( item.key == selected?.key ){
-			this.deselect();
+			deselect();
 			return;
 		}
 		

@@ -1,0 +1,66 @@
+
+.toogleSectionHeader{
+	cursor: pointer;
+	height:$lineheight * 2;
+	line-height:$lineheight;
+	//padding-left:$standardPadding;
+	//padding-right:$standardPadding;
+	display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+
+	display: grid;
+	grid-template-columns: 1fr 20px;
+	grid-template-rows: 1fr 1fr;
+	grid-template-areas:
+		"name icon"
+		"line line"
+	;
+}
+
+.toogleSectionHeader{
+	.toogleSectionIcon {
+		width: 10px;
+		height:10px; 
+		border-left:4px solid black;
+		border-bottom:4px solid black;
+		transition:1s cubic-bezier(0.65, -0.02, 0.38, 0.99);
+	} 
+
+	&[data-toogled="true"]{
+		.toogleSectionIcon {
+			transform: translateY(3px) scaleX(-1) rotateZ(135deg) ;// rotateZ(45deg) scaleY(-1);//rotateZ(135deg);
+
+		}
+	}	
+	&[data-toogled="false"]{
+		.toogleSectionIcon {
+			transform: translateY(-3px) scaleX(-1) rotateZ(-45deg) ;//scaleY(1);// ; 
+		}
+	}	
+}
+
+.toogleSectinLine{
+	background-color: $COLOR2 ;
+	height:5px;
+	transition:ease 0.4s ;
+}
+// color definitions 
+.toogleSectionHeader{
+	&[data-toogled="true"]{
+		
+		.toogleSectinLine{
+			width: 100%;
+		}
+	}
+	&[data-toogled="false"]{ 
+		.toogleSectinLine{
+			width: 0;
+		}
+
+		&:hover{ 
+		}
+	}
+}
+ 

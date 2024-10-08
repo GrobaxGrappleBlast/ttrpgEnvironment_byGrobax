@@ -96,7 +96,7 @@
 		<br>
 		<!-- System Selector -->
 		<div class="PageSystemList" >	
-			<EditAbleList 
+			<EditAbleList
 				isEditableContainer={false}
 				collection= { availSystems?.map( p => {return { key : p.code , value : p.name}}) ?? [] }
 				onSelect={ (e) => {onSelectSystem(e) ; return true; } } 
