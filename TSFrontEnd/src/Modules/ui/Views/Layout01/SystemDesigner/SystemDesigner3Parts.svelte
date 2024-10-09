@@ -8,10 +8,12 @@
 	import StaticMessageHandler from '../../../../../../src/Modules/ui/Components/Messages/StaticMessageHandler.svelte'
     import { writable } from "svelte/store";
     import DerivedItemDesigner from "./DerivedItemDesigner.svelte";
+    import { StringFunctions } from "../../../../../../src/Modules/core/BaseFunctions/stringfunctions";
 
     
     export let system : TTRPGSystemJSONFormatting;
     let uiSystem = new UISystem(system);
+	let guidKey = 'designer'+StringFunctions.uuidv4();
 
 	// Generic
 	let grpSel : UIGroup		| null = null;
@@ -52,10 +54,15 @@
 	}
 	function _nodSelect( grp:'derived'|'fixed', nod : UINode |null|any){		nodSel = nod;
 		if (grp == 'derived') {
+
+			derivedNod?.removeEventListener(guidKey)
 			derivedNod = nod;
+			derivedNod?.addEventListener(guidKey,'update',() => {derivedNod=derivedNod})
 		}
 		else {
+			fixedNod?.removeEventListener(guidKey)
 			fixedNod = nod;
+			fixedNod?.addEventListener(guidKey,'update',() => {fixedNod=fixedNod})
 		}
 	}
 

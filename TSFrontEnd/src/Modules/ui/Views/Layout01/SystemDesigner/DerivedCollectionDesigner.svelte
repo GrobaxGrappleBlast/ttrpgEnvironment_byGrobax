@@ -5,7 +5,7 @@
 <script lang="ts"> 
     import { TTRPGSystemJSONFormatting } from "../../../../Designer/index";
     import StaticMessageHandler from "../BaseComponents/Messages/StaticMessageHandler.svelte";
-	import './ItemDesigner.scss' 
+	
     import { writable, type Writable, get } from 'svelte/store'; 
 	import OriginRow from "./views/OriginRow.svelte";
     import { slide } from 'svelte/transition';

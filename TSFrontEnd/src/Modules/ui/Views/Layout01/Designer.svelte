@@ -45,4 +45,8 @@
 		{/if}
 	</section>
 </div>
- 
+<style>
+	.MainAppContainer{
+		container-type: inline-size;
+	}
+</style>

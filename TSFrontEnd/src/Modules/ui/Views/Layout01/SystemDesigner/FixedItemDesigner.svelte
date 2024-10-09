@@ -1,8 +1,6 @@
 <script lang="ts">
 	import { get, writable, type Writable } from 'svelte/store'; 
-	
-
-	import './ItemDesigner.scss'
+	 
     import { createEventDispatcher, onMount } from "svelte";
     import { GrobJFixedNode, GrobJNodeType, TTRPGSystemJSONFormatting } from '../../../../../../src/Modules/graphDesigner';
 	import StaticMessageHandler from '../../../../../../src/Modules/ui/Components/Messages/StaticMessageHandler.svelte'
@@ -57,14 +55,14 @@
 	})
 
 </script>
-<div class="GrobsInteractiveColoredBorder" data-state={ flash ? 'flash' : $controllerIsValid ? 'good' : 'error' } data-state-text={'hej hans'}>
+<div class="itemDesigner">
 	<div>
 		<p>
 			Editing node.
 			Here you can edit settings for this specific node. this edit is unique to this specific item.
 		</p>
 	</div>
-	<div class="ItemDesigner_TwoColumnData" >
+	<div class="ItemDesignerDataColumns" >
 
 		<div>Node Name</div>
 		<input type="text" class="ItemDesignerInput" on:input={ onNameInput }   contenteditable bind:value={ $controllerName }/>

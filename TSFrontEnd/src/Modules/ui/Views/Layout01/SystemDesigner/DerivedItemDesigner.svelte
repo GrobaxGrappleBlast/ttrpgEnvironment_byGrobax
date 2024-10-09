@@ -1,6 +1,5 @@
 
-<script lang="ts">  
-	import './ItemDesigner.scss' 
+<script lang="ts">   
     import { writable, type Writable, get } from 'svelte/store';  
     import { slide } from 'svelte/transition';
     import { flip } from 'svelte/animate';  
@@ -43,14 +42,17 @@
 		controller.checkIsValid(false);  
 	}
 	function onCalcInput ( event : any  ){
- 
 		let calc = event.target.value; 
 		controller.calc.set( calc);
 		messageHandler?.removeError('save');
 		controller.recalculateCalcAndOrigins();  
 		controller.checkIsValid(false);   
- 
 	}
+	function recalc(){
+		controller.recalculateCalcAndOrigins();  
+		controller.checkIsValid(false);   
+	}
+
 	function onDeleteClicked(e){
 		messageHandler?.removeError('save');
 		controller.onKeyDelete(e); 
@@ -87,12 +89,7 @@
 
 </script>
 
-<div 
-	class="GrobsInteractiveColoredBorder" 
-	data-state={ flash ? 'flash' : $controllerIsValid ? 'good' : 'error' } 
-	data-state-text={ $controllerIsValid ? goodTitle: badTitle}
-	
->
+<div >
 	<div>
 		<StaticMessageHandler 
 			bind:this={ messageHandler }
@@ -104,7 +101,7 @@
 			Here you can edit settings for this specific node. this edit is unique to this specific item.
 		</p>
 	</div>
-	<div class="ItemDesigner_TwoColumnData" >
+	<div class="ItemDesignerDataColumns3" >
 
 		<div>Node Name</div>
 		<input type="text" class="ItemDesignerInput" on:input={ ( e ) => { onNameInput(e) } } contenteditable bind:value={ $controllerName }/>
@@ -112,34 +109,34 @@
 		<div>Node Location</div>
 		<div class="ItemDesignerInput" >{ (node?.parent?.parent?.name ?? 'unknown collection') + '.' +( node?.parent?.name ?? 'unknown collection') + '.' + $controllerName }</div>
  
+		<div>Calc</div>
+		<textarea class="calcInput" style="resize: none;" value={ $controllerCalc } 
+			on:input={ onCalcInput }
+			placeholder="insert calcStatement here"
+		/>
+
+		<div class="derivedCalcStatementResult" data-succes={ $controllerResultSucces } >{ $controllerResultValue }</div>
 	</div>
 	<div>
 		{#if node && system }
-			<div class="OriginEditor">
-				<div class="derivedCalcStatementRow" data-succes={ $controllerResultSucces } >
-					<div>Calc</div>
-					<input type="text" value={ $controllerCalc } 
-						on:input={ onCalcInput }
-						placeholder="insert calcStatement here"
-					/>
-					<div class="derivedCalcStatementResult" data-succes={ $controllerResultSucces } >{ $controllerResultValue }</div>
-				</div>
+			<div>
 				<div class="derivedOriginRowsContainer" >
 					{#if $controllerMappedOrigin }
-						<div transition:slide={{delay:500}}>
-							{#each $controllerMappedOrigin as origin (origin.key) }
-								<div animate:flip transition:slide|local class="derivedOriginRowContainer"> 
-									<OriginRow
-										bind:rowData 	 = { origin }
-										availableSymbols = { availableSymbols }
-										system 			 = { system }
-										on:onDelete 		= { onDeleteClicked }
-										on:onSymbolSelected = { onKeyExchange }
-										on:foundTargetNode = { (e) =>{ controller.checkIsValid(false) }}
-									/>
-								</div>
-							{/each}
-						</div>
+						
+						{#each $controllerMappedOrigin as origin (origin.key) }
+							<div animate:flip transition:slide|local class="derivedOriginRowContainer"> 
+								<OriginRow
+									bind:rowData 	 = { origin }
+									availableSymbols = { availableSymbols }
+									system 			 = { system }
+									on:change	= {recalc}
+									on:onDelete 		= { onDeleteClicked }
+									on:onSymbolSelected = { onKeyExchange }
+									on:foundTargetNode = { (e) =>{ controller.checkIsValid(false) }}
+								/>
+							</div>
+						{/each}
+					
 					{/if}
 				</div> 
 			</div>

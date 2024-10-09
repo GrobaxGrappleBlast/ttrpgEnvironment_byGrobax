@@ -1,87 +1,177 @@
 
 
-.ItemDesigner_TwoColumnData{
+
+//$layout_size01_minWidth : 0;
+//$layout_size01_maxWidth : 250;
+//$layout_size02_minWidth : #{$layout_size01_maxWidth +1};
+//$layout_size02_maxWidth : 500;
+//$layout_size03_minWidth : #{$layout_size02_maxWidth +1};
+//$layout_size03_maxWidth : 900;
+.calcInput {
+	font-family:sans-serif;
+}
+.derivedOriginRowsContainer{ 
+	
 	display: grid;
-	grid-template-columns: 1fr 1fr;
-	//gap:10px;
-}
-
-.ItemDesignerInput{
-	//@extend .GrobsInteractiveContainer;
-	padding-left:10px;
-}
-
-.ItemDesignerButtonRow{
-	height:30px;
-	display:flex;
-	flex-direction: row;
-
-}
-
-.OriginEditor{
-	padding-top: 20px;
-
-	*[data-succes="true"]{
-		background-color: green ;
+	grid-template-columns: 1fr 1fr 1fr 1fr 1fr 1fr;
+	.derivedOriginRowContainer,
+	.derivedOriginRow{
+		display:grid;
+		grid-template-columns: subgrid;
+		grid-column: span 6;
 	}
-	*[data-succes="false"]{
-		background-color: red ;
+	
+}
+.derivedOriginRow{
+	&[data-styleActive="true"]{
+		&>*:nth-child(1){ grid-area : sym ; }
+		&>*:nth-child(2){ grid-area : num ; }
+		&>*:nth-child(3){ grid-area : sel1; place-self: center; cursor: pointer;}
+		&>*:nth-child(4){ grid-area : sel2; place-self: center; cursor: pointer;}
+		&>*:nth-child(5){ grid-area : sel3; place-self: center; cursor: pointer;}
+		&>*:nth-child(6){ grid-area : logo; place-self: center; cursor: pointer;} 
 	}
-	*[data-succes=NaN]{
-		background-color: blue;
+	&[data-styleActive="false"]{
+		&>*:nth-child(1){ grid-area : sym ; cursor: pointer;}
+		&>*:nth-child(2){ grid-area : add ; cursor: pointer;}
+		&>*:nth-child(3){ grid-area : add ; cursor: pointer;} 
 	}
 }
 
-.derivedCalcStatementRow{
-	display:grid;
-	grid-template-columns: auto 1fr auto;
-	gap:10px;
-	padding-left:10px;
-	padding-right:10px;
-	border-radius: 5px; 
 
-	& > input {
-		border-radius: 0;
+@container (max-width: #{$layout_size01_maxWidth}px ) { 
+	.ItemDesignerDataColumns{
+		display: grid;
+		grid-template-columns: 1fr 1fr; 
 	}
-}
-
-.derivedCalcStatementResult{
-
-}
-
-
-.derivedOriginRowsContainer{
-	padding-top:5px;
-}
-
-.derivedOriginRowContainer{
-	height:40px;
-}
-
-.derivedCollectionCalcStatementMatrix{
-	display:grid;
-	grid-template-columns: auto 1fr auto; 
-	& > div { 
-
-		display:flex;
-		justify-content: center;
-    	align-items: center;
-		
-		// top left top right borders 
-		&:nth-child(1){
-			border-radius: 5px 0 0 0 ;
+	.ItemDesignerDataColumns3{
+		display: grid;
+		grid-template-rows: 1fr 1fr 1fr; 
+		color:$COLOR4;
+		min-width: 200px ;
+		&>*:nth-child(odd){
+			background-color: $COLOR1; 
+			padding: 5px;
+			border-radius: 5px 5px 0 0 ;
 		}
-		&:nth-child(3){
-			border-radius: 0 5px 0 0 ;
-		}
+		&>*:nth-child(even){
+			background-color: $COLOR1;
+			padding: 5px;
+			margin-bottom: 5px;
 
+			&:is(input){
+				background-color: white;
+			}
+		} 
+		.calcInput{
+			color:$COLOR1;
+			background-color: white;
+		}  
+	}
+	.derivedOriginRowsContainer{  
+		min-width: 200px ;
+		.derivedOriginRow{
+			
+			grid-template-columns: 1fr 150px 1fr !important;
+			grid-template-rows: 1fr auto auto auto ;
+			background-color: $COLOR1;
+			color:$COLOR4;
+			row-gap: 5px;
+			padding:5px;
 
-		// bottom left and bottom right 
-		&:last-child{
-			border-radius: 0 0 5px 0 ;
+			&[data-styleActive="true"]{
+				grid-template-areas:
+					"sym	num		logo" 
+					"sel1	sel1	sel1"
+					"sel2	sel2	sel2"
+					"sel3	sel3	sel3"
+				;
+			}
+			&[data-styleActive="false"]{
+				grid-template-areas: 
+				"sym	sym"
+				"add	add"
+				"add	add" 
+				"logo	logo";
+			} 
+		} 
+	}
+}
+
+@container (min-width: #{$layout_size02_minWidth}px ) and (max-width: #{$layout_size03_maxWidth}px )  { 
+	.ItemDesignerDataColumns{
+		display: grid;
+		grid-template-columns: 1fr 1fr; 
+	}
+	.ItemDesignerDataColumns3{
+		display: grid;
+		grid-template-columns: 1fr 1fr auto; 
+		row-gap: 10px;
+		column-gap: 10px;
+
+		.ItemDesignerInput{
+			grid-column: span 2;
+		}		
+	}
+
+	.derivedOriginRowsContainer{  
+		margin-top: 10px;
+		padding:5px;
+		border-radius: 5px;
+		background-color: $COLOR1;
+		color:$COLOR4;
+		grid-template-columns:30px calc(25% - 30px) 25% 25% calc(25% - 40px) 40px;  
+
+		.derivedOriginRow{
+			grid-template-rows: auto auto 20px;
+			row-gap: 5px;
+			&[data-styleActive="true"]{
+				grid-template-areas: 
+					"sym	num		num		num		num 	logo"
+					"sel1	sel1	sel2	sel2	sel3 	sel3"
+					"n		n		n		n		n		n	";
+			}
+			&[data-styleActive="false"]{
+				grid-template-areas: "sym add add";
+			}
 		}
-		&:nth-last-child(3){
-			border-radius: 0 0 0 5px ;
+	}
+}
+
+@container (min-width: #{$layout_size03_minWidth}px ) { 
+	.ItemDesignerDataColumns{
+		display: grid;
+		grid-template-columns: 1fr 1fr; 
+	}
+	.ItemDesignerDataColumns3{
+		display: grid;
+		grid-template-columns: 1fr 1fr auto; 
+		row-gap: 10px;
+		column-gap: 10px;
+
+		.ItemDesignerInput{
+			grid-column: span 2;
+		}		
+	}
+
+	.derivedOriginRowsContainer{  
+		margin-top: 10px;
+		padding:5px;
+		border-radius: 5px;
+		background-color: $COLOR1;
+		color:$COLOR4;
+		grid-template-columns:30px calc(25% - 30px) 25% 25% calc(25% - 40px) 40px;  
+
+		.derivedOriginRow{ 
+			row-gap: 5px;
+			&[data-styleActive="true"]{
+				grid-template-areas: 
+					"sym	num		sel1	sel2	sel3		logo"
+				;
+			}
+			&[data-styleActive="false"]{
+				grid-template-areas: "sym add add add add add";
+			}
 		}
 	}
 }
