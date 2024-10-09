@@ -1,6 +1,6 @@
 <script lang="ts">
     import { TTRPGSystemJSONFormatting } from "../../../../../../src/Modules/graphDesigner";
-    import { UICollection, UIGroup, UINode, UISystem } from "./UIGraphItems";
+    import { UICollection, UIGroup, UINode, UISystem } from "../../../../graphDesigner/UIGraphItems";
     import EditAbleList2 from "../../../../../../src/Modules/ui/Components/editAbleList/EditAbleList2.svelte";
     import ToogleSection from "../../../../../../src/Modules/ui/Components/toogleSection/toogleSection.svelte";
     import { slide } from "svelte/transition";
@@ -96,8 +96,8 @@
 		{#if fixedNod}
 			<div transition:slide|local >
 				<FixedItemDesigner 
-					node={writable(fixedNod.link)}
-					system = {writable(system)}
+					node	= {fixedNod.link}
+					system	= {system}
 					on:save={(e)=>{ 
 						const data = e.detail;  
 						system.renameItem('fixed',fixedCol?.name?? '',data.oldName, data.newName);

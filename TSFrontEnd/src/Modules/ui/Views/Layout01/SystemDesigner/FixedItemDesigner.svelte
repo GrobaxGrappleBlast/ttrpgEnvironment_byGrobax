@@ -87,29 +87,18 @@
 			if(!this.node || !this.system){ 
 				return false;
 			} 
-			try{
-
-				// save Name;
-				this.node.setName(get(this.name))
-				
-				// save Temp Value;
-				this.node.setValue(get(this.tempValue))
-  
-			} catch (e) {
-				success = false;
-				let err =  new Error('Exception while trying to save Node in UI' );
-				err.stack += e.stack;
-				throw err;
-			}
+			
  
 			// User information
-			if (success){
-				//this.messageHandler?.addMessageManual('save','Saved Node', 'good');
-				return true;
-			} else {
-				//this.messageHandler?.addMessageManual('save','Exception while trying to save Node in UI', 'error');
-				return false;
-			} 
+			//	if (success){
+			//		//this.messageHandler?.addMessageManual('save','Saved Node', 'good');
+			//		
+			//	} else {
+			//		//this.messageHandler?.addMessageManual('save','Exception while trying to save Node in UI', 'error');
+			//		return false;
+			//	} 
+
+			return true;
 			
 		} 
 		public onKeyExchange( e ){ 
@@ -130,8 +119,8 @@
     import { GrobJFixedNode, GrobJNodeType, TTRPGSystemJSONFormatting } from '../../../../../../src/Modules/graphDesigner';
 	import StaticMessageHandler from '../../../../../../src/Modules/ui/Components/Messages/StaticMessageHandler.svelte'
 
-	export let node : Writable<GrobJFixedNode|null>;
-	export let system : Writable<TTRPGSystemJSONFormatting|null>; 
+	export let node : GrobJFixedNode;
+	export let system : TTRPGSystemJSONFormatting; 
 	export let secondSlideInReady = false;
 	export let goodTitle = "No Error";
 	export let badTitle = "Error"
@@ -139,7 +128,7 @@
 	const dispatch = createEventDispatcher(); 
 
 	let controller : DerivedItemController = new DerivedItemController();
-	$: controller.setControllerDeps($node,$system)
+	$: controller.setControllerDeps(node,system)
 	//$: controller.messageHandler = messageHandler; 
 	let flash = false;	
 	 
@@ -148,7 +137,7 @@
 	let controllerIsValid		: Writable<boolean>;
 
 	// save original Name
-	let origName : string ; 
+	$: origName = node?.name ?? ''; 
 
 
 	function onNameInput ( event : any  ){  
@@ -169,28 +158,18 @@
 		controller.onKeyDelete(e); 
 		controller.checkIsValid( );  
 	} 
-	function onSave(){ 
-  
+	function onSave(){  
 		//messageHandler?.removeError('save');
 		if ( controller.saveNodeChanges() ){
 			const oldName = origName;
-			const newName = get(controller.name); 
+			const newName = get(controller.name);
 			dispatch('save', { oldName: oldName, newName : newName });
 			origName = newName;
 		}
 	}
-	node.subscribe(p => {   
-		if ( p?.getKey() == controller.node?.getKey() )
-			return;
- 
-		controller.setControllerDeps( p , $system );
-		
- 		// flash as update
-		flash = true;
-		setTimeout( () => { flash = false} , 200)  
-	})	
+	
 	onMount(() => { 
-		controller.setControllerDeps( $node , $system ); 
+		controller.setControllerDeps( node , system ); 
 		controller.checkIsValid();   
 		controllerName			= controller.name;
 		origName				= $controllerName;
@@ -212,7 +191,7 @@
 		<input type="text" class="ItemDesignerInput" on:input={ onNameInput }   contenteditable bind:value={ $controllerName }/>
 
 		<div>Node Location</div>
-		<div class="ItemDesignerInput" >{ ($node?.parent?.parent?.name ?? 'unknown collection') + '.' +( $node?.parent?.name ?? 'unknown collection') + '.' + $node?.name}</div>
+		<div class="ItemDesignerInput" >{ (node?.parent?.parent?.name ?? 'unknown collection') + '.' +( node?.parent?.name ?? 'unknown collection') + '.' + node?.name}</div>
 
 		<div>Standard Value</div>
 		<input type="number" class="ItemDesignerInput" on:input={ onStandardValueInput } contenteditable bind:value={ $controllerValue } />

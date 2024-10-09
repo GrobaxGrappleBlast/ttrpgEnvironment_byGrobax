@@ -9,9 +9,11 @@
     import { createEventDispatcher, onDestroy, onMount } from "svelte";  
 	
 	import { tooltip } from '../Messages/toolTip.js';
-    import { IViewElementUpdateable } from "../../Views/Layout01/SystemDesigner/UIGraphItems";
+    import { IViewElementUpdateable } from "../../../graphDesigner/UIGraphItems";
     
     import { StringFunctions } from "../../../../../src/Modules/core/BaseFunctions/stringfunctions";
+    import EditAbleList from "./EditAbleList.svelte";
+    import EditAbleListRow from "./EditAbleListRow.svelte";
 
 
 	export let isEditableContainer:boolean = true;
@@ -205,6 +207,20 @@
 				</div>
 			{/if}
 			{#each collection as element , i  ( element.key ) } 
+			{@const deleteIsAllowed=( !disabled && (onDeleteItem != null)  )  && !editIsActive  }
+				<EditAbleListRow
+					editIsActive		= {editIsActive}
+					bind:element		= {element}
+					selected			= {selected}
+					disabled			= {disabled}
+					deleteIsAllowed		= {deleteIsAllowed}
+					onDelete			= {onDelete}
+					onSelect			= {_onSelect}
+					onEditCancelSingle	= {onEditCancelSingle}
+					onEditFocus			= {onEditFocus}
+				/>
+
+				<!--
 				{@const deleteIsAllowed=( !disabled && (onDeleteItem != null)  )  && !editIsActive  }
 				<div
 					class="Editable_row" 
@@ -261,6 +277,7 @@
 						{/if} 
 					</div> 
 				</div>
+				-->
 			{/each}
 			
 	</div>

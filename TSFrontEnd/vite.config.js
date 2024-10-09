@@ -95,7 +95,7 @@ export default defineConfig(() => {
 			build: {
 				sourcemap:'inline', 
 				// Use root as the output dir
-				outDir:"build",
+				outDir:"./build",
 				emptyOutDir: true,
 				lib: { 
 					entry: path.resolve(__dirname, './src/Modules/ui-browser/App.ts') ,
@@ -103,6 +103,11 @@ export default defineConfig(() => {
 				},
 				
 				rollupOptions: {
+					output: {
+						// Overwrite default Vite output fileName
+						entryFileNames: 'main.js',
+						assetFileNames: 'styles.css',
+					},
 					external: [
 						'obsidian',
 						'electron',
