@@ -42,7 +42,6 @@
 	<div
 		class="Editable_row" 
 		data-selected={ !editIsActive && (element.key == selected?.key) }
-		transition:slide|local
 		data-can-hover={true}
 		data-isEdit={ editIsActive && (element.name != element.nameEdit) } 
 	>

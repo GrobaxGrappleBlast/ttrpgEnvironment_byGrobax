@@ -14,6 +14,7 @@
     import { StringFunctions } from "../../../../../src/Modules/core/BaseFunctions/stringfunctions";
     import EditAbleList from "./EditAbleList.svelte";
     import EditAbleListRow from "./EditAbleListRow.svelte";
+    import { flip } from "svelte/animate";
 
 
 	export let isEditableContainer:boolean = true;
@@ -125,14 +126,12 @@
 </script>
 
 
-<div class={ isEditableContainer ? "GrobsInteractiveContainer editableTable" : "editableTable"} transition:slide|local >
+<div class={ isEditableContainer ? "GrobsInteractiveContainer editableTable" : "editableTable"}>
 		{#if (!disabled) }
 			<div
 				class="Editable_rowHeader"  
-				transition:slide|local
 				data-can-hover={true} 
-			>
-
+			> 
 				<!-- edit -->
 				{#if onUpdateItem != null }
 					{#if !editIsActive }
@@ -208,21 +207,22 @@
 		{/if}
 		{#each collection as element , i  ( element.key ) } 
 		{@const deleteIsAllowed=( !disabled && (onDeleteItem != null)  )  && !editIsActive  }
-			<div 
-				transition:slide|local
-			>
-				<EditAbleListRow
-					editIsActive		= {editIsActive}
-					bind:element		= {element}
-					selected			= {selected}
-					disabled			= {disabled}
-					deleteIsAllowed		= {deleteIsAllowed}
-					onDelete			= {onDelete}
-					onSelect			= {_onSelect}
-					onEditCancelSingle	= {onEditCancelSingle}
-					onEditFocus			= {onEditFocus}
-				/>
-			</div>
+				<div
+					transition:slide|local
+					animate:flip
+				>
+					<EditAbleListRow
+						editIsActive		= {editIsActive}
+						bind:element		= {element}
+						selected			= {selected}
+						disabled			= {disabled}
+						deleteIsAllowed		= {deleteIsAllowed}
+						onDelete			= {onDelete}
+						onSelect			= {_onSelect}
+						onEditCancelSingle	= {onEditCancelSingle}
+						onEditFocus			= {onEditFocus}
+					/> 
+				</div>
 			<!--
 			{@const deleteIsAllowed=( !disabled && (onDeleteItem != null)  )  && !editIsActive  }
 			<div
