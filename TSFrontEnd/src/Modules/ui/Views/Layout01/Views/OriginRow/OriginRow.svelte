@@ -1,6 +1,5 @@
 <script lang="ts">
    
-	import './OriginRow.scss';
     import { createEventDispatcher, onMount } from "svelte";  
     import { slide } from "svelte/transition";
     import CustomSelect						from '../../../../../../../src/Modules/ui/Components/CustomSelect/CustomSelect.svelte';

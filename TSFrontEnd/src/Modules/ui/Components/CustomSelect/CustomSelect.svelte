@@ -2,7 +2,6 @@
 	import { fade } from 'svelte/transition';
 	import { flip } from 'svelte/animate';
     import { createEventDispatcher, onMount } from "svelte"; 
-	import './CustomSelect.scss'
     import { slide } from 'svelte/transition';
    
 

@@ -125,7 +125,7 @@
 </script>
 
 
-    <div class={ isEditableContainer ? "GrobsInteractiveContainer editableTable" : "editableTable"} >
+    <div class={ isEditableContainer ? "GrobsInteractiveContainer editableTable" : "editableTable"} transition:slide|local >
 			{#if (!disabled) }
 				<div
 					class="Editable_rowHeader"  
@@ -208,18 +208,21 @@
 			{/if}
 			{#each collection as element , i  ( element.key ) } 
 			{@const deleteIsAllowed=( !disabled && (onDeleteItem != null)  )  && !editIsActive  }
-				<EditAbleListRow
-					editIsActive		= {editIsActive}
-					bind:element		= {element}
-					selected			= {selected}
-					disabled			= {disabled}
-					deleteIsAllowed		= {deleteIsAllowed}
-					onDelete			= {onDelete}
-					onSelect			= {_onSelect}
-					onEditCancelSingle	= {onEditCancelSingle}
-					onEditFocus			= {onEditFocus}
-				/>
-
+				<div 
+					transition:slide|local
+				>
+					<EditAbleListRow
+						editIsActive		= {editIsActive}
+						bind:element		= {element}
+						selected			= {selected}
+						disabled			= {disabled}
+						deleteIsAllowed		= {deleteIsAllowed}
+						onDelete			= {onDelete}
+						onSelect			= {_onSelect}
+						onEditCancelSingle	= {onEditCancelSingle}
+						onEditFocus			= {onEditFocus}
+					/>
+				</div>
 				<!--
 				{@const deleteIsAllowed=( !disabled && (onDeleteItem != null)  )  && !editIsActive  }
 				<div

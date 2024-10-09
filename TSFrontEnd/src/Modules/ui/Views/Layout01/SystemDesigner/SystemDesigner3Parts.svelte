@@ -7,6 +7,7 @@
     import FixedItemDesigner from "./FixedItemDesigner.svelte";
 	import StaticMessageHandler from '../../../../../../src/Modules/ui/Components/Messages/StaticMessageHandler.svelte'
     import { writable } from "svelte/store";
+    import DerivedItemDesigner from "./DerivedItemDesigner.svelte";
 
     
     export let system : TTRPGSystemJSONFormatting;
@@ -75,7 +76,7 @@
 				Fixed properties are the properties that are defiend on each article's meta data.
 			</p>
 		</div>
-		<div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;" >
+		<div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;align-items: start;" >
 			<EditAbleList2 
 				collection={ fixedGrp?.collections ?? [] }
 				onSelect    	={ (e) => { _colSelect('fixed',e); return true }}
@@ -116,24 +117,37 @@
 				Derived properties are the data, that are derived from fixedData
 			</p>
 		</div>
-		<div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;" >
-			<EditAbleList2 
-				collection={ derivedGrp?.collections ?? [] }
-				onSelect    	={ (e) => { _colSelect('derived',e); return true }}
-				onAdd       	={ ( ) => { return true }}
-				onUpdateItem	={ ( ) => { return true }}
-				onDeleteItem	={ (e) => { return true }} 
-				on:onDeSelect	={ ( ) => { _colSelect('derived',null);}}
-			/>
-			<EditAbleList2 
-				collection={ derivedCol?.nodes ?? [] }
-				onSelect    	={ (e) => { _nodSelect('derived',e); return true }}
-				onAdd       	={ ( ) => { return true }}
-				onUpdateItem	={ ( ) => { return true }}
-				onDeleteItem	={ (e) => { return true }} 
-				on:onDeSelect	={ ( ) => { }}
-			/>
+		<div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;align-items: start;" >
+			 
+				<EditAbleList2 
+					collection={ derivedGrp?.collections ?? [] }
+					onSelect    	={ (e) => { _colSelect('derived',e); return true }}
+					onAdd       	={ ( ) => { return true }}
+					onUpdateItem	={ ( ) => { return true }}
+					onDeleteItem	={ (e) => { return true }} 
+					on:onDeSelect	={ ( ) => { _colSelect('derived',null);}}
+				/> 
+				<EditAbleList2 
+					collection={ derivedCol?.nodes ?? [] }
+					onSelect    	={ (e) => { _nodSelect('derived',e); return true }}
+					onAdd       	={ ( ) => { return true }}
+					onUpdateItem	={ ( ) => { return true }}
+					onDeleteItem	={ (e) => { return true }} 
+					on:onDeSelect	={ ( ) => { }}
+				/> 
 		</div>
+		{#if derivedNod}
+			<div transition:slide|local >
+				<DerivedItemDesigner 
+					node	= {derivedNod.link}
+					system	= {system}
+					on:save={(e)=>{ 
+						const data = e.detail;  
+						system.renameItem('derived',derivedCol?.name?? '',data.oldName, data.newName);
+					}}
+				/>
+			</div>
+		{/if}
 	</ToogleSection>
 
 	<!--
