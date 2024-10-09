@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { get, writable, type Writable } from 'svelte/store'; 
 	 
-    import { createEventDispatcher, onMount } from "svelte";
+    import { createEventDispatcher, onDestroy, onMount } from "svelte";
     import { GrobJFixedNode, GrobJNodeType, TTRPGSystemJSONFormatting } from '../../../../../../src/Modules/graphDesigner';
 	import StaticMessageHandler from '../../../../../../src/Modules/ui/Components/Messages/StaticMessageHandler.svelte'
     import { FixedItemController } from './ItemControllers';
@@ -12,13 +12,12 @@
 	export let goodTitle = "No Error";
 	export let badTitle = "Error"
 	export let messageHandler : StaticMessageHandler;
+	
 
 	const dispatch = createEventDispatcher(); 
-
 	let controller : FixedItemController = new FixedItemController();
-	$: controller.setControllerDeps(node,system, (msg) => {} )
-	//$: controller.messageHandler = messageHandler; 
-	let flash = false;	
+	
+	
 	 
 	let controllerName			: Writable<string>;
 	let controllerValue			: Writable<number>;
@@ -45,16 +44,21 @@
 		}
 	}
 	
-	onMount(() => { 
+	onMount(mount)
+	function mount(){
 		controller.setControllerDeps( node , system , (msg) => {} ); 
 		controller.checkIsValid();   
 		controllerName			= controller.name;
 		origName				= $controllerName;
 		controllerValue			= controller.standardValue;
 		controllerIsValid		= controller.isValid; 
-	})
+	}
 
-</script>
+	export function forceUpdate(){
+		mount();
+	}
+
+</script> 
 <div class="itemDesigner">
 	<div>
 		<p>
@@ -78,4 +82,4 @@
 		<button on:click={ onSave } disabled={!$controllerIsValid} >save changes</button> 
 		<button>delete</button> 
 	</div>
-</div>
+</div> 

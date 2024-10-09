@@ -20,7 +20,6 @@ class AItemController<T extends AGrobNode<T>> {
 	public standardValue: Writable<number>	= writable(1);  
 	
 	public setControllerDeps( node, system, out : (msg) => any ){
-		
 		this.node	= node;
 		this.system = system;
 
@@ -121,12 +120,14 @@ export class DerivedItemController	extends AItemController<GrobDerivedNode> {
 		this.calc			.set(this.node?.calc ?? '');
 		this.resultValue	.set(0);		
 		this.resultSuccess	.set(true);	
-
-		//for origins 
-		let m = this.node?.origins?.map( p => {return {key:p.symbol, segments:p.originKey.split('.'), active: get(this.calc).includes(p.symbol), testValue: p.standardValue , inCalc: get(this.calc).includes(p.symbol) , target: p.origin , isSelectAllTarget : true }}) ?? [];	
-		this.mappedOrigins	.set(m);		
-
+		this.updateMappedOrigins();	
 	} 
+
+	public updateMappedOrigins(){
+		let m = this.node?.origins?.map( p => {return {key:p.symbol, segments:p.originKey.split('.'), active: get(this.calc).includes(p.symbol), testValue: p.standardValue , inCalc: get(this.calc).includes(p.symbol) , target: p.origin , isSelectAllTarget : true }}) ?? [];	
+		this.mappedOrigins	.set(m);	
+	}
+
 
 	// --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
 	// --- protected validation functions- --- --- protected validation functions- ---

@@ -21,6 +21,8 @@
 	$: controller.setControllerDeps(node,system,(msg) => {})
 	$: controller.messageHandler = messageHandler;
 	$: availableSymbols = get(controller.mappedOrigins).filter(p => !p.active ).map( p => p.key );
+	export function forceUpdate(){controller.updateMappedOrigins()}
+	
 	let flash = false;	
 	
 	
@@ -123,7 +125,7 @@
 				<div class="derivedOriginRowsContainer" >
 					{#if $controllerMappedOrigin }
 						
-						{#each $controllerMappedOrigin as origin (origin.key) }
+						{#each $controllerMappedOrigin as origin (origin.key, origin.segments) }
 							<div animate:flip transition:slide|local class="derivedOriginRowContainer"> 
 								<OriginRow
 									bind:rowData 	 = { origin }

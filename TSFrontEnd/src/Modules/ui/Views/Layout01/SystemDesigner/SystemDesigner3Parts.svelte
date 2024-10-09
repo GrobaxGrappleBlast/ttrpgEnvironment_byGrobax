@@ -42,6 +42,13 @@
 	let derivedNod	: UINode | null = null;
 	let fixedNod	: UINode | null = null;
 
+	let designerFixed : FixedItemDesigner;
+	let designerDerived : DerivedItemDesigner;
+	function designerUIUpdate(){
+		designerDerived?.forceUpdate();
+		designerFixed?.forceUpdate();
+	}
+
 	function _colSelect( grp:'derived'|'fixed' ,col :  UICollection	|null|any){
 		_nodSelect(grp,null);
 
@@ -57,14 +64,40 @@
 
 			derivedNod?.removeEventListener(guidKey)
 			derivedNod = nod;
-			derivedNod?.addEventListener(guidKey,'update',() => {derivedNod=derivedNod})
+			derivedNod?.addEventListener(guidKey,'update',() => {
+				designerUIUpdate();
+			})
 		}
 		else {
 			fixedNod?.removeEventListener(guidKey)
 			fixedNod = nod;
-			fixedNod?.addEventListener(guidKey,'update',() => {fixedNod=fixedNod})
+			fixedNod?.addEventListener(guidKey,'update',() => {
+				designerUIUpdate();
+			})
 		}
 	}
+
+	function _colUpdate	( grp:'derived'|'fixed' , colArr :  UICollection	[]){
+		colArr.forEach( n  => {
+			if( n.name != n.nameEdit){
+				system.renameCollection( grp , n.name, n.nameEdit );
+			}
+		});
+	}
+	function _nodUpdate	( grp:'derived'|'fixed' , nodArr :  UINode			[]){
+		
+		
+		let col = grp == 'derived' ? derivedCol : fixedCol;
+		if (!col)
+			return;
+
+		nodArr.forEach( n  => {
+			if(n.name != n.nameEdit){
+				system.renameItem( grp , col.name , n.name, n.nameEdit );
+			}
+		});
+	}
+
 
 	let messageHandler : StaticMessageHandler;
 
@@ -88,7 +121,7 @@
 				collection={ fixedGrp?.collections ?? [] }
 				onSelect    	={ (e) => { _colSelect('fixed',e); return true }}
 				onAdd       	={ ( ) => { return true }}
-				onUpdateItem	={ ( ) => { return true }}
+				onUpdateItem	={ (arr)=>{ _colUpdate('fixed', arr ); return true }}
 				onDeleteItem	={ (e) => { return true }} 
 				on:onDeSelect	={ ( ) => { _colSelect('fixed',null); }}
 			/>
@@ -96,7 +129,7 @@
 				collection={ fixedCol?.nodes ?? [] }
 				onSelect    	={ (e) => { _nodSelect('fixed',e); return true }}
 				onAdd       	={ ( ) => { return true }}
-				onUpdateItem	={ ( ) => { return true }}
+				onUpdateItem	={ (arr)=>{ _nodUpdate('fixed', arr ); return true }}
 				onDeleteItem	={ (e) => { return true }} 
 				on:onDeSelect	={ ( ) => { _nodSelect('fixed',null);}}
 			/>
@@ -104,6 +137,7 @@
 		{#if fixedNod}
 			<div transition:slide|local >
 				<FixedItemDesigner 
+					bind:this={designerFixed}
 					node	= {fixedNod.link}
 					system	= {system}
 					on:save={(e)=>{ 
@@ -130,7 +164,7 @@
 					collection={ derivedGrp?.collections ?? [] }
 					onSelect    	={ (e) => { _colSelect('derived',e); return true }}
 					onAdd       	={ ( ) => { return true }}
-					onUpdateItem	={ ( ) => { return true }}
+					onUpdateItem	={ (arr)=>{ _colUpdate('derived', arr ); return true }}
 					onDeleteItem	={ (e) => { return true }} 
 					on:onDeSelect	={ ( ) => { _colSelect('derived',null);}}
 				/> 
@@ -138,7 +172,7 @@
 					collection={ derivedCol?.nodes ?? [] }
 					onSelect    	={ (e) => { _nodSelect('derived',e); return true }}
 					onAdd       	={ ( ) => { return true }}
-					onUpdateItem	={ ( ) => { return true }}
+					onUpdateItem	={ (arr)=>{ _nodUpdate('derived', arr ); return true }}
 					onDeleteItem	={ (e) => { return true }} 
 					on:onDeSelect	={ ( ) => { }}
 				/> 
@@ -146,6 +180,7 @@
 		{#if derivedNod}
 			<div transition:slide|local >
 				<DerivedItemDesigner 
+					bind:this={designerDerived}
 					node	= {derivedNod.link}
 					system	= {system}
 					on:save={(e)=>{ 
