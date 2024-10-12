@@ -3,7 +3,11 @@
 	import { flip } from 'svelte/animate';
     import { createEventDispatcher, onMount } from "svelte"; 
     import { slide } from 'svelte/transition';
-   
+    import { Layout01Context } from '../../Views/Layout01/context';
+	import { tick } from 'svelte';
+    import { selectSlide } from './selectSlide';
+    import { Console } from 'console';
+
 
 	let dispatch = createEventDispatcher();
 	export let options	: string[];
@@ -13,70 +17,54 @@
 	export let isError 	:boolean = false;
 	export let forceOpen:boolean = false;
 	export let maxHeight:number = 500;
-    const svelteStandardAnimTime = 400;
- 
+    export let context	: Layout01Context ;
+	const svelteStandardAnimTime = 400;
 
 	let label;
-	let labelRect: DOMRect |null;
 	let isFocussed = false; 
 	let endTracker: HTMLDivElement;
-	let topTracker: HTMLDivElement;
-	let override_maxHeight : number = maxHeight; 
-	let arrowOffsetLeft:number=0;
-
-	function onFocus(){
-		
-		const rect1 = label.getBoundingClientRect();
-		/*
-			const rect2 = blob.getBoundingClientRect();
-
-			const left = rect1.x - rect2.x;
-			const offset = (rect1.width / 2) + left - 10;
-			
-			arrow.style.setProperty('left', offset + 'px');
-		*/ 
-		labelRect= rect1;
-		isFocussed = true;
-		recalculateWidth();
-		setTimeout( recalculateHeight , svelteStandardAnimTime ) 
-	}
-	function onblur(){
-		setTimeout( () => {
-			isFocussed = false
-		}, 200) 
+	let self: HTMLElement;
+	let popUp:HTMLElement;
+	
+	async function onFocus(){
+		isFocussed = true;  
 	} 
-	function clickOption( event ){
-		 
-		let value = event.target.getAttribute('data-value');
-		if (selected == value){
-			selected = null;
-			dispatch('onDeselect')
-		} else {
+
+	function click( e ){
+		debugger
+		isFocussed = false;
+		console.log('click')
+	}
+
+	function hasTargetParent( DOM:HTMLElement , target:HTMLElement ){
+			const parent = DOM?.parentElement ?? null ;
+			if (parent){
+				if (parent != target){
+					return hasTargetParent( parent , target );
+				}
+				else{
+					
+					return true;
+				}
+			}else{ 
+				return false;
+			}
+	} 
+	function blur( e ){ 
+		isFocussed=false;
+	} 
+	function clickOption( opt , ...params){ 
+		
+		let value = opt;
+		if (selected != value){
 			selected = value;
 			dispatch('onSelect',selected)
 		}
-	}
-	function recalculateHeight(){
-		let itemTop 	= topTracker.getBoundingClientRect().bottom
-		let itemBottom 	= endTracker.getBoundingClientRect().bottom
-		let windowBottom = window.document.body.getBoundingClientRect().height 
-		if( itemBottom > windowBottom){
-			let delta = itemBottom - windowBottom;
-			let total = itemBottom - itemTop;
-			let n = total - delta ;
-			if ( n < override_maxHeight ){
-				override_maxHeight = n;
-			}
-		} 
-	}
-
-	function recalculateWidth(){
-		let width = label.getBoundingClientRect().width //- 16;
-		arrowOffsetLeft = width/2;
+		isFocussed = false;  
 	}
 
 </script>
-<div class="GrobSelect" >
+<div class="GrobSelect" bind:this={self}>
 	{#key selected}
 		<div 
 			bind:this={label}
@@ -86,41 +74,44 @@
 			data-selected	={selected	?? false} 
 			tabindex="-1"  
 			on:focus={onFocus}
-			on:blur={ onblur } 
+			on:blur={ blur } 
 		>
-			{ selected == null ? unSelectedplaceholder : selected }
-		
+			{ selected == null ? unSelectedplaceholder : selected } 
 		</div>
 	{/key}
 	<!-- svelte-ignore missing-declaration -->
 	<div>
-		{#if isFocussed || forceOpen }
-			 
+		{#if isFocussed || forceOpen } 
+			<div 
+				class="SelectPopUp" 
+				data-direction="down"
+				transition:selectSlide={{container : context?.mainAppContainer, button:self }}
+				bind:this={popUp}
+			> 	
+				<div
 				
-				<div 
-					class="SelectPopUp" 
-					style={ 
-						"width:" + ((labelRect?.width) ?? 100 )+ "px;" + 
-						"left: " + ((labelRect?.x) ?? 0) + "px;" +
-						"top: "  + (((labelRect?.y) ?? 0) + ((labelRect?.height) ?? 0) + 8) + "px;"+
-						'max-height:'+override_maxHeight+'px'
-					}  
-					transition:slide
-				> 
-					<div class="ArrowContainer " bind:this={topTracker} >
-						<div class="Arrow" style={`left:${arrowOffsetLeft}px`}></div>
-					</div>
-					{#each options as opt (opt)}
-						<div  class="GrobSelectOption" role="none" data-selected={selected == opt} data-value={opt} on:click={ clickOption } on:keydown={clickOption}>
-							{opt}
-						</div>
-					{/each}
+				>
 					{#if options.length == 0}
 						<i  class="GrobSelectInfo">No Options</i>
+					{:else}	
+						{#each options as opt (opt)}
+							<button  
+								class="GrobSelectOption" 
+								data-selected={selected == opt} 
+								data-value={opt} 
+								on:focus={ ( ...params ) => clickOption(opt, ...params) } 
+							>
+								{opt}
+							</button>
+						{/each}
 					{/if}
-					<div class="selectEndTracker" bind:this={endTracker}></div>
+					<div 
+						class="selectEndTracker"
+						bind:this={endTracker}
+					>
+					</div>
 				</div>
-			 
+			</div> 
 		{/if}
 	</div>
 </div>

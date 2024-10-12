@@ -7,16 +7,22 @@
 	import Menu from './Views/Menu/Menu.svelte';
     import { Layout01Context } from './context';
 	import {slidefade} from '../../../../../src/Modules/ui/Components/Transitions/SlideFly.js';
+    import { onMount } from 'svelte';
 
 	let page = writable( 'system');
 	export let context	: Layout01Context; 
+	let mainAppContainer;
 	
 	function changePage( event ){
 		page.set(event.detail);  
 	}
 
+	onMount(()=>{
+		context.mainAppContainer = mainAppContainer;
+	})
+
  </script>
-<div class="MainAppContainer" >
+<div id="MainAppContainer" bind:this={mainAppContainer}>
 	
 	<!-- Menu -->
 	<Menu 
@@ -46,7 +52,8 @@
 	</section>
 </div>
 <style>
-	.MainAppContainer{
-		container-type: inline-size;
+	#MainAppContainer{
+		container-type: inline-size;  
+		min-height: inherit;
 	}
 </style>

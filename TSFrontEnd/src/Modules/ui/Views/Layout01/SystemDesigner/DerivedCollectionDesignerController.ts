@@ -1,4 +1,5 @@
-import { GrobJDerivedNode, TTRPGSystemJSONFormatting, type  GrobJNodeType } from "../../../../Designer/index"; 
+//import { GrobJDerivedNode, TTRPGSystemJSONFormatting, type  GrobJNodeType } 
+import { GrobJDerivedNode, TTRPGSystemJSONFormatting, type  GrobJNodeType }  from '../../../../../../src/Modules/graphDesigner';
 import { writable, type Writable, get } from 'svelte/store';  
  
 type StaticMessageHandler = any
@@ -234,7 +235,7 @@ export class DerivedCollectionController {
 	}  
 
 	public saveCollection( ){
-		
+		 
 		let success = this.checkIsValid( true );
 		if (!success){
 			this.messageHandler?.addMessageManual('save','Was Not valid, so could not save', 'error');
@@ -339,9 +340,9 @@ export class DerivedCollectionController {
 		this.mappedOrigins.update( mappedOrigins =>{
 
 			mappedOrigins.forEach( d => {
-				let inCalc = symbols.contains(d.key);
+				let inCalc = symbols.includes(d.key);
 				if ( inCalc ){
-					symbols.remove(d.key);
+					symbols = symbols.filter( p => p != d.key);
 					d.inCalc = true;
 				}
 				else {

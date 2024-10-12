@@ -8,11 +8,14 @@
     import { GrobJDerivedNode, TTRPGSystemJSONFormatting } from '../../../../../../src/Modules/graphDesigner';
 	import StaticMessageHandler from '../../../../../../src/Modules/ui/Components/Messages/StaticMessageHandler.svelte'
     import OriginRow from '../Views/OriginRow/OriginRow.svelte';
+    import { UINode, UISystem } from '../../../../../../src/Modules/graphDesigner/UIGraphItems';
+    import { Layout01Context } from '../context';
 
-	export let node		: GrobJDerivedNode;
-	export let system	: TTRPGSystemJSONFormatting; 
+	export let node		: UINode;
+	export let system	: UISystem; 
 	export let goodTitle = "No Error";
 	export let badTitle = "Error"
+	export let context	: Layout01Context; 
 
 	let messageHandler: StaticMessageHandler; 
 	const dispatch = createEventDispatcher(); 
@@ -21,7 +24,9 @@
 	$: controller.setControllerDeps(node,system,(msg) => {})
 	$: controller.messageHandler = messageHandler;
 	$: availableSymbols = get(controller.mappedOrigins).filter(p => !p.active ).map( p => p.key );
-	export function forceUpdate(){controller.updateMappedOrigins()}
+	export function forceUpdate(){
+		controller.updateMappedOrigins()
+	}
 	
 	let flash = false;	
 	
@@ -112,7 +117,7 @@
 		<div class="ItemDesignerInput" >{ (node?.parent?.parent?.name ?? 'unknown collection') + '.' +( node?.parent?.name ?? 'unknown collection') + '.' + $controllerName }</div>
  
 		<div>Calc</div>
-		<textarea class="calcInput" style="resize: none;" value={ $controllerCalc } 
+		<textarea class="calcInput" value={ $controllerCalc } 
 			on:input={ onCalcInput }
 			placeholder="insert calcStatement here"
 		/>
@@ -130,7 +135,8 @@
 								<OriginRow
 									bind:rowData 	 = { origin }
 									availableSymbols = { availableSymbols }
-									system 			 = { system }
+									system 			 = { system.sys }
+									context = {context}
 									on:change	= {recalc}
 									on:onDelete 		= { onDeleteClicked }
 									on:onSymbolSelected = { onKeyExchange }

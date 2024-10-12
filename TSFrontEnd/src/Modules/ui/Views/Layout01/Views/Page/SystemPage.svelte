@@ -113,6 +113,7 @@
 			<div>
 				<SystemDesigner3Parts 
 					system={ factory }
+					context = {context}
 				/>
 			</div>
 		</section>

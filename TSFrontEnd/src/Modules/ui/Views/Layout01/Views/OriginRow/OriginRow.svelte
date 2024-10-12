@@ -5,6 +5,7 @@
     import CustomSelect						from '../../../../../../../src/Modules/ui/Components/CustomSelect/CustomSelect.svelte';
     import Trash							from '../../../../../../../src/Modules/ui/Components/buttons/trash.svelte';
 	import { GrobJNodeType, TTRPGSystemJSONFormatting }	from '../../../../../../../src/Modules/graphDesigner';	
+    import { Layout01Context } from "../../context";
 
 
 	
@@ -14,6 +15,7 @@
 	export let availableSymbols : string [] = []; 
 	export let allowSelectAll : boolean = false; 
 	export let SelectAllText = '--Select All--'
+	export let context	: Layout01Context; 
 
 	let dispatch = createEventDispatcher();
 
@@ -37,6 +39,7 @@
 
 	function onSelect( level : number , value : string ){
 		rowData.isSelectAllTarget = false;
+		;
 		switch(level){
 			case 0:
 
@@ -128,7 +131,7 @@
 		{#if availableSymbols.length == 0}
 			<div class="derivedOriginRowInteractionField" >{rowData.key}</div>
 		{:else}
-			<CustomSelect selected={rowData.key} options={ [...availableSymbols, rowData.key] }	on:onSelect={(e) => {onChangeSymbol(e.detail)}} />
+			<CustomSelect context={context} selected={rowData.key} options={ [...availableSymbols, rowData.key] }	on:onSelect={(e) => {onChangeSymbol(e.detail)}} />
 		{/if} 
 
 		<!-- Test Value -->
@@ -136,8 +139,10 @@
 
 		<!-- Selects -->
 		<CustomSelect 
+
 			bind:selected={rowData.segments[0] }
-			options={ options_level0 }		
+			options={ options_level0 }	
+			context={context}	
 			
 			on:onSelect={(e) => onSelect(0,e.detail)} 
 			on:onDeselect={()=>onDeselect(0)} 
@@ -146,6 +151,7 @@
 			bind:selected={rowData.segments[1]} 
 			options={options_level1}	
 			disabled={!(options_level0)}	
+			context={context}
 			
 			on:onSelect={(e) => onSelect(1,e.detail)} 
 			on:onDeselect={()=>onDeselect(0)} 
@@ -154,6 +160,7 @@
 			bind:selected={rowData.segments[2]} 
 			options={options_level2}	
 			disabled={!(options_level1)}	
+			context={context}
 				
 			on:onSelect={(e) => onSelect(2,e.detail)}
 			on:onDeselect={()=>onDeselect(0)}

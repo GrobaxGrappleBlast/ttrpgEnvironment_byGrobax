@@ -476,3 +476,23 @@ Stack Trace:    at MySql.Data.MySqlClient.NativeDriver.<>c.<OpenAsync>b__38_0(Ex
 
 ---------------------
 
+----- Error Log -----
+Timestamp: 10/11/2024 3:53:54 PM
+Error Message: Unable to connect to any of the specified MySQL hosts.
+Stack Trace:    at MySql.Data.MySqlClient.NativeDriver.<>c.<OpenAsync>b__38_0(Exception ex)
+   at System.AggregateException.Handle(Func`2 predicate)
+   at MySql.Data.MySqlClient.NativeDriver.OpenAsync(Boolean execAsync, CancellationToken cancellationToken)
+   at MySql.Data.MySqlClient.Driver.OpenAsync(Boolean execAsync, CancellationToken cancellationToken)
+   at MySql.Data.MySqlClient.Driver.CreateAsync(MySqlConnectionStringBuilder settings, Boolean execAsync, CancellationToken cancellationToken)
+   at MySql.Data.MySqlClient.Driver.CreateAsync(MySqlConnectionStringBuilder settings, Boolean execAsync, CancellationToken cancellationToken)
+   at MySql.Data.MySqlClient.MySqlPool.CreateNewPooledConnectionAsync(Boolean execAsync, CancellationToken cancellationToken)
+   at MySql.Data.MySqlClient.MySqlPool.GetPooledConnectionAsync(Boolean execAsync, CancellationToken cancellationToken)
+   at MySql.Data.MySqlClient.MySqlPool.TryToGetDriverAsync(Boolean execAsync, CancellationToken cancellationToken)
+   at MySql.Data.MySqlClient.MySqlPool.GetConnectionAsync(Boolean execAsync, CancellationToken cancellationToken)
+   at MySql.Data.MySqlClient.MySqlConnection.OpenAsync(Boolean execAsync, CancellationToken cancellationToken)
+   at MySql.Data.MySqlClient.MySqlConnection.Open()
+   at srcServer.core.fileHandler.DAO.LoadAllAvailableSystems() in /home/hans/projects/ttrpgEnvironment_byGrobax/srcFileServer/main/src/core/DAO/DAO.cs:line 24
+   at srcServer.Controllers.SystemDefinitions.GetAllSystems() in /home/hans/projects/ttrpgEnvironment_byGrobax/srcFileServer/main/src/controllers/SystemDefinitions.cs:line 23
+
+---------------------
+

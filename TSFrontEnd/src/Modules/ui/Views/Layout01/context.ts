@@ -6,4 +6,5 @@ export class Layout01Context{
 	public activeSystem 	: TTRPGSystemJSONFormatting;
 	public availablePreviews:SystemPreview[];
 	public API : IAPI;
+	public mainAppContainer : HTMLElement;
 }

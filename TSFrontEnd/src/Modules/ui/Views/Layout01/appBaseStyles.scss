@@ -23,9 +23,17 @@ $layout_size02_minWidth : #{$layout_size01_maxWidth + 0.01 };
 $layout_size02_maxWidth : 500;
 $layout_size03_minWidth : #{$layout_size02_maxWidth + 0.01};
 $layout_size03_maxWidth : 900;
+$layout_size04_minWidth : #{$layout_size03_maxWidth + 0.01};
+$layout_size04_maxWidth : 1920;
 
 
 
+$sat: saturation($COLOR3);
+$lig: lightness($COLOR3);
+
+$signal_background_error	: hsl(60 , $sat, $lig) ;
+$signal_background_verbose	: hsl(191, $sat, $lig) ;
+$signal_background_OK		: hsl(140 , $sat, $lig) ;
 
 
 

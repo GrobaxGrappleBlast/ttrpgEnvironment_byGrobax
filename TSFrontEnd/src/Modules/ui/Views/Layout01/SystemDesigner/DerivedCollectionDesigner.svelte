@@ -1,28 +1,27 @@
-<script context="module"  lang="ts">
-	import ToogleSection from './../BaseComponents/ToogleSection/ToogleSection.svelte';
-	import {DerivedCollectionController , selAllInCollectionString , originRowData} from './DerivedCollectionDesignerController';
-</script> 
-<script lang="ts"> 
-    import { TTRPGSystemJSONFormatting } from "../../../../Designer/index";
-    import StaticMessageHandler from "../BaseComponents/Messages/StaticMessageHandler.svelte";
+<script lang="ts">  
 	
-    import { writable, type Writable, get } from 'svelte/store'; 
-	import OriginRow from "./views/OriginRow.svelte";
+    import { writable, type Writable, get } from 'svelte/store';  
     import { slide } from 'svelte/transition';
     import { flip } from 'svelte/animate';   
-    import { createEventDispatcher, onMount } from "svelte";
-    import { DerivedItemController } from "./DerivedItemDesigner.svelte";
+    import { createEventDispatcher, onMount } from "svelte"; 
+    import OriginRow 						from '../Views/OriginRow/OriginRow.svelte';
+	import { TTRPGSystemJSONFormatting } 	from '../../../../../../src/Modules/graphDesigner';
+    import ToogleSection 					from '../../../../../../src/Modules/ui/Components/toogleSection/toogleSection.svelte';
+    import { DerivedCollectionController, originRowData, selAllInCollectionString } from './DerivedCollectionDesignerController';
+	import StaticMessageHandler	from '../../../Components/Messages/StaticMessageHandler.svelte';
+    import { Layout01Context } from '../context';
+
 	const dispatch = createEventDispatcher();  
 
-	export let system : Writable<TTRPGSystemJSONFormatting|null>; 
+	export let system : TTRPGSystemJSONFormatting; 
 	export let secondSlideInReady = false;
 	export let goodTitle = "No Error";
 	export let badTitle  = "Error"
-
-	let messageHandler: StaticMessageHandler; 
+	export let context	: Layout01Context; 
+	export let messageHandler: StaticMessageHandler; 
 
 	let controller : DerivedCollectionController = new DerivedCollectionController(); 
-	$: controller.setControllerDeps( $system )
+	$: controller.setControllerDeps( system )
 	$: controller.messageHandler = messageHandler;
 	$: availableSymbols = get(controller.mappedOrigins).filter(p => !p.active ).map( p => p.key );  
 	 
@@ -75,7 +74,7 @@
 	}
 	 
 	onMount(() => { 
-		controller.setControllerDeps( $system ); 
+		controller.setControllerDeps( system ); 
 		controller.recalculateCalcAndOrigins()
 		controller.checkIsValid(); 
 		controllerMappedOrigin	= controller.mappedOrigins;
@@ -90,12 +89,9 @@
 	})
 
 </script> 
-<div class="GrobsInteractiveColoredBorder" data-state={  $controllerIsValid ? 'good' : 'error' } data-state-text={ $controllerIsValid ? goodTitle: badTitle}>
-	<div>
-		<StaticMessageHandler 
-			bind:this={ messageHandler }
-		/>
-	</div>
+<div class="DerivedCollectionDesigner" data-state={  $controllerIsValid ? 'good' : 'error' } data-state-text={ $controllerIsValid ? goodTitle: badTitle}>
+	<div class="DerivedCollectionDesignerCloseBtn" on:click={()=>dispatch('close')} on:keypress >X</div>
+	
 	<div>
 		<p>
 			Editing node.
@@ -104,53 +100,51 @@
 	</div>
 	<div class="ItemDesigner_TwoColumnData" >
 
-		<div>new Collection Name</div>
-		<input type="text" class="ItemDesignerInput" on:input={ ( e ) => { onNameInput(e) } } contenteditable bind:value={ $controllerName }/>  
 	</div>
-	<div> 
-		{#if $system }
-			<div class="OriginEditor">
-				<div class="derivedCollectionCalcStatementMatrix" >
-					 
-						<div data-succes={ $controllerNameResultSucces } >Name</div>
-						<input type="text"  
-							on:input={ onCalcNameInput }
-							placeholder="insert Name Calc Statement here"
-						/>
-						<div class="derivedCalcStatementResult" data-succes={ $controllerNameResultSucces } >{ $controllerNameResultValue }</div>
-					 
-					 
-						<div  data-succes={ $controllerResultSucces } >Calc</div>
-						<input type="text" value={ $controllerCalc } 
-							on:input={ onCalcInput }
-			 				placeholder="insert calcStatement here"
-						/>
-						<div class="derivedCalcStatementResult" data-succes={ $controllerResultSucces } >{ $controllerResultValue }</div>
-					 
-					 
-				</div>
-				<div class="derivedOriginRowsContainer">
-					{#if $controllerMappedOrigin && secondSlideInReady }
-						<div transition:slide|local >
-							{#each $controllerMappedOrigin as origin (origin.key) }
-								<div transition:slide|local class="derivedOriginRowContainer"> 
-									<OriginRow 
-										bind:rowData 	 = { origin }
-										availableSymbols = { availableSymbols }
-										system 			 = { $system }
-										on:onDelete 		= { onDeleteClicked }
-										on:onSymbolSelected = { onKeyExchange }
-										on:foundTargetNode = { (e) =>{ controller.checkIsValid(false) }}
-										allowSelectAll = { true }
-										SelectAllText = { selAllInCollectionString }
-									/>   
-								</div>
-							{/each}
-						</div>
-					{/if}
-				</div> 
+	<div>  
+		<div class="OriginEditor">
+			<div class="derivedCollectionCalcStatementMatrix" >
+				
+				<div>new Collection Name</div>
+				<textarea  class="calcInput ItemDesignerInput" on:input={ ( e ) => { onNameInput(e) } } contenteditable bind:value={ $controllerName }/>  
+
+
+				<div data-succes={ $controllerNameResultSucces } >Name</div>
+				<textarea class="calcInput"
+					on:input={ onCalcNameInput }
+					placeholder="insert Name Calc Statement here"
+				/>
+				<div class="derivedCalcStatementResult" data-succes={ $controllerNameResultSucces } >{ $controllerNameResultValue }</div>
+				
+				
+				<div  data-succes={ $controllerResultSucces } >Calc</div>
+				<textarea class="calcInput" value={ $controllerCalc } 
+					on:input={ onCalcInput }
+					placeholder="insert calcStatement here"
+				/>
+				<div class="derivedCalcStatementResult" data-succes={ $controllerResultSucces } >{ $controllerResultValue }</div>
+				
 			</div>
-		{/if}
+			<div class="derivedOriginRowsContainer">
+				{#if $controllerMappedOrigin && secondSlideInReady }
+					{#each $controllerMappedOrigin as origin (origin.key) }
+						<div transition:slide|local class="derivedOriginRowContainer"> 
+							<OriginRow 
+								bind:rowData 	 = { origin }
+								availableSymbols = { availableSymbols }
+								system 			 = { system }
+								context = {context}
+								on:onDelete 		= { onDeleteClicked }
+								on:onSymbolSelected = { onKeyExchange }
+								on:foundTargetNode = { (e) =>{ controller.checkIsValid(false) }}
+								allowSelectAll = { true }
+								SelectAllText = { selAllInCollectionString }
+							/>
+						</div>
+					{/each}
+				{/if}
+			</div> 
+		</div> 
 	</div> 
 	<br>
 	<div class="ItemDesignerButtonRow">

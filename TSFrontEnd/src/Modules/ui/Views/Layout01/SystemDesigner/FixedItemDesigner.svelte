@@ -5,9 +5,10 @@
     import { GrobJFixedNode, GrobJNodeType, TTRPGSystemJSONFormatting } from '../../../../../../src/Modules/graphDesigner';
 	import StaticMessageHandler from '../../../../../../src/Modules/ui/Components/Messages/StaticMessageHandler.svelte'
     import { FixedItemController } from './ItemControllers';
+    import { UINode, UISystem } from '../../../../../../src/Modules/graphDesigner/UIGraphItems';
 
-	export let node : GrobJFixedNode;
-	export let system : TTRPGSystemJSONFormatting; 
+	export let node : UINode;
+	export let system : UISystem; 
 	export let secondSlideInReady = false;
 	export let goodTitle = "No Error";
 	export let badTitle = "Error"
@@ -72,7 +73,7 @@
 		<input type="text" class="ItemDesignerInput" on:input={ onNameInput }   contenteditable bind:value={ $controllerName }/>
 
 		<div>Node Location</div>
-		<div class="ItemDesignerInput" >{ (node?.parent?.parent?.name ?? 'unknown collection') + '.' +( node?.parent?.name ?? 'unknown collection') + '.' + node?.name}</div>
+		<div class="ItemDesignerInput" >{ (node.link?.parent?.parent?.name ?? 'unknown collection') + '.' +( node.link?.parent?.name ?? 'unknown collection') + '.' + node?.name}</div>
 
 		<div>Standard Value</div>
 		<input type="number" class="ItemDesignerInput" on:input={ onStandardValueInput } contenteditable bind:value={ $controllerValue } />

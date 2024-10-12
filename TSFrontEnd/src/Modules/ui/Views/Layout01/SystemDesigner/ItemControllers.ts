@@ -1,16 +1,18 @@
 
 import { get, writable, type Writable } from 'svelte/store'; 
 import { createEventDispatcher, onMount } from "svelte";
-import { GrobJDerivedNode, GrobJFixedNode, GrobJNodeType, TTRPGSystemJSONFormatting } from '../../../../graphDesigner';
+import { GrobJDerivedNode, GrobJFixedNode, GrobJNodeType } from '../../../../graphDesigner';
 import StaticMessageHandler from '../../../Components/Messages/StaticMessageHandler.svelte'
 import { GrobDerivedNode, GrobFixedNode, GrobNodeType } from 'ttrpg-system-graph';
 import { AGrobNode } from 'ttrpg-system-graph/dist/Nodes/AGrobNodte';
+import { UINode, UISystem } from 'src/Modules/graphDesigner/UIGraphItems';
 
 
 class AItemController<T extends AGrobNode<T>> {
 
+	public uiNode			: UINode;
 	public node				: T ;
-	public system			: TTRPGSystemJSONFormatting ;
+	public system			: UISystem ;
 	public messageHandler	: StaticMessageHandler | null = null;
 
 	public isValid		: Writable<boolean>	= writable(true); 
@@ -19,13 +21,14 @@ class AItemController<T extends AGrobNode<T>> {
 	public name 		: Writable<string>	= writable(''); 
 	public standardValue: Writable<number>	= writable(1);  
 	
-	public setControllerDeps( node, system, out : (msg) => any ){
-		this.node	= node;
+	public setControllerDeps( uiNode : UINode, system : UISystem, out : (msg) => any ){
+		this.uiNode = uiNode;
+		this.node	= uiNode.link as any;
 		this.system = system;
 
 		// base for fixed items
 		this.isValid 		.set(true) 
-		this.name 			.set(this.node?.name	?? '') 
+		this.name 			.set(this.uiNode?.name	?? '') 
 		this.standardValue 	.set(0) 
 	} 
 
@@ -35,7 +38,7 @@ class AItemController<T extends AGrobNode<T>> {
 	protected validateName( name , out : ( msg ) => any){
 		
 		let isValid = true; 
-		if (name== ''){
+		if (name == ''){
 			isValid = false;
 			out('The name cannot be empty')
 		}
@@ -43,7 +46,7 @@ class AItemController<T extends AGrobNode<T>> {
 			isValid = false;
 			out('The name cannot contain "."')
 		}
-		else if ( this.node.parent.hasNode( name ) && name != this.node.getName() ){
+		else if ( this.uiNode.parent.hasNode( name ) && name != this.uiNode.name ){
 			isValid = false;
 			out('The name is already in use, in the same collection')
 		}
@@ -54,7 +57,7 @@ class AItemController<T extends AGrobNode<T>> {
 	protected _outList : Set<string> = new Set();
 	protected _checkIsValid(  output = true ){ 
 		
-		if(!this.node || !this.system){ 
+		if(!this.uiNode || !this.system){ 
 			return false;
 		}
 		
@@ -100,8 +103,7 @@ export class FixedItemController	extends AItemController<GrobFixedNode>{
 	} 
 
 
-}
-
+} 
 export type originRowData = {key: string, segments:(string|null)[] , active :boolean , testValue :number, inCalc:boolean, target: GrobJNodeType | null , isSelectAllTarget: boolean };
 export class DerivedItemController	extends AItemController<GrobDerivedNode> {
 	
@@ -110,30 +112,39 @@ export class DerivedItemController	extends AItemController<GrobDerivedNode> {
 	public resultValue	: Writable<number>	= writable(0); 
 	public resultSuccess: Writable<boolean>	= writable(true);
 	public mappedOrigins: Writable<originRowData[]> = writable([]); 
-
-
-	public setControllerDeps( node, system, out : (msg) => any ){
+ 
+	public setControllerDeps( node : UINode, system : UISystem , out : (msg) => any ){
 		
 		super.setControllerDeps(node,system,out);
 
 		// base for derived items 
-		this.calc			.set(this.node?.calc ?? '');
+		this.calc			.set(this.uiNode.link?.calc ?? '');
 		this.resultValue	.set(0);		
 		this.resultSuccess	.set(true);	
 		this.updateMappedOrigins();	
-	} 
-
+	}  
 	public updateMappedOrigins(){
-		let m = this.node?.origins?.map( p => {return {key:p.symbol, segments:p.originKey.split('.'), active: get(this.calc).includes(p.symbol), testValue: p.standardValue , inCalc: get(this.calc).includes(p.symbol) , target: p.origin , isSelectAllTarget : true }}) ?? [];	
+		let m = this.uiNode?.link?.origins?.map( 
+			p => {
+				return { 
+					key:p.symbol,
+					segments:p.originKey.split('.'),
+					active: get(this.calc).includes(p.symbol),
+					testValue: p.standardValue ,
+					inCalc: get(this.calc).includes(p.symbol) ,
+					target: p.origin ,
+					isSelectAllTarget : true 
+				}
+			}
+		) ?? [];	
 		this.mappedOrigins	.set(m);	
 	}
-
 
 	// --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
 	// --- protected validation functions- --- --- protected validation functions- ---
 	// --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
 	protected validateOrigins(  mappedOrigins:originRowData[], calc:string , out : (msg) => any ){
-
+		
 		// validate that all inCalc are finished
 		let isValid = true ;  
 		let strOut = "";
@@ -229,9 +240,6 @@ export class DerivedItemController	extends AItemController<GrobDerivedNode> {
 		this.isValid.set( valid ); 
 		return valid;
 	}  
-
-
-	
 	
 	// Save
 	public saveNodeChanges( ){
@@ -253,11 +261,10 @@ export class DerivedItemController	extends AItemController<GrobDerivedNode> {
 
 		// name triggers update 
 		this.node.setName	( get(this.name) );
+		this.uiNode.name = get(this.name);
 
 		return true;	
 	} 
-
-
 	public onKeyExchange( e ){ 
 		this.mappedOrigins.update( mappedOrigins => {
 			const s0 = e.detail.old;
@@ -335,3 +342,4 @@ export class DerivedItemController	extends AItemController<GrobDerivedNode> {
 		})
 	}
 }
+

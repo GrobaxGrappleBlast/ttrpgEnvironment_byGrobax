@@ -1,14 +1,13 @@
 
 
 
-//$layout_size01_minWidth : 0;
-//$layout_size01_maxWidth : 250;
-//$layout_size02_minWidth : #{$layout_size01_maxWidth +1};
-//$layout_size02_maxWidth : 500;
-//$layout_size03_minWidth : #{$layout_size02_maxWidth +1};
-//$layout_size03_maxWidth : 900;
+
 .calcInput {
 	font-family:sans-serif;
+	padding:2px;
+	line-height: 12px;
+	max-height: fit-content;
+	resize: vertical;
 }
 .derivedOriginRowsContainer{ 
 	
@@ -37,14 +36,50 @@
 		&>*:nth-child(3){ grid-area : add ; cursor: pointer;} 
 	}
 }
+.DerivedCollectionDesigner{
+	border-top:3px dashed $COLOR3;
+	padding-top:20px;
 
+	&[data-state="error"]::before{
+		filter: saturate(0);
+	}
+	&::before{
+		background-color: $COLOR3;
+		height:30px;
+		width: 100px;
+		display: block;
+		content: attr(data-state-text);
+		margin-top:-22px;
+		color:$COLOR4;
+		border-radius: 0 0 5px 5px;
+		text-align: center;
+		place-content:center;
+	}
+	.DerivedCollectionDesignerCloseBtn{
+		width: 30px;
+		height: 30px;
+		background-color: $COLOR3;
+		color:$COLOR4;
+		display: flex;
+		justify-content: center;
+    	align-items: center;
+		border-radius: 0 0 5px 5px;
+		margin-top:-30px; 
+		right:0;
+		float:right;
+		cursor: pointer;
+		&:hover{
+			background-color: $COLOR2;
+		}
+	}
+}
 
 @container (max-width: #{$layout_size01_maxWidth}px ) { 
 	.ItemDesignerDataColumns{
 		display: grid;
 		grid-template-columns: 1fr 1fr; 
 	}
-	.ItemDesignerDataColumns3{
+	.ItemDesignerDataColumns3{ 
 		display: grid;
 		grid-template-rows: 1fr 1fr 1fr; 
 		color:$COLOR4;
@@ -103,11 +138,13 @@
 		display: grid;
 		grid-template-columns: 1fr 1fr; 
 	}
-	.ItemDesignerDataColumns3{
+	.derivedCollectionCalcStatementMatrix,
+	.ItemDesignerDataColumns3{ 
 		display: grid;
 		grid-template-columns: 1fr 1fr auto; 
 		row-gap: 10px;
 		column-gap: 10px;
+		grid-auto-rows: auto;
 
 		.ItemDesignerInput{
 			grid-column: span 2;
@@ -115,21 +152,20 @@
 	}
 
 	.derivedOriginRowsContainer{  
-		margin-top: 10px;
+		
 		padding:5px;
 		border-radius: 5px;
 		background-color: $COLOR1;
 		color:$COLOR4;
-		grid-template-columns:30px calc(25% - 30px) 25% 25% calc(25% - 40px) 40px;  
+		grid-template-columns:30px calc(33% - 30px) 33% 1% calc(33% - 40px) 40px;  
 
 		.derivedOriginRow{
-			grid-template-rows: auto auto 20px;
+			grid-template-rows: auto auto;
 			row-gap: 5px;
 			&[data-styleActive="true"]{
 				grid-template-areas: 
 					"sym	num		num		num		num 	logo"
-					"sel1	sel1	sel2	sel2	sel3 	sel3"
-					"n		n		n		n		n		n	";
+					"sel1	sel1	sel2	sel2	sel3 	sel3";
 			}
 			&[data-styleActive="false"]{
 				grid-template-areas: "sym add add";
@@ -138,16 +174,17 @@
 	}
 }
 
-@container (min-width: #{$layout_size03_minWidth}px ) { 
+@container (min-width: #{$layout_size04_minWidth}px ) { 
 	.ItemDesignerDataColumns{
 		display: grid;
 		grid-template-columns: 1fr 1fr; 
 	}
-	.ItemDesignerDataColumns3{
+	.derivedCollectionCalcStatementMatrix,
+	.ItemDesignerDataColumns3{ 
 		display: grid;
 		grid-template-columns: 1fr 1fr auto; 
 		row-gap: 10px;
-		column-gap: 10px;
+		column-gap: 10px; 
 
 		.ItemDesignerInput{
 			grid-column: span 2;
@@ -162,12 +199,14 @@
 		color:$COLOR4;
 		grid-template-columns:30px calc(25% - 30px) 25% 25% calc(25% - 40px) 40px;  
 
+		
+
 		.derivedOriginRow{ 
+			height:100%;
 			row-gap: 5px;
+			grid-template-rows: unset;
 			&[data-styleActive="true"]{
-				grid-template-areas: 
-					"sym	num		sel1	sel2	sel3		logo"
-				;
+				grid-template-areas: "sym num sel1 sel2 sel3 logo";
 			}
 			&[data-styleActive="false"]{
 				grid-template-areas: "sym add add add add add";

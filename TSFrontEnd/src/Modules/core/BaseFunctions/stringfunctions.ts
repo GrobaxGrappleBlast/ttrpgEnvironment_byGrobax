@@ -52,4 +52,22 @@ export class StringFunctions{
 			return v.toString(16);
 		});
 	}
+
+
+	private static recursiveFindNewName_LOOP<T>( testName : string , counter:number, array:T[] , getName : ( item:T ) => string ) : string{
+		let i = array.findIndex( p => getName(p) == testName + counter );
+		if (i == -1)
+			return testName + counter ;
+		return this.recursiveFindNewName_LOOP( testName , ++counter , array , getName );
+	}
+
+
+	public static recursiveFindNewName<T>( testName : string, array:T[] , getName : ( item:T ) => string ) : string{
+		let i = array.findIndex( p => getName(p) == testName );
+		if (i == -1)
+			return testName  ;
+		return this.recursiveFindNewName_LOOP( testName , 0 , array , getName );
+	}
+
+
 }
