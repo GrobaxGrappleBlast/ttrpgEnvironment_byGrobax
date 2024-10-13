@@ -62,8 +62,7 @@ export class UICollection extends UpdateListener implements IViewElementUpdateab
 		}
 	}
 
-	update() {
-
+	update() { 
         if(!this._isConstructed){
             return;
         }

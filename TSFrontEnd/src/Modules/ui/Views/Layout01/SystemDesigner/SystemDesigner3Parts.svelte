@@ -132,7 +132,7 @@
 		<div >
 			<DerivedCollectionDesigner 
 				context={context}
-				system={system}
+				system={uiSystem}
 				secondSlideInReady={true}
 				messageHandler = {messageHandler}
 				on:close={ () => {specialOn = false} }

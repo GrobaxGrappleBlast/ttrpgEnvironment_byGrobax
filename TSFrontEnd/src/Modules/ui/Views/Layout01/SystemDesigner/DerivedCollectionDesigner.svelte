@@ -10,10 +10,11 @@
     import { DerivedCollectionController, originRowData, selAllInCollectionString } from './DerivedCollectionDesignerController';
 	import StaticMessageHandler	from '../../../Components/Messages/StaticMessageHandler.svelte';
     import { Layout01Context } from '../context';
+    import { UISystem } from '../../../../../../src/Modules/graphDesigner/UIComposition/UISystem';
 
 	const dispatch = createEventDispatcher();  
 
-	export let system : TTRPGSystemJSONFormatting; 
+	export let system : UISystem; 
 	export let secondSlideInReady = false;
 	export let goodTitle = "No Error";
 	export let badTitle  = "Error"
@@ -132,7 +133,7 @@
 							<OriginRow 
 								bind:rowData 	 = { origin }
 								availableSymbols = { availableSymbols }
-								system 			 = { system }
+								system 			 = { system.sys }
 								context = {context}
 								on:onDelete 		= { onDeleteClicked }
 								on:onSymbolSelected = { onKeyExchange }

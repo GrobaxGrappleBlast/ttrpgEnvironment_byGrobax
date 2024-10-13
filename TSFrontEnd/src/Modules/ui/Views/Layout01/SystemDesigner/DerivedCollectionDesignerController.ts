@@ -1,4 +1,5 @@
 //import { GrobJDerivedNode, TTRPGSystemJSONFormatting, type  GrobJNodeType } 
+import { UISystem } from '../../../../../../src/Modules/graphDesigner/UIComposition/UISystem';
 import { GrobJDerivedNode, TTRPGSystemJSONFormatting, type  GrobJNodeType }  from '../../../../../../src/Modules/graphDesigner';
 import { writable, type Writable, get } from 'svelte/store';  
  
@@ -7,7 +8,7 @@ export type originRowData = {key: string, segments:(string|null)[] , active :boo
 export const selAllInCollectionString = '- - Select all - -';
 export class DerivedCollectionController {
 	 
-	public system:TTRPGSystemJSONFormatting | null	= null ;
+	public system:UISystem | null	= null ;
 	public messageHandler: StaticMessageHandler | null;
 
 	public name 		: Writable<string>			= writable(''); 
@@ -211,7 +212,7 @@ export class DerivedCollectionController {
 		isValid = isValid && this.validateName		( get(this.name) ?? '' , this.messageHandler , output );
 
 		// check that nothing is individually wrong with the origins. 
-		isValid = isValid && this.validateOrigins	( get(this.mappedOrigins) , get(this.calc) , this.system ,  this.messageHandler ,output  );
+		isValid = isValid && this.validateOrigins	( get(this.mappedOrigins) , get(this.calc) , this.system .sys,  this.messageHandler ,output  );
 
 		isValid = isValid && this.validateCalculationOrigins( get(this.calc) , get(this.mappedOrigins) , this.messageHandler , output );
 
@@ -244,19 +245,21 @@ export class DerivedCollectionController {
 		else {
 
 			try {
+				debugger
 				// type declaration
 				type resDataPoint = {name:string, deps:Record<string,GrobJNodeType> }
 
 				// Attempt Save
 				let colName = get(this.name);
-				this.system?.createDerivedCollection(colName);
-				
+				this.system?.addCollection('derived',colName);
+			
 				// Generate Nodes To Save and Save them.
 				let nodesToCreate : resDataPoint[] = this.generateNamePreview() ?? [];
 				nodesToCreate.forEach( node => {
 
 					// Create
-					let createdNode = this.system?.createDerivedNode( colName , node.name ) as GrobJDerivedNode;
+					this.system?.addNode('derived',colName,node.name);
+					let createdNode = this.system?.sys?.getNode('derived',colName,node.name) as GrobJDerivedNode;
 					let calc = get(this.calc);
 					createdNode?.setCalc(calc);
 
@@ -269,7 +272,10 @@ export class DerivedCollectionController {
 					}
 				});
 
-				this.system?.getGroup('derived').update();
+				
+				this.system?.getGroup('derived')?.update();
+				this.system?.getCollection('derived',colName)?.update();
+
 			} catch (e){ 
 				success = false;
 			}
@@ -316,7 +322,7 @@ export class DerivedCollectionController {
 				return mappedOrigins;
 
 			if (!old.active || !old.inCalc){
-				mappedOrigins.remove(old);
+				mappedOrigins.filter( p => p.key != old.key )
 			} else {
 				old.active = false;
 				old.segments = new Array(3).fill(null);
@@ -364,7 +370,7 @@ export class DerivedCollectionController {
 	}
 
 	public generateNamePreview(){
-		  
+		   
 		if ( !this.system ){
 			this.generativeNameListData.set([])
 			return;
@@ -395,7 +401,7 @@ export class DerivedCollectionController {
 
 				// if this is a Select All Segment then get
 				if (curr.segments[2] == selAllInCollectionString){
-					const sys = (self.system as TTRPGSystemJSONFormatting);  
+					const sys = (self.system.sys as TTRPGSystemJSONFormatting);  
 					let collection = sys.getCollection((curr.segments[0] as any),(curr.segments[1] as any));
 					let n : GrobJNodeType[] = collection?.getNodes() ?? [];
 					nodes = n;
@@ -403,7 +409,7 @@ export class DerivedCollectionController {
 
 				// else just add this name to the arr
 				else {
-					const sys = (self.system as TTRPGSystemJSONFormatting);  
+					const sys = (self.system.sys as TTRPGSystemJSONFormatting);  
 					let collection = sys.getCollection((curr.segments[0] as any),(curr.segments[1] as any));
 					let n : GrobJNodeType | undefined = collection?.getNode(curr.segments[2]);
 					nodes = n ? [ n ] : [];

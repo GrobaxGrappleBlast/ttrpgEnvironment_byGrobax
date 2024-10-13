@@ -57,14 +57,13 @@ export class UISystem extends UpdateListener {
 		return !!this.getCollection(group, col);
 	}
 	public addCollection(group: string, col?: string) {
-
+ 
 		if (!col) {
 			const names = this.sys.getCollectionNames(group);
 			col = StringFunctions.recursiveFindNewName('new Collection', names, (e) => e)
-		}
+		} 
 
-		const gCol = this.sys.createCollection(group, col) as any;
-		const uCol = this.getGroup(group)?._addCollection(this, gCol);
+		const gCol = this.sys.createCollection(group, col) as any; 
 	}
 	public remCollection(group: string, col: string) {
 		
