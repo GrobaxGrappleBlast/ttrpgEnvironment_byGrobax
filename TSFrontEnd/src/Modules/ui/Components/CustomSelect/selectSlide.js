@@ -69,7 +69,8 @@ export function selectSlide(node , params , isInTransition = false ) {
         const transform  = `translateY(${height}px) translateY(${(button.getBoundingClientRect().height) * (goUp ? -1 : 0) - (goUp ? 20 : 0 ) }px) `; ;
         node.style.transform = transform;
         node.style.width = button.getBoundingClientRect().width + 'px';
-
+        node.style.maxHeight = maxHeight + 'px';
+        
         transformOrigin = goUp ? 'bottom left' : 'top left';
         existingTransform = getComputedStyle(node).transform.replace('none', '');
     }else{

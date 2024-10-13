@@ -1,6 +1,5 @@
 <script lang="ts">
     import { slide } from "svelte/transition";
-    import { IViewElementUpdateable } from "../../../graphDesigner/UIGraphItems";
     import { tooltip } from "../Messages/toolTip";
 	import Image_trash from "../buttons/trash.svelte";
 	import Image_minus from "../buttons/minus.svelte";
@@ -9,6 +8,7 @@
 	import Image_save from "../buttons/download.svelte"; 
     import { onDestroy, onMount } from "svelte";
     import { StringFunctions } from "../../../../../src/Modules/core/BaseFunctions/stringfunctions";
+    import { IViewElementUpdateable } from "../../../../../src/Modules/graphDesigner/UIComposition/Various";
 
 
 	export let editIsActive 			: boolean;

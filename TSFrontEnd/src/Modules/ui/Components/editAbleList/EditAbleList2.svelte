@@ -8,13 +8,13 @@
     import { slide } from "svelte/transition";
     import { createEventDispatcher, onDestroy, onMount } from "svelte";  
 	
-	import { tooltip } from '../Messages/toolTip.js';
-    import { IViewElementUpdateable } from "../../../graphDesigner/UIGraphItems";
+	import { tooltip } from '../Messages/toolTip.js'; 
     
     import { StringFunctions } from "../../../../../src/Modules/core/BaseFunctions/stringfunctions";
     import EditAbleList from "./EditAbleList.svelte";
     import EditAbleListRow from "./EditAbleListRow.svelte";
     import { flip } from "svelte/animate";
+    import { IViewElementUpdateable } from "../../../../../src/Modules/graphDesigner/UIComposition/Various";
 
 
 	export let isEditableContainer:boolean = true;

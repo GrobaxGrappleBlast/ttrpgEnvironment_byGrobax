@@ -100,7 +100,7 @@
 
     <div class={ isEditableContainer ? "GrobsInteractiveContainer editableTable" : "editableTable"} >
 			{#each _collection as e ( e.key ) }
-				<div
+				<button
 					class="Editable_row" 
 					data-selected={ e.isSelected }
 					transition:slide 
@@ -116,7 +116,7 @@
 					> 
 						{e.name}
 					</div>
-				</div>
+				</button>
 			{/each}
 			{#if onAdd != null }
 				<div

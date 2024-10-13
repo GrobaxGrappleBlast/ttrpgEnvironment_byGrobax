@@ -242,6 +242,7 @@ export class DerivedCollectionController {
 			return false ;
 		}
 		else {
+
 			try {
 				// type declaration
 				type resDataPoint = {name:string, deps:Record<string,GrobJNodeType> }
@@ -267,7 +268,9 @@ export class DerivedCollectionController {
 						});
 					}
 				});
-			} catch (e){
+
+				this.system?.getGroup('derived').update();
+			} catch (e){ 
 				success = false;
 			}
 		}

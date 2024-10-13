@@ -38,6 +38,7 @@
 
 	function unloadPreview(){
 		activePreview = nullpreview
+		factory = null;
 	}
 	async function onSelectSystem( d ){
 		const pre = availSystems.find( p => p.code == d); 
@@ -108,7 +109,7 @@
 		
 	</section>
 
-	{#if factory }
+	{#if factory && activePreview != nullpreview }
 		<section transition:slide >
 			<div>
 				<SystemDesigner3Parts 

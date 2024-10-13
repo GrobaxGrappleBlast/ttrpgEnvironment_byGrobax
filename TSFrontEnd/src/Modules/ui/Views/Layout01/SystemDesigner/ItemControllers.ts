@@ -5,8 +5,9 @@ import { GrobJDerivedNode, GrobJFixedNode, GrobJNodeType } from '../../../../gra
 import StaticMessageHandler from '../../../Components/Messages/StaticMessageHandler.svelte'
 import { GrobDerivedNode, GrobFixedNode, GrobNodeType } from 'ttrpg-system-graph';
 import { AGrobNode } from 'ttrpg-system-graph/dist/Nodes/AGrobNodte';
-import { UINode, UISystem } from 'src/Modules/graphDesigner/UIGraphItems';
-
+import { UINode } from '../../../../../../src/Modules/graphDesigner/UIComposition/UINode';
+import { UISystem } from '../../../../../../src/Modules/graphDesigner/UIComposition/UISystem';
+ 
 
 class AItemController<T extends AGrobNode<T>> {
 
@@ -252,9 +253,11 @@ export class DerivedItemController	extends AItemController<GrobDerivedNode> {
 		this.node.setValue	( get(this.standardValue) );
 		this.node.setCalc	( get(this.calc) );
 		let NMap = get(this.mappedOrigins).filter( p => p.inCalc ); 
+		
 		NMap.forEach( o => {
+			
 			// @ts-ignore
-			let dep = this.system.getNode(o.segments[0] as any,o.segments[1] as any ,o.segments[2] as any) ;
+			let dep = this.system.sys.getNode(o.segments[0] as any,o.segments[1] as any ,o.segments[2] as any) ;
 			// @ts-ignore
 			this.node.setOrigin( o.key , dep , o.testValue ?? 0 );
 		});  

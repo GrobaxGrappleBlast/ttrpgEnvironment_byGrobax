@@ -1,6 +1,5 @@
 <script lang="ts">
     import { TTRPGSystemJSONFormatting } from "../../../../../../src/Modules/graphDesigner";
-    import { UICollection, UIGroup, UINode, UISystem } from "../../../../graphDesigner/UIGraphItems";
     import EditAbleList2 from "../../../../../../src/Modules/ui/Components/editAbleList/EditAbleList2.svelte";
     import ToogleSection from "../../../../../../src/Modules/ui/Components/toogleSection/toogleSection.svelte";
     import { slide } from "svelte/transition";
@@ -11,6 +10,9 @@
     import DerivedCollectionDesigner from "./DerivedCollectionDesigner.svelte";
     import { onDestroy, onMount } from "svelte";
     import { Layout01Context } from "../context";
+    import { UISystem } from "../../../../../../src/Modules/graphDesigner/UIComposition/UISystem";
+    import { UICollection } from "../../../../../../src/Modules/graphDesigner/UIComposition/UICollection";
+    import { UINode } from "../../../../../../src/Modules/graphDesigner/UIComposition/UINode";
 
     export let context	: Layout01Context; 
     export let system : TTRPGSystemJSONFormatting;
@@ -129,6 +131,7 @@
 	{#if specialOn}
 		<div >
 			<DerivedCollectionDesigner 
+				context={context}
 				system={system}
 				secondSlideInReady={true}
 				messageHandler = {messageHandler}
@@ -165,9 +168,10 @@
 						on:onDeSelect	={ ( ) => { _nodSelect('fixed',null);}}
 					/>
 				</div>
-				{#key fixedNod?.key}
-					{#if fixedNod }
-						<div transition:slide|local >
+				{#if fixedNod }
+					{#key fixedNod?.key}
+				
+						<div transition:slide >
 							<FixedItemDesigner 
 								bind:this={designerFixed}
 								node	= {fixedNod}
@@ -179,8 +183,9 @@
 								}}
 							/>
 						</div>
-					{/if}
-				{/key}
+					
+					{/key}
+				{/if}
 			</ToogleSection>
 
 			<ToogleSection 
@@ -216,22 +221,19 @@
 							on:onDeSelect	={ ( ) => { }}
 						/> 
 				</div>
-				{#key derivedNod?.key}
-					{#if derivedNod }
-						<div transition:slide|local >
+				{#if derivedNod }
+					{#key derivedNod?.key}
+				
+						<div transition:slide >
 							<DerivedItemDesigner 
 								bind:this={designerDerived}
 								node	= {derivedNod}
 								system	= {uiSystem}
 								context = {context}
-								on:save={(e)=>{ 
-									const data = e.detail;  
-									uiSystem.renameItem('derived',derivedCol?.name?? '',data.oldName, data.newName);
-								}}
 							/>
 						</div>
-					{/if}
-				{/key}
+					{/key}
+				{/if}
 			</ToogleSection>
 		</div>
 	{/if}

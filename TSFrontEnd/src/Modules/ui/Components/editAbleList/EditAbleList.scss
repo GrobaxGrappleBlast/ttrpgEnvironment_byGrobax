@@ -7,9 +7,9 @@
 }
 
 .Editable_row{
+	border:none;
 	width: calc(100% - #{$standardPaddingSmall});
 	padding:$standardPaddingSmall;
-	padding-left:5px;
 	cursor:pointer;
 	display: grid;
 	grid-template-columns: auto 30px ; 

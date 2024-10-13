@@ -5,8 +5,9 @@
     import { GrobJFixedNode, GrobJNodeType, TTRPGSystemJSONFormatting } from '../../../../../../src/Modules/graphDesigner';
 	import StaticMessageHandler from '../../../../../../src/Modules/ui/Components/Messages/StaticMessageHandler.svelte'
     import { FixedItemController } from './ItemControllers';
-    import { UINode, UISystem } from '../../../../../../src/Modules/graphDesigner/UIGraphItems';
-
+    import { UINode } from '../../../../../../src/Modules/graphDesigner/UIComposition/UINode';
+    import { UISystem } from '../../../../../../src/Modules/graphDesigner/UIComposition/UISystem';
+ 
 	export let node : UINode;
 	export let system : UISystem; 
 	export let secondSlideInReady = false;
@@ -83,4 +84,5 @@
 		<button on:click={ onSave } disabled={!$controllerIsValid} >save changes</button> 
 		<button>delete</button> 
 	</div>
+	<br><br>
 </div> 
