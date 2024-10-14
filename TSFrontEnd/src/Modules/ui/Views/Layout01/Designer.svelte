@@ -6,7 +6,7 @@
     import { writable } from 'svelte/store';
 	import Menu from './Views/Menu/Menu.svelte';
     import { Layout01Context } from './context';
-	import {slidefade} from '../../../../../src/Modules/ui/Components/Transitions/SlideFly.js';
+	import {pageSlide} from '../../../../../src/Modules/ui/Components/Transitions/pageSlide.js';
     import { onMount } from 'svelte';
 
 	let page = writable( 'system');
@@ -26,6 +26,7 @@
 	
 	<!-- Menu -->
 	<Menu 
+		title={'TTP-RPG System Designer'}
 		regularOptions={['home','system','data tables','export','import']}
 		on:changePage={changePage}
 		startChosen={$page}	
@@ -33,11 +34,11 @@
 	
 	<section class="MainAppContainerPages">
 		{#if 		$page == 'home'}
-			<div in:slidefade={{x:100}} out:slidefade={{x:-100}} >
-				<!--HomePage /-->
+			<div transition:pageSlide >
+				<HomePage /> 
 			</div>
 		{:else if	$page == 'system'}
-			<div in:slidefade={{x:100}} out:slidefade={{x:-100}} >
+			<div transition:pageSlide>
 				<SystemPage
 					context = {context}
 				/>

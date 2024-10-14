@@ -2,11 +2,12 @@
 	import { get, writable, type Writable } from 'svelte/store'; 
 	 
     import { createEventDispatcher, onDestroy, onMount } from "svelte";
-    import { GrobJFixedNode, GrobJNodeType, TTRPGSystemJSONFormatting } from '../../../../../../src/Modules/graphDesigner';
-	import StaticMessageHandler from '../../../../../../src/Modules/ui/Components/Messages/StaticMessageHandler.svelte'
+
     import { FixedItemController } from './ItemControllers';
-    import { UINode } from '../../../../../../src/Modules/graphDesigner/UIComposition/UINode';
-    import { UISystem } from '../../../../../../src/Modules/graphDesigner/UIComposition/UISystem';
+	import { GrobJFixedNode, GrobJNodeType, TTRPGSystemJSONFormatting } from '../../../../../../../../../src/Modules/graphDesigner';
+	import StaticMessageHandler 										from '../../../../../../../../../src/Modules/ui/Components/Messages/StaticMessageHandler.svelte'
+    import { UINode }													from '../../../../../../../../../src/Modules/graphDesigner/UIComposition/UINode';
+    import { UISystem }													from '../../../../../../../../../src/Modules/graphDesigner/UIComposition/UISystem';
  
 	export let node : UINode;
 	export let system : UISystem; 

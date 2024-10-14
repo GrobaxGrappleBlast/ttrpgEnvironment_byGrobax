@@ -9,10 +9,12 @@
     import { Layout01Context } from "../../context";
     import { TTRPGSystemJSONFormatting } from 	"../../../../../../../src/Modules/graphDesigner/index";
     import { SystemPreview } from 				"../../../../../../../src/Modules/core/model/systemPreview";
-    import SystemDesigner3Parts from "../../SystemDesigner/SystemDesigner3Parts.svelte";
-
-	//let messageHandler : StaticMessageHandler;
-	
+    
+    import Menu from "../Menu/Menu.svelte";
+    import { pageSlide } from 	"../../../../../../../src/Modules/ui/Components/Transitions/pageSlide";
+    import SystemDesigner3Parts from "./SystemPage/SystemDesigner/SystemDesigner3Parts.svelte";
+    import SystemExporter from "./SystemPage/SystemExporter/SystemExporter.svelte";
+    
 	export let context	: Layout01Context; 
 	let activeSystem : TTRPGSystemJSONFormatting = context.activeSystem;
 	let availSystems : SystemPreview[] = [];
@@ -59,6 +61,11 @@
 		return true;
 	}
 
+	let editPages = ['designer','UI-designer','test']
+	let activeSubPage = 'designer';
+	function changePage( event ){
+		activeSubPage = event.detail;
+	}
 	//@ts-ignore This is for rendering the unknown strnig
 	nullpreview.isEditable = null;
 
@@ -103,20 +110,34 @@
 				onSelect={ (e) => {onSelectSystem(e) ; return true; } } 
 				on:onDeSelect={ unloadPreview }
 			/> 
-		</div> 
-
-
-		
+		</div>  
 	</section>
-
 	{#if factory && activePreview != nullpreview }
+		
 		<section transition:slide >
-			<div>
+		<Menu  
+			regularOptions={editPages}
+			on:changePage={changePage}
+			startChosen={activeSubPage}	
+		/> 
+		{#if activeSubPage == 'designer'}
+			<div transition:pageSlide >
 				<SystemDesigner3Parts 
-					system={ factory }
-					context = {context}
+					system	={ factory }
+					context ={ context }
 				/>
 			</div>
+		{:else if activeSubPage == 'UI-designer'}
+			<div transition:pageSlide >
+				<SystemExporter 
+				
+				/>
+			</div>
+		{:else if activeSubPage == 'test'}
+			<div transition:pageSlide >
+				<h1>asdadsadsasdadsasdauuuuh</h1>
+			</div>
+		{/if}
 		</section>
 	{/if}
 </div>

@@ -3,6 +3,8 @@
     import MenuBtn from "./MenuBtn.svelte";
     import { on } from "events";
 
+
+	export let title:string|null = null;
 	export let regularOptions : string[] = []
 	export let specialOptions : string[] = [];
 	export let startChosen : string = "";
@@ -34,16 +36,11 @@
 	})
 </script>
 <div class="Menu" >
-	<div class="MenuTitle" >
-		<p>TTP-RPG System Designer</p>
-		<div class="colorscheme">
-			<div></div>
-			<div></div>
-			<div></div>
-			<div></div>
-			<div></div>
+	{#if title}
+		<div class="MenuTitle" >
+			<p>{title}</p>
 		</div>
-	</div>
+	{/if}
 	<section class="MenuBtnContainer" >
 		{#each options as opt,i }
 			<MenuBtn 

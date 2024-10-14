@@ -1,12 +1,12 @@
 
 import { get, writable, type Writable } from 'svelte/store'; 
 import { createEventDispatcher, onMount } from "svelte";
-import { GrobJDerivedNode, GrobJFixedNode, GrobJNodeType } from '../../../../graphDesigner';
+import { GrobJDerivedNode, GrobJFixedNode, GrobJNodeType } from '../../../../../../../graphDesigner';
 import StaticMessageHandler from '../../../Components/Messages/StaticMessageHandler.svelte'
 import { GrobDerivedNode, GrobFixedNode, GrobNodeType } from 'ttrpg-system-graph';
 import { AGrobNode } from 'ttrpg-system-graph/dist/Nodes/AGrobNodte';
-import { UINode } from '../../../../../../src/Modules/graphDesigner/UIComposition/UINode';
-import { UISystem } from '../../../../../../src/Modules/graphDesigner/UIComposition/UISystem';
+import { UINode } from '../../../../../../../graphDesigner/UIComposition/UINode';
+import { UISystem } from '../../../../../../../graphDesigner/UIComposition/UISystem';
  
 
 class AItemController<T extends AGrobNode<T>> {

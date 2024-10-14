@@ -5,12 +5,12 @@
     import { flip } from 'svelte/animate';  
     import { createEventDispatcher , onMount } from "svelte";
     import { DerivedItemController, originRowData } from './ItemControllers';
-    import { GrobJDerivedNode, TTRPGSystemJSONFormatting } from '../../../../../../src/Modules/graphDesigner';
-	import StaticMessageHandler from '../../../../../../src/Modules/ui/Components/Messages/StaticMessageHandler.svelte'
-    import OriginRow from '../Views/OriginRow/OriginRow.svelte';
-    import { Layout01Context } from '../context';
-    import { UISystem } from '../../../../../../src/Modules/graphDesigner/UIComposition/UISystem';
-    import { UINode } from '../../../../../../src/Modules/graphDesigner/UIComposition/UINode';
+    import { GrobJDerivedNode, TTRPGSystemJSONFormatting } 	from '../../../../../../../../../src/Modules/graphDesigner';
+	import StaticMessageHandler 							from '../../../../../../../../../src/Modules/ui/Components/Messages/StaticMessageHandler.svelte'
+    import OriginRow 										from '../../../../Views/OriginRow/OriginRow.svelte';
+    import { Layout01Context } 								from '../../../../context';
+    import { UISystem }										from '../../../../../../../../../src/Modules/graphDesigner/UIComposition/UISystem';
+    import { UINode }										from '../../../../../../../../../src/Modules/graphDesigner/UIComposition/UINode';
 
 	export let node		: UINode;
 	export let system	: UISystem; 

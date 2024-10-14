@@ -1,23 +1,27 @@
 <script lang="ts">
-    import { TTRPGSystemJSONFormatting } from "../../../../../../src/Modules/graphDesigner";
-    import EditAbleList2 from "../../../../../../src/Modules/ui/Components/editAbleList/EditAbleList2.svelte";
-    import ToogleSection from "../../../../../../src/Modules/ui/Components/toogleSection/toogleSection.svelte";
     import { slide } from "svelte/transition";
     import FixedItemDesigner from "./FixedItemDesigner.svelte";
-	import StaticMessageHandler from '../../../../../../src/Modules/ui/Components/Messages/StaticMessageHandler.svelte'
     import DerivedItemDesigner from "./DerivedItemDesigner.svelte";
-    import { StringFunctions } from "../../../../../../src/Modules/core/BaseFunctions/stringfunctions";
     import DerivedCollectionDesigner from "./DerivedCollectionDesigner.svelte";
     import { onDestroy, onMount } from "svelte";
-    import { Layout01Context } from "../context";
-    import { UISystem } from "../../../../../../src/Modules/graphDesigner/UIComposition/UISystem";
-    import { UICollection } from "../../../../../../src/Modules/graphDesigner/UIComposition/UICollection";
-    import { UINode } from "../../../../../../src/Modules/graphDesigner/UIComposition/UINode";
+	import { Layout01Context } from "../../../../context";
+
+	import { TTRPGSystemJSONFormatting } 	from "../../../../../../../../../src/Modules/graphDesigner";
+    import EditAbleList2 					from "../../../../../../../../../src/Modules/ui/Components/editAbleList/EditAbleList2.svelte";
+    import ToogleSection 					from "../../../../../../../../../src/Modules/ui/Components/toogleSection/toogleSection.svelte";
+	import StaticMessageHandler 			from '../../../../../../../../../src/Modules/ui/Components/Messages/StaticMessageHandler.svelte'
+    import { StringFunctions } 				from "../../../../../../../../../src/Modules/core/BaseFunctions/stringfunctions";
+	import { UISystem } 					from "../../../../../../../../../src/Modules/graphDesigner/UIComposition/UISystem";
+    import { UICollection } 				from "../../../../../../../../../src/Modules/graphDesigner/UIComposition/UICollection";
+    import { UINode } 						from "../../../../../../../../../src/Modules/graphDesigner/UIComposition/UINode";
 
     export let context	: Layout01Context; 
     export let system : TTRPGSystemJSONFormatting;
-    let uiSystem = new UISystem(system);
-	let guidKey = 'designer'+StringFunctions.uuidv4();
+    let uiSystem : UISystem | null = context.uiSystem ?? new UISystem(system);
+	let guidKey	: string =  context.uiGuid ?? 'designer'+StringFunctions.uuidv4();
+	context.uiSystem = uiSystem;
+	context.uiGuid = guidKey;
+
 
 	// Derived Fixed Logic
 	let derivedGrp	= uiSystem.groups.find( p => p.name == 'derived');

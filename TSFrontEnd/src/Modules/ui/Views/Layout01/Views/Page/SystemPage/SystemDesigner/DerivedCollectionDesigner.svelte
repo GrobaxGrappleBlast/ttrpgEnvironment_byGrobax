@@ -4,13 +4,14 @@
     import { slide } from 'svelte/transition';
     import { flip } from 'svelte/animate';   
     import { createEventDispatcher, onMount } from "svelte"; 
-    import OriginRow 						from '../Views/OriginRow/OriginRow.svelte';
-	import { TTRPGSystemJSONFormatting } 	from '../../../../../../src/Modules/graphDesigner';
-    import ToogleSection 					from '../../../../../../src/Modules/ui/Components/toogleSection/toogleSection.svelte';
+
     import { DerivedCollectionController, originRowData, selAllInCollectionString } from './DerivedCollectionDesignerController';
-	import StaticMessageHandler	from '../../../Components/Messages/StaticMessageHandler.svelte';
-    import { Layout01Context } from '../context';
-    import { UISystem } from '../../../../../../src/Modules/graphDesigner/UIComposition/UISystem';
+	import StaticMessageHandler				from '../../../../../../Components/Messages/StaticMessageHandler.svelte';
+    import { Layout01Context }				from '../../../../context';
+    import { UISystem }						from '../../../../../../../../../src/Modules/graphDesigner/UIComposition/UISystem';
+	import OriginRow 						from '../../../../Views/OriginRow/OriginRow.svelte';
+	import { TTRPGSystemJSONFormatting } 	from '../../../../../../../../../src/Modules/graphDesigner';
+    import ToogleSection 					from '../../../../../../../../../src/Modules/ui/Components/toogleSection/toogleSection.svelte';
 
 	const dispatch = createEventDispatcher();  
 
