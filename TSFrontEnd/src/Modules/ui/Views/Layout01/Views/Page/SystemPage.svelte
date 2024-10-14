@@ -61,7 +61,7 @@
 		return true;
 	}
 
-	let editPages = ['designer','UI-designer','test']
+	let editPages = ['designer','UI-designer']
 	let activeSubPage = 'designer';
 	function changePage( event ){
 		activeSubPage = event.detail;

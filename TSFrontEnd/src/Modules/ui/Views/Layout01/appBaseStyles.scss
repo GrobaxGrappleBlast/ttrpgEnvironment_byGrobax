@@ -56,6 +56,8 @@ $interactiveSColorHover	: $COLOR3;
 $interactiveColor		: $COLOR3;
 $interactiveColorHover	: $COLOR4;
 
+
+
 $navigationBackgroundActive			:var(--color-green);//var(--interactive-accent);
 $navigationBackgroundActiveHover	:var(--color-cyan);//var(--interactive-accent-hover);
 $navigationSBackgroundActive		:var(--color-green);
@@ -70,14 +72,14 @@ $standardBorderRadius:var(--radius-s);
 	outline: none;
 	
 	border-radius: $standardBorderRadius;
-	background-color: $interactiveColor;
+	background-color: $COLOR5;
 	&:hover{
-		background-color: $interactiveColorHover;
+		background-color: $COLOR3;
 	}
 	&[data-active="true"]{
-		background-color:$navigationBackgroundActive;
+		background-color: $COLOR2;
 		&:hover{
-			background-color: $navigationBackgroundActiveHover;
+			background-color: StrippedBackground( $COLOR3 , lighten($COLOR3,10%)) 
 		}
 	}
 }
