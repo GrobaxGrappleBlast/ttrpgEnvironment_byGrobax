@@ -10,13 +10,15 @@
 	context.API = API;
 	
 </script>
+
 <div id="webContainer">
 	<Designer 
 		context = {context}
 	/>
 </div>
+
 <style>
 	#webContainer{
-		min-height: 100vh; 
+	 
 	}
 </style>

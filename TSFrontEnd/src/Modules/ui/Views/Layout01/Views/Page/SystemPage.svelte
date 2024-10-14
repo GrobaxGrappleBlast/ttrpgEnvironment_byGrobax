@@ -61,6 +61,7 @@
 		return true;
 	}
 
+	let pagesContainer;
 	let editPages = ['designer','UI-designer']
 	let activeSubPage = 'designer';
 	function changePage( event ){
@@ -68,6 +69,7 @@
 	}
 	//@ts-ignore This is for rendering the unknown strnig
 	nullpreview.isEditable = null;
+
 
 </script>
 
@@ -114,30 +116,32 @@
 	</section>
 	{#if factory && activePreview != nullpreview }
 		
-		<section transition:slide >
-		<Menu  
-			regularOptions={editPages}
-			on:changePage={changePage}
-			startChosen={activeSubPage}	
-		/> 
-		{#if activeSubPage == 'designer'}
-			<div transition:pageSlide >
-				<SystemDesigner3Parts 
-					system	={ factory }
-					context ={ context }
-				/>
-			</div>
-		{:else if activeSubPage == 'UI-designer'}
-			<div transition:pageSlide >
-				<SystemExporter 
-				
-				/>
-			</div>
-		{:else if activeSubPage == 'test'}
-			<div transition:pageSlide >
-				<h1>asdadsadsasdadsasdauuuuh</h1>
-			</div>
-		{/if}
+		<section>
+			<Menu  
+				regularOptions={editPages}
+				on:changePage={changePage}
+				startChosen={activeSubPage}	
+			/> 
+		</section>
+		<section bind:this={pagesContainer} >
+			{#if activeSubPage == 'designer'}
+				<div transition:pageSlide={{parent:pagesContainer}} >
+					<SystemDesigner3Parts 
+						system	={ factory }
+						context ={ context }
+					/>
+				</div>
+			{:else if activeSubPage == 'UI-designer'}
+				<div transition:pageSlide={{parent:pagesContainer}} >
+					<SystemExporter 
+					
+					/>
+				</div>
+			{:else if activeSubPage == 'test'}
+				<div transition:pageSlide={{parent:pagesContainer}} >
+					<h1>asdadsadsasdadsasdauuuuh</h1>
+				</div>
+			{/if}
 		</section>
 	{/if}
 </div>

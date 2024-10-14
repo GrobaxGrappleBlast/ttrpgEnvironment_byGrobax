@@ -103,7 +103,7 @@
 				<button
 					class="Editable_row" 
 					data-selected={ e.isSelected }
-					transition:slide 
+					transition:slide|local
 					data-can-hover={true}
 				>
 					<div
@@ -122,7 +122,7 @@
 				<div
 					class="Editable_row Editable_rowPlusButton"
 					data-selected={ false }
-					transition:slide
+					transition:slide|local
 					data-can-hover={true}
 					style="display:flex;justify-content: center;"
 					on:click={ () => _onAdd() }

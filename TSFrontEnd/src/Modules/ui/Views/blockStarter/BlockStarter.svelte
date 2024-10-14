@@ -190,7 +190,7 @@
 				</div>
 				<div>
 					{#if selected_system && layouts }
-						<select transition:slide  on:change={ onChangeSelectLayout }>
+						<select transition:slide|local  on:change={ onChangeSelectLayout }>
 							<option value="-1"> Select a Layout </option>
 								{#each layouts as lay }
 									<option value={lay.id} >{ lay.name }</option>
@@ -208,7 +208,7 @@
 		</div>	
 		<div style="height:10px;" ></div>
 		{#if selectedLayout }
-			<div transition:slide>
+			<div transition:slide|local>
 				<button
 				class="ColoredInteractive" data-color="green"
 				on:click={ () => saveAndLoad() }>Save , Write And Load</button>

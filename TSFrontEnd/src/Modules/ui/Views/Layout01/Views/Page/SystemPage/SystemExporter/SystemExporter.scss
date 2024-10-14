@@ -21,9 +21,9 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    border-radius:  0 0 5px 5px ;
+    border-radius:5px;
     color:$COLOR4;
     cursor: pointer;
     float:right;
-    filter:drop-shadow(2px 7px 2px #1112);
+    filter:drop-shadow(2px 7px 2px #1112); 
 }

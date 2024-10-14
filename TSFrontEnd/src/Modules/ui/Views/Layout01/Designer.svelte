@@ -21,6 +21,7 @@
 		context.mainAppContainer = mainAppContainer;
 	})
 
+	let pagesContainer;
  </script>
 <div id="MainAppContainer" bind:this={mainAppContainer}>
 	
@@ -30,15 +31,14 @@
 		regularOptions={['home','system','data tables','export','import']}
 		on:changePage={changePage}
 		startChosen={$page}	
-	/>
-	
-	<section class="MainAppContainerPages">
+	/> 
+	<section class="MainAppContainerPages" bind:this={pagesContainer}>
 		{#if 		$page == 'home'}
-			<div transition:pageSlide >
+			<div transition:pageSlide={{parent:pagesContainer}} >
 				<HomePage /> 
 			</div>
 		{:else if	$page == 'system'}
-			<div transition:pageSlide>
+			<div transition:pageSlide={{parent:pagesContainer}}>
 				<SystemPage
 					context = {context}
 				/>

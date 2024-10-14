@@ -1,6 +1,7 @@
 <script lang="ts">
     import { slide } from "svelte/transition";
 	import EditAbleList from "../../../../../../../../../src/Modules/ui/Components/editAbleList/EditAbleList.svelte";
+    import SubSystemImporter from "./SubSystemImporter.svelte";
 
 	class subpages {
 		public static importer = 'importer';
@@ -90,21 +91,9 @@
 		</div>
 	{:else if subpage == subpages.importer }
 		<div transition:slide|local >
-			<section>
-				<div 
-					class="SystemExporterOptionsCloseBtn"
-					on:click={()=>enableSubPage('')}
-					on:keypress
-				>
-					X
-				</div>
-				<div>
-					<div>
-						use this as a base for a ui theme that can be used for character sheets. 
-					</div>
-				</div>
-				
-			</section>  
+			<SubSystemImporter 
+				on:pageclose={ ()=>enableSubPage('') }
+			/>
 		</div>
 	{/if}
 </div>
