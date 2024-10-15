@@ -4,8 +4,10 @@
 	
 	let dispatch = createEventDispatcher();
 
-
 	let dropZone;
+	let dragActive = false;
+	/*
+	
 	['dragenter', 'dragover', 'dragleave', 'drop'].forEach(eventName => {
 		dropZone.addEventListener(eventName, preventDefaults, false);
 		//document.body.addEventListener(eventName, preventDefaults, false);
@@ -20,18 +22,27 @@
 		dropZone.classList.remove('hover');
 	}); 
 	dropZone.addEventListener('drop', handleDrop, false);
-	function preventDefaults(e) {
+	*/
+	function pd(e) {
 		e.preventDefault();
 		e.stopPropagation();
 	}
+	
 
 	// Handle the files dropped
-	function handleDrop(e) {
+	function drop(e) {
+		e.preventDefault();
+		e.stopPropagation();
+
 		const dt = e.dataTransfer;
-		const files = dt.files;
+		
 
-
-		debugger 
+		//const reader = dt.items[0].webkitGetAsEntry().createReader();
+		//reader.readEntries( (entries)=>{
+		//	console.log(entries);
+		//})
+//
+		//console.log(reader)
 	}
 
 
@@ -46,8 +57,16 @@
 	>
 		X
 	</div>
-	
-	<div class="ImportDropZone" bind:this={dropZone}>
+	<br><br>
+	<div 
+		class="ImportDropZone" 
+		bind:this={dropZone}
+		data-dragActve={dragActive}
+		on:dragover		= { (e) => { pd(e); dragActive = true  } }	
+		on:dragend		= { (e) => { pd(e); dragActive = false } }
+		on:dragleave	= { (e) => { pd(e); dragActive = false } }
+		on:drop			= { (e) => { drop(e); dragActive = false  } }
+	>
 	
 
 	</div>
@@ -60,12 +79,13 @@
 	
 </section>  
 <style>
-	#ImportDropZone{
-		height:100px;
-		width:100%;
+	.ImportDropZone{
+		height:100px; 
 		padding:20px;
-		border:1px solid red;
-		margin:20px;
+		border:2px solid red;
+		margin:20px; 
+		background-color: white;
+		border-radius: 5px;
 	}
 
 </style>
