@@ -496,3 +496,23 @@ Stack Trace:    at MySql.Data.MySqlClient.NativeDriver.<>c.<OpenAsync>b__38_0(Ex
 
 ---------------------
 
+----- Error Log -----
+Timestamp: 10/15/2024 5:40:28 PM
+Error Message: Reading from the stream has failed.
+Stack Trace:    at MySql.Data.MySqlClient.MySqlStream.LoadPacketAsync(Boolean execAsync)
+   at MySql.Data.MySqlClient.MySqlStream.ReadPacketAsync(Boolean execAsync)
+   at MySql.Data.MySqlClient.NativeDriver.OpenAsync(Boolean execAsync, CancellationToken cancellationToken)
+   at MySql.Data.MySqlClient.Driver.OpenAsync(Boolean execAsync, CancellationToken cancellationToken)
+   at MySql.Data.MySqlClient.Driver.CreateAsync(MySqlConnectionStringBuilder settings, Boolean execAsync, CancellationToken cancellationToken)
+   at MySql.Data.MySqlClient.Driver.CreateAsync(MySqlConnectionStringBuilder settings, Boolean execAsync, CancellationToken cancellationToken)
+   at MySql.Data.MySqlClient.MySqlPool.CreateNewPooledConnectionAsync(Boolean execAsync, CancellationToken cancellationToken)
+   at MySql.Data.MySqlClient.MySqlPool.GetPooledConnectionAsync(Boolean execAsync, CancellationToken cancellationToken)
+   at MySql.Data.MySqlClient.MySqlPool.TryToGetDriverAsync(Boolean execAsync, CancellationToken cancellationToken)
+   at MySql.Data.MySqlClient.MySqlPool.GetConnectionAsync(Boolean execAsync, CancellationToken cancellationToken)
+   at MySql.Data.MySqlClient.MySqlConnection.OpenAsync(Boolean execAsync, CancellationToken cancellationToken)
+   at MySql.Data.MySqlClient.MySqlConnection.Open()
+   at srcServer.core.fileHandler.DAO.LoadAllAvailableSystems() in /home/hans/projects/ttrpgEnvironment_byGrobax/srcFileServer/main/src/core/DAO/DAO.cs:line 24
+   at srcServer.Controllers.SystemDefinitions.GetAllSystems() in /home/hans/projects/ttrpgEnvironment_byGrobax/srcFileServer/main/src/controllers/TemplateFetchers.cs:line 23
+
+---------------------
+

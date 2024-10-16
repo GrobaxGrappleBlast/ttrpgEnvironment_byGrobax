@@ -134,6 +134,7 @@
 			{:else if activeSubPage == 'UI-designer'}
 				<div transition:pageSlide={{parent:pagesContainer}} >
 					<SystemExporter 
+						context={context}
 					
 					/>
 				</div>

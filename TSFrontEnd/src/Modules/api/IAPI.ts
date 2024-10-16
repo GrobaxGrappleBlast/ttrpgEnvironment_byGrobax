@@ -1,3 +1,4 @@
+import { promises } from "dns";
 import { SystemPreview } from "../core/model/systemPreview";
 
 
@@ -20,4 +21,6 @@ export interface IAPI{
 	getSystemUIs( preview : SystemPreview );
 
 	getFactory( preview : SystemPreview );
+
+	adminSendBlockUITemplate( formData : FormData ) : Promise<APIReturnModel<boolean> >;
 }

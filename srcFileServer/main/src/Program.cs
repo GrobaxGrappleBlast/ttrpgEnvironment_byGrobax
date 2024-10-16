@@ -1,6 +1,7 @@
 using srcServer.core.fileHandler;
+using srcServer.repositories;
 
-  
+
 var builder = WebApplication.CreateBuilder( args );
 builder.Services.AddControllers();
 IConfiguration configuration = new ConfigurationBuilder()
@@ -9,6 +10,8 @@ IConfiguration configuration = new ConfigurationBuilder()
 		.Build();
 builder.Services.AddSingleton<IConfiguration>(configuration);
 builder.Services.AddSingleton<DAO, DAO>();  // Custom service
+builder.Services.AddScoped<TemplateRepository,TemplateRepository>();
+
 
 builder.Services.AddCors(options =>
 {

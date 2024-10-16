@@ -2,7 +2,9 @@
     import { slide } from "svelte/transition";
 	import EditAbleList from "../../../../../../../../../src/Modules/ui/Components/editAbleList/EditAbleList.svelte";
     import SubSystemImporter from "./SubSystemImporter.svelte";
+    import { Layout01Context } from "../../../../context";
 
+	export let context :Layout01Context;
 	class subpages {
 		public static importer = 'importer';
 		public static exporter = 'exporter';
@@ -93,6 +95,7 @@
 		<div transition:slide|local >
 			<SubSystemImporter 
 				on:pageclose={ ()=>enableSubPage('') }
+				context={context}
 			/>
 		</div>
 	{/if}

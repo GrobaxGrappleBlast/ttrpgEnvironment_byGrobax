@@ -11,6 +11,9 @@ export class ObsidianAPI implements IAPI{
 	public constructor(pluginHandler : PluginHandler ){
 		this.pluginHandler = pluginHandler;
 	}
+	adminSendBlockUITemplate(formData: FormData) {
+		throw new Error("Method not implemented.");
+	}
 
 	getSystemUIs(preview: SystemPreview) {
 		throw new Error("Method not implemented.");
