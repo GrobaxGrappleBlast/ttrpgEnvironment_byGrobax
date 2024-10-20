@@ -24,7 +24,7 @@ namespace srcServer.Controllers
 		public async Task<IActionResult> GetAllSystems()
 		{
 			try {
-				var systems = _db.definition.ToList();
+				var systems = _db.systemDefinitions.ToList();
 				return Ok(systems);
 			} 	
 			catch(TTRPGSystemException e){
@@ -100,7 +100,7 @@ namespace srcServer.Controllers
 				return BadRequest(e.Message );
 			}
 			catch(Exception e){
-				Logger.LogError(e, $"input: definition={ definition } " );
+				Logger.LogError(e, $"input: id ={definition} " );
 				return BadRequest("Something went wrong2");
 			}
 		}

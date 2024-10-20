@@ -21,7 +21,7 @@ namespace srcServer.repositories
 
 		public SystemDefinitionDTO EditSystem( SystemDefinitionDTO sys ){
 
-			var dSys = _db.definition.FirstOrDefault(p => p.code == sys.code );
+			var dSys = _db.systemDefinitions.FirstOrDefault(p => p.code == sys.code );
 			if(dSys == null)
 				throw new TTRPGSystemException("no System definition with code:" + sys.code);
 
@@ -40,17 +40,17 @@ namespace srcServer.repositories
 		}
 		public void DeleteSystem( Guid code ){
 
-			var sys = _db.definition.FirstOrDefault(p => p.code == code );
+			var sys = _db.systemDefinitions.FirstOrDefault(p => p.code == code );
 			if (sys == null)
 			 	throw new TTRPGSystemException("no System definition with code:" + code);
 
-			_db.definition.Remove(sys);
+			_db.systemDefinitions.Remove(sys);
 			_db.SaveChanges();
 			
 		}
 		public SystemDefinitionDTO CopySystem( Guid code ){
 
-			var sys = _db.definition.Include(f=>f._ef_Factory).FirstOrDefault( p => p.code == code );
+			var sys = _db.systemDefinitions.Include(f=>f._ef_Factory).FirstOrDefault( p => p.code == code );
 			if (sys == null)
 		        throw new TTRPGSystemException("No System definition with code: " + code);
 
@@ -68,20 +68,26 @@ namespace srcServer.repositories
 				nSys._ef_Factory = nFac;
 			}
 
-			_db.definition.Add(nSys);
+			_db.systemDefinitions.Add(nSys);
     		_db.SaveChanges();
 			
-			return _db.definition.Find(nSys.id); 
+			return _db.systemDefinitions.Find(nSys.id); 
 		}
 		public SystemFactoryDTO getFactory( int id ){
-			SystemFactoryDTO? fac = _db.factory.Find(id);
+
+			var definition = _db.systemDefinitions.Include( p => p._ef_Factory ).FirstOrDefault( p => p.id == id);
+			if ( definition == null ){
+				throw new TTRPGSystemException("No SystemDefinition with id " + id);
+			}
+
+			SystemFactoryDTO? fac = definition._ef_Factory;
 			if (fac == null)
 				throw new TTRPGSystemException("No Factory available for this system");
 			return fac;
 		}
 		public SystemFactoryDTO updateFactory( int id , string JSON ){
 			
-			var fac = _db.factory.Find(id);
+			var fac = _db.factories.Find(id);
 			if( fac == null)
 				throw new TTRPGSystemException("no factory available for id");
 			

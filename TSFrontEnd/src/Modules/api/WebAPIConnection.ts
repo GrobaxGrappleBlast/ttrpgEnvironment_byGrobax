@@ -96,6 +96,7 @@ export class WebApiConnection implements IAPI{
 		throw new Error("Method not implemented.");
 	}
 	public async getFactory(preview: SystemPreview) : Promise<APIReturnModel<TTRPGSystemJSONFormatting>> { 
+		
 		let serverResp = await ServerJson.get("api/factory/" + preview.id );
 		if(serverResp.status == 200){ 
 			let json = await serverResp.text();

@@ -16,17 +16,15 @@ CREATE TABLE `TTPRPGSystem`.factories (
 	`JSON`			TEXT DEFAULT '{}' NOT NULL,
 	PRIMARY KEY (`dId`),
   CONSTRAINT `FK_factories_systemDefinitions_dId` FOREIGN KEY (`dId`) REFERENCES `systemDefinitions` (`code`) ON DELETE CASCADE
-)
-ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_general_ci AUTO_INCREMENT=1;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_general_ci AUTO_INCREMENT=1;
 
 CREATE TABLE `TTPRPGSystem`.fileResources (
   `id` INT AUTO_INCREMENT NOT NULL,
   `name` varchar(40) NOT NULL,
   `version` varchar(20) NOT NULL,
-  `data` blob NOT NULL , 
-  PRIMARY KEY (`id`), 
-) 
-ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_general_ci AUTO_INCREMENT=1;
+  `data` MEDIUMBLOB NOT NULL , 
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_general_ci AUTO_INCREMENT=1;
 
 CREATE TABLE `TTPRPGSystem`.UITemplates (
   `id` int AUTO_INCREMENT NOT NULL,
@@ -36,21 +34,20 @@ CREATE TABLE `TTPRPGSystem`.UITemplates (
    PRIMARY KEY (`id`),
   KEY `IX_UITemplates_dId` (`dId`),
   CONSTRAINT `FK_UITemplates_systemDefinitions_dId` FOREIGN KEY (`dId`) REFERENCES `systemDefinitions` (`code`) ON DELETE CASCADE
-)
-ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_general_ci AUTO_INCREMENT=1;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_general_ci AUTO_INCREMENT=1;
 
 CREATE TABLE `TTPRPGSystem`.UITemplateFiles (
   `id`  INT NOT NULL AUTO_INCREMENT,
   `uiId` INT NOT NULL,
-  `dId` char(36) CHARACTER SET ascii COLLATE ascii_general_ci NOT NULL, 
+  `dId` uuid NOT NULL, 
   `name` varchar(40) NOT NULL,
   `version` varchar(20) NOT NULL,
-  `data` blob NOT NULL , 
-  PRIMARY KEY (`id`),
-  KEY `UITemplateFiles_definition` (`definition`),
+  `data` MEDIUMBLOB NOT NULL , 
+  PRIMARY KEY (`id`), 
+  KEY `IX_UITemplateFiles_dId` (`dId`),
   KEY `UITemplateFiles_uiId` (`uiId`),
-  CONSTRAINT `FK_UITemplateFiles_UITemplate_uiId` FOREIGN KEY (`uiId`) REFERENCES `UITemplates` (`id`) ON DELETE CASCADE,
-  CONSTRAINT `FK_UITemplateFiles_systemDefinitions_dId` FOREIGN KEY (`dId`) REFERENCES `systemDefinitions` (`code`) ON DELETE CASCADE
+  CONSTRAINT `FK_UITemplateFiles_UITemplate_uiId`       FOREIGN KEY (`uiId`)  REFERENCES `UITemplates`       (`id`)   ON DELETE CASCADE,
+  CONSTRAINT `FK_UITemplateFiles_systemDefinitions_dId` FOREIGN KEY (`dId`)   REFERENCES `systemDefinitions` (`code`) ON DELETE CASCADE
 ) 
 ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_general_ci AUTO_INCREMENT=1;
 

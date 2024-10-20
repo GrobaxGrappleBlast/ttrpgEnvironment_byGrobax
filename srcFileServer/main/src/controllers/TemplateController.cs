@@ -24,9 +24,6 @@ namespace srcServer.Controllers
 		public async Task<IActionResult> SaveUITemplate( [FromForm] Guid definitionCode ,[FromForm] string name, [FromForm] string version , IFormCollection form){
 			try
 			{
-
-
-
 				IFormFile[] files = form.Files.ToArray<IFormFile>();
 				await _templateRepository.saveUITemplate(definitionCode,name,version,files);
 				return Ok();

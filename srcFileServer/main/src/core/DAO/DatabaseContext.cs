@@ -7,11 +7,11 @@ namespace srcServer.core.database{
 	{
 		public DatabaseContext(DbContextOptions<DatabaseContext> options) : base(options) { }
 
-		public DbSet<SystemDefinitionDTO>	definition { get; set; }
-		public DbSet<SystemFactoryDTO>		factory { get; set; }
-		public DbSet<SystemDefinitionDTO>	fileResources { get; set; }
-		public DbSet<UITemplateDTO>	uiTemplates			{ get; set; }
-		public DbSet<UITemplateFileDTO>	uiTemplateFiles	{ get; set; }
+		public DbSet<SystemDefinitionDTO>	systemDefinitions	{ get; set; }
+		public DbSet<SystemFactoryDTO>		factories			{ get; set; }
+		public DbSet<SystemDefinitionDTO>	fileResources		{ get; set; }
+		public DbSet<UITemplateDTO>			UITemplates			{ get; set; }
+		public DbSet<UITemplateFileDTO>		UITemplateFiles		{ get; set; }
 			
 
 
@@ -27,10 +27,10 @@ namespace srcServer.core.database{
 			modelBuilder.Entity<UITemplateDTO>   	().ToTable("UITemplates")		.HasKey(sf => sf.id);
 			modelBuilder.Entity<UITemplateFileDTO>  ().ToTable("UITemplateFiles")	.HasKey(sf => sf.id);
 
-			modelBuilder.Entity<fileResourcesDTO>	().Property( e => e.data ).HasColumnType("BLOB"); 
+			modelBuilder.Entity<fileResourcesDTO>	().Property( e => e.data ).HasColumnType("MEDIUMBLOB"); 
 			modelBuilder.Entity<SystemDefinitionDTO>().Property( e => e.code ).HasColumnType("uuid");
 			modelBuilder.Entity<SystemDefinitionDTO>().HasIndex( sd => sd.code ).IsUnique();
-			modelBuilder.Entity<UITemplateFileDTO>().Property( e => e.data ).HasColumnType("BLOB");
+			modelBuilder.Entity<UITemplateFileDTO>().Property( e => e.data ).HasColumnType("MEDIUMBLOB");
 
 			// maintain system defition virtual links
 			// systemdefinition to factory
@@ -54,22 +54,21 @@ namespace srcServer.core.database{
 			.HasOne			( utf	=> utf._ef_UITemplate		)
 			.WithMany		( ut	=> ut._ef_UITemplateFiles	)
 			.HasForeignKey	( utf	=> utf.uiId					)
-			.OnDelete		( DeleteBehavior.Cascade);  // Explicit foreign key to UITemplate
+			.OnDelete		( DeleteBehavior.Cascade);  
  
 			modelBuilder.Entity<UITemplateFileDTO>()
 			.HasOne			( utf	=> utf._ef_systemDefinition		)
 			.WithMany		( sd => sd._ef_UITemplateFiles )
 			.HasForeignKey	( utf	=> utf.dId	)
 			.HasPrincipalKey( sd => sd.code )
-			.OnDelete		( DeleteBehavior.Cascade);  // Explicit foreign key to UITemplate
- 
-			// add virtual links between uitemplate and uitemplatefiles
+			.OnDelete		( DeleteBehavior.Cascade);  
+
 			modelBuilder.Entity<UITemplateDTO>()
 			.HasOne			( sd	=> sd._ef_systemDefinition		)
 			.WithMany		( ut	=> ut._ef_UITemplate			)		
 			.HasForeignKey	( sd	=> sd.dId						)
 			.HasPrincipalKey( sd => sd.code)
-			.OnDelete		( DeleteBehavior.Cascade);  // Explicit foreign key to UITemplate
+			.OnDelete		( DeleteBehavior.Cascade);   
 			
 
 

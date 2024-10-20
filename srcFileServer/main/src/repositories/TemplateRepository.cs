@@ -52,14 +52,14 @@ namespace srcServer.repositories
 
 			
 			// first get the definition
-			SystemDefinitionDTO definition = _db.definition.Where(p=>p.code == defCode).First();
+			SystemDefinitionDTO definition = _db.systemDefinitions.Where(p=>p.code == defCode).First();
 			if (definition == null){
 				throw new TTRPGSystemException("No Definition with this Code " + defCode );
 			}
 
 			// see if the ui template exists, with files if it exists. 
 			UITemplateDTO? uiTemplate =
-			_db.uiTemplates
+			_db.UITemplates
 			.Where( p => 
 				p.dId == definition.code &&
 				p.name == UITemplateName &&
@@ -70,7 +70,7 @@ namespace srcServer.repositories
 
 			if ( uiTemplate != null ){
 				// remove this versions old files 
-				_db.uiTemplateFiles.RemoveRange( uiTemplate._ef_UITemplateFiles );
+				_db.UITemplateFiles.RemoveRange( uiTemplate._ef_UITemplateFiles );
 
 			}else{
 				
@@ -80,7 +80,8 @@ namespace srcServer.repositories
 					name = UITemplateName,
 					version = version
 				};
-				_db.uiTemplates.Add(uiTemplate);
+				_db.UITemplates.Add(uiTemplate);
+				await _db.SaveChangesAsync();
 			}
 
 
@@ -93,19 +94,21 @@ namespace srcServer.repositories
 					string fileName = file.FileName;
 
 					var dto = new UITemplateFileDTO{
-						dId	= definition.code,
+						dId			= definition.code,
 						uiId		= uiTemplate.id,
 						name 		= fileName,
 						version 	= version,
 						data		= fileBytes
 					};
 
-					_db.uiTemplateFiles.Add(dto);
+					_db.UITemplateFiles.Add(dto);
+					_db.SaveChanges();
 					// Save the ZIP byte[] to the database
 					// await _dao.SaveFileResouce( "UITemplate","0.0.1", zipBytes);  // Assuming this method saves to your DB
 					//return Ok(new { message = "ZIP file saved to database successfully." });
 				}
 			} 
+			
 		}
 	}
 }
