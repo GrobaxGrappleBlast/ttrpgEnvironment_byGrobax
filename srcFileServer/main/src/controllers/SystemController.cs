@@ -1,7 +1,9 @@
 using System;
 using System.Text.Json;
 using Microsoft.AspNetCore.Mvc;
+using srcServer.core.database;
 using srcServer.core.fileHandler;
+using srcServer.repositories;
 
 namespace srcServer.Controllers
 {
@@ -9,18 +11,20 @@ namespace srcServer.Controllers
 	[Route("api")]
 	public class SystemDefinitions : ControllerBase
 	{
-		private DAO _dao;
-		public SystemDefinitions( DAO dao){
-			_dao = dao;
+
+		private DatabaseContext _db;
+		private SystemsRepository _repo;
+		public SystemDefinitions(  DatabaseContext dbcontext, SystemsRepository repo ){
+			_db = dbcontext;
+			_repo = repo;
 		}
 
 		[HttpGet]
 		[Route("system")]
 		public async Task<IActionResult> GetAllSystems()
 		{
-
 			try {
-				var systems = await _dao.LoadAllAvailableSystems();
+				var systems = _db.definition.ToList();
 				return Ok(systems);
 			} 	
 			catch(TTRPGSystemException e){
@@ -32,12 +36,13 @@ namespace srcServer.Controllers
 			}
 		}
 
+
 		[HttpPut]
 		[Route("system")]
 		public async Task<IActionResult> EditSystem( SystemDefinitionDTO update )
 		{
 			try {
-				var systems = await _dao.updateSystem(update);
+				var systems = _repo.EditSystem(update);
 				return Ok( systems );
 			} 
 			catch(TTRPGSystemException e){
@@ -54,8 +59,8 @@ namespace srcServer.Controllers
 		public async Task<IActionResult> DeleteSystem( SystemDefinitionDTO system )
 		{
 			try {
-				var systems = await _dao.deleteSystem(system);
-				return Ok( systems );
+				_repo.DeleteSystem(system.code);
+				return Ok( );
 			} 	
 			catch(TTRPGSystemException e){
 				return BadRequest(e.Message );
@@ -71,8 +76,8 @@ namespace srcServer.Controllers
 		public async Task<IActionResult> CopySystem( SystemDefinitionDTO system )
 		{
 			try {
-				var systems = await _dao.copySystem(system);
-				return Ok( systems );
+				var cpy =_repo.CopySystem(system.code);
+				return Ok( cpy );
 			} 	
 			catch(TTRPGSystemException e){
 				return BadRequest(e.Message );
@@ -88,8 +93,8 @@ namespace srcServer.Controllers
 		public async Task<IActionResult> getSystemFactory( int definition )
 		{
 			try {
-				var systems = await _dao.getFactory(definition);
-				return Ok( systems.JSON );
+				var factory = _repo.getFactory( definition );
+				return Ok( factory.JSON );
 			} 	
 			catch(TTRPGSystemException e){
 				return BadRequest(e.Message );
@@ -102,11 +107,11 @@ namespace srcServer.Controllers
 
 		[HttpPut] 
 		[Route("factory")]
-		public async Task<IActionResult> supdateSystemFactory( int definition , string JSON )
+		public async Task<IActionResult> updateSystemFactory( int definition , string JSON )
 		{
 			try {
-				var systems = await _dao.updateFactory( definition , JSON );
-				return Ok( systems );
+				var fac = _repo.updateFactory(definition,JSON);
+				return Ok( fac );
 			} 	
 			catch(TTRPGSystemException e){
 				return BadRequest(e.Message );

@@ -28,7 +28,6 @@ public class TestHelper
 			.Build();
 
 		services.AddSingleton<IConfiguration>(configuration);
-		services.AddSingleton<DAO, DAO>();  
 		services.AddControllers();  
 
 		// Build the service provider (DI container) and return it

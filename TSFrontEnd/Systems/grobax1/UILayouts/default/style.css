@@ -516,7 +516,7 @@ body, .obsidianBody {
   padding-left: 10px;
   align-items: center;
   position: relative;
-  
+  margin: 5px;
   min-height: 30px;
 }
 .AddItem[data-editpreview=true] {
@@ -2031,11 +2031,11 @@ body, .obsidianBody {
   justify-content: center;
 }
 .LoadingSpinner .spinner[data-state=ongoing] {
-  color: #afe5a4;
+  color: rgb(175.2880131363, 228.8761904762, 164.1238095238);
   border-radius: 100%;
 }
 .LoadingSpinner .spinner[data-state=finished] {
-  color: #afe5a4;
+  color: rgb(175.2880131363, 228.8761904762, 164.1238095238);
 }
 body, .obsidianBody {
   --callout-bug: var(--color-red-rgb);

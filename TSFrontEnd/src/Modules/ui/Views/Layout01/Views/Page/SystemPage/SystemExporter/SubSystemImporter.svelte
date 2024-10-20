@@ -51,6 +51,8 @@
 	let formData : FormData;
 	let formFiles: string[] = []
 	let formLocked = false;
+	let uiTemplateName = "UITemplateName";
+	let uiTemplateVers = "0.0.1";
 	async function drop(e) {
 
 		e.preventDefault();
@@ -62,9 +64,20 @@
 		}
 		formLocked = true;
 
+
+		// Add formdata and Mandatory fields
+		formData = new FormData();	
+		formData.append('name',uiTemplateName);
+		formData.append('version',uiTemplateVers);
+		debugger
+		formData.append('definitionCode',context.activeSystem.code);
+
+		// name
+		// version 
+		// defination code. 
+
 		try{
 			const dt = e.dataTransfer;	
-			formData = new FormData();	
 			//const reader = dt.items[0].webkitGetAsEntry().createReader();
 			
 			const items =  dt.items;
@@ -144,6 +157,10 @@
 		<div>
 			use this as a base for a ui theme that can be used for character sheets. 
 		</div>
+	</div>
+	<div>
+		<input type="text" bind:value={ uiTemplateName } />
+		<input type="text" bind:value={ uiTemplateVers } />
 	</div>
 	<div>
 		{#each formFiles as file}

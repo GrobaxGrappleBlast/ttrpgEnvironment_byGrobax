@@ -10,11 +10,10 @@
     "isolatedModules": true,
     "strict": false,
     "moduleResolution":"Node",
-    "esModuleInterop": true,
-    "verbatimModuleSyntax":true,
-	"noImplicitAny": false,
-	"skipLibCheck":true,
-	
+    "esModuleInterop": true, 
+    "noImplicitAny": false,
+    "skipLibCheck":true,
+    
   },
   "include": [
     "src/**/*.d.ts",

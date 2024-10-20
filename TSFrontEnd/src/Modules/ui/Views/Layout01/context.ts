@@ -4,7 +4,9 @@ import { TTRPGSystemJSONFormatting } from 	"../../../../../src/Modules/graphDesi
 import { UISystem } from "../../../../../src/Modules/graphDesigner/UIComposition/UISystem";
 
 export class Layout01Context{
-	public activeSystem 	: TTRPGSystemJSONFormatting;
+	public activeFactory 	: TTRPGSystemJSONFormatting;
+	public activeSystem		: SystemPreview;
+
 	public availablePreviews:SystemPreview[];
 	public API : IAPI;
 	public mainAppContainer : HTMLElement;

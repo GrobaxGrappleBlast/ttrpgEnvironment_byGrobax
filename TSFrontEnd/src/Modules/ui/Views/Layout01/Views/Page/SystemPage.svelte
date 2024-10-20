@@ -16,7 +16,7 @@
     import SystemExporter from "./SystemPage/SystemExporter/SystemExporter.svelte";
     
 	export let context	: Layout01Context; 
-	let activeSystem : TTRPGSystemJSONFormatting = context.activeSystem;
+	let activeFactory : TTRPGSystemJSONFormatting = context.activeFactory;
 	let availSystems : SystemPreview[] = [];
 	
 	const nullpreview = new SystemPreview();
@@ -53,6 +53,7 @@
 
 		// select it
 		activePreview = pre;
+		context.activeSystem = pre;
 
 		// request the factory;
 		let response = await context.API.getFactory( activePreview );

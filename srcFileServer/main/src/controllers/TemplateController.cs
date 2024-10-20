@@ -2,6 +2,7 @@ using System;
 using System.Text.Json;
 using Microsoft.AspNetCore.Mvc;
 using srcServer.core.fileHandler;
+using srcServer.repositories;
 
 namespace srcServer.Controllers
 {
@@ -9,27 +10,39 @@ namespace srcServer.Controllers
 	[Route("api/template")]
 	public class TemplateController : ControllerBase
 	{
-		private DAO _dao;
-		public TemplateController( DAO dao){
-			_dao = dao;
+		 
+		private TemplateRepository _templateRepository;
+		public TemplateController(  TemplateRepository templateRepository)
+		{
+	
+			_templateRepository = templateRepository;
 		}
+		
 
-        [HttpPost]
-		public async Task<IActionResult> addPrimaryTemplate( [FromForm] List<IFormFile> files, IFormCollection form )
-		{ 
-			try {
-				var systems = await _dao.LoadAllAvailableSystems();
-				return Ok(systems);
-			} 	
-			catch(TTRPGSystemException e){
-				return BadRequest(e.Message );
+
+		[HttpPost]
+		public async Task<IActionResult> SaveUITemplate( [FromForm] Guid definitionCode ,[FromForm] string name, [FromForm] string version , IFormCollection form){
+			try
+			{
+
+
+
+				IFormFile[] files = form.Files.ToArray<IFormFile>();
+				await _templateRepository.saveUITemplate(definitionCode,name,version,files);
+				return Ok();
 			}
-			catch(Exception e){
+			catch (TTRPGSystemException e)
+			{
+				return BadRequest(e.Message);
+			}
+			catch (Exception e)
+			{
 				Logger.LogError(e);
 				return BadRequest("Something went wrong");
 			}
 		}
 
+		
 
 	}
 }
