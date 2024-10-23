@@ -1,0 +1,22 @@
+----- Error Log -----
+Timestamp: 10/23/2024 7:12:10 AM
+Error Message: An exception has been raised that is likely due to a transient failure. Consider enabling transient error resiliency by adding 'EnableRetryOnFailure()' to the 'UseMySql' call.
+Stack Trace:    at Pomelo.EntityFrameworkCore.MySql.Storage.Internal.MySqlExecutionStrategy.Execute[TState,TResult](TState state, Func`3 operation, Func`3 verifySucceeded)
+   at Microsoft.EntityFrameworkCore.Query.Internal.SingleQueryingEnumerable`1.Enumerator.MoveNext()
+   at System.Collections.Generic.List`1..ctor(IEnumerable`1 collection)
+   at System.Linq.Enumerable.ToList[TSource](IEnumerable`1 source)
+   at srcServer.Controllers.SystemDefinitions.GetAllSystems() in /home/hans/projects/ttrpgEnvironment_byGrobax/srcFileServer/main/src/controllers/SystemController.cs:line 27
+
+---------------------
+
+----- Error Log -----
+Timestamp: 10/23/2024 7:25:54 AM
+Error Message: An exception has been raised that is likely due to a transient failure. Consider enabling transient error resiliency by adding 'EnableRetryOnFailure()' to the 'UseMySql' call.
+Stack Trace:    at Pomelo.EntityFrameworkCore.MySql.Storage.Internal.MySqlExecutionStrategy.Execute[TState,TResult](TState state, Func`3 operation, Func`3 verifySucceeded)
+   at Microsoft.EntityFrameworkCore.Query.Internal.SingleQueryingEnumerable`1.Enumerator.MoveNext()
+   at System.Collections.Generic.List`1..ctor(IEnumerable`1 collection)
+   at System.Linq.Enumerable.ToList[TSource](IEnumerable`1 source)
+   at srcServer.Controllers.SystemDefinitions.GetAllSystems() in /home/hans/projects/ttrpgEnvironment_byGrobax/srcFileServer/main/src/controllers/SystemController.cs:line 27
+
+---------------------
+

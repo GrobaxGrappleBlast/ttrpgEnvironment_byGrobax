@@ -51,6 +51,7 @@ namespace srcServer.repositories
 		public async Task saveUITemplate( Guid defCode ,string UITemplateName , string version, IFormFile[] files ){
 
 			
+			
 			// first get the definition
 			SystemDefinitionDTO definition = _db.systemDefinitions.Where(p=>p.code == defCode).First();
 			if (definition == null){
@@ -70,7 +71,7 @@ namespace srcServer.repositories
 
 			if ( uiTemplate != null ){
 				// remove this versions old files 
-				_db.UITemplateFiles.RemoveRange( uiTemplate._ef_UITemplateFiles );
+				//_db.UITemplateFiles.RemoveRange( uiTemplate._ef_UITemplateFiles );
 
 			}else{
 				
@@ -91,7 +92,8 @@ namespace srcServer.repositories
 				{
 					await file.CopyToAsync(memoryStream);
 					byte[] fileBytes = memoryStream.ToArray();
-					string fileName = file.FileName;
+					var i = file.FileName.IndexOf('/');
+					string fileName = file.FileName.Substring(i + 1);
 
 					var dto = new UITemplateFileDTO{
 						dId			= definition.code,
@@ -107,8 +109,59 @@ namespace srcServer.repositories
 					// await _dao.SaveFileResouce( "UITemplate","0.0.1", zipBytes);  // Assuming this method saves to your DB
 					//return Ok(new { message = "ZIP file saved to database successfully." });
 				}
-			} 
+			}  
+		}
+
+		public async Task<ICollection<UITemplateFileDTO>> getAllUITemplateFiles( Guid defCode , string UITemplateName, string? UITemplateVersion ){
 			
+			// first get the definition
+			SystemDefinitionDTO definition = _db.systemDefinitions.Where(p=>p.code == defCode).First();
+			if (definition == null){
+				throw new TTRPGSystemException("No Definition with this Code " + defCode );
+			}
+
+			UITemplateDTO? uiTemplate =
+			_db.UITemplates
+			.Where( p =>
+				p.dId	== defCode &&
+				p.name	== UITemplateName &&
+				( UITemplateVersion != null ? p.version == UITemplateVersion : true )
+			) 
+			.Include(p => p._ef_UITemplateFiles )
+			.FirstOrDefault();
+
+			ICollection<UITemplateFileDTO> files = uiTemplate._ef_UITemplateFiles;
+			return files;
+		}
+
+		public async Task<UITemplateFileDTO> getUITemplate( Guid defCode , string UITemplateName, string fileName , string? UITemplateVersion ){
+			
+			// first get the definition
+			SystemDefinitionDTO definition = _db.systemDefinitions.Where(p=>p.code == defCode).FirstOrDefault();
+			if (definition == null){
+				throw new TTRPGSystemException("No Definition with this Code " + defCode );
+			}
+
+			UITemplateDTO? uiTemplate =
+			_db.UITemplates
+			.Where( p =>
+				p.dId	== defCode &&
+				p.name	== UITemplateName && 
+				( UITemplateVersion != null ? p.version == UITemplateVersion : true )	
+			) 
+			.Include(p => p._ef_UITemplateFiles.Where(f => f.name == fileName) )
+			.FirstOrDefault();
+			
+			if(uiTemplate == null || !uiTemplate._ef_UITemplateFiles.Any() ){
+				throw new TTRPGSystemException("No UITemplate with this Code " + defCode + " and this UITemplateName " + UITemplateName  );
+			}
+
+			var highestVersionFile = uiTemplate._ef_UITemplateFiles.OrderBy( p => p.version ).Last();
+
+			if(highestVersionFile == null){
+				throw new TTRPGSystemException("No file with this Code " + defCode + " and this UITemplateName " + UITemplateName + " and this fileName " + fileName  );
+			}
+			return highestVersionFile;
 		}
 	}
 }

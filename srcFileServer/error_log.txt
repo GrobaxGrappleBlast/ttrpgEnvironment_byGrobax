@@ -1,0 +1,125 @@
+----- Error Log -----
+Timestamp: 10/22/2024 9:27:53 PM
+Error Message: Object reference not set to an instance of an object.
+Stack Trace:    at srcServer.repositories.TemplateRepository.getUITemplate(Guid defCode, String UITemplateName, String fileName, String UITemplateVersion) in /home/hans/projects/ttrpgEnvironment_byGrobax/srcFileServer/main/src/repositories/TemplateRepository.cs:line 156
+   at srcServer.Controllers.TemplateController.getUITemplateFile(Guid definitionCode, String UITemplateName, String fileName, String UITemplateVersion) in /home/hans/projects/ttrpgEnvironment_byGrobax/srcFileServer/main/src/controllers/TemplateController.cs:line 65
+
+---------------------
+
+----- Error Log -----
+Timestamp: 10/22/2024 9:30:27 PM
+Error Message: Object reference not set to an instance of an object.
+Stack Trace:    at srcServer.repositories.TemplateRepository.getUITemplate(Guid defCode, String UITemplateName, String fileName, String UITemplateVersion) in /home/hans/projects/ttrpgEnvironment_byGrobax/srcFileServer/main/src/repositories/TemplateRepository.cs:line 151
+   at srcServer.Controllers.TemplateController.getUITemplateFile(Guid definitionCode, String UITemplateName, String fileName, String UITemplateVersion) in /home/hans/projects/ttrpgEnvironment_byGrobax/srcFileServer/main/src/controllers/TemplateController.cs:line 65
+
+---------------------
+
+----- Error Log -----
+Timestamp: 10/22/2024 9:41:59 PM
+Error Message: Object reference not set to an instance of an object.
+Stack Trace:    at srcServer.repositories.TemplateRepository.getUITemplate(Guid defCode, String UITemplateName, String fileName, String UITemplateVersion) in /home/hans/projects/ttrpgEnvironment_byGrobax/srcFileServer/main/src/repositories/TemplateRepository.cs:line 156
+   at srcServer.Controllers.TemplateController.getUITemplateFile(Guid definitionCode, String UITemplateName, String fileName, String UITemplateVersion) in /home/hans/projects/ttrpgEnvironment_byGrobax/srcFileServer/main/src/controllers/TemplateController.cs:line 65
+
+---------------------
+
+----- Error Log -----
+Timestamp: 10/22/2024 9:52:18 PM
+Error Message: Sequence contains no elements
+Stack Trace:    at System.Linq.ThrowHelper.ThrowNoElementsException()
+   at System.Linq.Enumerable.Last[TSource](IEnumerable`1 source)
+   at srcServer.repositories.TemplateRepository.getUITemplate(Guid defCode, String UITemplateName, String fileName, String UITemplateVersion) in /home/hans/projects/ttrpgEnvironment_byGrobax/srcFileServer/main/src/repositories/TemplateRepository.cs:line 157
+   at srcServer.Controllers.TemplateController.getUITemplateFile(Guid definitionCode, String UITemplateName, String fileName, String UITemplateVersion) in /home/hans/projects/ttrpgEnvironment_byGrobax/srcFileServer/main/src/controllers/TemplateController.cs:line 65
+
+---------------------
+
+----- Error Log -----
+Timestamp: 10/22/2024 9:52:30 PM
+Error Message: Sequence contains no elements
+Stack Trace:    at System.Linq.ThrowHelper.ThrowNoElementsException()
+   at System.Linq.Enumerable.Last[TSource](IEnumerable`1 source)
+   at srcServer.repositories.TemplateRepository.getUITemplate(Guid defCode, String UITemplateName, String fileName, String UITemplateVersion) in /home/hans/projects/ttrpgEnvironment_byGrobax/srcFileServer/main/src/repositories/TemplateRepository.cs:line 157
+   at srcServer.Controllers.TemplateController.getUITemplateFile(Guid definitionCode, String UITemplateName, String fileName, String UITemplateVersion) in /home/hans/projects/ttrpgEnvironment_byGrobax/srcFileServer/main/src/controllers/TemplateController.cs:line 65
+
+---------------------
+
+----- Error Log -----
+Timestamp: 10/23/2024 7:26:44 AM
+Error Message: An exception has been raised that is likely due to a transient failure. Consider enabling transient error resiliency by adding 'EnableRetryOnFailure()' to the 'UseMySql' call.
+Stack Trace:    at Pomelo.EntityFrameworkCore.MySql.Storage.Internal.MySqlExecutionStrategy.Execute[TState,TResult](TState state, Func`3 operation, Func`3 verifySucceeded)
+   at Microsoft.EntityFrameworkCore.Query.Internal.SingleQueryingEnumerable`1.Enumerator.MoveNext()
+   at System.Collections.Generic.List`1..ctor(IEnumerable`1 collection)
+   at System.Linq.Enumerable.ToList[TSource](IEnumerable`1 source)
+   at srcServer.Controllers.SystemDefinitions.GetAllSystems() in /home/hans/projects/ttrpgEnvironment_byGrobax/srcFileServer/main/src/controllers/SystemController.cs:line 27
+
+---------------------
+
+----- Error Log -----
+Timestamp: 10/23/2024 7:26:55 AM
+Error Message: An exception has been raised that is likely due to a transient failure. Consider enabling transient error resiliency by adding 'EnableRetryOnFailure()' to the 'UseMySql' call.
+Stack Trace:    at Pomelo.EntityFrameworkCore.MySql.Storage.Internal.MySqlExecutionStrategy.Execute[TState,TResult](TState state, Func`3 operation, Func`3 verifySucceeded)
+   at Microsoft.EntityFrameworkCore.Query.Internal.SingleQueryingEnumerable`1.Enumerator.MoveNext()
+   at System.Collections.Generic.List`1..ctor(IEnumerable`1 collection)
+   at System.Linq.Enumerable.ToList[TSource](IEnumerable`1 source)
+   at srcServer.Controllers.SystemDefinitions.GetAllSystems() in /home/hans/projects/ttrpgEnvironment_byGrobax/srcFileServer/main/src/controllers/SystemController.cs:line 27
+
+---------------------
+
+----- Error Log -----
+Timestamp: 10/23/2024 7:26:55 AM
+Error Message: An exception has been raised that is likely due to a transient failure. Consider enabling transient error resiliency by adding 'EnableRetryOnFailure()' to the 'UseMySql' call.
+Stack Trace:    at Pomelo.EntityFrameworkCore.MySql.Storage.Internal.MySqlExecutionStrategy.Execute[TState,TResult](TState state, Func`3 operation, Func`3 verifySucceeded)
+   at Microsoft.EntityFrameworkCore.Query.Internal.SingleQueryingEnumerable`1.Enumerator.MoveNext()
+   at System.Collections.Generic.List`1..ctor(IEnumerable`1 collection)
+   at System.Linq.Enumerable.ToList[TSource](IEnumerable`1 source)
+   at srcServer.Controllers.SystemDefinitions.GetAllSystems() in /home/hans/projects/ttrpgEnvironment_byGrobax/srcFileServer/main/src/controllers/SystemController.cs:line 27
+
+---------------------
+
+----- Error Log -----
+Timestamp: 10/23/2024 8:08:53 PM
+Error Message: Sequence contains no elements
+Stack Trace:    at System.Linq.ThrowHelper.ThrowNoElementsException()
+   at lambda_method18(Closure, QueryContext)
+   at Microsoft.EntityFrameworkCore.Query.Internal.QueryCompiler.Execute[TResult](Expression query)
+   at Microsoft.EntityFrameworkCore.Query.Internal.EntityQueryProvider.Execute[TResult](Expression expression)
+   at srcServer.repositories.TemplateRepository.getUITemplate(Guid defCode, String UITemplateName, String fileName, String UITemplateVersion) in /home/hans/projects/ttrpgEnvironment_byGrobax/srcFileServer/main/src/repositories/TemplateRepository.cs:line 140
+   at srcServer.Controllers.TemplateController.getUITemplateFile(Guid definitionCode, String UITemplateName, String fileName, String UITemplateVersion) in /home/hans/projects/ttrpgEnvironment_byGrobax/srcFileServer/main/src/controllers/TemplateController.cs:line 76
+
+---------------------
+
+----- Error Log -----
+Timestamp: 10/23/2024 8:09:00 PM
+Error Message: Sequence contains no elements
+Stack Trace:    at System.Linq.ThrowHelper.ThrowNoElementsException()
+   at lambda_method18(Closure, QueryContext)
+   at Microsoft.EntityFrameworkCore.Query.Internal.QueryCompiler.Execute[TResult](Expression query)
+   at Microsoft.EntityFrameworkCore.Query.Internal.EntityQueryProvider.Execute[TResult](Expression expression)
+   at srcServer.repositories.TemplateRepository.getUITemplate(Guid defCode, String UITemplateName, String fileName, String UITemplateVersion) in /home/hans/projects/ttrpgEnvironment_byGrobax/srcFileServer/main/src/repositories/TemplateRepository.cs:line 140
+   at srcServer.Controllers.TemplateController.getUITemplateFile(Guid definitionCode, String UITemplateName, String fileName, String UITemplateVersion) in /home/hans/projects/ttrpgEnvironment_byGrobax/srcFileServer/main/src/controllers/TemplateController.cs:line 76
+
+---------------------
+
+----- Error Log -----
+Timestamp: 10/23/2024 8:09:12 PM
+Error Message: Sequence contains no elements
+Stack Trace:    at System.Linq.ThrowHelper.ThrowNoElementsException()
+   at lambda_method18(Closure, QueryContext)
+   at Microsoft.EntityFrameworkCore.Query.Internal.QueryCompiler.Execute[TResult](Expression query)
+   at Microsoft.EntityFrameworkCore.Query.Internal.EntityQueryProvider.Execute[TResult](Expression expression)
+   at srcServer.repositories.TemplateRepository.getUITemplate(Guid defCode, String UITemplateName, String fileName, String UITemplateVersion) in /home/hans/projects/ttrpgEnvironment_byGrobax/srcFileServer/main/src/repositories/TemplateRepository.cs:line 140
+   at srcServer.Controllers.TemplateController.getUITemplateFile(Guid definitionCode, String UITemplateName, String fileName, String UITemplateVersion) in /home/hans/projects/ttrpgEnvironment_byGrobax/srcFileServer/main/src/controllers/TemplateController.cs:line 76
+
+---------------------
+
+----- Error Log -----
+Timestamp: 10/23/2024 8:09:16 PM
+Error Message: Sequence contains no elements
+Stack Trace:    at System.Linq.ThrowHelper.ThrowNoElementsException()
+   at lambda_method18(Closure, QueryContext)
+   at Microsoft.EntityFrameworkCore.Query.Internal.QueryCompiler.Execute[TResult](Expression query)
+   at Microsoft.EntityFrameworkCore.Query.Internal.EntityQueryProvider.Execute[TResult](Expression expression)
+   at srcServer.repositories.TemplateRepository.getUITemplate(Guid defCode, String UITemplateName, String fileName, String UITemplateVersion) in /home/hans/projects/ttrpgEnvironment_byGrobax/srcFileServer/main/src/repositories/TemplateRepository.cs:line 140
+   at srcServer.Controllers.TemplateController.getUITemplateFile(Guid definitionCode, String UITemplateName, String fileName, String UITemplateVersion) in /home/hans/projects/ttrpgEnvironment_byGrobax/srcFileServer/main/src/controllers/TemplateController.cs:line 76
+
+---------------------
+

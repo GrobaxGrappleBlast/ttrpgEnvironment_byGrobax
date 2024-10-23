@@ -1,19 +1,23 @@
 using Microsoft.EntityFrameworkCore;
+
 using srcServer.core.database;
 using srcServer.core.fileHandler;
 using srcServer.repositories;
 
 
 var builder = WebApplication.CreateBuilder( args );
-builder.Services.AddControllers();
+
 IConfiguration configuration = new ConfigurationBuilder()
 		.SetBasePath(AppContext.BaseDirectory)  // Set the base path where the appsettings.json file is located
 		.AddJsonFile("appsettings.json", optional: false, reloadOnChange: true)  // Specify appsettings.json
 		.Build();
 
-builder.Services.AddSingleton<IConfiguration>(configuration);
+builder.Services.AddSingleton<IConfiguration>(configuration); 
 builder.Services.AddScoped<TemplateRepository,TemplateRepository>();
 builder.Services.AddScoped<SystemsRepository,SystemsRepository>();
+builder.Services.AddControllers( 
+	
+ );
 
 
 builder.Services.AddCors(options =>
