@@ -50,7 +50,8 @@
 				target: div, // Use the created div as the target
 				props: {
 					textData: "{}",
-					// Pass any other props needed
+					sys: context.activeFactory,
+					writeBlock: (e,a) => {}
 				},
 			});
 		}
