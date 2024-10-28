@@ -19,7 +19,8 @@ namespace srcServer.Controllers
 			{ ".pdf", "application/pdf" },
 			{ ".txt", "text/plain" },
 			{ ".js", "text/javascript"},
-			{ ".cjs", "application/javascript"}
+			{ ".cjs", "application/javascript"},
+			{ ".css", "text/css" }
 			// Add more mappings as needed
 		};
 		private TemplateRepository _templateRepository;

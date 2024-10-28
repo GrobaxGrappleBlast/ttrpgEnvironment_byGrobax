@@ -1,19 +1,22 @@
 {
   "ignoreDeprecations": "5.0",
-  "extends": "@tsconfig/svelte/tsconfig.json",
+  
   "compilerOptions": {
     "target": "ESNext",
     "useDefineForClassFields": true,
     "module": "ESNext",
     "resolveJsonModule": true, 
     "allowJs": true,
+    "checkJs": true,
     "isolatedModules": true,
-    "strict": false,
+    "moduleDetection": "force", 
     "moduleResolution":"Node",
+    "sourceMap": true, 
+    "strict": false,
     "esModuleInterop": true, 
     "noImplicitAny": false,
     "skipLibCheck":true,
-    
+    "verbatimModuleSyntax":true
   },
   "include": [
     "src/**/*.d.ts",

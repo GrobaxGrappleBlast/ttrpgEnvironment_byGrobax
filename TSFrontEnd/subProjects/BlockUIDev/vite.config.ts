@@ -49,9 +49,9 @@ const developmentSetting={
 
 // https://vitejs.dev/config/
 export default defineConfig( ({mode}) => {
-	const isProduction = mode === 'prod';
-	if( isProduction ){
-		return productionSetting;
-	}
+	//const isProduction = mode === 'prod';
+	//if( isProduction ){
+		//return productionSetting;
+	//}
   return developmentSetting;
 })

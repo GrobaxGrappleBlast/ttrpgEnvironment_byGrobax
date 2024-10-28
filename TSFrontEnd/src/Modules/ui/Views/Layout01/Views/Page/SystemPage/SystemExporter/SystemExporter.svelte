@@ -16,7 +16,6 @@
 	}
 </script>
 <div>
-	<img src="http://localhost:5000/api/template/d4202be1-0313-4d3c-87c6-ebe5f23542ec/UITemplateName/image.jpg"/>
 	{#if subpage == ""}
 		<div transition:slide|local >
 			<section>

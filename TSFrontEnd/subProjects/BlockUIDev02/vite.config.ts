@@ -13,14 +13,16 @@ const productionSetting = {
 	],
 	build: {
 		sourcemap: true, 
-		target: 'modules', // Target environment
+		target: 'esnext', // Target environment
 		outDir: './dist', // Output directory
 		emptyOutDir: true, // Clear output directory before build
+		
 		lib: {
 			entry: 'src/index.ts',
-			name: '<<name>>',
-			fileName: 'components',
-		  },
+			name: 'index',
+			fileName: (format) => `index.${format}.js`,
+		},
+		
 	},
 }
 const developmentSetting={
@@ -46,12 +48,27 @@ const developmentSetting={
 }
 
 
+const mode = (process.argv.find( p => p.startsWith('--mode'))?.split('=')[1]);
+const d = {
+	plugins: [
+	  svelte({
+		preprocess: autoPreprocess(),
+	  }),
+	],
+	build: {
+	  sourcemap: true,
+	  outDir: './dist',
+	  emptyOutDir: true,
+	},
+  }
 
 // https://vitejs.dev/config/
-export default defineConfig( ({mode}) => {
-	const isProduction = mode === 'prod';
-	if( isProduction ){
-		return productionSetting;
+export default defineConfig( () => {
+ 
+	switch (mode){
+		case 'prod':
+			return productionSetting;
+		case 'dev':
+			return developmentSetting;
 	}
-  return developmentSetting;
 })

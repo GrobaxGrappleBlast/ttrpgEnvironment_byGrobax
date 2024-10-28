@@ -7,7 +7,8 @@
   </head>
   <body>
     <div id="app"></div>
-	<link rel="stylesheet" href="./export/style.css">
+	<link rel="stylesheet" href="http://localhost:5000/api/template/d4202be1-0313-4d3c-87c6-ebe5f23542ec/UITemplateName/style.css">
+	<!--link rel="stylesheet" href="/dist/style.css"-->
 	<script type="module">
 		
 		let _JSON = `{
@@ -59,18 +60,17 @@
 						]
 					}
 				`; 
-	
-		import App from './export/components.js';
-		import {system} from './declaration.js'
-		const sys = new system();
 		
+		
+		
+		import {system} from './declaration.js'
+		const sys = new system(); 
 		sys.getNode('fixed','stats','charisma')		.setValue(10 )	;
 		sys.getNode('fixed','stats','constitution')	.setValue(10 +2);
 		sys.getNode('fixed','stats','dexterity')	.setValue(10 +4);
 		sys.getNode('fixed','stats','intelligence')	.setValue(10 +6);
 		sys.getNode('fixed','stats','strength')		.setValue(10 +2);
 		sys.getNode('fixed','stats','wisdom')		.setValue(10 +4);
-
 		let _ = sys.getNodeNames('fixed','SkillProficiencies');
 		for (let i = 0; i < _.length; i++) {
 			const key = _[i];
@@ -78,20 +78,27 @@
 
 			sys.getNode('fixed','SkillProficiencies',key).setValue(prof)
 		}
-
 		sys.getNode('fixed','generic','Proficiency Bonus').setValue(2);
 		sys.getNode('fixed','generic','Hit Points').setValue(2); 
 		
+		// sys:sys, 
+		// writeBlock:(a,b)=>{console.log('SAVED')}
+ 
+		
 
-		const app = new App({
-			target: document.getElementById('app'),
-			props: {
-				textData:_JSON,
-				sys:sys,
-				writeBlock:(a,b)=>{console.log('SAVED')}
+		const d = await import('http://localhost:5000/api/template/d4202be1-0313-4d3c-87c6-ebe5f23542ec/UITemplateName/index.es.js');
+		//const d = await import('/dist/index.es.js');
+		const App = d.default;
+		const app = new App(
+			{
+				target:	document.getElementById('app'),
+				props:{
+						textData: "{}"
+					}	
 			}
-		})
+		)
 		 
+		
 
 	</script>
 	</body>

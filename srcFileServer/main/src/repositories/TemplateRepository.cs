@@ -71,7 +71,7 @@ namespace srcServer.repositories
 
 			if ( uiTemplate != null ){
 				// remove this versions old files 
-				//_db.UITemplateFiles.RemoveRange( uiTemplate._ef_UITemplateFiles );
+				_db.UITemplateFiles.RemoveRange( uiTemplate._ef_UITemplateFiles );
 
 			}else{
 				
@@ -151,9 +151,10 @@ namespace srcServer.repositories
 			) 
 			.Include(p => p._ef_UITemplateFiles.Where(f => f.name == fileName) )
 			.FirstOrDefault();
+
 			
 			if(uiTemplate == null || !uiTemplate._ef_UITemplateFiles.Any() ){
-				throw new TTRPGSystemException("No UITemplate with this Code " + defCode + " and this UITemplateName " + UITemplateName  );
+				throw new TTRPGSystemException("No file with this Code " + defCode + " and this UITemplateName " + UITemplateName + " and this fileName " + fileName  );
 			}
 
 			var highestVersionFile = uiTemplate._ef_UITemplateFiles.OrderBy( p => p.version ).Last();

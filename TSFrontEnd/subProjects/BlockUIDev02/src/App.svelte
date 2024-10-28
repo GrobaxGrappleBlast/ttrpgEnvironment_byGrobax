@@ -503,10 +503,15 @@
 	import ItemDestributor from "./Structure/ItemDestributor.svelte";
 	import { system } from "../declaration";
 	import { customFlip } from "./Svelte/CustomFlip";
-	import RowColumnOptions from "./Structure/RowColumnOptions.svelte";//;"./Structure/RowColumnOptions.svelte";
 	import LoadingSpinner from "./Structure/infoComponents/LoadingSpinner.svelte"
 	import ItemManouver from "./Structure/ItemManouver.svelte";
     import { tooltip } from "./importedComponents/tooltip/toolTip";
+
+
+	export var textData  : string = "{}"; 
+	export var sys		 : system | null 	= null ; 
+	export var writeBlock: ( layout , system ) => any = (e,a) => null;
+		
 
 	let state: State = new State();
 	let editMode: Writable<boolean> = state.editMode;
@@ -514,13 +519,10 @@
 	let editLayout_02: Writable<boolean> = state.editLayout_02;
 	let editLayout_03: Writable<boolean> = state.editLayout_03;
 
-	export let textData: string;
-	export let sys: system; 
-	export let writeBlock: ( layout , system ) => any;
-		
 	let DATA = new SheetData(textData ?? ''); 
 	let OBJ: Writable<SheetData> = writable(DATA);
 
+	
 
 	function repeat(x, str, sep = " ") {
 		let _ = str;

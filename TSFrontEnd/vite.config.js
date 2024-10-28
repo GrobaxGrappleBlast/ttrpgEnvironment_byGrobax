@@ -21,6 +21,7 @@ export default defineConfig(() => {
 			],
 			plugins: [
 				svelte({
+					customElement: true,
 					compilerOptions: { css: true,   hydratable: true },
 					preprocess: sveltePreprocess(),
 					

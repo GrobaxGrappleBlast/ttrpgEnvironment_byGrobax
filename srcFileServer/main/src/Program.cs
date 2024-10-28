@@ -24,10 +24,20 @@ builder.Services.AddCors(options =>
 {
 	options.AddPolicy("AllowFrontendDev",
 		builder => builder
-			.WithOrigins("http://localhost:5173")  // Frontend origin with port
+			//.AllowAnyOrigin()
+			.WithOrigins(
+				"http://localhost:5173",
+				"http://localhost:5500",
+				"http://localhost:5172",
+				"http://localhost:5174",
+				"http://localhost:5175",
+				"http://localhost:5176",
+				"http://127.0.0.1:5500"
+			)  // Frontend origin with port
 			.AllowAnyMethod()
 			.AllowAnyHeader()
 			.AllowCredentials());
+		
 });
 
 
@@ -43,7 +53,9 @@ builder.Services.AddDbContext<DatabaseContext>(options =>
         new MySqlServerVersion(new Version(10, 5, 9))));
 
 var app = builder.Build(); 
+app.UseRouting();
 app.UseCors("AllowFrontendDev");  
+app.UseAuthorization();
 app.MapControllers();
 app.MapGet("/", () => "Welcome to the Web API, for the file storage");
 app.Run();

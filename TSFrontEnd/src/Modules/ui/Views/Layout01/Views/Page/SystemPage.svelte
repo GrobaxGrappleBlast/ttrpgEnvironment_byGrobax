@@ -14,6 +14,7 @@
     import { pageSlide } from 	"../../../../../../../src/Modules/ui/Components/Transitions/pageSlide";
     import SystemDesigner3Parts from "./SystemPage/SystemDesigner/SystemDesigner3Parts.svelte";
     import SystemExporter from "./SystemPage/SystemExporter/SystemExporter.svelte";
+    import SystemTester from "./SystemPage/SystemTester/SystemTester.svelte";
     
 	export let context	: Layout01Context; 
 	let activeFactory : TTRPGSystemJSONFormatting = context.activeFactory;
@@ -57,13 +58,13 @@
 
 		// request the factory;
 		let response = await context.API.getFactory( activePreview );
-		factory = response.response;
-		
+		factory = response.response as TTRPGSystemJSONFormatting;
+		context.activeFactory = factory;
 		return true;
 	}
 
 	let pagesContainer;
-	let editPages = ['designer','UI-designer']
+	let editPages = ['designer','UI-designer','UI-Tester'];
 	let activeSubPage = 'designer';
 	function changePage( event ){
 		activeSubPage = event.detail;
@@ -135,6 +136,13 @@
 			{:else if activeSubPage == 'UI-designer'}
 				<div transition:pageSlide={{parent:pagesContainer}} >
 					<SystemExporter 
+						context={context}
+					
+					/>
+				</div>
+			{:else if activeSubPage == 'UI-Tester'}
+				<div transition:pageSlide={{parent:pagesContainer}} >
+					<SystemTester
 						context={context}
 					
 					/>
