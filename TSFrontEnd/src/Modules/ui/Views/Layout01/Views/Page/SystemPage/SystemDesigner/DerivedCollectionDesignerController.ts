@@ -244,8 +244,7 @@ export class DerivedCollectionController {
 		}
 		else {
 
-			try {
-				debugger
+			try { 
 				// type declaration
 				type resDataPoint = {name:string, deps:Record<string,GrobJNodeType> }
 

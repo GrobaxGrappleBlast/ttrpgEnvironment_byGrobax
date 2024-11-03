@@ -1,5 +1,6 @@
 import { promises } from "dns";
 import { SystemPreview } from "../core/model/systemPreview";
+import { UITemplate } from "../core/model/UITemplate";
 
 
 /**
@@ -18,9 +19,15 @@ export interface APIReturnModel<T> {
 export interface IAPI{
 	getAllSystems() : Promise<APIReturnModel<SystemPreview[]>>;
 
-	getSystemUIs( preview : SystemPreview );
+	getSystemUIs( preview : SystemPreview ) : Promise<APIReturnModel<UITemplate[]>>; 
+
+	getSystemUITemplateVersions( preview:SystemPreview , template:UITemplate ) : Promise<APIReturnModel<string[]>>;
+
+	getSystemUIFilePath(preview: SystemPreview, uitemplate: string, name : string ) : Promise<APIReturnModel<string>>;
 
 	getFactory( preview : SystemPreview );
 
-	adminSendBlockUITemplate( formData : FormData ) : Promise<APIReturnModel<boolean> >;
+	createUITemplate( preview: SystemPreview, name : string  , version? :string )  : Promise<APIReturnModel<UITemplate>> ;
+
+	SaveUITemplate( formData : FormData ) : Promise<APIReturnModel<boolean> >;
 }

@@ -2242,3 +2242,63 @@ Stack Trace:    at Microsoft.Net.Http.Headers.HttpHeaderParser`1.ParseValue(Stri
 
 ---------------------
 
+----- Error Log -----
+Timestamp: 10/29/2024 10:34:35 PM
+Error Message: The header contains invalid values at index 0: '<null>'
+Stack Trace:    at Microsoft.Net.Http.Headers.HttpHeaderParser`1.ParseValue(StringSegment value, Int32& index)
+   at Microsoft.Net.Http.Headers.MediaTypeHeaderValue.Parse(StringSegment input)
+   at Microsoft.AspNetCore.Mvc.ControllerBase.File(Byte[] fileContents, String contentType, String fileDownloadName)
+   at srcServer.Controllers.TemplateController.getUITemplateFile(Guid definitionCode, String UITemplateName, String fileName, String UITemplateVersion) in /home/hans/projects/ttrpgEnvironment_byGrobax/srcFileServer/main/src/controllers/TemplateController.cs:line 71
+
+---------------------
+
+----- Error Log -----
+Timestamp: 10/29/2024 10:35:51 PM
+Error Message: The header contains invalid values at index 0: '<null>'
+Stack Trace:    at Microsoft.Net.Http.Headers.HttpHeaderParser`1.ParseValue(StringSegment value, Int32& index)
+   at Microsoft.Net.Http.Headers.MediaTypeHeaderValue.Parse(StringSegment input)
+   at Microsoft.AspNetCore.Mvc.ControllerBase.File(Byte[] fileContents, String contentType, String fileDownloadName)
+   at srcServer.Controllers.TemplateController.getUITemplateFile(Guid definitionCode, String UITemplateName, String fileName, String UITemplateVersion) in /home/hans/projects/ttrpgEnvironment_byGrobax/srcFileServer/main/src/controllers/TemplateController.cs:line 71
+
+---------------------
+
+----- Error Log -----
+Timestamp: 10/29/2024 10:36:36 PM
+Error Message: The header contains invalid values at index 0: '<null>'
+Stack Trace:    at Microsoft.Net.Http.Headers.HttpHeaderParser`1.ParseValue(StringSegment value, Int32& index)
+   at Microsoft.Net.Http.Headers.MediaTypeHeaderValue.Parse(StringSegment input)
+   at Microsoft.AspNetCore.Mvc.ControllerBase.File(Byte[] fileContents, String contentType, String fileDownloadName)
+   at srcServer.Controllers.TemplateController.getUITemplateFile(Guid definitionCode, String UITemplateName, String fileName, String UITemplateVersion) in /home/hans/projects/ttrpgEnvironment_byGrobax/srcFileServer/main/src/controllers/TemplateController.cs:line 71
+
+---------------------
+
+----- Error Log -----
+Timestamp: 10/29/2024 10:41:09 PM
+Error Message: The header contains invalid values at index 0: '<null>'
+Stack Trace:    at Microsoft.Net.Http.Headers.HttpHeaderParser`1.ParseValue(StringSegment value, Int32& index)
+   at Microsoft.Net.Http.Headers.MediaTypeHeaderValue.Parse(StringSegment input)
+   at Microsoft.AspNetCore.Mvc.ControllerBase.File(Byte[] fileContents, String contentType, String fileDownloadName)
+   at srcServer.Controllers.TemplateController.getUITemplateFile(Guid definitionCode, String UITemplateName, String fileName, String UITemplateVersion) in /home/hans/projects/ttrpgEnvironment_byGrobax/srcFileServer/main/src/controllers/TemplateController.cs:line 71
+
+---------------------
+
+----- Error Log -----
+Timestamp: 10/29/2024 10:41:20 PM
+Error Message: The header contains invalid values at index 0: '<null>'
+Stack Trace:    at Microsoft.Net.Http.Headers.HttpHeaderParser`1.ParseValue(StringSegment value, Int32& index)
+   at Microsoft.Net.Http.Headers.MediaTypeHeaderValue.Parse(StringSegment input)
+   at Microsoft.AspNetCore.Mvc.ControllerBase.File(Byte[] fileContents, String contentType, String fileDownloadName)
+   at srcServer.Controllers.TemplateController.getUITemplateFile(Guid definitionCode, String UITemplateName, String fileName, String UITemplateVersion) in /home/hans/projects/ttrpgEnvironment_byGrobax/srcFileServer/main/src/controllers/TemplateController.cs:line 71
+
+---------------------
+
+----- Error Log -----
+Timestamp: 11/3/2024 2:52:59 PM
+Error Message: The header contains invalid values at index 0: '<null>'
+Stack Trace:    at Microsoft.Net.Http.Headers.HttpHeaderParser`1.ParseValue(StringSegment value, Int32& index)
+   at Microsoft.Net.Http.Headers.MediaTypeHeaderValue.Parse(StringSegment input)
+   at Microsoft.AspNetCore.Mvc.ControllerBase.File(Byte[] fileContents, String contentType, String fileDownloadName)
+   at srcServer.Controllers.TemplateController.getUITemplateFile(Guid definitionCode, String UITemplateName, String fileName, String UITemplateVersion) in /home/hans/projects/ttrpgEnvironment_byGrobax/srcFileServer/main/src/controllers/TemplateController.cs:line 143
+
+---------------------
+

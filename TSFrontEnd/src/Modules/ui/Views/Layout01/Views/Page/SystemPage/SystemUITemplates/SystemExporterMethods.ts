@@ -1,6 +1,9 @@
 import JSZip from "jszip";
 import { TTRPGSystemJSONFormatting } from "src/Modules/graphDesigner";
 import { type groupKeyType } from "ttrpg-system-graph"; 
+import { Layout01Context } from "../../../../context";
+import { SystemPreview } from "src/Modules/core/model/systemPreview";
+import { UITemplate } from "src/Modules/core/model/UITemplate";
 
 export class SystemExporterMethods { 
 	public convertToTTRPGSystemToGUIBuilderPreview( system : TTRPGSystemJSONFormatting ){
@@ -347,5 +350,77 @@ export class SystemExporterMethods {
 	public async createBlockUITemplatefileTEST( system:TTRPGSystemJSONFormatting ): Promise<string | null > {
 		let a =  await this.convertToTTRPGSystemToGUIBuilderPreview(system);
 		return a;
+	}
+
+	public static async getAndCreateUITemplateComponent( context :Layout01Context , systemDefinition : SystemPreview , uiTemplate : string , container : HTMLElement , writeFunction : (e,a) => any ){
+		
+		container.innerHTML = "";
+
+		let src			= (await context.API.getSystemUIFilePath(systemDefinition,uiTemplate,'index.es.js'	)).response;// `http://localhost:5000/api/template/${systemDefinition.code}/${uiTemplate.name}/index.es.js`;
+		let styleSrc	= (await context.API.getSystemUIFilePath(systemDefinition,uiTemplate,'style.css'	)).response;// `http://localhost:5000/api/template/${systemDefinition.code}/${uiTemplate.name}/style.css`;
+
+		const div = document.createElement('div');
+		container.appendChild(div);
+
+		context.API.getSystemUIs
+
+		//Create Style tag and conent
+		const styleTag = document.createElement('style');
+		const cssResponse = (await fetch(styleSrc));
+		const cssText = await cssResponse.text();
+		styleTag.innerHTML = cssText; // Add CSS to the style tag
+		container.appendChild(styleTag);
+
+		// Create script tag. and source
+		const script = document.createElement('script');
+		script.src = src;
+		script.async = true;
+		script.type = 'module';
+		container.appendChild(script);
+
+		// await onload. 
+		let onloadPromise = new Promise((resolve, reject) => {
+			script.onload = () => resolve(`Script loaded`); 
+			script.onerror= () => reject(`Failed to load script`);
+		});
+		await onloadPromise;
+		 	
+		// Dynamically import the module after the script has loaded
+		const module = await import(src);
+		const App = module.default; // Get the default export
+		const component = new App({
+			target: div, // Use the created div as the target
+			props: {
+				textData: "{}",
+				sys: context.activeFactory,
+				writeBlock : writeFunction
+			},
+		});
+
+		return component; 
+	}
+
+	public static increaseVersionNumber( version : string ) : string {
+		 
+		// Split the version string into its components
+		let [major, minor, patch] = version.split('.').map(Number);
+		
+		// Increment the patch version
+		patch += 1;
+	
+		// If patch reaches 10, reset it and increment minor
+		if (patch >= 10) {
+			patch = 0;
+			minor += 1;
+		}
+	
+		// If minor reaches 10, reset it and increment major
+		if (minor >= 10) {
+			minor = 0;
+			major += 1;
+		}
+	
+		// Return the new version as a string
+		return `${major}.${minor}.${patch}`; 
 	}
 }

@@ -2,6 +2,7 @@ import { JSONHandler } from "grobax-json-handler";
 import { APIReturnModel, IAPI } from "./IAPI";
 import { SystemPreview } from "../core/model/systemPreview";
 import { TTRPGSystemJSONFormatting } from "../graphDesigner";
+import { UITemplate } from "../core/model/UITemplate";
 
 export interface Message{
 	msg	:string;
@@ -44,7 +45,7 @@ class ServerJson{
 	public static async delete(url, json ){
 		return await ServerJson.call('DELETE',url, json);
 	}
-	public static async put(url, json  ){
+	public static async put(url, json = null  ){
 		return await ServerJson.call('PUT',url, json);
 	}
 }
@@ -77,7 +78,7 @@ class ServerForm{
 	public static async delete(url, object ){
 		return await ServerForm.call('DELETE',url, object);
 	}
-	public static async put(url, object  ){
+	public static async put(url, object = null ){
 		return await ServerForm.call('PUT',url, object);
 	}
 }
@@ -92,8 +93,58 @@ class Server{
 }
 
 export class WebApiConnection implements IAPI{
-	getSystemUIs(preview: SystemPreview) {
-		throw new Error("Method not implemented.");
+	  
+	public async getSystemUITemplateVersions(preview: SystemPreview, template: UITemplate): Promise<APIReturnModel<string[]>> {
+		let src = `api/template/${preview.code}/${template.name}`;
+		let serverResp = await ServerJson.get( src );
+
+		if(serverResp.status == 200){ 
+			let json = await serverResp.text();
+			let objs = JSON.parse(json) as string[];
+			let response = {
+				responseCode : serverResp.status,
+				messages : [serverResp.statusText],
+				response: objs
+			} as APIReturnModel<string[]>
+			return response;
+		} else {
+			let response = {
+				responseCode : serverResp.status,
+				messages : [serverResp.statusText]
+			} as APIReturnModel<string[]>
+			return response;
+		} 
+	}
+ 
+	public async getSystemUIFilePath(preview: SystemPreview, uitemplate: string, name : string ): Promise<APIReturnModel<string>> {
+		let src = `api/template/${preview.code}/${uitemplate}/${name}`;
+		let bss = Server.baseUrl;
+		let response = {
+			responseCode : 200,
+			messages : [],
+			response: bss + '/' + src
+		} as APIReturnModel<string>
+		return response;
+	}
+
+	public async getSystemUIs(preview: SystemPreview) {
+		let serverResp = await ServerJson.get("api/template/all/" + preview.code );
+		if(serverResp.status == 200){ 
+			let json = await serverResp.text();
+			let objs = JSON.parse(json) as UITemplate[];
+			let response = {
+				responseCode : serverResp.status,
+				messages : [serverResp.statusText],
+				response: objs
+			} as APIReturnModel<UITemplate[]>
+			return response;
+		} else {
+			let response = {
+				responseCode : serverResp.status,
+				messages : [serverResp.statusText]
+			} as APIReturnModel<UITemplate[]>
+			return response;
+		} 
 	}
 	public async getFactory(preview: SystemPreview) : Promise<APIReturnModel<TTRPGSystemJSONFormatting>> { 
 		
@@ -139,8 +190,37 @@ export class WebApiConnection implements IAPI{
 	}
 
 
+	public async createUITemplate( preview: SystemPreview, name : string, version?:string  )  : Promise<APIReturnModel<UITemplate>> {
 
-	public async adminSendBlockUITemplate( formData : FormData ) : Promise<APIReturnModel<boolean>> {
+		
+		let serverResp 
+		if ( version ){
+			serverResp = await ServerJson.put(`api/template/${preview.code}/${name}/${version}`);
+		}
+		else {
+			serverResp = await ServerJson.put(`api/template/${preview.code}/${name}`);
+		}
+		
+		if(serverResp.status == 200){
+
+			let json = await serverResp.text();
+			let obj = JSON.parse(json) as UITemplate;
+			let response = {
+				responseCode : serverResp.status,
+				messages : [serverResp.statusText],
+				response: obj
+			} as APIReturnModel<UITemplate> 
+			return response;
+		} else {
+			let response = {
+				responseCode : serverResp.status,
+				messages : [serverResp.statusText]
+			} as APIReturnModel<UITemplate>
+			return response;
+		} 
+	}
+
+	public async SaveUITemplate( formData : FormData ) : Promise<APIReturnModel<boolean>> {
 
 		let serverResp = await ServerForm.post("api/template", formData );
 		if(serverResp.status == 200){

@@ -1,4 +1,6 @@
 
+using System.Text.Json.Serialization;
+
 namespace srcServer.core.database {
 	public class fileResourcesDTO  {
 		public int		id		{get;set;}

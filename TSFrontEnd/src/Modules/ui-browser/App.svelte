@@ -19,6 +19,9 @@
 
 <style>
 	#webContainer{
-	 
+		height:100vh;
+		padding: 0;
+		width:100%;
+		overflow: hidden; 
 	}
 </style>

@@ -112,6 +112,74 @@ namespace srcServer.repositories
 			}  
 		}
 
+		public async Task<UITemplateDTO> CreateUITemplate( Guid defCode ,string UITemplateName , string? version ){
+
+			
+			// first get the definition
+			SystemDefinitionDTO definition = _db.systemDefinitions.Where(p=>p.code == defCode).First();
+			if (definition == null){
+				throw new TTRPGSystemException("No Definition with this Code " + defCode );
+			}
+
+			// see if the ui template exists, with files if it exists. 
+			UITemplateDTO? uiTemplate ;
+			if (version != null ){
+				uiTemplate =
+				_db.UITemplates
+				.Where( p => 
+					p.dId == definition.code &&
+					p.name == UITemplateName &&
+					p.version == version
+					)
+				.Include(p => p._ef_UITemplateFiles )
+				.FirstOrDefault();
+
+				if (uiTemplate != null){
+					throw new TTRPGSystemException($"Template '{UITemplateName}' already exists with version '{version}'");
+				}
+			}
+			else {
+				uiTemplate =
+				_db.UITemplates
+				.Where( p => 
+					p.dId == definition.code &&
+					p.name == UITemplateName
+					)
+				.Include(p => p._ef_UITemplateFiles )
+				.FirstOrDefault();
+
+				if (uiTemplate != null){
+					throw new TTRPGSystemException($"Template '{UITemplateName}' already exists");
+				}
+			}
+ 				
+			if(version == null){
+				version = "0.0.1";
+			}
+
+			// if it does not exists create it .
+			uiTemplate = new UITemplateDTO{
+				dId = definition.code,
+				name = UITemplateName,
+				version = version
+			};
+			_db.UITemplates.Add(uiTemplate);
+			await _db.SaveChangesAsync();
+
+			#pragma warning disable CS8603 // Possible null reference return.
+            
+			return _db.UITemplates
+			.Where( p => 
+				p.dId		== definition.code &&
+				p.name		== UITemplateName &&
+				p.version	== version
+			)
+			.FirstOrDefault();
+
+			#pragma warning restore CS8603 // Possible null reference return.
+        }
+
+
 		public async Task<ICollection<UITemplateFileDTO>> getAllUITemplateFiles( Guid defCode , string UITemplateName, string? UITemplateVersion ){
 			
 			// first get the definition

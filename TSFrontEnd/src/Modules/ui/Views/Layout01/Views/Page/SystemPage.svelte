@@ -13,7 +13,7 @@
     import Menu from "../Menu/Menu.svelte";
     import { pageSlide } from 	"../../../../../../../src/Modules/ui/Components/Transitions/pageSlide";
     import SystemDesigner3Parts from "./SystemPage/SystemDesigner/SystemDesigner3Parts.svelte";
-    import SystemExporter from "./SystemPage/SystemExporter/SystemExporter.svelte";
+    import SystemUITemplates from "./SystemPage/SystemUITemplates/SystemUITemplates.svelte";
     import SystemTester from "./SystemPage/SystemTester/SystemTester.svelte";
     
 	export let context	: Layout01Context; 
@@ -67,7 +67,9 @@
 	let editPages = ['designer','UI-designer','UI-Tester'];
 	let activeSubPage = 'designer';
 	function changePage( event ){
-		activeSubPage = event.detail;
+
+	 
+		activeSubPage = event.detail; 
 	}
 	//@ts-ignore This is for rendering the unknown strnig
 	nullpreview.isEditable = null;
@@ -135,7 +137,7 @@
 				</div>
 			{:else if activeSubPage == 'UI-designer'}
 				<div transition:pageSlide={{parent:pagesContainer}} >
-					<SystemExporter 
+					<SystemUITemplates 
 						context={context}
 					
 					/>

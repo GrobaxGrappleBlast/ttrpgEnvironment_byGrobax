@@ -1,3 +1,5 @@
+using System.Text.Json.Serialization;
+
 namespace srcServer.core.database {
 
 	public class UITemplateDTO  {
@@ -6,7 +8,10 @@ namespace srcServer.core.database {
         public string	name        {get;set;} 
         public string	version     {get;set;}
 
+		[JsonIgnore]
 		public virtual SystemDefinitionDTO _ef_systemDefinition { get; set; }
-        public virtual ICollection<UITemplateFileDTO> _ef_UITemplateFiles { get; set; }
+        
+		[JsonIgnore]
+		public virtual ICollection<UITemplateFileDTO> _ef_UITemplateFiles { get; set; }
 	}
 }

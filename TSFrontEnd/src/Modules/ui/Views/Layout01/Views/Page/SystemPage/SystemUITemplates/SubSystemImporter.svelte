@@ -2,11 +2,13 @@
 	import { slide } from "svelte/transition"; 
 	import { createEventDispatcher } from "svelte";
     import { Layout01Context } from "../../../../context";
+    import { SystemExporterMethods } from "./SystemExporterMethods";
 	
 	let dispatch = createEventDispatcher();
 	export let context :Layout01Context;
 	let dropZone;
 	let dragActive = false;
+	let canClose : boolean = false;
 
 
 	function pd(e) {
@@ -51,8 +53,9 @@
 	let formData : FormData;
 	let formFiles: string[] = []
 	let formLocked = false;
-	let uiTemplateName = "UITemplateName";
-	let uiTemplateVers = "0.0.1";
+	export let uiTemplateName = "UITemplateName";
+	export let currentUItemplateVers;
+	let uiTemplateVers = SystemExporterMethods.increaseVersionNumber(currentUItemplateVers); //"0.0.1";
 	async function drop(e) {
 
 		e.preventDefault();
@@ -68,8 +71,7 @@
 		// Add formdata and Mandatory fields
 		formData = new FormData();	
 		formData.append('name',uiTemplateName);
-		formData.append('version',uiTemplateVers);
-		debugger
+		formData.append('version',uiTemplateVers); 
 		formData.append('definitionCode',context.activeSystem.code);
 
 		// name
@@ -119,27 +121,25 @@
 
 	async function send(){
 
-		var response = await context.API.adminSendBlockUITemplate( formData );
+		var response = await context.API.SaveUITemplate( formData );
 		console.log(response.responseCode)
 		console.log(response.response)
 		console.log(response.messages) 
 
 	}
- 
-
-
 
 </script>
 
-<section>
-	<div 
-		class="SystemExporterOptionsCloseBtn"
-		on:click={()=>dispatch('pageclose')}
-		on:keypress
-	>
-		X
-	</div>
-	<br><br>
+<section >
+	{#if canClose}
+		<div 
+			class="SystemExporterOptionsCloseBtn"
+			on:click={()=>dispatch('pageclose')}
+			on:keypress
+		>
+			X
+		</div>
+	{/if} 
 	<div 
 		class="ImportDropZone" 
 		bind:this={dropZone}
@@ -149,34 +149,30 @@
 		on:dragleave	= { (e) => { pd(e); dragActive = false } }
 		on:drop			= { (e) => { drop(e); dragActive = false  } }
 	>
-	
-
-	</div>
-
+	</div> 
 	<div>
 		<div>
 			use this as a base for a ui theme that can be used for character sheets. 
 		</div>
-	</div>
+	</div> 
 	<div>
 		<input type="text" bind:value={ uiTemplateName } />
 		<input type="text" bind:value={ uiTemplateVers } />
-	</div>
+		<button on:click={send}> SEND </button>
+	</div> 
 	<div>
 		{#each formFiles as file}
 			<div> {file} </div>
 		{/each}
-	</div>
-	<button on:click={send}> SEND </button>
-
-
+	</div>  
 </section>  
 <style>
+ 
 	.ImportDropZone{
-		height:100px; 
+		height:25px; 
 		padding:20px;
 		border:2px solid red;
-		margin:20px; 
+		 
 		background-color: white;
 		border-radius: 5px;
 	}
