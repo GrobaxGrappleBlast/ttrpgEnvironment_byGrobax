@@ -22,6 +22,14 @@
 		height:100vh;
 		padding: 0;
 		width:100%;
-		overflow: hidden; 
+		overflow-y: scroll; 
+		overflow-x: hidden;
+		scroll-behavior: smooth;
+		scroll-snap-align: both;
+		overscroll-behavior: contain;
+
+		&::-webkit-scrollbar {
+			width: 0px;
+		}
 	}
 </style>

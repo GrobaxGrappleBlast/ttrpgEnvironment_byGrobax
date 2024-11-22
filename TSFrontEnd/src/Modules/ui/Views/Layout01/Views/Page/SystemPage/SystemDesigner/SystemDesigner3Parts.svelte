@@ -14,6 +14,7 @@
 	import { UISystem } 					from "../../../../../../../../../src/Modules/graphDesigner/UIComposition/UISystem";
     import { UICollection } 				from "../../../../../../../../../src/Modules/graphDesigner/UIComposition/UICollection";
     import { UINode } 						from "../../../../../../../../../src/Modules/graphDesigner/UIComposition/UINode";
+    import FeatureDesigner from "./FeatureDesigner/FeatureDesigner.svelte";
 
     export let context	: Layout01Context; 
     export let system : TTRPGSystemJSONFormatting;
@@ -92,16 +93,26 @@
 		}
 	}
 
-	function _colUpdate	( grp:'derived'|'fixed' , colArr :  UICollection	[]){
+	function _colUpdate	( grp:'derived'|'fixed' , colArr :  UICollection[] | any[] ){
+
+		if(!uiSystem){
+			console.error('NoUISystem when calling _ColUpdate')
+			return;
+		}
+
 		colArr.forEach( n  => {
 			if( n.name != n.nameEdit){
 				uiSystem.renameCollection( grp , n.name, n.nameEdit );
 			}
 		});
 	}
-	function _nodUpdate	( grp:'derived'|'fixed' , nodArr :  UINode			[]){
+	function _nodUpdate	( grp:'derived'|'fixed' , nodArr :  UINode[] | any[] ){
 		
-		
+		if(!uiSystem){
+			console.error('NoUISystem when calling _nodUpdate')
+			return;
+		}	
+
 		let col = grp == 'derived' ? derivedCol : fixedCol;
 		if (!col)
 			return;
@@ -166,7 +177,7 @@
 						disabled = { fixedCol == null }
 						collection={ fixedCol?.nodes ?? [] }
 						onSelect    	={ (e) => { _nodSelect('fixed',e); return true }}
-						onAdd       	={ ( ) => { uiSystem.addNode('fixed' , fixedCol?.name )  }}
+						onAdd       	={ ( ) => { uiSystem.addNode('fixed' , fixedCol?.name ?? '' )  }}
 						onUpdateItem	={ (arr)=>{ _nodUpdate('fixed', arr ); return true }}
 						onDeleteItem	={ (e) => { uiSystem.remNode('fixed',fixedCol?.name ?? '', e.name ); if(e.key == fixedNod?.key){ _nodSelect('fixed',null)} }} 
 						on:onDeSelect	={ ( ) => { _nodSelect('fixed',null);}}
@@ -219,7 +230,7 @@
 								_nodSelect('derived',e);
 								return true
 							}}
-							onAdd       	={ ( ) => { uiSystem.addNode('derived' , derivedCol?.name )  }}
+							onAdd       	={ ( ) => { uiSystem.addNode('derived' , derivedCol?.name ?? '' )  }}
 							onUpdateItem	={ (arr)=>{ _nodUpdate('derived', arr ); return true }}
 							onDeleteItem	={ (e) => { uiSystem.remNode('derived',derivedCol?.name ?? '', e.name ); if(e.key == derivedNod?.key){ _nodSelect('derived',null)} }} 
 							on:onDeSelect	={ ( ) => { }}
@@ -238,6 +249,22 @@
 						</div>
 					{/key}
 				{/if}
+			</ToogleSection>
+
+			<ToogleSection 
+				title="Feature Tables"
+			>
+				<div>
+					<h1>Feature Tables</h1>
+					<p>
+						Tables to Loopup using different values. 
+					</p>
+				</div>
+				<div>
+					<FeatureDesigner 
+						context={context}
+					/>
+				</div>
 			</ToogleSection>
 		</div>
 	{/if}

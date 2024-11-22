@@ -1,5 +1,23 @@
  
-import { GrobCollection , GrobGroup , type GrobNodeType , GrobDerivedNode, GrobDerivedOrigin, GrobFixedNode, TTRPGSystem , uuidv4 } from "ttrpg-system-graph";
+import { 
+	GrobCollection ,
+	GrobGroup ,
+	type GrobNodeType ,
+	GrobDerivedNode,
+	GrobDerivedOrigin,
+	GrobFixedNode,
+	TTRPGSystem ,
+	uuidv4,
+	Feature_Multi,
+	Feature_Choice,
+	Feature_CalcReplacement,
+	Feature_StatIncrease_apply,
+	Feature,
+	IOutputHandler,
+	GrobBonusNode,
+	Feature_Origin_Node,
+	Feature_Origin_Collection
+} from "ttrpg-system-graph";
 import { JsonObject, JsonMappingRecordInArrayOut, JsonClassTyped, JsonString, JsonNumber, JsonArrayClassTyped } from "grobax-json-handler";
 import { BASE_SCHEME } from "grobax-json-handler";
  
@@ -103,13 +121,13 @@ export class TTRPG_SCHEMES {
 		// add derived and fixed to groups 
 		if ( !self.fixed	 ){
 			self._createGroup('fixed');
-			self.fixed	 = self._getGroup('fixed')	 as GrobGroupFixed	;
+			self.fixed	 = self.getGroup('fixed')	 as GrobGroupFixed	;
 		}else{
 			self.data['fixed'] = self.fixed;
 		}
 		if ( !self.derived ){
 			self._createGroup('derived');
-			self.derived = self._getGroup('derived') as GrobGroupDerived;	
+			self.derived = self.getGroup('derived') as GrobGroupDerived;	
 		}else{
 			self.data['derived'] = self.derived;
 		}
@@ -194,3 +212,78 @@ export class TTRPGSystemJSONFormatting extends TTRPGSystem {
 }
 
 
+@JsonObject({
+	onBeforeSerialization 	: (self) => {},
+	onBeforeDeSerialization : (self, JsonObject ) => { 
+		console.log(JsonObject['type']);
+		switch(JsonObject['type']){
+			
+			case GrobFeature_Multi.getType() : 
+            return new GrobFeature_Multi();
+			
+			case GrobFeature_Choice.getType() : 
+            return new GrobFeature_Choice();
+			
+			case GrobFeature_CalcReplacement.getType() : 
+            return new GrobFeature_CalcReplacement();
+			
+			case GrobFeature_StatIncrease_apply.getType() : 
+            return new GrobFeature_StatIncrease_apply();
+			default:
+				return self;
+		}
+	}
+})
+export class GrobFeature extends Feature implements IFeature{ 
+	 
+	updateTo(feature: Feature, out: IOutputHandler): boolean { return false }
+	remove(sys?: TTRPGSystem | null): boolean { return false }
+	apply(sys: TTRPGSystem, ...args: any[]): boolean { return false; }
+	disposeNode_fromNode(node: GrobBonusNode) { } 
+}
+export class GrobFeature_Multi	extends Feature_Multi implements IFeature{
+
+	@JsonArrayClassTyped(GrobFeature,{})
+	features : Feature[];
+
+}
+export class GrobFeature_Choice extends Feature_Choice implements IFeature{
+
+	@JsonArrayClassTyped(GrobFeature,{})
+	features : Feature[];
+
+	@JsonNumber()
+	public maxChoices: number;
+
+}
+export class GrobFeature_CalcReplacement	extends Feature_CalcReplacement implements IFeature{
+
+	@JsonString()
+	calc: string;
+
+	@JsonArrayClassTyped(Feature_Origin_Node, {})
+    sources: Feature_Origin_Node[];
+
+}
+export class GrobFeature_StatIncrease_apply	extends Feature_StatIncrease_apply implements IFeature{
+
+	@JsonArrayClassTyped(Feature_Origin_Node, {})
+	sourceItems: Feature_Origin_Node[];
+
+	@JsonArrayClassTyped(Feature_Origin_Collection, {})
+    sourceCollections: Feature_Origin_Collection[];
+
+	@JsonNumber()
+    increaseSize: number;
+
+	@JsonNumber()
+    increaseNumTargets: number;
+
+}
+
+
+export interface IFeature {
+	type: string;
+	name: string;
+    text: string;
+}

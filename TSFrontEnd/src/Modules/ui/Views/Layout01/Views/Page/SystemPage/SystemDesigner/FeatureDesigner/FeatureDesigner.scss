@@ -1,0 +1,76 @@
+
+
+.FeatuerDesigner{
+
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap:10px;
+
+    section{
+        grid-column:span 2;
+        display: grid;
+        grid-template-columns: subgrid;
+        align-items: center;
+
+        input, textarea, select{
+            
+            resize: vertical;
+            box-sizing: border-box;
+        }
+
+        .interactive{
+            @include btnN;
+            padding:5px;
+            grid-column: span 2;
+        }
+    }
+
+    .featureBtn{
+        width:30px;
+        height:30px;
+        float: right;
+    }
+
+    .featureContainer{
+        
+        display: grid;
+        grid-template-columns: 1fr 1fr 1fr 1fr 1fr;
+        align-items: center;
+    }
+    .SubFeatureBtn{
+        
+        border-radius: 10px;
+        width:100px;
+        height:50px;
+        cursor: pointer;
+
+        &[data-filled='true']{
+            border: 3px dashed SteelBlue ;
+            color : steelblue;
+
+            &:hover{
+                border: 3px dashed rgb(122, 176, 221);
+                color : rgb(122, 176, 221);
+            }
+        }
+        &[data-filled='false']{
+            border: 3px dashed rgb(62, 105, 62);
+            color : rgb(62, 105, 62);;
+
+            &:hover{
+                border: 3px dashed rgb(92, 114, 92);;
+                color : rgb(92, 114, 92);;
+            }
+
+            &::after{
+                width: 100%;
+                height:100%;
+                font-size: 25px;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                content:'+'
+            }
+        }
+    }
+}

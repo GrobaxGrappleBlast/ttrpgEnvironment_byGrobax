@@ -19,6 +19,46 @@
 		font-weight: bold;
 	}
 }
+.derivedStringOriginRow{
+	width: 100%;
+	background-color: $COLOR3;
+	height:40px;
+	display:grid;
+	grid-template-columns: 50px 1fr 1fr 1fr 50px;
+	align-items: center;
+    align-content: center;
+
+	&:hover{
+		background-color: $COLOR2;
+	}
+
+	&>input, &> div {
+		border:none;
+		border-radius: 0;
+	}
+
+	&> .GrobSelect {
+		height:40px;
+	}
+	& > input{
+		height:inherit;
+		font-size: 12px;
+		color:white;
+		font-weight: bold;
+	}
+
+	& > .symbol{
+		color: $COLOR4;
+		height:inherit;
+		align-content: center;
+		text-align: center;
+	}
+}
+
+
+
+
+
 .derivedOriginAddARow{
 	@extend .derivedOriginRow;
 	& > div{
@@ -40,10 +80,10 @@
 }
 .derivedOriginRowInteractionField{
 	@extend .derivedOriginRowItem;
-	background-color: $backgroundInput ;
+	 
 	
 	&[data-color="error"]{
-		background-color: $color_error ;
+	 
 		cursor: pointer;
 	}
 	
