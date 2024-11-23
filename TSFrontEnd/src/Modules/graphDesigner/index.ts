@@ -287,3 +287,35 @@ export interface IFeature {
 	name: string;
     text: string;
 }
+export interface IFeature_Multi extends IFeature {
+	features: IFeature[];
+}
+export interface IFeature_Choice extends IFeature_Multi {
+	maxChoices:number ;
+}
+export interface IFeature_replacement extends IFeature {
+	calc:string;
+	sources: Feature_Origin_Node[];
+}
+export interface IFeature_statIncrease extends IFeature {
+	calc:string;
+	sourceItems:string[];
+	sourceCollections:string[];
+	increaseSize:number;
+	increaseNumTargets:number;
+}
+
+export interface IFeatureAllCombined {
+	name				: string,
+	text				: string,
+	type				: string,
+	features			?: IFeatureAllCombined[],
+	sources				?: Feature_Origin_Node[],
+	sourceItems			?: string[],
+	sourceCollections	?: string[],
+	calc				?: string,
+	maxChoices			?: number,
+	increaseSize		?: number,
+	increaseNumTargets	?: number
+}
+export type AnyIFeature = IFeature | IFeature_Choice | IFeature_Multi | IFeature_replacement | IFeature_statIncrease;

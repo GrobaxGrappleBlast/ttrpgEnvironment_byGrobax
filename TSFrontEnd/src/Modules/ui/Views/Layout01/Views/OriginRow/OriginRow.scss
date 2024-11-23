@@ -1,33 +1,7 @@
 
- 
-.derivedOriginRow {
+ ._derivedOriginRow{
 	height:40px;
 	display:grid;
-	grid-template-columns: 50px 50px 1fr 1fr 1fr 50px;
-	&>input, &> div {
-		border:none;
-		border-radius: 0;
-	}
-
-	&> .GrobSelect {
-		height:40px;
-	}
-	& > input{
-		height:inherit;
-		font-size: 12px;
-		color:white;
-		font-weight: bold;
-	}
-}
-.derivedStringOriginRow{
-	width: 100%;
-	background-color: $COLOR3;
-	height:40px;
-	display:grid;
-	grid-template-columns: 50px 1fr 1fr 1fr 50px;
-	align-items: center;
-    align-content: center;
-
 	&:hover{
 		background-color: $COLOR2;
 	}
@@ -53,9 +27,26 @@
 		align-content: center;
 		text-align: center;
 	}
+ }
+
+
+.derivedOriginRow {
+	grid-template-columns: 50px 50px 1fr 1fr 1fr 50px;
 }
-
-
+.derivedStringOriginRow{
+	width: 100%;
+	background-color: $COLOR3;
+	grid-template-columns: 50px 1fr 1fr 1fr 50px;
+	align-items: center;
+    align-content: center;
+}
+.OriginRowCollectionString{
+	width: 100%;
+	background-color: $COLOR3;
+	grid-template-columns: 50px 1fr 1fr 50px;
+	align-items: center;
+    align-content: center;
+}
 
 
 

@@ -6,7 +6,7 @@
     import Trash							from '../../../../Components/buttons/trash.svelte';
 	import { TTRPGSystemJSONFormatting }	from '../../../../../graphDesigner';	
     import { Layout01Context } from "../../context";
-    import { GrobNodeType } from "ttrpg-system-graph";
+    import { GrobCollection, GrobNodeType } from "ttrpg-system-graph";
 
 
 	type stringOrNull = string|null;
@@ -19,13 +19,11 @@
 	let rowSegments : stringOrNull[] = [];
 	var seg0 : stringOrNull= null;
 	var seg1 : stringOrNull= null;
-	var seg2 : stringOrNull= null;
 
-	export let target : GrobNodeType | null = null; 
+	export let target : GrobCollection<GrobNodeType> | null = null; 
 	
 	let options_level0 :string[] = ['fixed','derived'];
 	let options_level1 :string[] = [];
-	let options_level2 :string[] = [];
 
 	onMount( () => { rowSegments = Mount(); } )
 
@@ -40,48 +38,39 @@
 		})
 
 		// ensure length is 3. 
-		while( _rowSegments.length < 3 ){
+		while( _rowSegments.length < 2 ){
 			_rowSegments.push(null)
 		}
 
 		// row segments. 
 		seg0 = _rowSegments[0];
-		seg1 = _rowSegments[1];
-		seg2 = _rowSegments[2];
+		seg1 = _rowSegments[1]; 
 		
 		// create teporary value savers 
 		let _seg0 = seg0;
-		let _seg1 = seg1;
-		let _seg2 = seg2;
+		let _seg1 = seg1; 
 
 		// create an end function 
 		function end( res : stringOrNull[] ){
-			rowData = (res[0] ?? 'unknown') +'.'+ (res[1] ?? 'unknown') +'.' + (res[2] ?? 'unknown');
+			rowData = (res[0] ?? 'unknown') +'.'+ (res[1] ?? 'unknown');
 			seg0 = res[0];
-			seg1 = res[1];
-			seg2 = res[2]; 
+			seg1 = res[1]; 
 		}
 
 		// try to select eacb seg.
 		if( _seg0 && !onSelect( 0 , _seg0 ) ){
-			let res = [null, null, null];
+			let res = [null, null];
 			end(res);
 			return res;
 		}
 
 		if (_seg1 && !onSelect(1, _seg1)){
-			let res = [_seg0, null, null]; 
+			let res = [_seg0, null ]; 
 			end(res);
 			return res;
 		}
-
-		if (_seg2 && !onSelect(2, _seg2)){
-			let res = [_seg0, _seg1, null];
-			end(res);
-			return res;
-		}
-
-		let res = [_seg0, _seg1, _seg2];
+ 
+		let res = [_seg0, _seg1];
 		end(res);
 		return res;
 	}
@@ -96,8 +85,6 @@
 				success = system.getGroup(value) ? true : false;
 				rowSegments[0] = value;
 				rowSegments[1] = null;
-				rowSegments[2] = null;
-				options_level2 =[];
 				target = null; 
 				if (origin){
 					dispatch('deselectTargetNode');
@@ -105,29 +92,22 @@
 				break;
 			case 1:
 				//@ts-ignore
-				options_level2 = system.getCollection(seg0 ?? '', value )?.getNodeNames();
-				success = system.getCollection(seg0 ?? '', value ) ? true : false;
-				rowSegments[1] = value;
-				rowSegments[2] = null;
-				target = null; 
-				if (origin){
+				//options_level2 = system.getCollection(seg0 ?? '', value )?.getNodeNames();
+				target = system.getCollection(seg0 ?? '', value );
+				success = target ? true : false;
+				rowSegments[1] = value; 
+			 
+				if (!success){
 					dispatch('deselectTargetNode');
 				}
-				break;
-			case 2:
-
-				//@ts-ignore
-				let targetNode = system.getNode(seg0 ?? '',seg1 ?? '', value );
-				success = system.getNode(seg0 ?? '',seg1 ?? '', value ) ? true : false;
-				rowSegments[2] = value;
-				target = targetNode;
-				dispatch('foundTargetNode',targetNode); 
+				else {
+					dispatch('foundTargetNode',target); 
+				}
 				break;
 		}
 		seg0 = rowSegments[0];
-		seg1 = rowSegments[1];
-		seg2 = rowSegments[2]; 
-		rowData = (rowSegments[0] ?? 'unknown') +'.'+ (rowSegments[1] ?? 'unknown') +'.' + (rowSegments[2] ?? 'unknown');
+		seg1 = rowSegments[1]; 
+		rowData = (rowSegments[0] ?? 'unknown') +'.'+ (rowSegments[1] ?? 'unknown');
 		return success;
 	}
 
@@ -138,21 +118,13 @@
 		switch (level){
 			case 0: 
 				options_level1 = [];
-				options_level2 =[];
 				target = null;
 				rowSegments[1] = null;
-				rowSegments[2] = null;
 				break;
 			case 1:
 				//@ts-ignore
-				options_level2 = [];
-				rowSegments[2] = null;
 				target = null;
-				break;
-			case 2:
-				//@ts-ignore
-				targetNode = null;
-				break;
+				break; 
 		}
 	}
 
@@ -163,7 +135,7 @@
 </script>
 
 
-<div class="derivedStringOriginRow _derivedOriginRow" data-styleActive="true"	transition:slide|local  >
+<div class="OriginRowCollectionString _derivedOriginRow" data-styleActive="true"	transition:slide|local  >
 
 	<div class="symbol" >
 		{#if target != null }
@@ -174,14 +146,13 @@
 	</div>
 	<!-- Selects -->
 	<CustomSelect 
-
 		bind:selected={seg0}
 		options={ options_level0 }	
 		context={context}	
 		unSelectedplaceholder={nonSelectedString}
 		on:onSelect={(e) => onSelect(0,e.detail)} 
 		on:onDeselect={()=>onDeselect(0)} 
-		/>
+	/>
 	<CustomSelect 
 		bind:selected={seg1}
 		options={options_level1}	
@@ -191,17 +162,6 @@
 		on:onSelect={(e) => onSelect(1,e.detail)} 
 		on:onDeselect={()=>onDeselect(0)} 
 	/>
-	<CustomSelect 
-		bind:selected={seg2}
-		options={options_level2}	
-		disabled={!(options_level1)}	
-		context={context}
-		unSelectedplaceholder={nonSelectedString}
-		on:onSelect={(e) => onSelect(2,e.detail)}
-		on:onDeselect={()=>onDeselect(0)}
-	
-	/>
-
 	<!-- Deletes -->
 	<imagecontainer class="derivedOriginRowInteractionField" role="none" on:click={ondelete} on:keydown={ondelete}>
 		<Trash color={'white'}/>

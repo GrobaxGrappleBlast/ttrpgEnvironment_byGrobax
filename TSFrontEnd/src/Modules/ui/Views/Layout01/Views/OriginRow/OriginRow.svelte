@@ -126,7 +126,7 @@
 </script>
 
 {#if rowData.active }
-	<div class="derivedOriginRow" data-styleActive="true"	transition:slide|local  >
+	<div class="derivedOriginRow _derivedOriginRow" data-styleActive="true"	transition:slide|local  >
 		<!-- The Symbol -->
 		{#if availableSymbols.length == 0}
 			<div class="derivedOriginRowInteractionField" >{rowData.key}</div>

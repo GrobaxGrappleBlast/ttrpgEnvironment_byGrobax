@@ -1,42 +1,59 @@
 <script lang="ts">
     
     import { afterUpdate, beforeUpdate, each } from "svelte/internal";
-import { GrobFeature_CalcReplacement, GrobFeature_Choice, GrobFeature_Multi, GrobFeature_StatIncrease_apply, IFeature } from "../../../../../../../../../../src/Modules/graphDesigner";
+import { GrobFeature_CalcReplacement, GrobFeature_Choice, GrobFeature_Multi, GrobFeature_StatIncrease_apply, IFeature, IFeatureAllCombined } from "../../../../../../../../../../src/Modules/graphDesigner";
     import CustomSelect 		from "../../../../../../../../../../src/Modules/ui/Components/CustomSelect/CustomSelect.svelte";
     import { Layout01Context } 	from "../../../../../../../../../../src/Modules/ui/Views/Layout01/context";
     import { fly, slide } from "svelte/transition";
     import OriginRow from "../../../../OriginRow/OriginRow.svelte";
-    import { TTRPGSystem } from "ttrpg-system-graph";
+    import { keyManagerInstance, TTRPGSystem } from "ttrpg-system-graph";
     import { flip } from "svelte/animate";
     import OriginRowString from "../../../../OriginRow/OriginRowString.svelte";
+    import OriginRowCollectionString from "../../../../OriginRow/OriginRowCollectionString.svelte";
 
 	export let context	: Layout01Context; 
 	$: system = context.activeFactory;
-	let feature : IFeature = {name :'unknown', text : 'unknown' , type :'unknown'};
+	let feature : IFeatureAllCombined = {name :'unknown', text : 'unknown' , type :'unknown'};
+	function fillFeatureMissingValues( feat: IFeatureAllCombined ){
+		feat.features			= feat.features				?? [];  //?: IFeatureAllCombined[],
+		feat.sources			= feat.sources				?? [];  //?: Feature_Origin_Node[],
+		feat.sourceItems		= feat.sourceItems			?? [];  //?: string[],
+		feat.sourceCollections	= feat.sourceCollections	?? []; 	 //?: string[],
+		feat.calc				= feat.calc					?? '0';  //?: string,
+		feat.maxChoices			= feat.maxChoices			?? 0; 	 //?: number,
+		feat.increaseSize		= feat.increaseSize			?? 0;  //?: number,
+		feat.increaseNumTargets	= feat.increaseNumTargets	?? 0; //?: number
+	}
+	fillFeatureMissingValues(feature);
+	// feature.sourceItems = [
+	// 	'fixed.stats.charisma',
+	// 	'fixed.stats.intelligence',
+	// 	'fixed.stats.dexterity',
+	// 	'fixed.stats.constitution',
+	// 	'fixed.stats.wisdom',
+	// 	'fixed.stats.intelliganso',
+	// ];
+	feature.sourceCollections = [
+		'fixed.stats',
+		'fixed.modifiers'
+	];
+
 	let subFeatures: IFeature[] = [];
 
 	// if Statincrease. 
-	let allowedOrigins_specifikNodes 	: string[] = [
-		'fixed.stats.charisma',
-		'fixed.stats.intelligense',
-		'fixed.stats.dexterity',
-		'fixed.stats.constitution',
-		'fixed.stats.wisdom',
-		'fixed.stats.intelligense',
-		'fixed.stats.charisma',
-		'fixed.stats.intelliganso',
-		'fixed.stats.dexterity',
-		'fixed.stats.constitution',
-		'fixed.stats.wisdom',
-		'fixed.stats.intelligense',
-		'fixed.stats.charisma',
-		'fixed.stats.intelligense',
-		'fixed.stats.dexterity',
-		'fixed.stats.constitution',
-		'fixed.stats.wisdom',
-		'fixed.stats.intelligense',
-	];
-	let allowedOriring_collections 		: string[] = [];
+	type stringDataPair = { key : any , value: any , target? : any };
+	let allowedOrigins_specifikNodes 	: stringDataPair[] = []
+	let allowedOriring_collections 		: stringDataPair[] = [];
+	(feature.sourceItems ?? []).forEach( v => {
+		allowedOrigins_specifikNodes.push({ key : keyManagerInstance.getNewKey(), value:v });
+	});
+	(feature.sourceCollections ?? []).forEach( v => {
+		allowedOriring_collections.push({ key : keyManagerInstance.getNewKey(), value:v });
+	});
+
+	$: isValid = [allowedOriring_collections, allowedOrigins_specifikNodes].reduce((acc, array) => {
+		return acc && array.every(item => item.target ? true : false );
+	}, true);
 
 	// type section
 	let _sectionType : string | null = feature.type;
@@ -71,27 +88,44 @@ import { GrobFeature_CalcReplacement, GrobFeature_Choice, GrobFeature_Multi, Gro
 		subFeatures = subFeatures;
 	}
 	function _addAllowedOrigins_specifik(){
-
-		allowedOrigins_specifikNodes.push('unknown.unknown.unknown');
-		allowedOrigins_specifikNodes = allowedOrigins_specifikNodes;
+		var row = 'unknown.unknown.unknown';
+		allowedOrigins_specifikNodes.push({key:keyManagerInstance.getNewKey() , value:row });
+		allowedOrigins_specifikNodes	= allowedOrigins_specifikNodes;
+		_save()
 	}
 	function _addAllowedOrigins_collection(){
-		allowedOriring_collections.push('unknown.unknown');
-		allowedOriring_collections = allowedOriring_collections;
+		var row = 'unknown.unknown';
+		allowedOriring_collections.push({key:keyManagerInstance.getNewKey() , value:row });
+		allowedOriring_collections	= allowedOriring_collections;
+		_save()
 	}
 	function _deleteAllowedOrigins_Specifik( index ){
 		allowedOrigins_specifikNodes.splice(index, 1);
 		allowedOrigins_specifikNodes = allowedOrigins_specifikNodes;
+		_save()
 	}
 	function _deleteAllowedOrigins_collection( index ){
 		allowedOriring_collections.splice(index, 1);
 		allowedOriring_collections = allowedOriring_collections;
+		_save()
+	}
+	function _save(){
+		feature.sourceItems = allowedOrigins_specifikNodes.map( p => p.value )
+		feature.sourceCollections	= allowedOriring_collections.map( p => p.value )
 	}
 
 </script>
 
 
 <div class="FeatuerDesigner" >
+
+	<section>
+		{#if isValid}
+			<p>Feature is Valid<span>&#10003;</span></p>
+		{:else}
+			<p>Feature is Valid <span>&#10540;</span></p>
+		{/if}
+	</section>
 
 	<section>
 		<p>feature type</p>
@@ -152,14 +186,16 @@ import { GrobFeature_CalcReplacement, GrobFeature_Choice, GrobFeature_Multi, Gro
 				<button class="featureBtn" on:click={_addAllowedOrigins_specifik}> + </button>
 			</div>
 			<div style="grid-column:span 2;">
-				{#each allowedOrigins_specifikNodes as origin , i (i) }
-					<div animate:flip  > 
+				{#each allowedOrigins_specifikNodes as origin , i (origin.key) }
+					<div animate:flip transition:fly|local={{x:100}} > 
 						<!--{#key origin}-->
 							<OriginRowString
-								bind:rowData 	 = { origin }
+								bind:rowData 	 = { origin.value }
 								system 			 = { system }
 								context = {context}
+								bind:target = {origin.target}
 								on:onDelete 		= { () => _deleteAllowedOrigins_Specifik(i) }
+								on:foundTargetNode = { _save }
 							/>
 						<!--{/key}-->
 					</div>
@@ -177,18 +213,26 @@ import { GrobFeature_CalcReplacement, GrobFeature_Choice, GrobFeature_Multi, Gro
 				<button class="featureBtn" on:click={_addAllowedOrigins_collection}> + </button>
 			</div>
 			<div style="grid-column:span 2;">
-				{#each allowedOriring_collections as origin,i (i) }
-					<div animate:flip transition:slide|local > 
-						<OriginRowString
-							bind:rowData 	 = { origin }
+				{#each allowedOriring_collections as origin,i (origin.key) }
+					<div animate:flip transition:fly|local={{x:100}}> 
+						<OriginRowCollectionString
+							bind:rowData 	 = { origin.value }
 							system 			 = { system }
 							context = {context}
+							bind:target = {origin.target}
+							on:foundTargetNode = { _save }
 							on:onDelete 		= { () => _deleteAllowedOrigins_collection(i) }
 						/>
 					</div>
 				{/each}
 			</div>
 
+		</section>
+	{/if }
+
+	{#if feature.type && feature.type == GrobFeature_CalcReplacement.getType()}
+		<section  transition:slide|local>
+ 
 		</section>
 	{/if }
 
