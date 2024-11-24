@@ -17,6 +17,7 @@
 	export let goodTitle = "No Error";
 	export let badTitle = "Error"
 	export let context	: Layout01Context; 
+	export let hideSave : boolean = false;
 
 	let messageHandler: StaticMessageHandler; 
 	const dispatch = createEventDispatcher(); 
@@ -93,6 +94,9 @@
 		controllerCalc			= controller.calc;
 		controllerIsValid		= controller.isValid;
 		origName = get(controller.name);
+
+		controller.recalculateCalcAndOrigins();  
+		controller.checkIsValid();   
 	})
 
 </script>
@@ -153,9 +157,11 @@
 		{/if}
 	</div> 
 	<br>
-	<div class="ItemDesignerButtonRow">
-		<button on:click={ onSave }  >save changes</button> 
-	</div>
+	{#if hideSave}
+		<div class="ItemDesignerButtonRow">
+			<button on:click={ onSave }  >save changes</button> 
+		</div>
+	{/if}
 	<br><br>
 </div>
  

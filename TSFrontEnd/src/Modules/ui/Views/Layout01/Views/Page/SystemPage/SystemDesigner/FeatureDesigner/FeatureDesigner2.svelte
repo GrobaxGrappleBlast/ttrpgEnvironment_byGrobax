@@ -1,9 +1,9 @@
 <script lang="ts">
     
     import { afterUpdate, beforeUpdate, each } from "svelte/internal";
-import { GrobFeature_CalcReplacement, GrobFeature_Choice, GrobFeature_Multi, GrobFeature_StatIncrease_apply, GrobGroupDerived, GrobJDerivedNode, IFeature, IFeatureAllCombined } from "../../../../../../../../../../src/Modules/graphDesigner";
-    import CustomSelect 		from "../../../../../../../../../../src/Modules/ui/Components/CustomSelect/CustomSelect.svelte";
-    import { Layout01Context } 	from "../../../../../../../../../../src/Modules/ui/Views/Layout01/context";
+	import { GrobFeature_CalcReplacement, GrobFeature_Choice, GrobFeature_Multi, GrobFeature_StatIncrease_apply, GrobGroupDerived, GrobJDerivedNode, IFeature, IFeatureAllCombined } from "../../../../../../../../graphDesigner";
+    import CustomSelect 		from "../../../../../../../Components/CustomSelect/CustomSelect.svelte";
+    import { Layout01Context } 	from "../../../../../context";
     import { fly, slide } from "svelte/transition";
     import OriginRow from "../../../../OriginRow/OriginRow.svelte";
     import { GrobDerivedNode, keyManagerInstance, TTRPGSystem } from "ttrpg-system-graph";
@@ -11,15 +11,16 @@ import { GrobFeature_CalcReplacement, GrobFeature_Choice, GrobFeature_Multi, Gro
     import OriginRowString from "../../../../OriginRow/OriginRowString.svelte";
     import OriginRowCollectionString from "../../../../OriginRow/OriginRowCollectionString.svelte";
     import DerivedItemDesigner from "../DerivedItemDesigner.svelte";
-    import { UINode } from "../../../../../../../../../../src/Modules/graphDesigner/UIComposition/UINode";
-    import ToogleSection from "../../../../../../../../../../src/Modules/ui/Components/toogleSection/toogleSection.svelte";
-	import FeatureDesigner from './FeatureDesigner.svelte';
+    import { UINode } from "../../../../../../../../graphDesigner/UIComposition/UINode";
+    import ToogleSection from "../../../../../../../Components/toogleSection/toogleSection.svelte";
+	import FeatureDesigner2 from './FeatureDesigner2.svelte'; 
 
 	export let context	: Layout01Context; 
 	$: system = context.activeFactory;
-	export let feature : IFeatureAllCombined = {name :'unknown', text : 'unknown' , type :'unknown'};
+	export let feature : IFeatureAllCombined = {name :'', text : '' , type :''};
 	export let level = 0;
 	function fillFeatureMissingValues( feat: IFeatureAllCombined ){
+		feat.key 				= feat.key ?? keyManagerInstance.getNewKey();
 		feat.features			= feat.features				?? [];  //?: IFeatureAllCombined[],
 		feat.sources			= feat.sources				?? [];  //?: Feature_Origin_Node[],
 		feat.sourceItems		= feat.sourceItems			?? [];  //?: string[],
@@ -30,11 +31,11 @@ import { GrobFeature_CalcReplacement, GrobFeature_Choice, GrobFeature_Multi, Gro
 		feat.increaseNumTargets	= feat.increaseNumTargets	?? 0; //?: number
 	}
 	fillFeatureMissingValues(feature);
+	let subFeatures: IFeatureAllCombined[] = [];
+	$: isValid = _isValid(feature, subFeatures);
+	let validationMessages : { type:string, msg:string}[] = []
 
-	let subFeatures: IFeature[] = [];
-
-	// SubFeatureRendering
-	let activeFeature : IFeature | null = null ;
+	// validation.
 
 	// calculation  
 	let calcNode = new UINode( context.uiSystem , new GrobJDerivedNode() );
@@ -66,13 +67,10 @@ import { GrobFeature_CalcReplacement, GrobFeature_Choice, GrobFeature_Multi, Gro
 		'Multi Feature'		: GrobFeature_Multi.getType(),
 		'Choice Feature'	: GrobFeature_Choice.getType()
 	}
-	
-	// boolean section
-	let _sectionFlavorText_Minimized = false;
-
-	function _sectionFlavorText_onToogle () {
-		_sectionFlavorText_Minimized = !_sectionFlavorText_Minimized
+	if (!_sectionType){
+		_sectionType = 'Text Feature';
 	}
+
 	function _selectType (sel){
 
 		const type = _sectionTypes[sel.detail];
@@ -86,11 +84,20 @@ import { GrobFeature_CalcReplacement, GrobFeature_Choice, GrobFeature_Multi, Gro
 		feature = feature;
 	}
 	function _addFeature(){
-		subFeatures.push( {name :'unknown', text : 'unknown' , type :'unknown'} );
+		subFeatures.push( {name :'', text : '' , type :''} );
 		subFeatures = subFeatures;
 	}
-	function _selFeature(feature : IFeature | null = null  ){
-		activeFeature = feature;
+	function _removeFeature(feat){
+		subFeatures = subFeatures
+		.filter( f => {
+			if (f.key) { 
+				return f.key != feat.key
+			} 
+			else 
+			{ 
+				return (f.name != feat.name && f.text != feat.text && f.type != feat.type) 
+			}
+		})
 	}
 	function _addAllowedOrigins_specifik(){
 		var row = 'unknown.unknown.unknown';
@@ -118,14 +125,60 @@ import { GrobFeature_CalcReplacement, GrobFeature_Choice, GrobFeature_Multi, Gro
 		feature.sourceItems = allowedOrigins_specifikNodes.map( p => p.value )
 		feature.sourceCollections	= allowedOriring_collections.map( p => p.value )
 	}
+	function _isValid( _feature , _subFeatures ) : boolean{
+
+		// if this is a multi type. then validate all subfeatures aswell
+		if (feature.type ==  GrobFeature_Choice.getType() || feature.type == GrobFeature_Multi.getType()){
+
+		}
+
+		// if this is a stat increase then validate all options
+		if (feature.type ==  GrobFeature_StatIncrease_apply.getType() ){
+
+		}
+
+		// if this is a calc. then validate the calculation
+		if (feature.type == GrobFeature_CalcReplacement.getType()){
+
+		}
+
+		return true;
+	}
 
 </script>
 
 
-<div class="FeatuerDesigner" >
+<div class="FeatuerDesigner" data-level={level}>
 
-	{#if !activeFeature}
+		<!-- Validation Section -->
+		<section>
+			{#if isValid}
+				<div>Valid</div>
+			{:else}
+				<div>Not Valid</div>
+			{/if}
+		</section>
+
+		<!-- Editor Section -->
 		<div  transition:slide|local >
+		
+			<section>
+				<!--p>Name Of Feature</p-->
+				<input 
+					placeholder="Name Of Feature"
+					type="text" 
+					bind:value={feature.name}
+				/>
+			</section>
+			<br>
+			<section>
+				<textarea  
+					placeholder="Flavor text"
+					bind:value={feature.text} 
+					style={`grid-column:span 2;column:span 2;`}
+				/>
+			</section>
+
 			<section>
 				<p>feature type</p>
 				<div class="interactive" >
@@ -137,54 +190,42 @@ import { GrobFeature_CalcReplacement, GrobFeature_Choice, GrobFeature_Multi, Gro
 					/>
 				</div>
 			</section>
-
-			<section>
-				<p>Name Of Feature</p>
-				<input type="text" bind:value={feature.name}/>
-			</section>
-
-			<section>
-				<p>Flaver Text</p>
-				{#if _sectionFlavorText_Minimized }
-				<div>
-					<button class="featureBtn" on:click={ _sectionFlavorText_onToogle }>+</button>
-				</div>
-				<input 
-					type="text" 
-					bind:value={feature.text} 
-					style="grid-column:span 2;"
-					/>
-				{:else}
-					<div>
-						<button class="featureBtn" on:click={ _sectionFlavorText_onToogle }>-</button>
-					</div>
-					<textarea  
-						bind:value={feature.text} 
-						style={`grid-column:span 2;column:span 2;`}
-					/>
-				{/if}
-			</section>
-
+			
 			<!-- Choose Sub Nodes -->
+			{#if feature.type && ( feature.type == GrobFeature_Choice.getType() )}
+				<section class="featureContainer"  transition:slide|local>
+					<div class="line" > 
+						<p>Number of Choices Allowed</p>
+						<input type="number" bind:value={feature.maxChoices} min="0" >
+					</div>
+					
+				</section>
+			{/if}
+
 			{#if feature.type && (feature.type == GrobFeature_Multi.getType() || feature.type == GrobFeature_Choice.getType() )}
 				<section class="featureContainer"  transition:slide|local>
+					
 					{#each subFeatures as feat}
-						<div class="SubFeatureBtn" data-filled='true' on:click={ () => _selFeature(feat)} on:keyup>
-							
-						</div>
+						<button class="subFeatureBtn" on:click={ () => _removeFeature(feat)} >-</button>
+						<FeatureDesigner2 
+							feature={feat}
+							level={level + 1}
+							context={context}
+						/>
 					{/each}
-					<div class="SubFeatureBtn" data-filled='false' on:click={_addFeature} on:keyup >
-
-					</div>
+					<button class="addFeatureButton" on:click={_addFeature} on:keyup >
+						add new extra feature
+					</button>
 				</section>
 			{/if}
 
 			{#if feature.type && feature.type == GrobFeature_StatIncrease_apply.getType()}
 				<section  transition:slide|local>
-
-					<p>Specifikly Allowed Nodes</p>
-					<div>
-						<button class="featureBtn" on:click={_addAllowedOrigins_specifik}> + </button>
+					<div class="line" >
+						<p>Specifikly Allowed Nodes</p>
+						<div>
+							<button class="featureBtn" on:click={_addAllowedOrigins_specifik}> + </button>
+						</div>
 					</div>
 					<div style="grid-column:span 2;">
 						{#each allowedOrigins_specifikNodes as origin , i (origin.key) }
@@ -206,10 +247,11 @@ import { GrobFeature_CalcReplacement, GrobFeature_Choice, GrobFeature_Multi, Gro
 
 			{#if feature.type && feature.type == GrobFeature_StatIncrease_apply.getType()}
 				<section  transition:slide|local>
-
-					<p>Specifikly Allowed Collection's</p>
-					<div>
-						<button class="featureBtn" on:click={_addAllowedOrigins_collection}> + </button>
+					<div class="line" >
+						<p>Specifikly Allowed Collection's</p>
+						<div>
+							<button class="featureBtn" on:click={_addAllowedOrigins_collection}> + </button>
+						</div>
 					</div>
 					<div style="grid-column:span 2;">
 						{#each allowedOriring_collections as origin,i (origin.key) }
@@ -242,20 +284,12 @@ import { GrobFeature_CalcReplacement, GrobFeature_Choice, GrobFeature_Multi, Gro
 				</section>
 			{/if }
 		</div>
-	
-	{:else}
-		<div  transition:slide|local style="display:unset">
-			<div on:click={ () => _selFeature(null)} on:keyup style="display:flex;align-items: center;cursor:pointer;">
-				<p>{feature.name}&nbsp;</p>
-				<section class="SubFeatureIcon" >&nbsp;</section>
-			</div>
-		</div> 
-		<div transition:slide|local style="display:unset">
-			<FeatureDesigner 
-				context={context}
-				feature={activeFeature}
-				level = {level +1}
-			/>
-		</div>
-	{/if }
+
 </div>
+<style>
+	.line{
+		display: flex;
+		justify-content: space-between;
+		align-items: center;
+	}
+</style>

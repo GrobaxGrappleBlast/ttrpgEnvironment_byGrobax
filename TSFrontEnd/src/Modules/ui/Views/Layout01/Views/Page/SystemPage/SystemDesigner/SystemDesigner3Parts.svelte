@@ -14,7 +14,7 @@
 	import { UISystem } 					from "../../../../../../../../../src/Modules/graphDesigner/UIComposition/UISystem";
     import { UICollection } 				from "../../../../../../../../../src/Modules/graphDesigner/UIComposition/UICollection";
     import { UINode } 						from "../../../../../../../../../src/Modules/graphDesigner/UIComposition/UINode";
-    import FeatureDesigner from "./FeatureDesigner/FeatureDesigner.svelte";
+    import FeatureDesigner from "./FeatureDesigner/FeatureDesigner2.svelte";
 
     export let context	: Layout01Context; 
     export let system : TTRPGSystemJSONFormatting;

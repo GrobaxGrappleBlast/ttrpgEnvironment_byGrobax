@@ -40,13 +40,13 @@ export class GrobJDerivedOrigin extends GrobDerivedOrigin {
 // NODES  
 export class GrobJDerivedNode extends GrobDerivedNode {
 	@JsonString() 
-	public name ;
+	declare public name ;
 
 	@JsonString({name : 'calculationString'})
-	public calc:string;
+	declare public calc:string;
 
 	@JsonArrayClassTyped(GrobJDerivedOrigin,{name:'calcOrigins'})
-	public origins : GrobJDerivedOrigin[];
+	declare public origins : GrobJDerivedOrigin[];
 } 
 export class GrobJFixedNode extends GrobFixedNode {
 
@@ -306,6 +306,8 @@ export interface IFeature_statIncrease extends IFeature {
 }
 
 export interface IFeatureAllCombined {
+	key? : string,
+	isValid? :boolean,
 	name				: string,
 	text				: string,
 	type				: string,

@@ -19,7 +19,7 @@ export class UINode extends UpdateListener implements IViewElementUpdateable {
     private _isConstructed = false;
     
 
-	constructor(system: UISystem, node: GrobNodeType) {
+	constructor(system: UISystem, node: GrobNodeType | any) {
 		super();
 
 		var names = Object.keys( node.updateListeners );
