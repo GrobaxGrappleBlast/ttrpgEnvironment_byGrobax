@@ -175,7 +175,7 @@
 {:else}
 	<div class="derivedOriginRow" data-styleActive="false" on:click={fromPreOriginToOrigin} role="none" on:keydown={ fromPreOriginToOrigin } 	transition:slide|local >
 		<div> {rowData.key} </div> 
-		<div> Click To Add a Origin </div> 
+		<div > Click To Add a Origin </div> 
 		{#if !rowData.inCalc }
 			<!-- Deletes -->
 			<imagecontainer class="derivedOriginRowInteractionField" role="none" data-color={ rowData.inCalc ? 'verbose' : 'error' } on:click={ondelete} on:keydown={ondelete}>

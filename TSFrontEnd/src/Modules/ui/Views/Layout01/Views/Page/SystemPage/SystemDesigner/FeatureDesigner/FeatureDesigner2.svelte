@@ -10,10 +10,11 @@
     import { flip } from "svelte/animate";
     import OriginRowString from "../../../../OriginRow/OriginRowString.svelte";
     import OriginRowCollectionString from "../../../../OriginRow/OriginRowCollectionString.svelte";
-    import DerivedItemDesigner from "../DerivedItemDesigner.svelte";
+    import DerivedItemDesigner from "../DerivedItemDesigner2.svelte";
     import { UINode } from "../../../../../../../../graphDesigner/UIComposition/UINode";
     import ToogleSection from "../../../../../../../Components/toogleSection/toogleSection.svelte";
 	import FeatureDesigner2 from './FeatureDesigner2.svelte'; 
+    import StaticMessageHandler from "../../../../../../../../../Modules/ui/Components/Messages/StaticMessageHandler.svelte";
 
 	export let context	: Layout01Context; 
 	$: system = context.activeFactory;
@@ -31,25 +32,27 @@
 		feat.increaseNumTargets	= feat.increaseNumTargets	?? 0; //?: number
 	}
 	fillFeatureMissingValues(feature);
-	let subFeatures: IFeatureAllCombined[] = [];
-	$: isValid = _isValid(feature, subFeatures);
-	let validationMessages : { type:string, msg:string}[] = []
-
-	// validation.
+	let subFeatures: IFeatureAllCombined[] = []; 
 
 	// calculation  
 	let calcNode = new UINode( context.uiSystem , new GrobJDerivedNode() );
+	let derivedItemDesigner : DerivedItemDesigner;
+	
+	// validation.
+	$: isValid = _isValid(feature, subFeatures);
+	let featureMessageHandler : StaticMessageHandler;
 
 	// if Statincrease. 
 	type stringDataPair = { key : any , value: any , target? : any };
 	let allowedOrigins_specifikNodes 	: stringDataPair[] = []
 	let allowedOriring_collections 		: stringDataPair[] = [];
-	(feature.sourceItems ?? []).forEach( v => {
-		allowedOrigins_specifikNodes.push({ key : keyManagerInstance.getNewKey(), value:v });
-	});
-	(feature.sourceCollections ?? []).forEach( v => {
-		allowedOriring_collections.push({ key : keyManagerInstance.getNewKey(), value:v });
-	});
+		// load stat increase ( on first loading in )	
+		(feature.sourceItems ?? []).forEach( v => {
+			allowedOrigins_specifikNodes.push({ key : keyManagerInstance.getNewKey(), value:v });
+		});
+		(feature.sourceCollections ?? []).forEach( v => {
+			allowedOriring_collections.push({ key : keyManagerInstance.getNewKey(), value:v });
+		});
 
 	// type section
 	let _sectionType : string | null = feature.type;
@@ -103,46 +106,141 @@
 		var row = 'unknown.unknown.unknown';
 		allowedOrigins_specifikNodes.push({key:keyManagerInstance.getNewKey() , value:row });
 		allowedOrigins_specifikNodes	= allowedOrigins_specifikNodes;
-		_save()
+		_saveSourceItemAndCollections()
 	}
 	function _addAllowedOrigins_collection(){
 		var row = 'unknown.unknown';
 		allowedOriring_collections.push({key:keyManagerInstance.getNewKey() , value:row });
 		allowedOriring_collections	= allowedOriring_collections;
-		_save()
+		_saveSourceItemAndCollections()
 	}
 	function _deleteAllowedOrigins_Specifik( index ){
 		allowedOrigins_specifikNodes.splice(index, 1);
 		allowedOrigins_specifikNodes = allowedOrigins_specifikNodes;
-		_save()
+		_saveSourceItemAndCollections()
 	}
 	function _deleteAllowedOrigins_collection( index ){
 		allowedOriring_collections.splice(index, 1);
 		allowedOriring_collections = allowedOriring_collections;
-		_save()
+		_saveSourceItemAndCollections()
 	}
-	function _save(){
-		feature.sourceItems = allowedOrigins_specifikNodes.map( p => p.value )
+	function _saveSourceItemAndCollections(){
+		feature.sourceItems 		= allowedOrigins_specifikNodes.map( p => p.value )
 		feature.sourceCollections	= allowedOriring_collections.map( p => p.value )
 	}
-	function _isValid( _feature , _subFeatures ) : boolean{
+	function _isValid( _feature : IFeatureAllCombined , _subFeatures : IFeatureAllCombined[] , extraText:string = '' , output : boolean = false , level = 0 ) : boolean{
+
+		/// do not remove all messages if level is not 0 
+		if(level == 0){ 
+			featureMessageHandler?.removeAllMessages();
+			if (derivedItemDesigner && derivedItemDesigner.clearMessages != undefined){
+				derivedItemDesigner.clearMessages();
+			}
+		}
+
+		// if it had saved before remove the saved message
+		featureMessageHandler?.removeError('saved');
+
+		// create needed variables and call methods.
+		let valid = true;
+		let allErrorMessages = {
+			'choice_error_01' : (...args) => `${extraText} name of '${args[0]}' was invalid`,
+			'choice_error_02' : (...args) => `${extraText} flavor text was invalid`,
+			'increas_error_01' : (...args) => `${extraText} Errors At Increase Stat targets :\n ${args.concat('\n')}`,
+			'derivedCalcError01': (...args) => `${extraText} Error At Derived Calculation. `,
+		}
+		let errors : { key:string, msg:string }[] = [];
+		function addError( key:string, ...args ){
+			errors.push( 
+				{
+					key : key + output,
+					msg : allErrorMessages[key](args) 
+				}
+			)
+		}
+
+		// first validate all mandatory fields 
+		if ( true ){
+
+			// validate name 
+			let name = _feature.name.replaceAll(' ','').replaceAll('\t','').replaceAll('\n','');
+			if (name == ''){
+				valid = false;
+				addError('choice_error_01', name )
+			}
+
+			// flavor text 
+			let text = _feature.text.replaceAll(' ','').replaceAll('\t','').replaceAll('\n','');
+			if (text == ''){
+				valid = false;
+				addError('choice_error_02')
+			}
+
+		}
+
 
 		// if this is a multi type. then validate all subfeatures aswell
-		if (feature.type ==  GrobFeature_Choice.getType() || feature.type == GrobFeature_Multi.getType()){
+		if (_feature.type ==  GrobFeature_Choice.getType() || _feature.type == GrobFeature_Multi.getType()){
+
+			// get SubFeature isValids
+			for (let i = 0; i < _subFeatures.length; i++) {
+				const _sub = _subFeatures[i];
+				valid = _isValid(_sub, _sub.features ?? [], 'Subfeature : ' + _sub.name + ' Error:\n' , output, level + 1  )
+			}
 
 		}
 
 		// if this is a stat increase then validate all options
-		if (feature.type ==  GrobFeature_StatIncrease_apply.getType() ){
+		if (_feature.type ==  GrobFeature_StatIncrease_apply.getType() ){
+			var noTargets : string [] = [];
+			allowedOrigins_specifikNodes.forEach( p => {if ( p.target == null ){ noTargets.push(p.key) }})
+			allowedOriring_collections	.forEach( p => {if ( p.target == null ){ noTargets.push(p.key) }})
+
+			// for each with no target. create an Error
+			addError('increas_error_01', ...noTargets);
 
 		}
 
 		// if this is a calc. then validate the calculation
-		if (feature.type == GrobFeature_CalcReplacement.getType()){
+		if (_feature.type == GrobFeature_CalcReplacement.getType()){
 
+			
+			derivedItemDesigner?.recalc( true );
+			if(!derivedItemDesigner?.isValid()){
+				valid = false;
+				addError('derivedCalcError01');
+			}
+			
 		}
 
+
+		// before returning we redraw error messages
+
+		
+		// if draw, then draw
+		if (output){
+			// add errrors 
+			for (let i = 0; i < errors.length; i++) {
+				const err = errors[i];
+				featureMessageHandler?.addMessageManual(err.key,err.msg, 'error');
+			}
+		}
+
+		// return valid value
+		return valid;
+	}
+	function _save() : boolean{
+		
+		// first check if we can save.
+		isValid = _isValid(feature,subFeatures,'',true)
+		if(!isValid){
+			return false;
+		}
+
+		// try to save it 
+		//TODO: implement.
 		return true;
+
 	}
 
 </script>
@@ -152,25 +250,38 @@
 
 		<!-- Validation Section -->
 		<section>
-			{#if isValid}
-				<div>Valid</div>
-			{:else}
-				<div>Not Valid</div>
-			{/if}
+			<div>
+				<StaticMessageHandler 
+					bind:this={featureMessageHandler}
+				/>
+			</div>
+			<div>
+				{#if isValid}
+					<div>Valid</div>
+				{:else}
+					<div>Not Valid</div>
+				{/if}
+			</div>
+		</section>
+
+		<!-- Save Section -->
+		<section>	
+			<button on:click={_save}>Save Feature</button>
 		</section>
 
 		<!-- Editor Section -->
 		<div  transition:slide|local >
 		
+			<!--Name Of Feature-->
 			<section>
-				<!--p>Name Of Feature</p-->
 				<input 
 					placeholder="Name Of Feature"
 					type="text" 
 					bind:value={feature.name}
 				/>
 			</section>
-			<br>
+
+			<!-- Flavor text piece -->
 			<section>
 				<textarea  
 					placeholder="Flavor text"
@@ -179,6 +290,7 @@
 				/>
 			</section>
 
+			<!-- Feature type selection -->
 			<section>
 				<p>feature type</p>
 				<div class="interactive" >
@@ -188,7 +300,7 @@
 						selected={_sectionType };
 						on:onSelect={ _selectType }
 					/>
-				</div>
+				</div> 
 			</section>
 			
 			<!-- Choose Sub Nodes -->
@@ -205,7 +317,7 @@
 			{#if feature.type && (feature.type == GrobFeature_Multi.getType() || feature.type == GrobFeature_Choice.getType() )}
 				<section class="featureContainer"  transition:slide|local>
 					
-					{#each subFeatures as feat}
+					{#each subFeatures as feat , i }
 						<button class="subFeatureBtn" on:click={ () => _removeFeature(feat)} >-</button>
 						<FeatureDesigner2 
 							feature={feat}
@@ -236,7 +348,7 @@
 										context = {context}
 										bind:target = {origin.target}
 										on:onDelete 		= { () => _deleteAllowedOrigins_Specifik(i) }
-										on:foundTargetNode = { _save }
+										on:foundTargetNode = { _saveSourceItemAndCollections }
 									/> 
 							</div>
 						{/each}
@@ -261,7 +373,7 @@
 									system 			 = { system }
 									context = {context}
 									bind:target = {origin.target}
-									on:foundTargetNode = { _save }
+									on:foundTargetNode = { _saveSourceItemAndCollections }
 									on:onDelete 		= { () => _deleteAllowedOrigins_collection(i) }
 								/>
 							</div>
@@ -275,10 +387,14 @@
 				<section  transition:slide|local >
 					<div style="grid-column:span 2;">
 						<DerivedItemDesigner 
+							bind:this={derivedItemDesigner}
 							node={calcNode}
 							system={context.uiSystem}
 							context={context} 
 							hideSave={true}
+							hideName={true}
+							hideDesc={true}
+							hideLoc ={true}
 						/>
 					</div>
 				</section>

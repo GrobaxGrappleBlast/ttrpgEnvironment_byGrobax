@@ -17,7 +17,7 @@
 	let entries : [any,{msg:string, type : MessageTypeTypes}] [] = [];
 	export let overrideClick : (( type:string ,key : any ) => any ) | null = null ;
 	export let overrideClickTextError : string | null = null;
-	
+
 
 	messages.subscribe( p => { 
 		entries =  Object.entries(p);

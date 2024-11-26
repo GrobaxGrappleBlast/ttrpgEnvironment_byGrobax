@@ -18,20 +18,40 @@
 	export let badTitle = "Error"
 	export let context	: Layout01Context; 
 	export let hideSave : boolean = false;
+	export let hideName : boolean = false;
+	export let hideDesc : boolean = false;
+	export let hideLoc	: boolean = false;
+	export let controller : DerivedItemController = new DerivedItemController();
 
 	let messageHandler: StaticMessageHandler; 
 	const dispatch = createEventDispatcher(); 
 	
-	let controller : DerivedItemController = new DerivedItemController();
 	$: controller.setControllerDeps(node,system,(msg) => {})
 	$: controller.messageHandler = messageHandler;
 	$: availableSymbols = get(controller.mappedOrigins).filter(p => !p.active ).map( p => p.key );
+	
 	export function forceUpdate(){
 		controller.updateMappedOrigins()
 	}
-	
-	let flash = false;	
-	
+	export let onUpdate : () => any = () => null;
+	// for use in Feature designer
+	export function isValid(){
+		return $controllerIsValid;
+	}
+	// for use in Feature designer
+	export function getSetupData(){
+		let orig = $controllerMappedOrigin.map( p => { return { symbol : p.key, locKey : p.target?.getLocationKey() }})
+		let calc = $controllerCalc;
+		let name = $controllerName; 
+		return {
+			name : name,
+			calc : calc,
+			orig : orig
+		}
+	}
+	export function clearMessages(){
+		messageHandler.removeAllMessages();
+	}
 	
 
 	let controllerMappedOrigin	: Writable<originRowData[]>;
@@ -44,22 +64,22 @@
 	// save original Name
 	let origName : string ; 
 
-	function onNameInput ( event : any  ){  
+	export function onNameInput ( event : any  ){  
 		messageHandler?.removeError('save');
 		let name = event.target.value;
 		controller.name.set( name);
 		controller.checkIsValid(false);  
 	}
-	function onCalcInput ( event : any  ){
+	export function onCalcInput ( event : any  ){
 		let calc = event.target.value; 
 		controller.calc.set( calc);
 		messageHandler?.removeError('save');
 		controller.recalculateCalcAndOrigins();  
 		controller.checkIsValid(false);   
 	}
-	function recalc(){
+	export function recalc( output = false ){
 		controller.recalculateCalcAndOrigins();  
-		controller.checkIsValid(false);   
+		controller.checkIsValid( output );   
 	}
 
 	function onDeleteClicked(e){
@@ -108,19 +128,24 @@
 		/>
 	</div>
 	<div>
-		<p>
-			Editing node.
-			Here you can edit settings for this specific node. this edit is unique to this specific item.
-		</p>
+		{#if !hideDesc}
+			<p>
+				Editing node.
+				Here you can edit settings for this specific node. this edit is unique to this specific item.
+			</p>
+		{/if}
 	</div>
 	<div class="ItemDesignerDataColumns3" >
+		{#if !hideName}
+			<div>Node Name</div>
+			<input type="text" class="ItemDesignerInput" on:input={ ( e ) => { onNameInput(e) } } contenteditable bind:value={ $controllerName }/>
+		{/if}
 
-		<div>Node Name</div>
-		<input type="text" class="ItemDesignerInput" on:input={ ( e ) => { onNameInput(e) } } contenteditable bind:value={ $controllerName }/>
- 
-		<div>Node Location</div>
-		<div class="ItemDesignerInput" >{ (node?.parent?.parent?.name ?? 'unknown collection') + '.' +( node?.parent?.name ?? 'unknown collection') + '.' + $controllerName }</div>
- 
+		{#if !hideLoc}
+			<div>Node Location</div>
+			<div class="ItemDesignerInput" >{ (node?.parent?.parent?.name ?? 'unknown collection') + '.' +( node?.parent?.name ?? 'unknown collection') + '.' + $controllerName }</div>
+		{/if}
+
 		<div>Calc</div>
 		<textarea class="calcInput" value={ $controllerCalc } 
 			on:input={ onCalcInput }
@@ -143,7 +168,7 @@
 									availableSymbols = { availableSymbols }
 									system 			 = { system.sys }
 									context = {context}
-									on:change	= {recalc}
+									on:change	= { () => recalc() }
 									on:onDelete 		= { onDeleteClicked }
 									on:onSymbolSelected = { onKeyExchange }
 									on:foundTargetNode = { (e) =>{ controller.checkIsValid(false) }}
@@ -157,7 +182,7 @@
 		{/if}
 	</div> 
 	<br>
-	{#if hideSave}
+	{#if !hideSave}
 		<div class="ItemDesignerButtonRow">
 			<button on:click={ onSave }  >save changes</button> 
 		</div>

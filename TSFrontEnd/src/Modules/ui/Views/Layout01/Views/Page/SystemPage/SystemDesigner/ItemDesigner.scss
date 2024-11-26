@@ -33,7 +33,10 @@
 	&[data-styleActive="false"]{
 		&>*:nth-child(1){ grid-area : sym ; cursor: pointer;}
 		&>*:nth-child(2){ grid-area : add ; cursor: pointer;}
-		&>*:nth-child(3){ grid-area : add ; cursor: pointer;} 
+		&>*:nth-child(3){ grid-area : logo; cursor: pointer;} 
+	}
+	imagecontainer{
+		place-self: center;
 	}
 }
 .DerivedCollectionDesigner{
@@ -108,7 +111,7 @@
 		.derivedOriginRow{
 			
 			grid-template-columns: 1fr 150px 1fr !important;
-			grid-template-rows: 1fr auto auto auto ;
+			grid-template-rows: 1fr auto auto ;
 			background-color: $COLOR1;
 			color:$COLOR4;
 			row-gap: 5px;
@@ -124,10 +127,10 @@
 			}
 			&[data-styleActive="false"]{
 				grid-template-areas: 
-				"sym	sym"
-				"add	add"
-				"add	add" 
-				"logo	logo";
+				"sym	sym 	logo"
+				"add	add 	logo"
+				"add	add 	logo" 
+				;
 			} 
 		} 
 	}
@@ -168,7 +171,7 @@
 					"sel1	sel1	sel2	sel2	sel3 	sel3";
 			}
 			&[data-styleActive="false"]{
-				grid-template-areas: "sym add add";
+				grid-template-areas: "sym add add add add logo";
 			}
 		}
 	}
@@ -209,7 +212,7 @@
 				grid-template-areas: "sym num sel1 sel2 sel3 logo";
 			}
 			&[data-styleActive="false"]{
-				grid-template-areas: "sym add add add add add";
+				grid-template-areas: "sym add add add add logo";
 			}
 		}
 	}

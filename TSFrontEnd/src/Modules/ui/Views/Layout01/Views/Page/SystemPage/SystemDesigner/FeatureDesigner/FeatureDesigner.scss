@@ -22,10 +22,12 @@
 .FeatuerDesigner > div{
 
     section{
+        padding-bottom: 20px;
         input, textarea, select{
             width: 100%;
             resize: vertical;
             box-sizing: border-box;
+            color:black;
         }
 
         .interactive{
