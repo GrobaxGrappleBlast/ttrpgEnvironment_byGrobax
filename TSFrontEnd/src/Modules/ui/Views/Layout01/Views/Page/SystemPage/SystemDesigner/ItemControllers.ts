@@ -1,13 +1,12 @@
 
-import { get, writable, type Writable } from 'svelte/store'; 
-import { createEventDispatcher, onMount } from "svelte";
-import { GrobJDerivedNode, GrobJFixedNode, GrobJNodeType } from '../../../../../../../graphDesigner';
+import { get, writable, type Writable } from 'svelte/store';  
+import { GrobJDerivedNode, GrobJNodeType } from '../../../../../../../graphDesigner';
 import StaticMessageHandler from '../../../../../../Components/Messages/StaticMessageHandler.svelte';
-import { GrobDerivedNode, GrobFixedNode, GrobNodeType, TTRPGSystem } from 'ttrpg-system-graph';
+import { GrobDerivedNode, GrobFixedNode, TTRPGSystem } from 'ttrpg-system-graph';
 import { AGrobNode } from 'ttrpg-system-graph/dist/Nodes/AGrobNodte';
 import { UINode } from '../../../../../../../graphDesigner/UIComposition/UINode';
 import { UISystem } from '../../../../../../../graphDesigner/UIComposition/UISystem';
-import { sys } from 'typescript';
+import { forEach } from 'jszip';
  
 
 class AItemController<T extends AGrobNode<T>> {
@@ -107,6 +106,9 @@ export class FixedItemController	extends AItemController<GrobFixedNode>{
 
 } 
 export type originRowData = {key: string, segments:(string|null)[] , active :boolean , testValue :number, inCalc:boolean, target: GrobJNodeType | null , isSelectAllTarget: boolean };
+export type originRowDataMin = {key: string, segments:(string|null)[] , testValue? : number , target? : GrobJNodeType };
+
+/*
 export class DerivedItemController	extends AItemController<GrobDerivedNode> {
 	
 	// calc variables are for derived nodes 
@@ -362,92 +364,214 @@ export class DerivedItemController	extends AItemController<GrobDerivedNode> {
 		})
 	}
 }
-
+*/
 
 export class DerivedItemController2	{
+
+	/**
+	* 
+	* @param system 	(optional, pass null if opting out) a System to check up nodes existing and such. 
+	* @param out 		a method that takes a (Key:string, msg: string, db: string ) to handle messages for what is wrong, db is a debug Code. 
+	* @param calc 		a String that represents the calculation 
+	* @param origins 	an Array of references to the Origins with Symbols for the 
+	* @param name		The New Name of the Node 
+	* @param location 	The Collection Location for the New Node. Path to parent collection. 
+	* @returns 
+	*/
+	public ValidateCalculation ( 
+			system		: TTRPGSystem | null ,
+			out			:(key:string , msg:string , db:string ) => any ,
+			calc		:string ,
+			origins		:originRowDataMin[],
+			name?		:string,
+			location?	:string
+		){  
 	
-	public checkIsValid( 
-		system		: TTRPGSystem,
-		out			:(key:string,
-		msg			:string) => any ,
-		calc		:string ,
-		origins		:{symbol:string, location:string, value?:number }[],
-		name?		:string,
-		location?	 :string,
-		output		:boolean = false
-	){  
-
-		
-		var isValid = true;
-
-		// name validation.
-		if ( name ){
-			if (name == ''){
-				isValid = false;
-				out('nameErr1','The name cannot be empty')
-			}
-			else if (name.includes('.')){
-				isValid = false;
-				out('nameErr2','The name cannot contain "."')
-			}
-
-			// we validate location and name if the location is also given. 
-			else if ( location && system.getCollectionLoc(location)?.hasNode(name) ){
-				isValid = false;
-				out('nameErr3','The name is already in use, in the same collection')
-			}
-		}
-
-		// origins Validation
-		if (origins && calc){
+			// --- --- --- --- --- --- --- --- --- --- --- --- --- ---
+			// --- Check optional name and Location and System.--- --- 
+			// --- --- --- --- --- --- --- --- --- --- --- --- --- ---
 			
-			// get the symbols
-			let symbols = new Set(GrobJDerivedNode.staticParseCalculationToOrigins(calc));
+			var isValid = true;
+	
+			// name validation.
+			if ( name != null && name != undefined ){
+				if (name == ''){
+					isValid = false;
+					out('name','The name cannot be empty', 'empty')
+				}
+				else if (name.includes('.')){
+					isValid = false;
+					out('name','The name cannot contain "."', 'illigal')
+				}
+	
+				// we validate location and name if the location is also given. 
+				else if ( location && system && system.getCollectionLoc(location)?.hasNode(name) ){
+					isValid = false;
+					out('name','The name is already in use, in the same collection', 'taken')
+				}
+			}
+	
+			// origins Validation
+			if (origins && calc){
+				
+				// get the symbols
+				let symbols = new Set(GrobJDerivedNode.staticParseCalculationToOrigins(calc));
+	
+				// go through origins and ensure that all origins have targets. 
+				// (also remove symbols used from symbols leaving unused symbols)
+				if ( system ){
 
-			// go through origins and ensure that all origins have targets. 
-			// (also remove symbols used from symbols leaving unused symbols)
-			for (let i = 0; i < origins.length; i++) {
-				const orig = origins[i];
-				symbols.delete(orig.symbol);
+					// if the collection doesent exists
+					if (location){
+						var colexists = false;
+						try { colexists = !!system.getCollectionLoc(location) }
+						catch(e){}
+						if (!colexists){
+							out( `location`, `Collection at ${location} does not exist` , 'NoLink');
+							isValid = false;		
+						}
+					}
 
-				// if node does not exist
-				try{
-					const node = system.getNodeLocString(orig.location);
-					if (!node){
-						out( `${orig.symbol}OrigErr1`, ` ${orig.symbol} Target of ${ orig.location } was did not target a Node'`);
-						isValid = false;
+
+					// validate that the nodes exists
+					for (let i = 0; i < origins.length; i++) {
+						const orig = origins[i];
+						symbols.delete(orig.key);
+		
+						// if node does not exist
+						try{
+							const node = system.getNodeLocString(orig.segments.join('.'));
+							if (!node){
+								out( `${orig.key}`, ` ${orig.key} Target of ${ orig.segments.join('.') } was did not target a Node'` , 'NoLink');
+								isValid = false;
+							}
+						}
+						catch(e){
+							out( `${orig.key}`, ` ${orig.key} Target of ${ orig.segments.join('.') } was did not target a Node'`, 'LinkUnforSeen');
+							isValid = false;
+						}
 					}
 				}
-				catch(e){
-					out( `${orig.symbol}OrigErr1`, ` ${orig.symbol} Target of ${ orig.location } was did not target a Node'`);
-					isValid = false;
+	
+			}
+
+			// --- --- --- --- --- --- --- --- --- --- --- --- --- ---
+			// --- Node Validation, get missing, unused--- SORT--- ---
+			// --- --- --- --- --- --- --- --- --- --- --- --- --- ---
+
+			// we sort an order some objects to better, analyse the objects.
+			let symbols = GrobJDerivedNode.staticParseCalculationToOrigins(calc);
+			let _origs 	: Record<string, originRowData> = {};
+			let _origKeys = new Set(origins.map(p=>p.key));
+
+			// create a mapped Origins. 
+			origins.forEach( p => { _origs[p.key] = {
+				key			: p.key,
+				segments	: p.segments,
+				active		: _origKeys.has(p.key),
+				testValue	: (p.testValue ?? p.target?.getValue()) ?? 1 ,
+				target		: p.target ?? null,
+				inCalc 		: _origKeys.has(p.key),
+				isSelectAllTarget : false
+			}})
+
+			// create lists. for deleted and unused
+			let missingSymbols = symbols.filter( p => !_origKeys.has(p) );
+			let unusedSymbols = Array.from(_origKeys).filter( p => !symbols.includes(p) );
+		
+			// mark unused symbols
+			for (let i = 0; i < unusedSymbols.length; i++) {
+				const sym = unusedSymbols[i];
+				const orig= _origs[sym];
+				orig.active = false; 
+				orig.inCalc = false;
+			}
+			
+			// add missing symbols 
+			for (let i = 0; i < missingSymbols.length; i++) {
+				const sym = missingSymbols[i];
+				const orig :originRowData = {
+					key: sym,
+					segments: [],
+					active: false,
+					testValue: 1,
+					inCalc: true,
+					target: null,
+					isSelectAllTarget: false
+				};
+				_origs[sym] = orig;
+			}	
+
+			// --- --- --- --- --- --- --- --- --- --- --- --- --- ---
+			// --- Node Validation, get missing, unused--- OutPUT  ---
+			// --- --- --- --- --- --- --- --- --- --- --- --- --- ---
+
+			// Sort outgoing origins array, we do this now because its neeeded both in succes and failed runs
+			var originsOut : originRowData [] = Object.values(_origs).map( p => {  
+				return {
+					key					: p.key,
+					segments			: p.segments , 
+					active				: p.active ?? false ,
+					testValue			: p.testValue ?? 0,
+					inCalc				: (p as originRowData ).inCalc ?? false ,
+					target				: (p as originRowData ).target ?? null ,
+					isSelectAllTarget	: (p as originRowData ).isSelectAllTarget ?? false 
+				}
+			} )
+
+			// if not valid return invalid as a result.
+			if ( !(missingSymbols.length == 0 && unusedSymbols.length == 0) || !isValid ){
+				missingSymbols.forEach( p => out( p , `Missing Symbol ${p} `, 'missing'))
+				unusedSymbols .forEach( p => out( p , `Had unused Symbol ${p} `, 'unused'))
+				return {
+					value : NaN,
+					succes: false,
+					origins: originsOut
 				}
 			}
 
-			// go through missing symbols. 
-			for (let i = 0; i < symbols.size; i++) {
-				const symbol = symbols[i];
-				out( `${symbol}symbolErr1`, ` ${symbol} was missing'`);
-				isValid = false;
+			// --- --- --- --- --- --- --- --- --- --- --- --- --- ---
+			// --- Calculate and se if it works--- --- --- --- --- --- 
+			// --- --- --- --- --- --- --- --- --- --- --- --- --- ---
+
+			// calculate and get result
+			let map = {}
+			Object.values(_origs).forEach( p => map[p.key] = (p.testValue));
+			let res = GrobJDerivedNode.testCalculate( calc , map , false );
+
+			// if there is an error now give that output
+			if ( !res.success || Number.isNaN(res.value) ){
+				out( `calc`, `calculation was invalid`, 'invalid');
 			}
 
-			// Validate calculation. 
-			symbols = new Set(GrobJDerivedNode.staticParseCalculationToOrigins(calc));
-			let symbolsValueMap : Record<string, number> = {};
-			origins.forEach( p => { symbolsValueMap[p.symbol] = p.value ?? 1 })
-			let res = GrobJDerivedNode.testCalculate( calc, symbolsValueMap );
-			if(!res.success){
-				isValid = false;
-				out('resultErr1','Calculation was unsuccesfull');
+			return {
+				value : res.value	,
+				succes: res.success ,
+				origins: originsOut
 			}
-		}
-
-		return isValid;
 	}  
 	
-	public saveNodeChanges( system : TTRPGSystem , out:(key:string, msg:string) => any , calc:string , origins:{symbol:string, location:string, value?:number }[],  name:string , location:string, value:number, output:boolean = false ){
+	/**
+	* 
+	* @param system 	(optional, pass null if opting out) a System to check up nodes existing and such. 
+	* @param out 		a method that takes a (Key:string, msg: string, db: string ) to handle messages for what is wrong, db is a debug Code. 
+	* @param calc 		a String that represents the calculation 
+	* @param origins 	an Array of references to the Origins with Symbols for the 
+	* @param name		The New Name of the Node 
+	* @param location 	The Collection Location for the New Node. Path to parent collection. 
+	* @returns 
+	*/
+	public saveNodeChanges( 
+		system : TTRPGSystem ,
+		out:(key:string, msg:string) => any ,
+		calc:string ,
+		origins:originRowDataMin[],
+		name:string ,
+		location:string,
+		value:number
+	){
 		
-		let success = this.checkIsValid( system, out, calc, origins, name , location , output );
+		let success = this.ValidateCalculation( system, out, calc, origins, name , location ).succes;
 		if (!success){
 			return false ;
 		}
@@ -475,14 +599,16 @@ export class DerivedItemController2	{
 		// get each origin and add as origin.
 		for (let i = 0; i < origins.length; i++) {
 			const orig = origins[i];
-			const target = system.getNodeLocString( orig.location );
-			if (!target){ throw new Error('No Target at location ' + orig.location); }
-			node.setOrigin( orig.symbol , target );
+			const target = system.getNodeLocString( orig.segments.join('.') );
+			if (!target){ throw new Error('No Target at location ' + orig.segments.join('.')); }
+			node.setOrigin( orig.key , target );
 		}
 		
 		return true;	
 	} 
 	
+
+
 	public onKeyExchange( calc:string , mappedOrigins : originRowData[] , _old:string, _new:string ){ 
 
 		const s0 = _old;
@@ -507,11 +633,14 @@ export class DerivedItemController2	{
 	public onKeyDelete(  mappedOrigins : originRowData[] , key:string ){ 
 
 		let old : originRowData | undefined = mappedOrigins.find( p => p.key == key ); 
-		if (!old)
+		if (!old){
 			return mappedOrigins;
+		}
+
+		var _key = old.key;
 
 		if (!old.active || !old.inCalc){
-			mappedOrigins = mappedOrigins.filter( p => p.key != old.key )
+			mappedOrigins = mappedOrigins.filter( p => p.key != _key )
 		} else {
 			old.active = false;
 			old.segments = new Array(3).fill(null);
@@ -519,80 +648,5 @@ export class DerivedItemController2	{
 		return mappedOrigins; 
 	}
 
-	public recalculate( calc:string ,mappedOrigins : originRowData[] , out:(key:string, msg:string) => any ){ 
-		/*
-			/// Handle Calculation
-			let o = {}; 
-			mappedOrigins.forEach( p => { o[p.key]= p.testValue; } );
-			let res = GrobJDerivedNode.testCalculate( calc , o );
 
-			/// Handle Add Origins. 
-			// calculate the symbols
-			let symbols = GrobJDerivedNode.staticParseCalculationToOrigins( calc );
-
-			//remove keys that already exists from the array. and leave a pure toAdd list.
-			mappedOrigins.forEach( d => {
-				let inCalc = symbols.includes(d.key);
-				if ( inCalc ){
-					symbols = symbols.filter( p => p != d.key );
-					d.inCalc = true;
-				}
-				else {
-					// in case an item is no longer in the calc, mark it as such. 
-					d.inCalc = false;
-				}
-			})
-				
-			// for each remaining, add it. 
-			symbols.forEach( s => {
-				mappedOrigins.push({key:s , segments:new Array(3).fill(null) , active:false , testValue: 1, inCalc:true, target : null , isSelectAllTarget : true  })
-			})  
-			return res.value;
-		*/
-		// in case we need to add an origin
-		let symbols = GrobJDerivedNode.staticParseCalculationToOrigins(calc);
-		let _origs 	: Record<string, originRowData> = {};
-		mappedOrigins.forEach( p => _origs[p.key] = p );
-		let _origKeys = new Set(Object.keys(_origs));
-		let missingSymbols = symbols.filter( p => !_origKeys.has(p) );
-		let deletedSymbols = Array.from(_origKeys).filter( p => !symbols.includes(p) );
-			// mark unused symbols
-			for (let i = 0; i < deletedSymbols.length; i++) {
-				const sym = deletedSymbols[i];
-				const orig= _origs[sym];
-				orig.active = false; 
-			}
-			// add symbols 
-			for (let i = 0; i < missingSymbols.length; i++) {
-				const sym = missingSymbols[i];
-				const orig :originRowData = {
-					key: sym,
-					segments: [],
-					active: true,
-					testValue: 1,
-					inCalc: false,
-					target: null,
-					isSelectAllTarget: false
-				};
-				_origs[sym] = orig;
-			}	
-
-		// // get calc from event
-		let map = {}
-		mappedOrigins.forEach( p => map[p.key] = p.testValue);
-		let res = GrobJDerivedNode.testCalculate( calc , map , false );
-		
-		let resultSucces = true;
-		if ( missingSymbols.length == 0 && deletedSymbols.length == 0 ){
-			resultSucces = true
-		}else{
-			resultSucces = false;
-		}
-
-		return {
-			value : res.value	,
-			succes: resultSucces,
-			origins: Object.values(_origs)
-		}
-	}
 }

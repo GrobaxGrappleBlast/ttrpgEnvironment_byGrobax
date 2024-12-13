@@ -204,9 +204,9 @@
 		// if this is a calc. then validate the calculation
 		if (_feature.type == GrobFeature_CalcReplacement.getType()){
 
-			
+			// 
 			derivedItemDesigner?.recalc( true );
-			if(!derivedItemDesigner?.isValid()){
+			if(!derivedItemDesigner?.getIsValid()){
 				valid = false;
 				addError('derivedCalcError01');
 			}
@@ -395,6 +395,7 @@
 							hideName={true}
 							hideDesc={true}
 							hideLoc ={true}
+							messagesAsEvents={true}
 						/>
 					</div>
 				</section>
@@ -402,6 +403,7 @@
 		</div>
 
 </div>
+
 <style>
 	.line{
 		display: flex;

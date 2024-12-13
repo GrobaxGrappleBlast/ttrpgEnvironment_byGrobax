@@ -51,11 +51,15 @@
 				contenteditable="false" 
 				on:click={ () => { if( disabled ){ return }  onSelect(element)} }
 				on:keyup 
-				role="none"
+				role=""
 			>  
 				{ element.name } 
 			</div>
+		
 		{:else}
+			<!-- svelte-ignore a11y-positive-tabindex -->
+			<!-- svelte-ignore a11y-autofocus -->
+			<!-- svelte-ignore a11y-no-noninteractive-tabindex -->
 			<div
 				tabindex="1" 
 				role="cell"

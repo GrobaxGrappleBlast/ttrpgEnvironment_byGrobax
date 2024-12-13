@@ -27,6 +27,21 @@ $layout_size04_minWidth : #{$layout_size03_maxWidth + 0.01};
 $layout_size04_maxWidth : 1920;
 
 
+//  /*// color.channel($color, 'saturation', $space: hsl);*/
+@use "sass:color";
+
+@function saturation($color){
+	@return color.channel($color, "saturation", $space: hsl);
+}
+
+@function lightness($color){
+	@return color.channel($color, "lightness", $space: hsl);
+}
+
+
+@function lighten($color, $percent){
+	@return color.adjust($color, $lightness:$percent, $space:hsl )
+}
 
 $sat: saturation($COLOR3);
 $lig: lightness($COLOR3);
@@ -48,9 +63,10 @@ $stripedBackground_StripeThickness : 4px;
 	@return repeating-linear-gradient(-45deg, $color1 , $color1  $stripedBackground_StripeThickness , $color2 $stripedBackground_StripeThickness , $color2 10px);
 }
  
+ 
 
 $interactiveSColor		: $COLOR3;
-$interactiveSColorActive: lighten($COLOR3,10%);
+$interactiveSColorActive: lighten($COLOR3,10%); 
 $interactiveSColorHover	: $COLOR3;
 
 $interactiveColor		: $COLOR3;

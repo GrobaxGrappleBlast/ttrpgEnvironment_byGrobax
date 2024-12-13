@@ -5,11 +5,38 @@
     "main": "main.js",
     "type": "module",
     "scripts": {
-        "dev2"  : "vite -- --platform=web",
-        "dev"   : "vite build -- --platform=obsidian",
-        "vite"  : "vite build --watch",
-        "build" : "vite build -- --platform=obsidian ",
+        "dev2": "vite -- --platform=web",
+        "dev": "vite build -- --platform=obsidian",
+        "vite": "vite build --watch",
+        "build": "vite build -- --platform=obsidian ",
         "bumpversion": "node version-bump.mjs && git add manifest.json versions.json"
+    },
+    "jest": {
+        "preset": "ts-jest/presets/default-esm",
+        "globals": {
+            "ts-jest": {
+                "isolatedModules": true
+            }
+        },
+        "collectCoverage": true,
+        "coverageReporters": [
+            "json",
+            "lcov",
+            "text",
+            "html"
+        ], 
+        "testEnvironment": "node",
+        "moduleFileExtensions": [
+            "js",
+            "ts"
+        ],
+        "transform": {
+            "^.+\\.(ts)$": "ts-jest"
+        },
+        "testMatch": [
+            "**/*.test.ts",
+            "**/*.test.js"
+        ]
     },
     "keywords": [],
     "author": "Grobax",

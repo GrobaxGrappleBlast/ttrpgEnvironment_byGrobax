@@ -14,13 +14,13 @@
 
 	export let node		: UINode;
 	export let system	: UISystem; 
-	export let goodTitle = "No Error";
-	export let badTitle = "Error"
+	export const goodTitle = "No Error";
+	export const badTitle = "Error"
 	export let context	: Layout01Context; 
-	export let hideSave : boolean = false;
-	export let hideName : boolean = false;
-	export let hideDesc : boolean = false;
-	export let hideLoc	: boolean = false;
+	export const hideSave : boolean = false;
+	export const hideName : boolean = false;
+	export const hideDesc : boolean = false;
+	export const hideLoc	: boolean = false;
 	export let controller : DerivedItemController = new DerivedItemController();
 
 	let messageHandler: StaticMessageHandler; 

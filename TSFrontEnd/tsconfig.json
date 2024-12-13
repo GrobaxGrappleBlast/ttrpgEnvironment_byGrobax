@@ -4,7 +4,7 @@
         "experimentalDecorators": true,
         "baseUrl": "./",   
         "inlineSources": true,
-        "module": "ESNext",
+        "module": "CommonJS",
         "target": "ES6",
         "allowJs": true,
         "noImplicitAny": false,
@@ -13,7 +13,9 @@
         "isolatedModules": true,
         "strictNullChecks": true, 
         "importsNotUsedAsValues":"remove", 
+        "esModuleInterop": true,
         "strict": false,
+        "skipLibCheck": true,
         "preserveValueImports":false,
         "lib": [
 			"es2021",

@@ -13,24 +13,24 @@
 
 	export let node		: IFeatureAllCombined;
 	export let system	: UISystem; 
-	export let goodTitle = "No Error";
-	export let badTitle = "Error"
+	export const goodTitle = "No Error";
+	export const badTitle = "Error"
 	export let context	: Layout01Context; 
-	export let hideSave : boolean = false;
-	export let hideName : boolean = false;
-	export let hideDesc : boolean = false;
-	export let hideLoc	: boolean = false;
+	export const hideSave	: boolean = false;
+	export const hideName	: boolean = false;
+	export const hideDesc	: boolean = false;
+	export const hideLoc 	: boolean = false;
 
-	let messageHandler: StaticMessageHandler; 
-	const dispatch = createEventDispatcher(); 
+	let messageHandler: StaticMessageHandler;  
  
 	let mappedOrigin		: originRowData[] = [];
 	let resultValue			: number	= NaN;
 	let resultSucces		: boolean	= false;
-	let name				: string = '';
-	let calc				: string = "@a";
-	let isValid				: boolean = false;
-	let availableSymbols 	: string[] = [];
+	let name				: string	= '';
+	let calc				: string	= "@a";
+	let isValid				: boolean	= false;
+	let availableSymbols 	: string[]	= [];
+	let messagesAsEvents 	: boolean	= false;
 
 	export let controller : DerivedItemController2 = new DerivedItemController2();
 
@@ -51,18 +51,32 @@
 	export function recalc( output = false ){ 
 		evaluate();
 	}
+	export function getIsValid(){
+		return isValid;
+	}	
 
 	function evaluate(){
 
 		// remove saved message. 
 		messageHandler?.removeError('save');
+		let messages = {};
+		//	controller.checkIsValid (
+		//		system	,
+		//		( key , msg ) => { messages[key] = msg },
+		//		calc		,
+		//		mappedOrigin,
+		//		name		,
+		//		
+		//		true
+		//	);
+		debugger;
+		
 		let res = controller.recalculate( calc , mappedOrigin , (key :string , msg:string) => {} );
 		isValid = res.succes;
 		resultSucces = res.succes;
 		resultValue = res.value;
 		mappedOrigin= res.origins;
 	}
-
 	function onDeleteClicked( key ){
 		messageHandler?.removeError('save');
 		mappedOrigin = mappedOrigin.filter( p => p.key != key );
@@ -82,6 +96,7 @@
 		//}
 		 
 	}
+
 	onMount(() => { 
 		evaluate();
 	})
@@ -103,7 +118,7 @@
 		{/if}
 	</div>
 	<div class="ItemDesignerDataColumns3" >
-		<div>
+		<div style="grid-column:span 3;">
 			{#if isValid}
 				check
 			{:else}

@@ -16,7 +16,6 @@
 	export let disabled :boolean = false;
 	export let isError 	:boolean = false;
 	export let forceOpen:boolean = false;
-	export let maxHeight:number = 500;
     export let context	: Layout01Context ;
 	const svelteStandardAnimTime = 400;
 
